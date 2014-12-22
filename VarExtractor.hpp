@@ -141,10 +141,8 @@ namespace lightlang {
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val)) {
-                bool notUsed;
 
-                // ensure that returned value is a double
-                x = static_cast<int>(me.evaluate(notUsed));
+                x = static_cast<int>(me.evaluate());
                 return true;
             }
 
@@ -164,8 +162,7 @@ namespace lightlang {
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val)) {
-                bool notUsed;
-                x = me.evaluate(notUsed);
+                x = me.evaluate();
                 return true;
             }
 
