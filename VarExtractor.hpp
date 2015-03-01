@@ -2,8 +2,8 @@
 
 #include "Value.hpp"
 #include "VarCache.hpp"
-#include "expressions/MathExpression.h"
-#include "expressions/ComparisonExpression.h"
+#include "commands/expressions/MathExpression.h"
+#include "commands/expressions/ComparisonExpression.h"
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>

@@ -2,8 +2,8 @@
 
 
 #include "Function.hpp"
-#include "expressions/MathExpression.hpp"
-#include "expressions/ComparisonExpression.hpp"
+#include "commands/expressions/MathExpression.hpp"
+#include "commands/expressions/ComparisonExpression.hpp"
 
 #include <boost/any.hpp>
 

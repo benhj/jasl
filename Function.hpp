@@ -72,9 +72,6 @@ namespace lightlang
     };
 }
 
-typedef lightlang::Function F;
-typedef std::vector<F> Functions;
-
 BOOST_FUSION_ADAPT_STRUCT (
     lightlang::Function,
     (std::string, name)
