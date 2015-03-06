@@ -11,40 +11,31 @@
 namespace lightlang {
 
     namespace {
-        bool processMainFunctionCommand(CommandInterpretor &ci,
-                                        Function &func,
-                                        std::string &returnString)
+        void processVarFunctionCommand(CommandInterpretor &ci,
+                                       Function &func)
         {
-            MainFunctionCommand mfc(func, ci.se);
-            bool success = mfc();
-            returnString = mfc.returnString;
-            return success;
+            VarFunctionCommand mfc(func, ci.se);
+            mfc();
         }
     }
 
 
-    bool
+    void
     CommandInterpretor::interpretFunc(CommandFunction::Function &func)
     {
-        std::string returnString;
-        bool success=false;
-
-        if (searchString(func, "main")) {
-            success = processMainFunctionCommand(*this, func, returnString);
+        if (searchString(func, "var")) {
+            processVarFunctionCommand(*this, func);
         } 
-
-        return success;
     }
 
-
-    returnStruct
+    void
     CommandInterpretor::parseCommandString(std::string cs)
     {
 
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> commandParser;
-        commandParser functionGrammar;
+        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        Parser functionGrammar;
         auto iter = cs.begin();
         auto end = cs.end();
         Function func;
@@ -59,8 +50,8 @@ namespace lightlang {
     {
         using boost::spirit::ascii::space;
         typedef boost::spirit::istream_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> commandParser;
-        commandParser functionGrammar;
+        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        Parser functionGrammar;
         std::vector<Function> functions;
 
         // open file, disable skipping of whitespace
@@ -91,8 +82,8 @@ namespace lightlang {
     {
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> commandParser;
-        commandParser functionGrammar;
+        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        Parser functionGrammar;
         auto iter = stringCollection.begin();
         auto end = stringCollection.end();
         std::vector<Function> functions;

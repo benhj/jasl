@@ -63,7 +63,7 @@ namespace lightlang {
             }
         }
 
-        /// trues to extract a value from val storing the result in t
+        /// tries to extract a value from val storing the result in t
         template <typename T>
         static bool tryExtraction(T &t, Value &val)
         {
