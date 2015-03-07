@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Value.hpp"
+#include "../../Value.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
@@ -10,12 +10,12 @@ namespace lightlang {
         Value m_left;
         std::string m_symbolOperator;
         Value m_right;
-        double evaluate(bool &isDouble);
+        double evaluate() const;
     };
 }
 
 BOOST_FUSION_ADAPT_STRUCT (
-    MathExpression,
+    lightlang::MathExpression,
     (Value, m_left)
     (std::string, m_symbolOperator)
     (Value, m_right)

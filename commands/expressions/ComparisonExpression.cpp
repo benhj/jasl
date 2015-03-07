@@ -40,16 +40,17 @@ namespace lightlang {
             try {
 
                 // where the comparison is between two doubles
-                double aDouble;
-                bool notUsed;
-                if (VarExtractor::tryToGetADouble(aDouble, right, notUsed)) {
-                    return doStage2<T, double>(valA, aDouble, symbolOperator);
+                {
+                    auto result = VarExtractor::tryToGetADouble(right);
+                    if (result) {
+                        return doStage2<T, double>(valA, *result, symbolOperator);
+                    }
                 }
 
                 // where the comparison is between two booleans
-                bool aBool;
-                if (VarExtractor::trySingleBoolExtraction(aBool, right)) {
-                    return doStage2<T, bool>(valA, aBool, symbolOperator);
+                auto result = VarExtractor::trySingleBoolExtraction(right);
+                if (result) {
+                    return doStage2<T, bool>(valA, *result, symbolOperator);
                 }
             } catch (...) {
                 throw;
@@ -63,23 +64,20 @@ namespace lightlang {
         try {
 
             // tries to get a double for the first operand
-            double aDouble;
-            bool notUsed;
-            if (VarExtractor::tryToGetADouble(aDouble, m_left, notUsed)) {
-                return doStage1<double>(aDouble, m_right, m_symbolOperator);
+            {
+                auto result = VarExtractor::tryToGetADouble(m_left);
+                if (result) {
+                    return doStage1<double>(*result, m_right, m_symbolOperator);
+                }
             }
 
             // tries to get a boolean for the left operand
-            bool aBool;
-            if (VarExtractor::trySingleBoolExtraction(aBool, m_left)) {
-                return doStage1<bool>(aBool, m_right, m_symbolOperator);
+            auto result = arExtractor::trySingleBoolExtraction(m_left);
+            if (result) {
+                return doStage1<bool>(*result, m_right, m_symbolOperator);
             }
         } catch (...) {
-
             throw; // what??
-
         }
-
     }
-
 }

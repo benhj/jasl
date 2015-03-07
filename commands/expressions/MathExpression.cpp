@@ -1,34 +1,31 @@
 #include "MathExpression.hpp"
-#include "VarExtractor.hpp"
+#include "../../VarExtractor.hpp"
 
 namespace lightlang {
     double
-    MathExpression::evaluate()
+    MathExpression::evaluate() const
     {
 
         // Note, for convenience, all math operations are done using doubles
         // The client of this function is responsible for casting to
         // an integer if integer precision is required
-        double valA;
-        double valB;
+        auto valA = VarExtractor::tryToGetADouble(m_left);
+        auto valB = VarExtractor::tryToGetADouble(m_right);
 
-        if (!VarExtractor::tryToGetADouble(valA, left)) {
-            throw;
-        }
-        if (!VarExtractor::tryToGetADouble(valB, right)) {
-            throw;
+        if (!valA || !valB) {
+            // TODO -- throw??
         }
 
         if (m_symbolOperator == "+" || m_symbolOperator == "add") {
-            return valA + valB;
+            return (*valA) + (*valB);
         } else if (m_symbolOperator == "-" || m_symbolOperator == "sub") {
-            return valA - valB;
+            return (*valA) - (*valB);
         } else if (m_symbolOperator == "/" || m_symbolOperator == "div") {
-            return valA / valB;
+            return (*valA) / (*valB);
         } else if (m_symbolOperator == "*" || m_symbolOperator == "mult") {
-            return valA * valB;
+            return (*valA) * (*valB);
         } else {
-            // todo throw
+            // TODO -- throw??
         }
     }
 }

@@ -46,12 +46,11 @@ namespace lightlang
 
         bool tryDouble(std::string const &key)
         {
-            double val;
-            bool extracted = VarExtractor::tryToGetADouble(val, func.paramC);
+            auto extracted = VarExtractor::tryToGetADouble(func.paramC);
             if (extracted) {
-                VarCache::doubleCache[key] = val;
+                VarCache::doubleCache[key] = *extracted;
             }
-            return extracted;
+            return (extracted != OptionalDouble());
         }
 
         bool tryString(std::string const &key)
@@ -66,23 +65,22 @@ namespace lightlang
 
         bool tryBool(std::string const &key)
         {
-            bool val;
-            bool extracted = VarExtractor::trySingleBoolExtraction(val, func.paramC);
+            auto extracted = VarExtractor::trySingleBoolExtraction(func.paramC);
             if (extracted) {
-                VarCache::boolCache[key] = val;
+                VarCache::boolCache[key] = *extracted;
             }
-            return extracted;
+            return (extracted != OptionalBool());
         }
 
         bool tryInt(std::string const &key)
         {
-            int val;
-            bool extracted = VarExtractor::trySingleIntExtraction(val, func.paramC);
+            auto extracted = VarExtractor::trySingleIntExtraction(func.paramC);
             if (extracted) {
-                VarCache::intCache[key] = val;
+                VarCache::intCache[key] = *extracted;
             }
-            return extracted;
+            return (extracted != OptionalInt());
         }
+
         Function &func;
     };
 
