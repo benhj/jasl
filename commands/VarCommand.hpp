@@ -8,15 +8,15 @@
 namespace lightlang
 {
 
-    struct SetParamCommand
+    struct VarCommand
     {
-        VarCommand(CommandFunction::Function &func_)
+        explicit VarCommand(Function &func_)
         : func(func_) 
         {
 
         }
 
-        void operator()()
+        void execute()
         {
             std::string type; 
             (void)func.getValueA<std::string>(type);
@@ -83,7 +83,7 @@ namespace lightlang
             }
             return extracted;
         }
-        CommandFunction::Function &func;
+        Function &func;
     };
 
 }

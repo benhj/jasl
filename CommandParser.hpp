@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Function.hpp"
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"

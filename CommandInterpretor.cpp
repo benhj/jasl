@@ -1,40 +1,47 @@
+#include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
-#include "commands/MainFunctionCommand.hpp"
+#include "commands/VarCommand.hpp"
+
 #include <boost/spirit/include/qi.hpp>
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <iterator>
 
-#define SEARCH_STRING(X) func.name.find(##X) != std::string::npos
-
 namespace lightlang {
 
     namespace {
-        void processVarFunctionCommand(CommandInterpretor &ci,
-                                       Function &func)
+        
+        bool searchString(Function &func, std::string const &name)
         {
-            VarFunctionCommand mfc(func, ci.se);
-            mfc();
+            return func.name.find(name) != std::string::npos;
         }
+        
+        void processVarCommand(Function &func)
+        {
+            //VarCommand vc(func);
+            //vc.execute();
+        }
+    
     }
 
-
     void
-    CommandInterpretor::interpretFunc(CommandFunction::Function &func)
+    CommandInterpretor::interpretFunc(Function &func) const
     {
         if (searchString(func, "var")) {
-            processVarFunctionCommand(*this, func);
+            processVarCommand(func);
         } 
     }
+    
 
     void
-    CommandInterpretor::parseCommandString(std::string cs)
+    CommandInterpretor::parseCommandString(std::string const &cs) const
     {
 
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        typedef CommandParser<iterator_type> Parser;
         Parser functionGrammar;
         auto iter = cs.begin();
         auto end = cs.end();
@@ -46,11 +53,11 @@ namespace lightlang {
     }
 
     std::vector<Function>
-    CommandInterpretor::parseCommandFile(std::string const &path)
+    CommandInterpretor::parseCommandFile(std::string const &path) const
     {
         using boost::spirit::ascii::space;
         typedef boost::spirit::istream_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        typedef CommandParser<iterator_type> Parser;
         Parser functionGrammar;
         std::vector<Function> functions;
 
@@ -78,11 +85,11 @@ namespace lightlang {
     }
 
     std::vector<Function>
-    CommandInterpretor::parseStringCollection(std::string const &stringCollection)
+    CommandInterpretor::parseStringCollection(std::string const &stringCollection) const
     {
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
-        typedef CommandFunction::CommandParser<iterator_type> Parser;
+        typedef CommandParser<iterator_type> Parser;
         Parser functionGrammar;
         auto iter = stringCollection.begin();
         auto end = stringCollection.end();

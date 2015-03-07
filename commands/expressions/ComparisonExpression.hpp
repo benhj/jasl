@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Value.hpp"
+#include "../../Value.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 

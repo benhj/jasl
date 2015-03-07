@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-namespace lightland {
+namespace lightlang {
 
     struct VarCache 
     {
