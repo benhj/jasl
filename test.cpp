@@ -7,7 +7,6 @@ using namespace simpletest;
 
 void testVarCommand()
 {
-
     ll::CommandInterpretor ci;
     ci.parseCommandString("var(int, a, 5);");
     ci.parseCommandString("var(int, b, 10);");
