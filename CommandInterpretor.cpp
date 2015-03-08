@@ -20,8 +20,8 @@ namespace lightlang {
         
         void processVarCommand(Function &func)
         {
-            //VarCommand vc(func);
-            //vc.execute();
+            VarCommand vc(func);
+            vc.execute();
         }
     
     }
