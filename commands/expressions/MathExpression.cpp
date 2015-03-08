@@ -3,7 +3,7 @@
 
 namespace lightlang {
     double
-    MathExpression::evaluate() const
+    MathExpression::evaluate() 
     {
 
         // Note, for convenience, all math operations are done using doubles

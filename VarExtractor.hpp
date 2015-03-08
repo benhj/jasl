@@ -62,8 +62,8 @@ namespace lightlang {
                 t = boost::any_cast<T>(val);
                 return true;
             } catch (...) {
-                return false;
             }
+            return false;
         }
 
         /// tries to extract a value from val storing the result in t
@@ -150,7 +150,7 @@ namespace lightlang {
 
         /// Tries to extract an integer. Failing that tries to extract and
         /// evaluate an expression and cast the result to an int
-        static bool trySingleIntExtraction(Value &val)
+        static OptionalInt trySingleIntExtraction(Value &val)
         {
             int x;
             if (tryExtraction<int>(x, val)) {
@@ -171,7 +171,7 @@ namespace lightlang {
         /// Note if extraction of a doulbe is initially unsuccesful it tries
         /// to extract a math expression storing the result of that in x instead
         /// and returning true.
-        static bool trySingleDoubleExtraction(Value &val)
+        static OptionalDouble trySingleDoubleExtraction(Value &val)
         {
             double x;
             if (tryExtraction<double>(x, val)) {
@@ -190,7 +190,7 @@ namespace lightlang {
         /// and returning true if successful. If not initially successful,
         /// tries to extract out a logical expression instead and storing the 
         /// result of that in x and returning true.
-        static bool trySingleBoolExtraction(Value &val)
+        static OptionalBool trySingleBoolExtraction(Value &val)
         {
             bool x;
             if (tryExtraction<bool>(x, val)) {

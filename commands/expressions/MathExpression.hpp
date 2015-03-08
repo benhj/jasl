@@ -10,7 +10,7 @@ namespace lightlang {
         Value m_left;
         std::string m_symbolOperator;
         Value m_right;
-        double evaluate() const;
+        double evaluate();
     };
 }
 

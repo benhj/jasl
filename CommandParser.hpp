@@ -304,7 +304,7 @@ namespace lightlang
         qi::rule<Iterator, ComparisonExpression(), ascii::space_type> bracketedComparisonExpression;
         qi::rule<Iterator, std::string(), ascii::space_type> mathSymbols;
         qi::rule<Iterator, std::string(), ascii::space_type> comparisonSymbols;
-        qi::rule<Iterator, Functions(), ascii::space_type> commandCollection;
+        qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
