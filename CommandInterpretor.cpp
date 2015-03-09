@@ -1,8 +1,9 @@
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "commands/CVarCommand.hpp"
-#include "commands/VarCommand.hpp"
+#include "commands/EchoCommand.hpp"
 #include "commands/MathCommand.hpp"
+#include "commands/VarCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -43,6 +44,14 @@ namespace lightlang {
             (void)vc.execute();
             return vc.errorMessage;
         }
+
+        std::string processEchoCommand(Function &func,
+                                       CommandInterpretor::OptionalOutputStream const &outputStream)
+        {
+            EchoCommand vc(func, outputStream);
+            (void)vc.execute();
+            return vc.errorMessage;
+        }
     }
 
     std::string
@@ -62,6 +71,10 @@ namespace lightlang {
                   searchString(func, "bool")) {
 
             return processCVarCommand(func, outputStream);
+
+        } else if(searchString(func, "echo")) {
+
+            return processEchoCommand(func, outputStream);
 
         }
         return std::string("Couldn't interpret function");

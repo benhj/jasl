@@ -38,6 +38,7 @@ namespace lightlang
 
             // convenience rules
             quotedString        %= lexeme['\'' >> +(char_ - '\'') >> '\''];
+            doubleQuotedString  %= lexeme['\"' >> +(char_ - '\"') >> '\"'];
             genericString       %= lexeme[+(char_("a-zA-Z_"))];
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
@@ -249,6 +250,12 @@ namespace lightlang
                  >> genericString // functionName
                  >> ')' >> ';';
 
+            // for printing out a string to screen
+            echo %= string("echo")
+                 >> '('
+                 >> doubleQuotedString
+                 >> ')' >> ';';
+
             // lists all variables
             vars %= string("vars") >> brackets >> ';';
 
@@ -269,7 +276,8 @@ namespace lightlang
                          | ifRule 
                          | commentFunc
                          | vars 
-                         | loadScript;
+                         | loadScript
+                         | echo;
 
             start %= allCommands;
         }
@@ -287,6 +295,7 @@ namespace lightlang
         qi::rule<Iterator, Function(), ascii::space_type> subRoutine;
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
+        qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
@@ -312,6 +321,7 @@ namespace lightlang
         qi::rule<Iterator, std::string(), ascii::space_type> commandString;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
         qi::rule<Iterator, std::string(), ascii::space_type> quotedString;
+        qi::rule<Iterator, std::string(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
         qi::rule<Iterator, Function(), ascii::space_type> start;
         qi::rule<Iterator, Function(), ascii::space_type> allCommands;
