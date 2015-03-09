@@ -1,36 +1,67 @@
 #pragma once
 
-#include "../Function.hpp"
+#include "Command.hpp"
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 #include "expressions/MathExpression.hpp"
-#include <boost/optional.hpp>
-#include <ostream>
-#include <string>
 
 namespace lightlang
 {
 
-    struct MathCommand
+    class MathCommand : public Command
     {
 
-        /// for capturing any output
-        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
-
+    public:
         MathCommand(Function &func_,
                     OptionalOutputStream const &output = OptionalOutputStream())
-        : func(func_) 
-        , outputStream(output)
-        , errorMessage("")
+        : Command(func_, output)
         {
         }
 
-        void appendToOutput(std::string const &message) 
+        bool execute() override
         {
-            if(outputStream) {
-                *outputStream << message.c_str();
+            // get the mathmatical operation type (add, sub, exp etc. etc.)
+            std::string typeString;
+            if (!m_func.getValueA<std::string>(typeString)) {
+                m_errorMessage = "math: problem extracting math function type";
+                appendToOutput(m_errorMessage);
+                return false;
             }
+
+            // see if the operation is a binary one
+            if (typeString == "add" ||
+                typeString == "div" ||
+                typeString == "mult"||
+                typeString == "sub") {
+
+                if (!performBinaryOperation(typeString)) {
+                    m_errorMessage = "math: problem performing binary operation";
+                    appendToOutput(m_errorMessage);
+                    return false;
+                }
+
+            // or a unary one
+            } else if (typeString == "exp" ||
+                       typeString == "cos" ||
+                       typeString == "sin" ||
+                       typeString == "sqrt") {
+
+                if (!performUnaryOperation(typeString)) {
+                    m_errorMessage = "math: problem performing unary operation";
+                    appendToOutput(m_errorMessage);
+                    return false;
+                }
+
+            // operation not supported
+            } else {
+                m_errorMessage = "math: function type not supported";
+                appendToOutput(m_errorMessage);
+                return false;
+            }
+            return true;
         }
+
+    private:
 
         /**
          * @brief add the value to the cache
@@ -48,12 +79,12 @@ namespace lightlang
 
             // In a unary expression, we'd have something like
             // m_sin(5, a), in which the result of sin(a) is stored in the
-            // variable 'a'. This is the third func parameter, since we have
+            // variable 'a'. This is the third m_func parameter, since we have
             // valueA = 'm_sin' ; valueB = '5'; valueC = 'a'
             // Similarly in a binary expression, e.g. m_add(5, 6, a);
             // valueA = 'm_add'; valueB = '5'; valueC = '6'; valueD = 'a'
 
-            if (unaryExpression ? func.getValueC<std::string>(varName) : func.getValueD<std::string>(varName)) {
+            if (unaryExpression ? m_func.getValueC<std::string>(varName) : m_func.getValueD<std::string>(varName)) {
 
                 if (!resultIsInteger) {
                     VarCache::doubleCache[varName] = val;
@@ -62,9 +93,9 @@ namespace lightlang
                 }
                 return true;
             } 
-            errorMessage = "Error storing result in variable with name ";
-            errorMessage.append(varName);
-            appendToOutput(errorMessage);
+            m_errorMessage = "Error storing result in variable with name ";
+            m_errorMessage.append(varName);
+            appendToOutput(m_errorMessage);
             return false;
         }
 
@@ -92,7 +123,7 @@ namespace lightlang
         OptionalDouble extractUnaryValue() const
         {
             double val;
-            if (!func.getValueB<double>(val)) {
+            if (!m_func.getValueB<double>(val)) {
                 return OptionalDouble();
             }
             return OptionalDouble(val);
@@ -119,23 +150,23 @@ namespace lightlang
         bool performBinaryOperation(std::string const &typeString)
         {
             MathExpression me;
-            me.left = func.paramB;
-            me.right = func.paramC;
+            me.left = m_func.paramB;
+            me.right = m_func.paramC;
             me.symbolOperator = typeString;
 
             double result;
             result = me.evaluate();
 
             // see if performing the operation broke in some way
-            errorMessage = me.errorMessage;
-            if(!errorMessage.empty()) {
+            m_errorMessage = me.errorMessage;
+            if(!m_errorMessage.empty()) {
                 return false;
             }
             
             bool const unaryOperation = false;
             if (!setVal(result, unaryOperation, me.resultIsInteger)) {
-                errorMessage = "math: problem setting type";
-                appendToOutput(errorMessage);
+                m_errorMessage = "math: problem setting type";
+                appendToOutput(m_errorMessage);
                 return false;
             }
 
@@ -147,71 +178,20 @@ namespace lightlang
             // extract the value from the function to perform unary operation over
             auto val = extractUnaryValue();
             if (!val) {
-                errorMessage = "math: problem extracting unary value";
-                appendToOutput(errorMessage);
+                m_errorMessage = "math: problem extracting unary value";
+                appendToOutput(m_errorMessage);
                 return false;
             } 
 
             // Now try and process unary value and store the result
             if (!processUnaryValueAndStoreResult(typeString, *val)) {
-                errorMessage = "math: problem storing result";
-                appendToOutput(errorMessage);
+                m_errorMessage = "math: problem storing result";
+                appendToOutput(m_errorMessage);
                 return false;
             }
             
             return true;
         }
-
-        bool execute()
-        {
-            // get the mathmatical operation type (add, sub, exp etc. etc.)
-            std::string typeString;
-            if (!func.getValueA<std::string>(typeString)) {
-                errorMessage = "math: problem extracting math function type";
-                appendToOutput(errorMessage);
-                return false;
-            }
-
-            // see if the operation is a binary one
-            if (typeString == "add" ||
-                typeString == "div" ||
-                typeString == "mult"||
-                typeString == "sub") {
-
-                if (!performBinaryOperation(typeString)) {
-                    errorMessage = "math: problem performing binary operation";
-                    appendToOutput(errorMessage);
-                    return false;
-                }
-
-            // or a unary one
-            } else if (typeString == "exp" ||
-                       typeString == "cos" ||
-                       typeString == "sin" ||
-                       typeString == "sqrt") {
-
-                if (!performUnaryOperation(typeString)) {
-                    errorMessage = "math: problem performing unary operation";
-                    appendToOutput(errorMessage);
-                    return false;
-                }
-
-            // operation not supported
-            } else {
-                errorMessage = "math: function type not supported";
-                appendToOutput(errorMessage);
-                return false;
-            }
-            return true;
-        }
-
-        Function &func;
-
-        /// for optionally capturing output
-        ::boost::optional<std::ostream&> outputStream;
-
-        /// for setting an error message that can be later queried
-        std::string errorMessage;
     };
 
 }

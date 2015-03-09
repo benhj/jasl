@@ -1,73 +1,24 @@
 #pragma once
 
-#include "../Function.hpp"
+#include "Command.hpp"
 #include "../VarCache.hpp"
-#include <boost/optional.hpp>
-#include <ostream>
-#include <string>
 
 namespace lightlang {
-    struct CVarCommand
+    class CVarCommand : public Command
     {
-
-        /// for capturing any output
-        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
-
+    public:
         CVarCommand(Function &func_,
                     OptionalOutputStream const &output = OptionalOutputStream())
-        : func(func_) 
-        , outputStream(output)
-        , errorMessage("")
+        : Command(func_, output)
         {
         }
 
-        void appendToOutput(std::string const &message) 
-        {
-            if(outputStream) {
-                *outputStream << message.c_str();
-            }
-        }
-
-        bool handleInt(std::string const &varName)
-        {
-            auto a = VarExtractor::trySingleIntExtraction(func.paramB);
-            if (!a) {
-                return false;
-            } 
-
-            VarCache::intCache[varName] = *a;
-            return true;
-            
-        }
-
-        bool handleDouble(std::string const &varName)
-        {
-            auto a = VarExtractor::trySingleDoubleExtraction(func.paramB);
-            if (!a) {
-                return false;
-            } 
-
-            VarCache::doubleCache[varName] = *a;
-            return true;
-        }
-
-        bool handleBool(std::string const &varName)
-        {
-            auto a = VarExtractor::trySingleBoolExtraction(func.paramB);
-            if (!a) {
-                return false;
-            } 
-
-            VarCache::boolCache[varName] = *a;
-            return true;
-        }
-
-        bool execute()
+        bool execute() override
         {
 
-            std::string type = func.name;
+            std::string type = m_func.name;
             std::string varName; 
-            (void)func.getValueA<std::string>(varName);
+            (void)m_func.getValueA<std::string>(varName);
 
             if (type == "int") {
 
@@ -83,18 +34,43 @@ namespace lightlang {
 
             } 
 
-            errorMessage = "cvar: type not supported";
-            appendToOutput(errorMessage);
+            m_errorMessage = "cvar: type not supported";
+            appendToOutput(m_errorMessage);
             return false;
         }
 
-        Function &func;
+    private:
+        bool handleInt(std::string const &varName)
+        {
+            auto a = VarExtractor::trySingleIntExtraction(m_func.paramB);
+            if (!a) {
+                return false;
+            } 
+            VarCache::intCache[varName] = *a;
+            return true;
+        }
 
-        /// for optionally capturing output
-        ::boost::optional<std::ostream&> outputStream;
+        bool handleDouble(std::string const &varName)
+        {
+            auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramB);
+            if (!a) {
+                return false;
+            } 
 
-        /// for setting an error message that can be later queried
-        std::string errorMessage;
+            VarCache::doubleCache[varName] = *a;
+            return true;
+        }
+
+        bool handleBool(std::string const &varName)
+        {
+            auto a = VarExtractor::trySingleBoolExtraction(m_func.paramB);
+            if (!a) {
+                return false;
+            } 
+
+            VarCache::boolCache[varName] = *a;
+            return true;
+        }
     };
 }
 

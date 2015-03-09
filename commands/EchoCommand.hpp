@@ -1,55 +1,32 @@
 #pragma once
 
-#include "../Function.hpp"
+#include "Command.hpp"
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
-#include <boost/optional.hpp>
-#include <ostream>
-#include <string>
 
 namespace lightlang
 {
-    struct EchoCommand
+    class EchoCommand : public Command
     {
-
-        /// for capturing any output
-        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
-
-        explicit EchoCommand(Function &func_,
-                             OptionalOutputStream const &output = OptionalOutputStream())
-        : func(func_) 
-        , outputStream(output)
-        , errorMessage("")
+    public:
+        EchoCommand(Function &func_,
+                    OptionalOutputStream const &output = OptionalOutputStream())
+        : Command(func_, output)
         {
 
         }
 
-        void appendToOutput(std::string const &message) 
-        {
-            if(outputStream) {
-                *outputStream << message.c_str();
-            }
-        }
-
-        bool execute()
+        bool execute() override
         {
             std::string echoString;
-            if(!func.getValueA<std::string>(echoString)) {
-                errorMessage = "echo: problem getting string";
-                appendToOutput(errorMessage);
+            if(!m_func.getValueA<std::string>(echoString)) {
+                m_errorMessage = "echo: problem getting string";
+                appendToOutput(m_errorMessage);
                 return false;
             }
             appendToOutput(echoString);
             return true;
         }
-
-        Function &func;
-
-        /// for optionally capturing output
-        ::boost::optional<std::ostream&> outputStream;
-
-        /// for setting an error message that can be later queried
-        std::string errorMessage;
     };
 
 }

@@ -26,7 +26,7 @@ namespace lightlang {
         {
             VarCommand vc(func, outputStream);
             (void)vc.execute();
-            return vc.errorMessage;
+            return vc.getErrorMessage();
         }
 
         std::string processMathCommand(Function &func,
@@ -34,7 +34,7 @@ namespace lightlang {
         {
             MathCommand mc(func, outputStream);
             (void)mc.execute();
-            return mc.errorMessage;
+            return mc.getErrorMessage();
         }
 
         std::string processCVarCommand(Function &func,
@@ -42,7 +42,7 @@ namespace lightlang {
         {
             CVarCommand vc(func, outputStream);
             (void)vc.execute();
-            return vc.errorMessage;
+            return vc.getErrorMessage();
         }
 
         std::string processEchoCommand(Function &func,
@@ -50,7 +50,7 @@ namespace lightlang {
         {
             EchoCommand vc(func, outputStream);
             (void)vc.execute();
-            return vc.errorMessage;
+            return vc.getErrorMessage();
         }
     }
 
