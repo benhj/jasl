@@ -78,6 +78,16 @@ void testCVarCommandsCompound()
     ci.parseAndInterpretSingleCommand("double q = k + 0.0;"); // bug -- shouldn't have to add 0.0!
     ci.parseAndInterpretSingleCommand("double L = q / 5.0;");
     ASSERT_EQUAL(1689.6, ll::VarCache::doubleCache["L"], "testCVarCommand::L is 1689.6");
+
+    ci.parseAndInterpretSingleCommand("bool b = (5 > 1) && (8 <= 10);");
+    ASSERT_EQUAL(true, ll::VarCache::boolCache["b"], "testCVarCommand::b is true");
+
+    ci.parseAndInterpretSingleCommand("bool c = (5 > 1) && (8 <= 2);");
+    ASSERT_EQUAL(false, ll::VarCache::boolCache["c"], "testCVarCommand::c is false");
+
+    ci.parseAndInterpretSingleCommand("bool d = (5 > 1) || (8 <= 2);");
+    ASSERT_EQUAL(true, ll::VarCache::boolCache["d"], "testCVarCommand::d is true");
+
     clearCaches();
 }
 
