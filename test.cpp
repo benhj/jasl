@@ -86,7 +86,6 @@ void testCVarCommandsCompound()
     ASSERT_EQUAL(false, ll::VarCache::boolCache["c"], "testCVarCommand::c is false");
     ci.parseAndInterpretSingleCommand("bool d = (5 > 1) || (8 <= 2);");
     ASSERT_EQUAL(true, ll::VarCache::boolCache["d"], "testCVarCommand::d is true");
-
     clearCaches();
 }
 
@@ -96,6 +95,16 @@ void testEcho()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("echo(\"Hello, world!\");", ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testEcho: Hello, world!");
+    clearCaches();
+}
+
+void testIfCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo(\"Hello, world!\"); var(int, x, 5); }", ss);
+    ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
+    ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testIfCommand: x is 5");
 }
 
 int main()
@@ -105,5 +114,6 @@ int main()
     testCVarCommandsBasic();
     testCVarCommandsCompound();
     testEcho();
+    testIfCommand();
     showResults();
 }

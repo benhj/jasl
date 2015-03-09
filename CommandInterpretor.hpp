@@ -38,11 +38,15 @@ namespace lightlang {
         
         std::vector<Function>
         parseStringCollection(std::string const &stringCollection) const;
-        
-    private:
+
         std::string
         interpretFunc(Function &func,
                       OptionalOutputStream const &outputStream) const;
+        
+    private:
+        std::string
+        doInterpretFunc(Function &func,
+                        OptionalOutputStream const &outputStream) const;
     };
     
 }

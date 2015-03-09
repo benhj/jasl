@@ -2,6 +2,7 @@
 #include "CommandParser.hpp"
 #include "commands/CVarCommand.hpp"
 #include "commands/EchoCommand.hpp"
+#include "commands/IfCommand.hpp"
 #include "commands/MathCommand.hpp"
 #include "commands/VarCommand.hpp"
 
@@ -52,11 +53,26 @@ namespace lightlang {
             (void)vc.execute();
             return vc.getErrorMessage();
         }
+
+        std::string processIfCommand(Function &func,
+                                       CommandInterpretor::OptionalOutputStream const &outputStream)
+        {
+            IfCommand vc(func, outputStream);
+            (void)vc.execute();
+            return vc.getErrorMessage();
+        }
     }
 
     std::string
     CommandInterpretor::interpretFunc(Function &func,
                                       OptionalOutputStream const &outputStream) const
+    {
+        return doInterpretFunc(func, outputStream);
+    }
+
+    std::string
+    CommandInterpretor::doInterpretFunc(Function &func,
+                                        OptionalOutputStream const &outputStream) const
     {
         if (searchString(func, "var")) {
 
@@ -76,6 +92,10 @@ namespace lightlang {
 
             return processEchoCommand(func, outputStream);
 
+        } else if(searchString(func, "if")) {
+
+            return processIfCommand(func, outputStream);
+
         }
         return std::string("Couldn't interpret function");
     }
@@ -94,7 +114,7 @@ namespace lightlang {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            return interpretFunc(func, outputStream);
+            return doInterpretFunc(func, outputStream);
         } 
         return std::string("Unsuccessful parse");
     }
