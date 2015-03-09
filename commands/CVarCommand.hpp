@@ -14,7 +14,7 @@ namespace lightlang {
         typedef ::boost::optional<std::ostream&> OptionalOutputStream;
 
         CVarCommand(Function &func_,
-                    OptionalOutputStream output = OptionalOutputStream())
+                    OptionalOutputStream const &output = OptionalOutputStream())
         : func(func_) 
         , outputStream(output)
         , errorMessage("")

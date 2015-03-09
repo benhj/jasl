@@ -20,51 +20,56 @@ namespace lightlang {
             return func.name.find(name) != std::string::npos;
         }
         
-        std::string processVarCommand(Function &func)
+        std::string processVarCommand(Function &func,
+                                      CommandInterpretor::OptionalOutputStream const &outputStream)
         {
-            VarCommand vc(func);
+            VarCommand vc(func, outputStream);
             (void)vc.execute();
             return vc.errorMessage;
         }
 
-        std::string processMathCommand(Function &func)
+        std::string processMathCommand(Function &func,
+                                      CommandInterpretor::OptionalOutputStream const &outputStream)
         {
-            MathCommand mc(func);
+            MathCommand mc(func, outputStream);
             (void)mc.execute();
             return mc.errorMessage;
         }
 
-        std::string processCVarCommand(Function &func)
+        std::string processCVarCommand(Function &func,
+                                      CommandInterpretor::OptionalOutputStream const &outputStream)
         {
-            CVarCommand vc(func);
+            CVarCommand vc(func, outputStream);
             (void)vc.execute();
             return vc.errorMessage;
         }
     }
 
     std::string
-    CommandInterpretor::interpretFunc(Function &func) const
+    CommandInterpretor::interpretFunc(Function &func,
+                                      OptionalOutputStream const &outputStream) const
     {
         if (searchString(func, "var")) {
 
-            return processVarCommand(func);
+            return processVarCommand(func, outputStream);
 
         } else if(searchString(func, "m_")) {
 
-            return processMathCommand(func);
+            return processMathCommand(func, outputStream);
 
         } else if(searchString(func, "int") ||
                   searchString(func, "double") ||
                   searchString(func, "bool")) {
 
-            return processCVarCommand(func);
-            
+            return processCVarCommand(func, outputStream);
+
         }
         return std::string("Couldn't interpret function");
     }
     
     std::string
-    CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs) const
+    CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs,
+                                                       OptionalOutputStream const &outputStream) const
     {
 
         using boost::spirit::ascii::space;
@@ -76,7 +81,7 @@ namespace lightlang {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            return interpretFunc(func);
+            return interpretFunc(func, outputStream);
         } 
         return std::string("Unsuccessful parse");
     }

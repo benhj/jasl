@@ -9,6 +9,8 @@
 #pragma once
 
 #include "Function.hpp"
+#include <boost/optional.hpp>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -16,7 +18,11 @@ namespace lightlang {
     
     class CommandInterpretor
     {
+
     public:
+
+        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
+
         /**
          * @brief Attempts to parse and interpret a single command
          * 
@@ -24,7 +30,8 @@ namespace lightlang {
          * @return any error information
          */
         std::string
-        parseAndInterpretSingleCommand(std::string const &cs)const;
+        parseAndInterpretSingleCommand(std::string const &cs,
+                                       OptionalOutputStream const &outputStream = OptionalOutputStream())const;
         
         std::vector<Function>
         parseCommandFile(std::string const &path) const;
@@ -34,7 +41,8 @@ namespace lightlang {
         
     private:
         std::string
-        interpretFunc(Function &func) const;
+        interpretFunc(Function &func,
+                      OptionalOutputStream const &outputStream) const;
     };
     
 }
