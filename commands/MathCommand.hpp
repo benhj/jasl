@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../Function.h"
-#include "expressions/MathExpression.hpp"
+#include "../Function.hpp"
 #include "../VarExtractor.hpp"
+#include "../VarCache.hpp"
+#include "expressions/MathExpression.hpp"
 #include <string>
 
 namespace lightlang
@@ -13,52 +14,67 @@ struct MathCommand
 
     MathCommand(Function &func_)
     : func(func_) 
+    , errorMessage("")
     {
-
     }
 
     /**
      * @brief add the value to the cache
      * 
-     * @param val the value to add
-     * @param single [description]
-     * @param useDoubleType [description]
+     * @param val the value to add to the variable cache
+     * @param unaryExpression the expression type
+     * @param useDoubleType store value in double or integer cache
+     * @return true if successfully set value
      */
-    void setVal(double const val, bool const single = false, bool const useDoubleType = true)
+    bool setVal(double const val, 
+                bool const unaryExpression = false, 
+                bool const resultIsInteger = false)
     {
         std::string varName;
-        if (single ? func.getValueC<std::string>(varName) : func.getValueD<std::string>(varName)) {
 
-            if (useDoubleType) {
-                ParamsTokenizer::ps->paramFloats[varName] = val;
+        // In a unary expression, we'd have something like
+        // m_sin(5, a), in which the result of sin(a) is stored in the
+        // variable 'a'. This is the third func parameter, since we have
+        // valueA = 'm_sin' ; valueB = '5'; valueC = 'a'
+        // Similarly in a binary expression, e.g. m_add(5, 6, a);
+        // valueA = 'm_add'; valueB = '5'; valueC = '6'; valueD = 'a'
+
+        if (unaryExpression ? func.getValueC<std::string>(varName) : func.getValueD<std::string>(varName)) {
+
+            if (!resultIsInteger) {
+                VarCache::doubleCache[varName] = val;
             } else {
-                ParamsTokenizer::ps->paramInts[varName] = static_cast<int>(val);
+                VarCache::intCache[varName] = static_cast<int>(val);
             }
-        }
+            return true;
+        } 
+        errorMessage = "Error storing result in variable with name ";
+        errorMessage.append(varName);
+        return false;
     }
 
-    void doExp(double const val)
+    bool doExp(double const val)
     {
         double res = exp(val);
-        setVal(res, true);
+        return setVal(res, true);
     }
-    void doSin(double const val)
+    bool doSin(double const val)
     {
         double res = sin(val);
-        setVal(res, true);
+        return setVal(res, true);
     }
-    void doCos(double const val)
+    bool doCos(double const val)
     {
         double res = cos(val);
-        setVal(res, true);
+        return setVal(res, true);
     }
-    void doSqrt(double const val)
+    bool doSqrt(double const val)
     {
         double res = sqrt(val);
-        setVal(res, true);
+        return setVal(res, true);
     }
 
-    OptionalDouble extractSingleVal() const
+    OptionalDouble extractUnaryValue() const
     {
         double val;
         if (!func.getValueB<double>(val)) {
@@ -67,18 +83,22 @@ struct MathCommand
         return OptionalDouble(val);
     }
 
-    void procSingleVal(std::string const &typeString)
+    /// performs a unary operation over a value and stores its result
+    /// returns true if successful
+    bool processUnaryValueAndStoreResult(std::string const &typeString,
+                                         double const val)
     {
         double value;
         if (typeString == "exp") {
-            doExp(val);
+            return doExp(val);
         } else if (typeString == "sin") {
-            doSin(val);
+            return doSin(val);
         } else if (typeString == "cos") {
-            doCos(val);
+            return doCos(val);
         } else if (typeString == "sqrt") {
-            doSqrt(val);
+            return doSqrt(val);
         }
+        return false;
     }
 
     bool performBinaryOperation(std::string const &typeString)
@@ -89,15 +109,17 @@ struct MathCommand
         me.symbolOperator = typeString;
 
         double result;
+        result = me.evaluate();
 
-        try {
-            result = me.evaluate();
-        } catch (...) {
-            // todo
+        // see if performing the operation broke in some way
+        errorMessage = me.errorMessage;
+        if(!errorMessage.empty()) {
+            return false;
         }
-
-        if (!setVal(result, false, useDoubleType)) {
-            returnString = "math::problem setting type";
+        
+        bool const unaryOperation = false;
+        if (!setVal(result, unaryOperation, me.resultIsInteger)) {
+            errorMessage = "math::problem setting type";
             return false;
         }
 
@@ -106,55 +128,61 @@ struct MathCommand
 
     bool performUnaryOperation(std::string const &typeString)
     {
-        double val;
-        if (!extractSingleVal(val)) {
-            returnString = "math:: problem extracting value; is it double (cannot be int)?";
+        // extract the value from the function to perform unary operation over
+        auto val = extractUnaryValue();
+        if (!val) {
+            errorMessage = "math::problem extracting unary value";
             return false;
-        } else {
-            if (!procSingleVal(typeString, val)) {
-                returnString = "math::problem storing result";
-                return false;
-            }
+        } 
+
+        // Now try and process unary value and store the result
+        if (!processUnaryValueAndStoreResult(typeString, *val)) {
+            errorMessage = "math::problem storing result";
+            return false;
         }
+        
         return true;
     }
 
-    bool operator()()
+    bool execute()
     {
-
+        // get the mathmatical operation type (add, sub, exp etc. etc.)
         std::string typeString;
         if (!func.getValueA<std::string>(typeString)) {
-            returnString = "math::problem extracting math function type";
+            errorMessage = "math::problem extracting math function type";
             return false;
         }
 
-        if (typeString == "add"
-            || typeString == "div"
-            || typeString == "mult"
-            || typeString == "sub") {
+        // see if the operation is a binary one
+        if (typeString == "add" ||
+            typeString == "div" ||
+            typeString == "mult"||
+            typeString == "sub") {
 
             if (!performBinaryOperation(typeString)) {
                 return false;
             }
 
-        } else if (typeString == "exp"
-                   || typeString == "cos"
-                   || typeString == "sin"
-                   || typeString == "sqrt") {
+        // or a unary one
+        } else if (typeString == "exp" ||
+                   typeString == "cos" ||
+                   typeString == "sin" ||
+                   typeString == "sqrt") {
 
             if (!performUnaryOperation(typeString)) {
                 return false;
             }
 
+        // operation not supported
         } else {
-            returnString = "math::function type not supported";
+            errorMessage = "math::function type not supported";
             return false;
         }
         return true;
-
     }
 
     Function &func;
+    std::string errorMessage;
 };
 
 }

@@ -12,6 +12,7 @@ namespace lightlang
     {
         explicit VarCommand(Function &func_)
         : func(func_) 
+        , errorMessage("")
         {
 
         }
@@ -25,22 +26,22 @@ namespace lightlang
 
             if (type == "bool") {
                 if (!tryBool(key)) {
-                    // TODO: throw
+                    errorMessage = "Error setting bool var";
                 }
             } else if (type == "int") {
                 if (!tryInt(key)) {
-                    // TODO: throw
+                    errorMessage = "Error setting int var";
                 }
             } else if (type == "double") {
                 if (!tryDouble(key)) {
-                    // TODO: throw
+                    errorMessage = "Error setting double var";
                 }
             } else if (type == "string") {
                 if (!tryString(key)) {
-                    // TODO: throw
+                    errorMessage = "Error setting string var";
                 }
             } else {
-                // TODO: throw
+                errorMessage = "Error setting unknown type var";
             }
         }
 
@@ -82,6 +83,7 @@ namespace lightlang
         }
 
         Function &func;
+        std::string errorMessage;
     };
 
 }

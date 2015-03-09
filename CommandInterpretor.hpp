@@ -17,8 +17,14 @@ namespace lightlang {
     class CommandInterpretor
     {
     public:
-        void
-        parseCommandString(std::string const &cs)const;
+        /**
+         * @brief Attempts to parse and interpret a single command
+         * 
+         * @param cs the string containing the command to be parsed
+         * @return any error information
+         */
+        std::string
+        parseAndInterpretSingleCommand(std::string const &cs)const;
         
         std::vector<Function>
         parseCommandFile(std::string const &path) const;
@@ -27,7 +33,7 @@ namespace lightlang {
         parseStringCollection(std::string const &stringCollection) const;
         
     private:
-        void
+        std::string
         interpretFunc(Function &func) const;
     };
     

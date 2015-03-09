@@ -1,6 +1,7 @@
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "commands/VarCommand.hpp"
+#include "commands/MathCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -18,25 +19,34 @@ namespace lightlang {
             return func.name.find(name) != std::string::npos;
         }
         
-        void processVarCommand(Function &func)
+        std::string processVarCommand(Function &func)
         {
             VarCommand vc(func);
             vc.execute();
+            return vc.errorMessage;
         }
-    
+
+        std::string processMathCommand(Function &func)
+        {
+            MathCommand mc(func);
+            mc.execute();
+            return mc.errorMessage;
+        }
     }
 
-    void
+    std::string
     CommandInterpretor::interpretFunc(Function &func) const
     {
         if (searchString(func, "var")) {
-            processVarCommand(func);
-        } 
+            return processVarCommand(func);
+        } else if(searchString(func, "m_")) {
+            return processMathCommand(func);
+        }
+        return std::string("Couldn't interpret function");
     }
     
-
-    void
-    CommandInterpretor::parseCommandString(std::string const &cs) const
+    std::string
+    CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs) const
     {
 
         using boost::spirit::ascii::space;
@@ -48,8 +58,9 @@ namespace lightlang {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            interpretFunc(func);
+            return interpretFunc(func);
         } 
+        return std::string("Unsuccessful parse");
     }
 
     std::vector<Function>

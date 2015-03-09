@@ -31,6 +31,7 @@
 #include <boost/format.hpp>
 
 #include <ctime>
+#include <iostream>
 #include <string>
 #include <vector>
 

@@ -12,6 +12,7 @@
 
 #include <map>
 #include <typeinfo>
+#include <iostream>
 
 namespace lightlang {
 
@@ -25,7 +26,6 @@ namespace lightlang {
         /// result in output and returning true if successful
         static OptionalInt searchInt(std::string const &key)
         {
-
             auto it = VarCache::intCache.find(key);
             if (it != VarCache::intCache.end()) {
                 return OptionalInt(it->second);
@@ -101,25 +101,24 @@ namespace lightlang {
                 if (typeid(T) == typeid(int)) {
                     auto result = searchInt(str);
                     if(result) {
-                        extracted = true;
                         (int&)t = *result;
+                        return true;
                     }
                 } else if (typeid(T) == typeid(bool)) {
                     auto result = searchBool(str);
                     if(result) {
-                        extracted = true;
                         (bool&)t = *result;
+                        return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
                     auto result = searchDouble(str);
                     if(result) {
-                        extracted = true;
                         (double&)t = *result;
+                        return true;
                     }
                 }
             }
-            
-            return extracted;
+            return false;
         }
 
         /// Following tries to cast to a double. If that fails, then it casts from an
@@ -127,6 +126,7 @@ namespace lightlang {
         /// see if its a math expression which it can then evaluate.
         static OptionalDouble tryToGetADouble(Value &val)
         {
+
             {
                 double x;
                 if (tryExtraction<double>(x, val)) {
