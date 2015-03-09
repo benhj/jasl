@@ -1,5 +1,6 @@
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
+#include "commands/CVarCommand.hpp"
 #include "commands/VarCommand.hpp"
 #include "commands/MathCommand.hpp"
 
@@ -22,15 +23,22 @@ namespace lightlang {
         std::string processVarCommand(Function &func)
         {
             VarCommand vc(func);
-            vc.execute();
+            (void)vc.execute();
             return vc.errorMessage;
         }
 
         std::string processMathCommand(Function &func)
         {
             MathCommand mc(func);
-            mc.execute();
+            (void)mc.execute();
             return mc.errorMessage;
+        }
+
+        std::string processCVarCommand(Function &func)
+        {
+            CVarCommand vc(func);
+            (void)vc.execute();
+            return vc.errorMessage;
         }
     }
 
@@ -38,9 +46,19 @@ namespace lightlang {
     CommandInterpretor::interpretFunc(Function &func) const
     {
         if (searchString(func, "var")) {
+
             return processVarCommand(func);
+
         } else if(searchString(func, "m_")) {
+
             return processMathCommand(func);
+
+        } else if(searchString(func, "int") ||
+                  searchString(func, "double") ||
+                  searchString(func, "bool")) {
+
+            return processCVarCommand(func);
+            
         }
         return std::string("Couldn't interpret function");
     }

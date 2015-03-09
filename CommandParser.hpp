@@ -144,7 +144,7 @@ namespace lightlang
             cDoubleRule %= string("double")
                         >> genericString
                         >> '='
-                        >> (mathExpression | doubleRule | genericString)
+                        >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
                         >> ';';
 
             // e.g. bool b = true;

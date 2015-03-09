@@ -5,6 +5,15 @@
 namespace ll = lightlang;
 using namespace simpletest;
 
+/// reset variable caches after tests
+void clearCaches()
+{
+    decltype(ll::VarCache::intCache)().swap(ll::VarCache::intCache);
+    decltype(ll::VarCache::doubleCache)().swap(ll::VarCache::doubleCache);
+    decltype(ll::VarCache::boolCache)().swap(ll::VarCache::boolCache);
+    decltype(ll::VarCache::stringCache)().swap(ll::VarCache::stringCache);
+}
+
 void testVarCommand()
 {
     ll::CommandInterpretor ci;
@@ -23,6 +32,7 @@ void testVarCommand()
     ASSERT_EQUAL(true, ll::VarCache::boolCache["d"], "testVarCommand::bool d is true");   
     ASSERT_UNEQUAL(ll::VarCache::boolCache.find("e"), ll::VarCache::boolCache.end(), "testVarCommand::found bool e");
     ASSERT_EQUAL(false, ll::VarCache::boolCache["e"], "testVarCommand::bool e is false");   
+    clearCaches();
 }
 
 void testMathCommands()
@@ -41,11 +51,41 @@ void testMathCommands()
                    ll::VarCache::doubleCache.end(), 
                    "testMathCommands::found float resultDouble");
     ASSERT_EQUAL(57.5, ll::VarCache::doubleCache["resultDouble"], "testMathCommands::resultDouble is 57.5");
+    clearCaches();
+}
+
+void testCVarCommandsBasic()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("int i = 1;");
+    ci.parseAndInterpretSingleCommand("double j = 1.1;");
+    ci.parseAndInterpretSingleCommand("bool k = true;");
+    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testCVarCommand::i is 1");
+    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testCVarCommand::j is 1.1");
+    ASSERT_EQUAL(true, ll::VarCache::boolCache["k"], "testCVarCommand::k is true");
+    clearCaches();
+}
+
+void testCVarCommandsCompound()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("int i = 5 * 2;");
+    ASSERT_EQUAL(10, ll::VarCache::intCache["i"], "testCVarCommand::i is 10");
+    ci.parseAndInterpretSingleCommand("int j = (5 * i) + (10 * 6);");
+    ASSERT_EQUAL(110, ll::VarCache::intCache["j"], "testCVarCommand::j is 110");
+    ci.parseAndInterpretSingleCommand("int k = (j * i) * (10 * 0.768);");
+    ASSERT_EQUAL(8448, ll::VarCache::intCache["k"], "testCVarCommand::k is 8448");
+    ci.parseAndInterpretSingleCommand("double q = k + 0.0;"); // bug -- shouldn't have to add 0.0!
+    ci.parseAndInterpretSingleCommand("double L = q / 5.0;");
+    ASSERT_EQUAL(1689.6, ll::VarCache::doubleCache["L"], "testCVarCommand::L is 1689.6");
+    clearCaches();
 }
 
 int main()
 {
     testVarCommand();
     testMathCommands();
+    testCVarCommandsBasic();
+    testCVarCommandsCompound();
     showResults();
 }

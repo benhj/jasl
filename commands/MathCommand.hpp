@@ -119,7 +119,7 @@ struct MathCommand
         
         bool const unaryOperation = false;
         if (!setVal(result, unaryOperation, me.resultIsInteger)) {
-            errorMessage = "math::problem setting type";
+            errorMessage = "math: problem setting type";
             return false;
         }
 
@@ -131,13 +131,13 @@ struct MathCommand
         // extract the value from the function to perform unary operation over
         auto val = extractUnaryValue();
         if (!val) {
-            errorMessage = "math::problem extracting unary value";
+            errorMessage = "math: problem extracting unary value";
             return false;
         } 
 
         // Now try and process unary value and store the result
         if (!processUnaryValueAndStoreResult(typeString, *val)) {
-            errorMessage = "math::problem storing result";
+            errorMessage = "math: problem storing result";
             return false;
         }
         
@@ -149,7 +149,7 @@ struct MathCommand
         // get the mathmatical operation type (add, sub, exp etc. etc.)
         std::string typeString;
         if (!func.getValueA<std::string>(typeString)) {
-            errorMessage = "math::problem extracting math function type";
+            errorMessage = "math: problem extracting math function type";
             return false;
         }
 
@@ -160,6 +160,7 @@ struct MathCommand
             typeString == "sub") {
 
             if (!performBinaryOperation(typeString)) {
+                errorMessage = "math: problem performing binary operation";
                 return false;
             }
 
@@ -170,12 +171,13 @@ struct MathCommand
                    typeString == "sqrt") {
 
             if (!performUnaryOperation(typeString)) {
+                errorMessage = "math: problem performing unary operation";
                 return false;
             }
 
         // operation not supported
         } else {
-            errorMessage = "math::function type not supported";
+            errorMessage = "math: function type not supported";
             return false;
         }
         return true;

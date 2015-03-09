@@ -17,7 +17,7 @@ namespace lightlang
 
         }
 
-        void execute()
+        bool execute()
         {
             std::string type; 
             (void)func.getValueA<std::string>(type);
@@ -42,7 +42,9 @@ namespace lightlang
                 }
             } else {
                 errorMessage = "Error setting unknown type var";
+                return false;
             }
+            return true;
         }
 
         bool tryDouble(std::string const &key)
