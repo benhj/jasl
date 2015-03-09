@@ -2,14 +2,30 @@
 
 #include "../Function.hpp"
 #include "../VarCache.hpp"
+#include <boost/optional.hpp>
+#include <ostream>
 #include <string>
 
 namespace lightlang {
     struct CVarCommand
     {
-        CVarCommand(Function &func_)
-        : func(func_)
+
+        /// for capturing any output
+        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
+
+        CVarCommand(Function &func_,
+                    OptionalOutputStream output = OptionalOutputStream())
+        : func(func_) 
+        , outputStream(output)
+        , errorMessage("")
         {
+        }
+
+        void appendToOutput(std::string const &message) 
+        {
+            if(outputStream) {
+                *outputStream << message.c_str();
+            }
         }
 
         bool handleInt(std::string const &varName)
@@ -68,10 +84,16 @@ namespace lightlang {
             } 
 
             errorMessage = "cvar: type not supported";
+            appendToOutput(errorMessage);
             return false;
         }
 
         Function &func;
+
+        /// for optionally capturing output
+        ::boost::optional<std::ostream&> outputStream;
+
+        /// for setting an error message that can be later queried
         std::string errorMessage;
     };
 }
