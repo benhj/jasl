@@ -1,5 +1,6 @@
 #include "MathExpression.hpp"
 #include "../../VarExtractor.hpp"
+#include <stdexcept>
 
 namespace lightlang {
 
@@ -58,7 +59,7 @@ namespace lightlang {
         } else if (symbolOperator == "*" || symbolOperator == "mult") {
             return vleft * vright;
         } else {
-            errorMessage = "Unknown binary operand";
+            throw std::runtime_error("Unknown binary operand");
         }
     }
 }
