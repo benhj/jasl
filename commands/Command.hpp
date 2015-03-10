@@ -51,6 +51,14 @@ namespace lightlang
                 *m_outputStream << message.c_str();
             }
         }
+
+        void appendToOutputWithNewLine(std::string const &message) 
+        {
+            if(m_outputStream) {
+                *m_outputStream << message << std::endl;
+            }
+        }
+
     };
 
 }

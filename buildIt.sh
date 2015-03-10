@@ -65,6 +65,11 @@ function build_tests {
     $compiler $cflags -I$boostIncPath $objects test.cpp -o test
 }
 
+function build_lightlang {
+    echo "Building lightlang..."
+    $compiler $cflags -I$boostIncPath $objects lightlang.cpp -o lightlang
+}
+
 function build_all {
     build_VarCache
     build_CallCommand
@@ -76,6 +81,7 @@ function build_all {
     build_ComparisonExpression
     build_CommandInterpretor
     build_tests
+    build_lightlang
 }
 
 # control which parts we need to be built.

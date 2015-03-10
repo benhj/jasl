@@ -13,6 +13,7 @@
 #include "commands/CallCommand.hpp"
 #include "commands/CVarCommand.hpp"
 #include "commands/EchoCommand.hpp"
+#include "commands/EchoNLCommand.hpp"
 #include "commands/IfCommand.hpp"
 #include "commands/MathCommand.hpp"
 #include "commands/RepeatCommand.hpp"
@@ -37,7 +38,7 @@ namespace lightlang {
     namespace {
         bool searchString(Function &func, std::string const &name)
         {
-            return func.name.find(name) != std::string::npos;
+            return func.name == name;
         }
     }
 
@@ -71,7 +72,11 @@ namespace lightlang {
 
             PROCESS_X_COMMAND(EchoCommand);
 
-        } else if(searchString(func, "if")) {
+        } else if(searchString(func, "nlecho")) {
+
+            PROCESS_X_COMMAND(EchoNLCommand);
+
+        }  else if(searchString(func, "if")) {
 
             PROCESS_X_COMMAND(IfCommand);
 
@@ -128,6 +133,17 @@ namespace lightlang {
         std::ifstream in(path.c_str());
         in.unsetf(std::ios::skipws);
 
+        std::string script("");
+
+        
+        std::string line;
+        while (std::getline(in, line)) {
+            line.append("\n");
+            script.append(line);
+        }
+        return parseStringCollection(script);
+        
+        /*
         // wrap istream into iterator
         boost::spirit::istream_iterator begin(in);
         boost::spirit::istream_iterator end;
@@ -144,7 +160,10 @@ namespace lightlang {
             }
         }
 
-        return functions;
+        // store the script in global static. Used to do block 
+        // (lightlang name for subroutine) lookups
+        VarCache::script = stringCollection;
+        return functions;*/
     }
 
     std::vector<Function>

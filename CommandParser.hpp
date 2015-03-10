@@ -265,15 +265,18 @@ namespace lightlang
 
             // calls a subroutine with given name
             call %= string("call")
-                 >> '('
                  >> genericString // functionName
-                 >> ')' >> ';';
+                 >> ';';
 
             // for printing out a string to screen
             echo %= string("echo")
-                 >> '('
                  >> doubleQuotedString
-                 >> ')' >> ';';
+                 >> ';';
+
+            // for printing out a string to screen with newline
+            echonl %= string("nlecho")
+                   >> doubleQuotedString
+                   >> ';';
 
             // lists all variables
             vars %= string("vars") >> brackets >> ';';
@@ -297,6 +300,7 @@ namespace lightlang
                          | vars 
                          | loadScript
                          | echo
+                         | echonl
                          | repeatLoop;
 
             start %= allCommands;
@@ -317,6 +321,7 @@ namespace lightlang
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> echo;
+        qi::rule<Iterator, Function(), ascii::space_type> echonl;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

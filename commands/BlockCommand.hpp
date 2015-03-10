@@ -2,7 +2,7 @@
 //  BlockCommand.hpp
 //  lightlang
 //
-//  Created by Ben Jones on on 10/03/2015.
+//  Created by Ben Jones on 10/03/2015.
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
