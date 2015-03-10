@@ -105,8 +105,8 @@ namespace lightlang {
         typedef std::string::const_iterator iterator_type;
         typedef CommandParser<iterator_type> Parser;
         Parser functionGrammar;
-        auto iter = cs.begin();
-        auto end = cs.end();
+        auto iter = std::begin(cs);
+        auto end = std::end(cs);
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
@@ -151,15 +151,16 @@ namespace lightlang {
     CommandInterpretor::parseStringCollection(std::string const &stringCollection) const
     {
 
-        // store the script in global static
+        // store the script in global static. Used to do block 
+        // (lightlang name for subroutine) lookups
         VarCache::script = stringCollection;
 
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
         typedef CommandParser<iterator_type> Parser;
         Parser functionGrammar;
-        auto iter = stringCollection.begin();
-        auto end = stringCollection.end();
+        auto iter = std::begin(stringCollection);
+        auto end = std::end(stringCollection);
         std::vector<Function> functions;
 
         bool result;
