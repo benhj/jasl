@@ -14,6 +14,7 @@
 #include "commands/IfCommand.hpp"
 #include "commands/MathCommand.hpp"
 #include "commands/RepeatCommand.hpp"
+#include "commands/StartCommand.hpp"
 #include "commands/VarCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
@@ -87,6 +88,15 @@ namespace lightlang {
             (void)vc.execute();
             return vc.getErrorMessage();
         }
+
+        std::string processStartCommand(Function &func,
+                                        CommandInterpretor::OptionalOutputStream const &outputStream)
+        {
+            StartCommand vc(func, outputStream);
+            (void)vc.execute();
+            return vc.getErrorMessage();
+        }
+
     }
 
     std::string
@@ -129,6 +139,10 @@ namespace lightlang {
         } else if(searchString(func, "block")) {
             
             return processBlockCommand(func, outputStream);
+
+        } else if(searchString(func, "start")) {
+            
+            return processStartCommand(func, outputStream);
 
         }
         return std::string("Couldn't interpret function");

@@ -144,6 +144,18 @@ void testBlockCommand()
     clearCaches();
 }
 
+void testStartCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string const command("start { echo(\"Hello\"); var(int, x, 21); }");
+    ci.parseAndInterpretSingleCommand(command, ss);
+    ASSERT_EQUAL("Hello", ss.str(), "testStartCommand::print hello");
+    ASSERT_EQUAL(21, ll::VarCache::intCache["x"], "testStartCommand::x is 21");
+    clearCaches();
+}
+
+
 int main()
 {
     testVarCommand();
@@ -154,5 +166,6 @@ int main()
     testIfCommand();
     testRepeatCommand();
     testBlockCommand();
+    testStartCommand();
     showResults();
 }
