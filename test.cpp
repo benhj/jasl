@@ -130,6 +130,20 @@ void testRepeatCommand()
     clearCaches();
 }
 
+void testBlockCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string commands("var(int, x, 0); block foo { echo(\"Hello\"); var(int, x, (x + 1)); }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        (void)ci.interpretFunc(f, ss);
+    }
+    ASSERT_EQUAL("Hello", ss.str(), "testBlockCommand::print hello");
+    ASSERT_EQUAL(1, ll::VarCache::intCache["x"], "testBlockCommand::x is 1");
+    clearCaches();
+}
+
 int main()
 {
     testVarCommand();
@@ -139,5 +153,6 @@ int main()
     testEcho();
     testIfCommand();
     testRepeatCommand();
+    testBlockCommand();
     showResults();
 }

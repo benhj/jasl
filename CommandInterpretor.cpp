@@ -8,6 +8,7 @@
 
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
+#include "commands/BlockCommand.hpp"
 #include "commands/CVarCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/IfCommand.hpp"
@@ -78,6 +79,14 @@ namespace lightlang {
             (void)vc.execute();
             return vc.getErrorMessage();
         }
+
+        std::string processBlockCommand(Function &func,
+                                        CommandInterpretor::OptionalOutputStream const &outputStream)
+        {
+            BlockCommand vc(func, outputStream);
+            (void)vc.execute();
+            return vc.getErrorMessage();
+        }
     }
 
     std::string
@@ -114,7 +123,12 @@ namespace lightlang {
             return processIfCommand(func, outputStream);
 
         } else if(searchString(func, "repeat")) {
+
             return processRepeatCommand(func, outputStream);
+
+        } else if(searchString(func, "block")) {
+            
+            return processBlockCommand(func, outputStream);
 
         }
         return std::string("Couldn't interpret function");
