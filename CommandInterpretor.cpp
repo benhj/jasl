@@ -8,7 +8,9 @@
 
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
+#include "VarCache.hpp"
 #include "commands/BlockCommand.hpp"
+#include "commands/CallCommand.hpp"
 #include "commands/CVarCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/IfCommand.hpp"
@@ -85,6 +87,10 @@ namespace lightlang {
             
             PROCESS_X_COMMAND(StartCommand);
 
+        } else if(searchString(func, "call")) {
+
+            PROCESS_X_COMMAND(CallCommand);
+
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
@@ -144,6 +150,10 @@ namespace lightlang {
     std::vector<Function>
     CommandInterpretor::parseStringCollection(std::string const &stringCollection) const
     {
+
+        // store the script in global static
+        VarCache::script = stringCollection;
+
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;
         typedef CommandParser<iterator_type> Parser;

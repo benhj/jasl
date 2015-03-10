@@ -22,6 +22,7 @@ void clearCaches()
     decltype(ll::VarCache::doubleCache)().swap(ll::VarCache::doubleCache);
     decltype(ll::VarCache::boolCache)().swap(ll::VarCache::boolCache);
     decltype(ll::VarCache::stringCache)().swap(ll::VarCache::stringCache);
+    decltype(ll::VarCache::script)().swap(ll::VarCache::script);
 }
 
 void testVarCommand()
@@ -155,6 +156,23 @@ void testStartCommand()
     clearCaches();
 }
 
+void testCallCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string commands("start { echo(\"Starting..\"); call(foo); call(bar); var(int, x, (x - 5));}");
+    commands.append("block bar { echo(\"..and Goodbye!\"); var(int, x, (x + 1)); }");
+    commands.append("block foo { echo(\"Hello\"); var(int, x, 20); }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        if(f.name == "start") {
+            (void)ci.interpretFunc(f, ss);
+        }
+    }
+    ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallCommand::print-outs");
+    ASSERT_EQUAL(16, ll::VarCache::intCache["x"], "testStartCommand::x is 16");
+    clearCaches();
+}
 
 int main()
 {
@@ -167,5 +185,6 @@ int main()
     testRepeatCommand();
     testBlockCommand();
     testStartCommand();
+    testCallCommand();
     showResults();
 }

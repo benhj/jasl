@@ -6,6 +6,9 @@ boostIncPath=/usr/local/include
 echo "Building VarCache..."
 $compiler $cflags -I$boostIncPath -c VarCache.cpp -o VarCache.o 
 
+echo "Building CallCommand..."
+$compiler $cflags -I$boostIncPath -c commands/CallCommand.cpp -o CallCommand.o 
+
 echo "Building IfCommand..."
 $compiler $cflags -I$boostIncPath -c commands/IfCommand.cpp -o IfCommand.o 
 
@@ -32,6 +35,7 @@ objects="VarCache.o \
          RepeatCommand.o \
          BlockCommand.o \
          StartCommand.o \
+         CallCommand.o \
          MathExpression.o \
          ComparisonExpression.o \
          CommandInterpretor.o"

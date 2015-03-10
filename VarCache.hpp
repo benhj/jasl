@@ -20,6 +20,9 @@ namespace lightlang {
         static std::map<std::string, bool> boolCache;
         static std::map<std::string, double> doubleCache;
         static std::map<std::string, std::string> stringCache;
+
+        /// the script represents the whole program
+        static std::string script;
     };
 
 }

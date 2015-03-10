@@ -15,5 +15,6 @@ namespace lightlang {
     std::map<std::string, bool> VarCache::boolCache;
     std::map<std::string, double> VarCache::doubleCache;
     std::map<std::string, std::string> VarCache::stringCache;
+    std::string VarCache::script;
  
 }
