@@ -24,79 +24,19 @@
 #include <string>
 #include <iterator>
 
+#define PROCESS_X_COMMAND(X)           \
+    X c(func, outputStream);           \
+    (void)c.execute();                 \
+    errorMessage = c.getErrorMessage();
+
+
 namespace lightlang {
 
     namespace {
-        
         bool searchString(Function &func, std::string const &name)
         {
             return func.name.find(name) != std::string::npos;
         }
-        
-        std::string processVarCommand(Function &func,
-                                      CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            VarCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processMathCommand(Function &func,
-                                      CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            MathCommand mc(func, outputStream);
-            (void)mc.execute();
-            return mc.getErrorMessage();
-        }
-
-        std::string processCVarCommand(Function &func,
-                                      CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            CVarCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processEchoCommand(Function &func,
-                                       CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            EchoCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processIfCommand(Function &func,
-                                       CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            IfCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processRepeatCommand(Function &func,
-                                         CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            RepeatCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processBlockCommand(Function &func,
-                                        CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            BlockCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
-        std::string processStartCommand(Function &func,
-                                        CommandInterpretor::OptionalOutputStream const &outputStream)
-        {
-            StartCommand vc(func, outputStream);
-            (void)vc.execute();
-            return vc.getErrorMessage();
-        }
-
     }
 
     std::string
@@ -110,42 +50,44 @@ namespace lightlang {
     CommandInterpretor::doInterpretFunc(Function &func,
                                         OptionalOutputStream const &outputStream) const
     {
+        std::string errorMessage;
         if (searchString(func, "var")) {
 
-            return processVarCommand(func, outputStream);
+            PROCESS_X_COMMAND(VarCommand);
 
         } else if(searchString(func, "m_")) {
 
-            return processMathCommand(func, outputStream);
+            PROCESS_X_COMMAND(MathCommand);
 
         } else if(searchString(func, "int") ||
                   searchString(func, "double") ||
                   searchString(func, "bool")) {
 
-            return processCVarCommand(func, outputStream);
+            PROCESS_X_COMMAND(CVarCommand);
 
         } else if(searchString(func, "echo")) {
 
-            return processEchoCommand(func, outputStream);
+            PROCESS_X_COMMAND(EchoCommand);
 
         } else if(searchString(func, "if")) {
 
-            return processIfCommand(func, outputStream);
+            PROCESS_X_COMMAND(IfCommand);
 
         } else if(searchString(func, "repeat")) {
 
-            return processRepeatCommand(func, outputStream);
+            PROCESS_X_COMMAND(RepeatCommand);
 
         } else if(searchString(func, "block")) {
             
-            return processBlockCommand(func, outputStream);
+            PROCESS_X_COMMAND(BlockCommand);
 
         } else if(searchString(func, "start")) {
             
-            return processStartCommand(func, outputStream);
+            PROCESS_X_COMMAND(StartCommand);
 
         }
-        return std::string("Couldn't interpret function");
+        if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
+        return errorMessage;
     }
     
     std::string
