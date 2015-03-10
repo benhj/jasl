@@ -1,3 +1,11 @@
+//
+//  test.cpp
+//  lightlang
+//
+//  Created by Ben Jones 
+//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//
+
 #include "SimpleTest.hpp"
 #include "CommandInterpretor.hpp"
 #include "VarCache.hpp"

@@ -1,3 +1,11 @@
+//
+//  CommandParser.hpp
+//  lightlang
+//
+//  Created by Ben Jones 
+//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//
+
 #pragma once
 
 #include "Function.hpp"
@@ -234,17 +242,17 @@ namespace lightlang
                         >> '}';
 
             // the main entry point of a given program
-            mainFunction %= string("main")
+            startFunction %= string("start")
                          >> '{'
                          >>  commandCollection
                          >> '}';
 
             // a callable execution point
-            subRoutine %= string("subroutine_")
-                       >> genericString // functionName
-                       >> '{'
-                       >>  commandCollection
-                       >> '}';
+            block %= string("block")
+                  >> genericString // functionName
+                  >> '{'
+                  >>  commandCollection
+                  >> '}';
 
             // a simple if statement
             ifRule %= string("if")
@@ -279,8 +287,8 @@ namespace lightlang
                          | get 
                          | forLoop
                          | query 
-                         | mainFunction 
-                         | subRoutine 
+                         | startFunction 
+                         | block
                          | call 
                          | mathRule 
                          | cVarRule 
@@ -304,8 +312,8 @@ namespace lightlang
         qi::rule<Iterator, Function(), ascii::space_type> var;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
-        qi::rule<Iterator, Function(), ascii::space_type> mainFunction;
-        qi::rule<Iterator, Function(), ascii::space_type> subRoutine;
+        qi::rule<Iterator, Function(), ascii::space_type> startFunction;
+        qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> echo;

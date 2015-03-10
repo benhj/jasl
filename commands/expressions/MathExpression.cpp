@@ -1,3 +1,11 @@
+//
+//  MathExpression.cpp
+//  lightlang
+//
+//  Created by Ben Jones 
+//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//
+
 #include "MathExpression.hpp"
 #include "../../VarExtractor.hpp"
 #include <stdexcept>

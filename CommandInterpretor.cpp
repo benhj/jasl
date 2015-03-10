@@ -1,3 +1,11 @@
+//
+//  CommandInterpretor.cpp
+//  lightlang
+//
+//  Created by Ben Jones 
+//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//
+
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "commands/CVarCommand.hpp"
