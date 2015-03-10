@@ -2,6 +2,8 @@ echo "Building VarCache..."
 clang++ -std=c++11 -I/usr/local/include/ -c VarCache.cpp -o VarCache.o 
 echo "Building IfCommand..."
 clang++ -std=c++11 -I/usr/local/include/ -c commands/IfCommand.cpp -o IfCommand.o 
+echo "Building RepeatCommand..."
+clang++ -std=c++11 -I/usr/local/include/ -c commands/RepeatCommand.cpp -o RepeatCommand.o 
 echo "Building MathExpression..."
 clang++ -std=c++11 -I/usr/local/include/ -c commands/expressions/MathExpression.cpp -o MathExpression.o 
 echo "Building ComparisonExpression..."
@@ -12,6 +14,7 @@ echo "Building test..."
 clang++ -std=c++11 -I/usr/local/include/ -L/usr/local/lib \
 VarCache.o \
 IfCommand.o \
+RepeatCommand.o \
 MathExpression.o \
 ComparisonExpression.o \
 CommandInterpretor.o \

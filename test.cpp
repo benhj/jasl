@@ -105,6 +105,21 @@ void testIfCommand()
     ci.parseAndInterpretSingleCommand("if(1 < 2) { echo(\"Hello, world!\"); var(int, x, 5); }", ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
     ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testIfCommand: x is 5");
+    clearCaches();
+}
+
+void testRepeatCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string const commands("var(int, x, 0); repeat 5 times { echo(\"Hello\"); var(int, x, (x + 1)); }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        (void)ci.interpretFunc(f, ss);
+    }
+    ASSERT_EQUAL("HelloHelloHelloHelloHello", ss.str(), "testRepeatCommand::repeat hello");
+    ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testRepeatCommand::x is 5");
+    clearCaches();
 }
 
 int main()
@@ -115,5 +130,6 @@ int main()
     testCVarCommandsCompound();
     testEcho();
     testIfCommand();
+    testRepeatCommand();
     showResults();
 }

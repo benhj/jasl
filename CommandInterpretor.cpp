@@ -4,6 +4,7 @@
 #include "commands/EchoCommand.hpp"
 #include "commands/IfCommand.hpp"
 #include "commands/MathCommand.hpp"
+#include "commands/RepeatCommand.hpp"
 #include "commands/VarCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
@@ -61,6 +62,14 @@ namespace lightlang {
             (void)vc.execute();
             return vc.getErrorMessage();
         }
+
+        std::string processRepeatCommand(Function &func,
+                                         CommandInterpretor::OptionalOutputStream const &outputStream)
+        {
+            RepeatCommand vc(func, outputStream);
+            (void)vc.execute();
+            return vc.getErrorMessage();
+        }
     }
 
     std::string
@@ -95,6 +104,9 @@ namespace lightlang {
         } else if(searchString(func, "if")) {
 
             return processIfCommand(func, outputStream);
+
+        } else if(searchString(func, "repeat")) {
+            return processRepeatCommand(func, outputStream);
 
         }
         return std::string("Couldn't interpret function");

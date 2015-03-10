@@ -190,7 +190,9 @@ namespace lightlang
                 >> '('
                 >> genericString >> ','
                 >> genericString >> ','
-                >> (doubleRule | intRule | boolRule | quotedString | genericString)
+                >> (doubleRule | intRule | boolRule | quotedString | genericString |
+                    mathExpression | bracketedMathExpression | 
+                    comparisonExpression | bracketedComparisonExpression)
                 >> ')' >> ';';
 
             // prints out the value of a given variable
@@ -221,6 +223,15 @@ namespace lightlang
                     >> '{'
                     >>  commandCollection
                     >> '}';
+
+            // for a loop having the syntax
+            // repeat N times {  }
+            repeatLoop %= string("repeat") 
+                        >> intRule
+                        >> lit("times")
+                        >> '{'
+                        >> commandCollection
+                        >> '}';
 
             // the main entry point of a given program
             mainFunction %= string("main")
@@ -277,7 +288,8 @@ namespace lightlang
                          | commentFunc
                          | vars 
                          | loadScript
-                         | echo;
+                         | echo
+                         | repeatLoop;
 
             start %= allCommands;
         }
@@ -287,6 +299,7 @@ namespace lightlang
         qi::rule<Iterator, Function(), ascii::space_type> get;
         qi::rule<Iterator, Function(), ascii::space_type> loadScript;
         qi::rule<Iterator, Function(), ascii::space_type> forLoop;
+        qi::rule<Iterator, Function(), ascii::space_type> repeatLoop;
         qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
         qi::rule<Iterator, Function(), ascii::space_type> var;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
