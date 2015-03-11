@@ -27,14 +27,28 @@ namespace jasl
 
         bool execute() override
         {
-            // First try extracting a string literal
+            if(tryLiteralExtraction()) { return true; }
+            if(trySymbolExtraction()) { return true; }
+            if(tryNumericExtraction()) { return true; }
+            m_errorMessage = "echo: couldn't parse";
+            appendToOutput(m_errorMessage);
+            return false;
+        }
+
+    private:
+        bool tryLiteralExtraction() 
+        {
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
                 appendToOutput(literalString.literal);
                 return true;
             }
+            return false;
+        }
 
-            // Now try extracting a symbol
+        bool trySymbolExtraction()
+        {
+                        // Now try extracting a symbol
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
                 {
@@ -67,9 +81,32 @@ namespace jasl
                 }
                 return true;
             }
-            m_errorMessage = "echo: couldn't parse";
-            appendToOutput(m_errorMessage);
+
             return false;
         }
+
+        bool tryNumericExtraction()
+        {
+
+            {
+                auto result = VarExtractor::tryToGetADouble(m_func.paramA);
+                if(result) {
+                    appendToOutput(*result);
+                    return true;
+                }
+            }
+
+            {
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+                if(result) {
+                    appendToOutput(*result);
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
     };
 }

@@ -272,13 +272,17 @@ namespace jasl
             // for printing out a string to screen
             echo %= string("echo")
                  >> '(' 
-                 >> (doubleQuotedString | genericString)
+                 >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                     mathExpression | bracketedMathExpression | 
+                     comparisonExpression | bracketedComparisonExpression)
                  >> ')' >> ';';
 
             // for printing out a string to screen with newline
             echonl %= string("nlecho")
                    >> '(' 
-                   >> (doubleQuotedString | genericString)
+                   >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                       mathExpression | bracketedMathExpression | 
+                       comparisonExpression | bracketedComparisonExpression)
                    >> ')' >> ';';
 
             // lists all variables

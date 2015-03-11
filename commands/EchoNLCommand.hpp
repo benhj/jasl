@@ -27,20 +27,33 @@ namespace jasl
 
         bool execute() override
         {
-            // First try extracting a string literal
+            if(tryLiteralExtraction()) { return true; }
+            if(trySymbolExtraction()) { return true; }
+            if(tryNumericExtraction()) { return true; }
+            m_errorMessage = "echo: couldn't parse";
+            appendToOutputWithNewLine(m_errorMessage);
+            return false;
+        }
+
+    private:
+        bool tryLiteralExtraction() 
+        {
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
                 appendToOutputWithNewLine(literalString.literal);
                 return true;
             }
+            return false;
+        }
 
-            // Now try extracting a symbol
+        bool trySymbolExtraction()
+        {
+                        // Now try extracting a symbol
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
                 {
                     auto result = VarExtractor::searchInt(symbol);
                     if(result) {
-                        std::cout<<"YES!!!!"<<std::endl;
                         appendToOutputWithNewLine(*result);
                         return true;
                     }
@@ -68,9 +81,30 @@ namespace jasl
                 }
                 return true;
             }
-            m_errorMessage = "echo: couldn't parse";
-            appendToOutput(m_errorMessage);
+
             return false;
+        }
+
+        bool tryNumericExtraction()
+        {
+            {
+                auto result = VarExtractor::tryToGetADouble(m_func.paramA);
+                if(result) {
+                    appendToOutputWithNewLine(*result);
+                    return true;
+                }
+            }
+
+            {
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+                if(result) {
+                    appendToOutputWithNewLine(*result);
+                    return true;
+                }
+            }
+
+            return false;
+
         }
     };
 }

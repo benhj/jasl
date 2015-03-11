@@ -130,6 +130,25 @@ void testEchoSymbols()
     clearCaches();
 }
 
+void testEchoPrimitives()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("nlecho(2);", ss);
+    ci.parseAndInterpretSingleCommand("nlecho(5.67);", ss);
+    ci.parseAndInterpretSingleCommand("nlecho(3.14);", ss);
+    ASSERT_EQUAL("2\n5.67\n3.14\n", ss.str(), "testEchoPrimitives");
+    clearCaches();
+}
+
+void testEchoMath()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("nlecho((5 + 2) * 5.6);", ss);
+    ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
+}
+
 void testIfCommand()
 {
     std::ostringstream ss;
@@ -206,7 +225,9 @@ int main()
     testCVarCommandsCompound();
     testEchoLiterals();
     testEchoNLLiterals();
-    testEchoSymbols();    
+    testEchoSymbols();
+    testEchoPrimitives(); 
+    testEchoMath();     
     testIfCommand();
     testRepeatCommand();
     testBlockCommand();
