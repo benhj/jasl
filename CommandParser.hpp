@@ -270,13 +270,15 @@ namespace jasl
 
             // for printing out a string to screen
             echo %= string("echo")
+                 >> '(' 
                  >> doubleQuotedString
-                 >> ';';
+                 >> ')' >> ';';
 
             // for printing out a string to screen with newline
             echonl %= string("nlecho")
+                   >> '(' 
                    >> doubleQuotedString
-                   >> ';';
+                   >> ')' >> ';';
 
             // lists all variables
             vars %= string("vars") >> brackets >> ';';

@@ -102,7 +102,7 @@ void testEcho()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo \"Hello, world!\";", ss);
+    ci.parseAndInterpretSingleCommand("echo(\"Hello, world!\");", ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testEcho: Hello, world!");
     clearCaches();
 }
@@ -111,7 +111,7 @@ void testEchoNL()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("nlecho \"Hello, world!\";", ss);
+    ci.parseAndInterpretSingleCommand("nlecho(\"Hello, world!\");", ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
     clearCaches();
 }
@@ -120,7 +120,7 @@ void testIfCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo \"Hello, world!\"; var(int, x, 5); }", ss);
+    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo(\"Hello, world!\"); var(int, x, 5); }", ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
     ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testIfCommand: x is 5");
     clearCaches();
@@ -130,7 +130,7 @@ void testRepeatCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string const commands("var(int, x, 0); repeat 5 times { echo \"Hello\"; var(int, x, (x + 1)); }");
+    std::string const commands("var(int, x, 0); repeat 5 times { echo(\"Hello\"); var(int, x, (x + 1)); }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         (void)ci.interpretFunc(f, ss);
@@ -144,7 +144,7 @@ void testBlockCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("var(int, x, 0); block foo { echo \"Hello\"; var(int, x, (x + 1)); }");
+    std::string commands("var(int, x, 0); block foo { echo(\"Hello\"); var(int, x, (x + 1)); }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         (void)ci.interpretFunc(f, ss);
@@ -158,7 +158,7 @@ void testStartCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string const command("start { echo \"Hello\"; var(int, x, 21); }");
+    std::string const command("start { echo(\"Hello\"); var(int, x, 21); }");
     ci.parseAndInterpretSingleCommand(command, ss);
     ASSERT_EQUAL("Hello", ss.str(), "testStartCommand::print hello");
     ASSERT_EQUAL(21, ll::VarCache::intCache["x"], "testStartCommand::x is 21");
@@ -169,9 +169,9 @@ void testCallCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; call foo; call bar; var(int, x, (x - 5));}");
-    commands.append("block bar { echo \"..and Goodbye!\"; var(int, x, (x + 1)); }");
-    commands.append("block foo { echo \"Hello\"; var(int, x, 20); }");
+    std::string commands("start { echo(\"Starting..\"); call foo; call bar; var(int, x, (x - 5));}");
+    commands.append("block bar { echo(\"..and Goodbye!\"); var(int, x, (x + 1)); }");
+    commands.append("block foo { echo(\"Hello\"); var(int, x, 20); }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
