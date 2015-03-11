@@ -192,6 +192,17 @@ namespace jasl {
             return OptionalInt();
         }
 
+        /// Tries to extract a single int but doesn't bother with math if that doesn't work
+        static OptionalInt trySingleIntExtractionNoMath(Value &val)
+        {
+            int x;
+            if (tryExtraction<int>(x, val)) {
+                return OptionalInt(x);
+            }
+
+            return OptionalInt();
+        }
+
         /// tries to extract a double from Value storing the result in x
         /// if successful and return true.
         /// Note if extraction of a doulbe is initially unsuccesful it tries

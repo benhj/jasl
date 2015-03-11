@@ -147,6 +147,7 @@ void testEchoMath()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("nlecho((5 + 2) * 5.6);", ss);
     ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
+    clearCaches();
 }
 
 void testEchoString()
@@ -156,6 +157,38 @@ void testEchoString()
     ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
     ci.parseAndInterpretSingleCommand("nlecho(hello);", ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
+    clearCaches();
+}
+
+void testStringWithLiteral()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
+    ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["hello"], "testStringWithLiteral");
+    clearCaches();
+}
+
+void testStringWithNumbers()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string(numberFive, 5);", ss);
+    ASSERT_EQUAL("5", ll::VarCache::stringCache["numberFive"], "testStringWithNumbers integer");
+    ci.parseAndInterpretSingleCommand("string(numberDecimal, 5.5);", ss);
+    ASSERT_EQUAL("5.5", ll::VarCache::stringCache["numberDecimal"], "testStringWithNumbers decimal");
+    clearCaches();
+}
+
+void testStringWithMath()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string(numberMath, (5 + 2) * 5.6);", ss);
+    ci.parseAndInterpretSingleCommand("string(numberMathB, (5 + 2) * 5);", ss);
+    ASSERT_EQUAL("39.2", ll::VarCache::stringCache["numberMath"], "testStringWithMath A");
+    ASSERT_EQUAL("35", ll::VarCache::stringCache["numberMathB"], "testStringWithMath B");
+    clearCaches();
 }
 
 void testIfCommand()
@@ -251,6 +284,9 @@ int main()
     testEchoPrimitives(); 
     testEchoMath();   
     testEchoString();  
+    testStringWithLiteral();
+    testStringWithNumbers();
+    testStringWithMath();
     testIfCommand();
     testRepeatCommand();
     testWhileCommand();

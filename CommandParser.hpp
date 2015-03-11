@@ -284,7 +284,9 @@ namespace jasl
             stringRule %= string("string")
                        >> '('
                        >> genericString >> ','
-                       >> doubleQuotedString
+                       >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                           mathExpression | bracketedMathExpression | 
+                           comparisonExpression | bracketedComparisonExpression)
                        >> ')'
                        >> ';';
 
