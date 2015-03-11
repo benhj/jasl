@@ -1,6 +1,6 @@
 //
 //  Function.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -16,7 +16,7 @@
 
 #include <vector>
 
-namespace lightlang
+namespace jasl
 {
     
     namespace qi = boost::spirit::qi;
@@ -81,7 +81,7 @@ namespace lightlang
 }
 
 BOOST_FUSION_ADAPT_STRUCT (
-    lightlang::Function,
+    jasl::Function,
     (std::string, name)
     (Value, paramA)
     (Value, paramB)

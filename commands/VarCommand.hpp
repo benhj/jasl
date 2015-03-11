@@ -1,6 +1,6 @@
 //
 //  VarCommand.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -12,7 +12,7 @@
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 
-namespace lightlang
+namespace jasl
 {
     class VarCommand : public Command
     {

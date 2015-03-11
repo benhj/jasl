@@ -1,6 +1,6 @@
 //
 //  MathCommand.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -13,7 +13,7 @@
 #include "../VarCache.hpp"
 #include "expressions/MathExpression.hpp"
 
-namespace lightlang
+namespace jasl
 {
 
     class MathCommand : public Command

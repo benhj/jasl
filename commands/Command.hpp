@@ -1,6 +1,6 @@
 //
 //  Command.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -13,7 +13,7 @@
 #include <ostream>
 #include <string>
 
-namespace lightlang
+namespace jasl
 {
     class Command
     {

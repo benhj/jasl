@@ -1,6 +1,6 @@
 //
 //  BlockCommand.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones on 10/03/2015.
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -11,7 +11,7 @@
 #include "Command.hpp"
 #include <vector>
 
-namespace lightlang {
+namespace jasl {
     class BlockCommand : public Command
     {
     public:

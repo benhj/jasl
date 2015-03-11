@@ -1,6 +1,6 @@
 //
 //  StartCommand.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones on on 10/03/2015.
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -11,7 +11,7 @@
 #include "../VarExtractor.hpp"
 
 
-namespace lightlang {
+namespace jasl {
 
     StartCommand::StartCommand(Function &func_, OptionalOutputStream const &output)
     : Command(func_, output)

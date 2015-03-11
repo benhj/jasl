@@ -1,6 +1,6 @@
 //
 //  CommandInterpretor.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -33,7 +33,7 @@
     errorMessage = c.getErrorMessage();
 
 
-namespace lightlang {
+namespace jasl {
 
     namespace {
         bool searchString(Function &func, std::string const &name)
@@ -161,7 +161,7 @@ namespace lightlang {
         }
 
         // store the script in global static. Used to do block 
-        // (lightlang name for subroutine) lookups
+        // (jasl name for subroutine) lookups
         VarCache::script = stringCollection;
         return functions;*/
     }
@@ -171,7 +171,7 @@ namespace lightlang {
     {
 
         // store the script in global static. Used to do block 
-        // (lightlang name for subroutine) lookups
+        // (jasl name for subroutine) lookups
         VarCache::script = stringCollection;
 
         using boost::spirit::ascii::space;

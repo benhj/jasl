@@ -65,9 +65,9 @@ function build_tests {
     $compiler $cflags -I$boostIncPath $objects test.cpp -o test
 }
 
-function build_lightlang {
-    echo "Building lightlang..."
-    $compiler $cflags -I$boostIncPath $objects lightlang.cpp -o lightlang
+function build_jasl {
+    echo "Building jasl..."
+    $compiler $cflags -I$boostIncPath $objects jasl.cpp -o jasl
 }
 
 function build_all {
@@ -81,7 +81,7 @@ function build_all {
     build_ComparisonExpression
     build_CommandInterpretor
     build_tests
-    build_lightlang
+    build_jasl
 }
 
 # control which parts we need to be built.

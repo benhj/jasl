@@ -1,6 +1,6 @@
 //
 //  RepeatCommand.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -10,7 +10,7 @@
 #include "../CommandInterpretor.hpp"
 #include <string>
 
-namespace lightlang {
+namespace jasl {
 
     RepeatCommand::RepeatCommand(Function &func_, OptionalOutputStream const &output)
     : Command(func_, output)

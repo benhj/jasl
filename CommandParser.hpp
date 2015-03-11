@@ -1,6 +1,6 @@
 //
 //  CommandParser.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -23,7 +23,7 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/io.hpp>
 
-namespace lightlang
+namespace jasl
 {
     namespace qi = boost::spirit::qi;
     namespace ascii = boost::spirit::ascii;
@@ -281,7 +281,7 @@ namespace lightlang
             // lists all variables
             vars %= string("vars") >> brackets >> ';';
 
-            // loads a lightlang script
+            // loads a jasl script
             loadScript %= string("script") >> '('
                        >> quotedString >> ')' >> ';';
 

@@ -1,6 +1,6 @@
 //
 //  MathExpression.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -10,7 +10,7 @@
 #include "../../VarExtractor.hpp"
 #include <stdexcept>
 
-namespace lightlang {
+namespace jasl {
 
     MathExpression::MathExpression()
     : errorMessage("")

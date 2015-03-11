@@ -1,6 +1,6 @@
 //
 //  IfCommand.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -11,7 +11,7 @@
 #include "Command.hpp"
 #include <vector>
 
-namespace lightlang
+namespace jasl
 {
 
     class IfCommand : public Command

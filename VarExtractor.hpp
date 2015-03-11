@@ -1,6 +1,6 @@
 //
 //  VarExtractor.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -22,7 +22,7 @@
 #include <typeinfo>
 #include <iostream>
 
-namespace lightlang {
+namespace jasl {
 
     typedef ::boost::optional<int> OptionalInt;
     typedef ::boost::optional<bool> OptionalBool;

@@ -1,6 +1,6 @@
 //
 //  CallCommand.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones on on 10/03/2015.
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -10,7 +10,7 @@
 #include "../CommandInterpretor.hpp"
 #include <vector>
 
-namespace lightlang 
+namespace jasl 
 {
     CallCommand::CallCommand(Function &func_, OptionalOutputStream const &output)
     : Command(func_, output)

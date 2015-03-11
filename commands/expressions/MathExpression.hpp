@@ -1,6 +1,6 @@
 //
 //  MathExpression.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -12,7 +12,7 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
-namespace lightlang {
+namespace jasl {
     struct MathExpression
     {
         /// the left of the binary expression
@@ -38,7 +38,7 @@ namespace lightlang {
 }
 
 BOOST_FUSION_ADAPT_STRUCT (
-    lightlang::MathExpression,
+    jasl::MathExpression,
     (Value, left)
     (std::string, symbolOperator)
     (Value, right)

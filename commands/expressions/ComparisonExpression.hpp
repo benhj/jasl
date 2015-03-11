@@ -1,6 +1,6 @@
 //
 //  ComparisonExpression.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -12,7 +12,7 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
-namespace lightlang {
+namespace jasl {
     struct ComparisonExpression
     {
         Value m_left;
@@ -23,7 +23,7 @@ namespace lightlang {
 }
 
 BOOST_FUSION_ADAPT_STRUCT (
-    lightlang::ComparisonExpression,
+    jasl::ComparisonExpression,
     (Value, m_left)
     (std::string, m_symbolOperator)
     (Value, m_right)

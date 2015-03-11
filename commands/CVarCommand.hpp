@@ -1,6 +1,6 @@
 //
 //  CVarCommand.hpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -11,7 +11,7 @@
 #include "Command.hpp"
 #include "../VarCache.hpp"
 
-namespace lightlang {
+namespace jasl {
     class CVarCommand : public Command
     {
     public:

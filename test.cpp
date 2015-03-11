@@ -1,6 +1,6 @@
 //
 //  test.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -12,7 +12,7 @@
 
 #include <sstream>
 
-namespace ll = lightlang;
+namespace ll = jasl;
 using namespace simpletest;
 
 /// reset variable caches after tests

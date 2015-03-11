@@ -1,6 +1,6 @@
 //
 //  ComparisonExpression.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -9,7 +9,7 @@
 #include "ComparisonExpression.hpp"
 #include "../../VarExtractor.hpp"
 
-namespace lightlang {
+namespace jasl {
 
     namespace {
         template <typename T1, typename T2>

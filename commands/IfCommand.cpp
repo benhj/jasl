@@ -1,6 +1,6 @@
 //
 //  IfCommand.cpp
-//  lightlang
+//  jasl
 //
 //  Created by Ben Jones 
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
@@ -12,7 +12,7 @@
 #include "../VarExtractor.hpp"
 #include <vector>
 
-namespace lightlang
+namespace jasl
 {
 
     IfCommand::IfCommand(Function &func_, OptionalOutputStream const &output)
