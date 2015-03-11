@@ -19,6 +19,8 @@
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
 #include "commands/VarCommand.hpp"
+#include "commands/WhileCommand.hpp"
+#include "commands/StringCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -84,7 +86,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(RepeatCommand);
 
-        } else if(searchString(func, "block")) {
+        } else if(searchString(func, "while")) {
+
+            PROCESS_X_COMMAND(WhileCommand);
+
+        }  else if(searchString(func, "block")) {
             
             PROCESS_X_COMMAND(BlockCommand);
 
@@ -95,6 +101,10 @@ namespace jasl {
         } else if(searchString(func, "call")) {
 
             PROCESS_X_COMMAND(CallCommand);
+
+        } else if(searchString(func, "string")) {
+
+            PROCESS_X_COMMAND(StringCommand);
 
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }

@@ -8,6 +8,7 @@ boostIncPath=/usr/local/include
 objects="VarCache.o \
          IfCommand.o \
          RepeatCommand.o \
+         WhileCommand.o \
          BlockCommand.o \
          StartCommand.o \
          CallCommand.o \
@@ -33,6 +34,11 @@ function build_IfCommand {
 function build_RepeatCommand {
     echo "Building RepeatCommand..."
     $compiler $cflags -I$boostIncPath -c commands/RepeatCommand.cpp -o RepeatCommand.o 
+}
+
+function build_WhileCommand {
+    echo "Building WhileCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/WhileCommand.cpp -o WhileCommand.o 
 }
 
 function build_StartCommand {
@@ -75,6 +81,7 @@ function build_all {
     build_CallCommand
     build_IfCommand
     build_RepeatCommand
+    build_WhileCommand
     build_StartCommand
     build_BlockCommand
     build_MathExpression

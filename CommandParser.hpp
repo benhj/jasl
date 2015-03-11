@@ -242,6 +242,16 @@ namespace jasl
                         >> commandCollection
                         >> '}';
 
+            // for a loop having the syntax
+            // while (condition) {}
+            whileLoop %= string("while") 
+                      >> '(' 
+                      >> (boolRule | comparisonExpression | bracketedComparisonExpression)
+                      >> ')'
+                      >> '{'
+                      >> commandCollection
+                      >> '}';
+
             // the main entry point of a given program
             startFunction %= string("start")
                          >> '{'
@@ -268,6 +278,15 @@ namespace jasl
             call %= string("call")
                  >> genericString // functionName
                  >> ';';
+
+             // a string type
+             // string(name, "hello");
+            stringRule %= string("string")
+                       >> '('
+                       >> genericString >> ','
+                       >> doubleQuotedString
+                       >> ')'
+                       >> ';';
 
             // for printing out a string to screen
             echo %= string("echo")
@@ -308,7 +327,9 @@ namespace jasl
                          | loadScript
                          | echo
                          | echonl
-                         | repeatLoop;
+                         | repeatLoop
+                         | whileLoop
+                         | stringRule;
 
             start %= allCommands;
         }
@@ -319,6 +340,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> loadScript;
         qi::rule<Iterator, Function(), ascii::space_type> forLoop;
         qi::rule<Iterator, Function(), ascii::space_type> repeatLoop;
+        qi::rule<Iterator, Function(), ascii::space_type> whileLoop;
         qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
         qi::rule<Iterator, Function(), ascii::space_type> var;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
@@ -329,6 +351,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, Function(), ascii::space_type> echonl;
+        qi::rule<Iterator, Function(), ascii::space_type> stringRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

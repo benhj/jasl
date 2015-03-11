@@ -1,0 +1,19 @@
+block binary {
+    
+    var(int, number, 1);
+
+    while (number > 0 ) {
+        int bit = number % 2;
+        var(int, number, (number / 2));
+        echo(bit);
+    }
+
+    nlecho(" ");
+
+}
+
+start {
+    
+    call binary;
+
+}

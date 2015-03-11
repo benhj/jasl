@@ -149,6 +149,15 @@ void testEchoMath()
     ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
 }
 
+void testEchoString()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
+    ci.parseAndInterpretSingleCommand("nlecho(hello);", ss);
+    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
+}
+
 void testIfCommand()
 {
     std::ostringstream ss;
@@ -170,6 +179,19 @@ void testRepeatCommand()
     }
     ASSERT_EQUAL("HelloHelloHelloHelloHello", ss.str(), "testRepeatCommand::repeat hello");
     ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testRepeatCommand::x is 5");
+    clearCaches();
+}
+
+void testWhileCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string const commands("var(int, x, 5); while(x > 0) { var(int, x, (x - 1)); }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        (void)ci.interpretFunc(f, ss);
+    }
+    ASSERT_EQUAL(0, ll::VarCache::intCache["x"], "testWhileCommand::x is 0");
     clearCaches();
 }
 
@@ -227,9 +249,11 @@ int main()
     testEchoNLLiterals();
     testEchoSymbols();
     testEchoPrimitives(); 
-    testEchoMath();     
+    testEchoMath();   
+    testEchoString();  
     testIfCommand();
     testRepeatCommand();
+    testWhileCommand();
     testBlockCommand();
     testStartCommand();
     testCallCommand();

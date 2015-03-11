@@ -8,7 +8,6 @@ block fib {
     var(int, oldx, x);
     var(int, olderx, x);
 
-
     // perform the sequence a number of times
     repeat 20 times {
 

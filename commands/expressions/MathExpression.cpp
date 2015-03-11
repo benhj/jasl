@@ -66,7 +66,9 @@ namespace jasl {
             return vleft / vright;
         } else if (symbolOperator == "*" || symbolOperator == "mult") {
             return vleft * vright;
-        } else {
+        } else if (symbolOperator == "%" || symbolOperator == "mod") {
+            return (int)vleft % (int)vright;
+        }  else {
             throw std::runtime_error("Unknown binary operand");
         }
     }
