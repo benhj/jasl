@@ -9,6 +9,7 @@
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "VarCache.hpp"
+#include "commands/AppendCommand.hpp"
 #include "commands/BlockCommand.hpp"
 #include "commands/CallCommand.hpp"
 #include "commands/CVarCommand.hpp"
@@ -20,6 +21,7 @@
 #include "commands/StartCommand.hpp"
 #include "commands/VarCommand.hpp"
 #include "commands/WhileCommand.hpp"
+#include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
@@ -105,6 +107,14 @@ namespace jasl {
         } else if(searchString(func, "string")) {
 
             PROCESS_X_COMMAND(StringCommand);
+
+        } else if(searchString(func, "append")) {
+
+            PROCESS_X_COMMAND(AppendCommand);
+
+        } else if(searchString(func, "reverse")) {
+
+            PROCESS_X_COMMAND(ReverseCommand);
 
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }

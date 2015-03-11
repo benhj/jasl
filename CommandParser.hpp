@@ -279,8 +279,8 @@ namespace jasl
                  >> genericString // functionName
                  >> ';';
 
-             // a string type
-             // string(name, "hello");
+            // a string type
+            // string(name, "hello");
             stringRule %= string("string")
                        >> '('
                        >> genericString >> ','
@@ -289,6 +289,27 @@ namespace jasl
                            comparisonExpression | bracketedComparisonExpression)
                        >> ')'
                        >> ';';
+
+            // appends to a string
+            // append(name, "hello!");           
+            appendRule %= string("append")
+                       >> '('
+                       >> genericString >> ','
+                       >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                           mathExpression | bracketedMathExpression | 
+                           comparisonExpression | bracketedComparisonExpression)
+                       >> ')'
+                       >> ';';
+
+            // reverse(name); 
+            // will reverse the string named name
+            reverseRule %= string("reverse")
+                        >> '('
+                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                            mathExpression | bracketedMathExpression | 
+                            comparisonExpression | bracketedComparisonExpression)
+                        >> ')'
+                        >> ';';
 
             // for printing out a string to screen
             echo %= string("echo")
@@ -331,7 +352,9 @@ namespace jasl
                          | echonl
                          | repeatLoop
                          | whileLoop
-                         | stringRule;
+                         | stringRule
+                         | appendRule
+                         | reverseRule;
 
             start %= allCommands;
         }
@@ -354,6 +377,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, Function(), ascii::space_type> echonl;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
+        qi::rule<Iterator, Function(), ascii::space_type> appendRule;
+        qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

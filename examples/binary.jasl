@@ -1,19 +1,36 @@
 block binary {
     
-    var(int, number, 1);
+    // make a string to store the binary string.
+    // starts out empty
+    string(binaryString, " ");
 
     while (number > 0 ) {
         int bit = number % 2;
         var(int, number, (number / 2));
-        echo(bit);
+        append(binaryString, bit);
     }
 
-    nlecho(" ");
+    // reverse the string now since was constructed 
+    // in reverse order
+    reverse(binaryString);
+
+    // now finally display
+    nlecho(binaryString);
 
 }
 
 start {
     
-    call binary;
+    // all variables in jasl are global so we can do this!
+    var(int, number, 2654365);
 
+    // convert the above arbitrary integer to 
+    // a binary representation
+    nlecho(" ");
+    string(s, "Going to convert the number ");
+    append(s, number);
+    nlecho(s);
+    nlecho(" ");
+    call binary;
+    nlecho(" ");
 }
