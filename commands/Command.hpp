@@ -45,14 +45,16 @@ namespace jasl
         /// for setting an error message that can be later queried
         std::string m_errorMessage;
 
-        void appendToOutput(std::string const &message) 
+        template <typename T>
+        void appendToOutput(T const &message) 
         {
             if(m_outputStream) {
-                *m_outputStream << message.c_str();
+                *m_outputStream << message;
             }
         }
 
-        void appendToOutputWithNewLine(std::string const &message) 
+        template <typename T>
+        void appendToOutputWithNewLine(T const &message) 
         {
             if(m_outputStream) {
                 *m_outputStream << message << std::endl;

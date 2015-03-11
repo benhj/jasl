@@ -98,7 +98,7 @@ void testCVarCommandsCompound()
     clearCaches();
 }
 
-void testEcho()
+void testEchoLiterals()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
@@ -107,12 +107,26 @@ void testEcho()
     clearCaches();
 }
 
-void testEchoNL()
+void testEchoNLLiterals()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("nlecho(\"Hello, world!\");", ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
+    clearCaches();
+}
+
+void testEchoSymbols()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("var(int, b, 10);");
+    ci.parseAndInterpretSingleCommand("var(double, c, 1.1);");
+    ci.parseAndInterpretSingleCommand("var(bool, d, true);");
+    ci.parseAndInterpretSingleCommand("echo(b);", ss);
+    ci.parseAndInterpretSingleCommand("echo(c);", ss);
+    ci.parseAndInterpretSingleCommand("nlecho(d);", ss);
+    ASSERT_EQUAL("101.11\n", ss.str(), "testEchoSymbols");
     clearCaches();
 }
 
@@ -190,8 +204,9 @@ int main()
     testMathCommands();
     testCVarCommandsBasic();
     testCVarCommandsCompound();
-    testEcho();
-    testEchoNL();
+    testEchoLiterals();
+    testEchoNLLiterals();
+    testEchoSymbols();    
     testIfCommand();
     testRepeatCommand();
     testBlockCommand();

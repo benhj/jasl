@@ -10,6 +10,8 @@
 
 #include "Value.hpp"
 #include "VarCache.hpp"
+#include "LiteralString.hpp"
+#include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 
@@ -27,6 +29,7 @@ namespace jasl {
     typedef ::boost::optional<int> OptionalInt;
     typedef ::boost::optional<bool> OptionalBool;
     typedef ::boost::optional<double> OptionalDouble;
+    typedef ::boost::optional<std::string> OptionalString;
 
     struct VarExtractor
     {
@@ -63,6 +66,17 @@ namespace jasl {
             return OptionalDouble();
         }
 
+        /// searches string cache for a string with key key storing the
+        /// result in output and returning true if successful
+        static OptionalString searchString(std::string const &key)
+        {
+            auto it = VarCache::stringCache.find(key);
+            if (it != VarCache::stringCache.end()) {
+                return OptionalString(it->second);
+            } 
+            return OptionalString();
+        }
+
         template <typename T>
         static bool tryAnyCast(T &t, Value &val)
         {
@@ -95,6 +109,10 @@ namespace jasl {
                 extracted = tryAnyCast<MathExpression>((MathExpression&)t, val);
             } else if (typeid(T) == typeid(ComparisonExpression)) {
                 extracted = tryAnyCast<ComparisonExpression>((ComparisonExpression&)t, val);
+            } else if (typeid(T) == typeid(LiteralString)) {
+                extracted = tryAnyCast<LiteralString>((LiteralString&)t, val);
+            } else if (typeid(T) == typeid(SymbolString)) {
+                extracted = tryAnyCast<SymbolString>((SymbolString&)t, val);
             }
             if (extracted) {
                 return true;

@@ -9,6 +9,8 @@
 #pragma once
 
 #include "Function.hpp"
+#include "LiteralString.hpp"
+#include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 
@@ -51,7 +53,6 @@ namespace jasl
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
             commentFunc         %= commentSlash >> -allChars;
-            commandString       %= *lexeme[+(char_ - '}')];
 
             // a type that can be a double, an int or a string
             multiType %= (doubleRule | intRule | genericString);
@@ -271,13 +272,13 @@ namespace jasl
             // for printing out a string to screen
             echo %= string("echo")
                  >> '(' 
-                 >> doubleQuotedString
+                 >> (doubleQuotedString | genericString)
                  >> ')' >> ';';
 
             // for printing out a string to screen with newline
             echonl %= string("nlecho")
                    >> '(' 
-                   >> doubleQuotedString
+                   >> (doubleQuotedString | genericString)
                    >> ')' >> ';';
 
             // lists all variables
@@ -346,10 +347,9 @@ namespace jasl
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
-        qi::rule<Iterator, std::string(), ascii::space_type> commandString;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
-        qi::rule<Iterator, std::string(), ascii::space_type> quotedString;
-        qi::rule<Iterator, std::string(), ascii::space_type> doubleQuotedString;
+        qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
+        qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
         qi::rule<Iterator, Function(), ascii::space_type> start;
         qi::rule<Iterator, Function(), ascii::space_type> allCommands;

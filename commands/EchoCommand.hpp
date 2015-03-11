@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Command.hpp"
+#include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 
@@ -26,14 +27,49 @@ namespace jasl
 
         bool execute() override
         {
-            std::string echoString;
-            if(!m_func.getValueA<std::string>(echoString)) {
-                m_errorMessage = "echo: problem getting string";
-                appendToOutput(m_errorMessage);
-                return false;
+            // First try extracting a string literal
+            LiteralString literalString;
+            if(m_func.getValueA<LiteralString>(literalString)) {
+                appendToOutput(literalString.literal);
+                return true;
             }
-            appendToOutput(echoString);
-            return true;
+
+            // Now try extracting a symbol
+            std::string symbol;
+            if(m_func.getValueA<std::string>(symbol)) {
+                {
+                    auto result = VarExtractor::searchInt(symbol);
+                    if(result) {
+                        appendToOutput(*result);
+                        return true;
+                    }
+                }
+                {
+                    auto result = VarExtractor::searchDouble(symbol);
+                    if(result) {
+                        appendToOutput(*result);
+                        return true;
+                    }
+                }
+                {
+                    auto result = VarExtractor::searchBool(symbol);
+                    if(result) {
+                        appendToOutput(*result);
+                        return true;
+                    }
+                }
+                {
+                    auto result = VarExtractor::searchString(symbol);
+                    if(result) {
+                        appendToOutput(*result);
+                        return true;
+                    }
+                }
+                return true;
+            }
+            m_errorMessage = "echo: couldn't parse";
+            appendToOutput(m_errorMessage);
+            return false;
         }
     };
 }
