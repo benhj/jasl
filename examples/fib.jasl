@@ -1,0 +1,35 @@
+// Note, seriously limited in the integer type being int. Maybe should make it
+// int64_t instead
+
+block fib {
+    
+    // create some variables to store state
+    var(int, x, 1);
+    var(int, oldx, x);
+    var(int, olderx, x);
+
+
+    // perform the sequence a number of times
+    repeat 20 times {
+
+        echo(x);
+        echo(" ");
+
+        var(int, olderx, oldx);
+        var(int, oldx, x);
+
+        // compute new x value
+        var(int, x, (olderx + oldx));
+ 
+    }
+
+    nlecho(" ");
+
+}
+
+start {
+    
+    nlecho("Calling block fib");
+    call fib;
+
+}
