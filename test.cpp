@@ -11,6 +11,7 @@
 #include "VarCache.hpp"
 
 #include <sstream>
+#include <vector>
 
 namespace ll = jasl;
 using namespace simpletest;
@@ -222,6 +223,19 @@ void testReverseString()
     clearCaches();
 }
 
+void testList()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list(mylist, [hello world]);", ss);
+    
+    for(auto const & v : ll::VarCache::listCache["mylist"]) {
+        std::cout<<"v: "<<v<<std::endl;
+    }
+
+    clearCaches();
+}
+
 void testIfCommand()
 {
     std::ostringstream ss;
@@ -318,6 +332,7 @@ int main()
     testStringWithLiteral();
     testStringWithNumbers();
     testStringWithMath();
+    testList();
     testAppendLiteral();
     testAppendString();
     testReverseString();

@@ -1,5 +1,5 @@
 //
-//  SymbolString.hpp
+//  CarrotString.hpp
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
@@ -18,13 +18,13 @@ namespace jasl
     namespace qi = boost::spirit::qi;
     namespace ascii = boost::spirit::ascii;
 
-    struct LiteralString
+    struct CarrotString
     {
-        std::string literal;
+        std::string tagged;
     };
 }
 
 BOOST_FUSION_ADAPT_STRUCT (
-    jasl::LiteralString,
-    (std::string, literal)
+    jasl::CarrotString,
+    (std::string, tagged)
 )

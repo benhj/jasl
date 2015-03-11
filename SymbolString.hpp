@@ -20,7 +20,6 @@ namespace jasl
 
     struct SymbolString
     {
-        // the function parameters which can be initialized to any type
         std::string symbol;
     };
 }

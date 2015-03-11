@@ -16,6 +16,7 @@
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
 #include "commands/IfCommand.hpp"
+#include "commands/ListCommand.hpp"
 #include "commands/MathCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
@@ -115,6 +116,10 @@ namespace jasl {
         } else if(searchString(func, "reverse")) {
 
             PROCESS_X_COMMAND(ReverseCommand);
+
+        } else if(searchString(func, "list")) {
+
+            PROCESS_X_COMMAND(ListCommand);
 
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }

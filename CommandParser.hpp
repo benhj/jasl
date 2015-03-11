@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Function.hpp"
+#include "CarrotString.hpp"
 #include "LiteralString.hpp"
 #include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
@@ -53,6 +54,10 @@ namespace jasl
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
             commentFunc         %= commentSlash >> -allChars;
+            word                %= lexeme[+(char_ - ' ' - '[' - ']')];
+            // a collection of words
+            words               %= (+word);
+            carrotWord          %= lexeme['^' >> +(char_ - '^')];
 
             // a type that can be a double, an int or a string
             multiType %= (doubleRule | intRule | genericString);
@@ -290,6 +295,18 @@ namespace jasl
                        >> ')'
                        >> ';';
 
+            // a list of words
+            // e.g. list(l, [hello there]);
+            // will be useful for pattern matching
+            stringList %= string("list")
+                       >> '(' 
+                       >> genericString // the name of the list
+                       >> ','
+                       >> '['
+                       >> words
+                       >> ']' >> ')'
+                       >> ';';
+
             // appends to a string
             // append(name, "hello!");           
             appendRule %= string("append")
@@ -354,7 +371,8 @@ namespace jasl
                          | whileLoop
                          | stringRule
                          | appendRule
-                         | reverseRule;
+                         | reverseRule 
+                         | stringList;
 
             start %= allCommands;
         }
@@ -379,6 +397,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
+        qi::rule<Iterator, Function(), ascii::space_type> stringList;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
@@ -399,6 +418,9 @@ namespace jasl
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // Core rule declarations
+        qi::rule<Iterator, std::string(), ascii::space_type> word;
+        qi::rule<Iterator, std::vector<std::string>(), ascii::space_type> words;
+        qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
