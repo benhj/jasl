@@ -365,7 +365,7 @@ namespace jasl
                  >> ')' >> ';';
 
             // for printing out a string to screen with newline
-            echonl %= string("nlecho")
+            echo_nl %= string("echo_nl")
                    >> '(' 
                    >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                        mathExpression | bracketedMathExpression | 
@@ -396,8 +396,8 @@ namespace jasl
                          | commentFunc
                          | vars 
                          | loadScript
+                         | echo_nl
                          | echo
-                         | echonl
                          | repeatLoop
                          | whileLoop
                          | stringRule
@@ -424,7 +424,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> echo;
-        qi::rule<Iterator, Function(), ascii::space_type> echonl;
+        qi::rule<Iterator, Function(), ascii::space_type> echo_nl;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;

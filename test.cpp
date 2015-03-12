@@ -120,12 +120,12 @@ void testEchoLiterals()
     clearCaches();
 }
 
-void testEchoNLLiterals()
+void testecho_nlLiterals()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("nlecho(\"Hello, world!\");", ss);
-    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
+    ci.parseAndInterpretSingleCommand("echo_nl(\"Hello, world!\");", ss);
+    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testecho_nl: Hello, world!");
     clearCaches();
 }
 
@@ -138,7 +138,7 @@ void testEchoSymbols()
     ci.parseAndInterpretSingleCommand("var(bool, d, true);");
     ci.parseAndInterpretSingleCommand("echo(b);", ss);
     ci.parseAndInterpretSingleCommand("echo(c);", ss);
-    ci.parseAndInterpretSingleCommand("nlecho(d);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl(d);", ss);
     ASSERT_EQUAL("101.11\n", ss.str(), "testEchoSymbols");
     clearCaches();
 }
@@ -147,9 +147,9 @@ void testEchoPrimitives()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("nlecho(2);", ss);
-    ci.parseAndInterpretSingleCommand("nlecho(5.67);", ss);
-    ci.parseAndInterpretSingleCommand("nlecho(3.14);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl(2);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl(5.67);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl(3.14);", ss);
     ASSERT_EQUAL("2\n5.67\n3.14\n", ss.str(), "testEchoPrimitives");
     clearCaches();
 }
@@ -158,7 +158,7 @@ void testEchoMath()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("nlecho((5 + 2) * 5.6);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl((5 + 2) * 5.6);", ss);
     ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
     clearCaches();
 }
@@ -168,7 +168,7 @@ void testEchoString()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
-    ci.parseAndInterpretSingleCommand("nlecho(hello);", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl(hello);", ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
     clearCaches();
 }
@@ -324,7 +324,7 @@ int main()
     testCVarCommandsCompound();
     testCVarNewSyntax();
     testEchoLiterals();
-    testEchoNLLiterals();
+    testecho_nlLiterals();
     testEchoSymbols();
     testEchoPrimitives(); 
     testEchoMath();   

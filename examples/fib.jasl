@@ -22,13 +22,13 @@ block fib {
  
     }
 
-    nlecho(" ");
+    echo_nl(" ");
 
 }
 
 start {
     
-    nlecho("Calling block fib");
+    echo_nl("Calling block fib");
     call fib;
 
 }

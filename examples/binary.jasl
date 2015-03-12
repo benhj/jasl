@@ -15,7 +15,7 @@ block binary {
     reverse(binaryString);
 
     // now finally display
-    nlecho(binaryString);
+    echo_nl(binaryString);
 
 }
 
@@ -26,11 +26,11 @@ start {
 
     // convert the above arbitrary integer to 
     // a binary representation
-    nlecho(" ");
+    echo_nl(" ");
     string(s, "Going to convert the number ");
     append(s, number);
-    nlecho(s);
-    nlecho(" ");
+    echo_nl(s);
+    echo_nl(" ");
     call binary;
-    nlecho(" ");
+    echo_nl(" ");
 }

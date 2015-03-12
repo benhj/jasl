@@ -77,9 +77,9 @@ namespace jasl {
 
             PROCESS_X_COMMAND(EchoCommand);
 
-        } else if(searchString(func, "nlecho")) {
+        } else if(searchString(func, "echo_nl")) {
 
-            PROCESS_X_COMMAND(EchoNLCommand);
+            PROCESS_X_COMMAND(echo_nlCommand);
 
         }  else if(searchString(func, "if")) {
 
