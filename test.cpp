@@ -99,6 +99,18 @@ void testCVarCommandsCompound()
     clearCaches();
 }
 
+void testCVarNewSyntax()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("integer(i, 1);");
+    ci.parseAndInterpretSingleCommand("decimal(j, 1.1);");
+    ci.parseAndInterpretSingleCommand("boolean(k, true);");
+    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testCVarNewSyntax::i is 1");
+    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testCVarNewSyntax::j is 1.1");
+    ASSERT_EQUAL(true, ll::VarCache::boolCache["k"], "testCVarNewSyntax::k is true");
+    clearCaches();
+}
+
 void testEchoLiterals()
 {
     std::ostringstream ss;
@@ -223,19 +235,6 @@ void testReverseString()
     clearCaches();
 }
 
-void testList()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list(mylist, [hello world]);", ss);
-    
-    for(auto const & v : ll::VarCache::listCache["mylist"]) {
-        std::cout<<"v: "<<v<<std::endl;
-    }
-
-    clearCaches();
-}
-
 void testIfCommand()
 {
     std::ostringstream ss;
@@ -323,6 +322,7 @@ int main()
     testMathCommands();
     testCVarCommandsBasic();
     testCVarCommandsCompound();
+    testCVarNewSyntax();
     testEchoLiterals();
     testEchoNLLiterals();
     testEchoSymbols();
@@ -332,7 +332,6 @@ int main()
     testStringWithLiteral();
     testStringWithNumbers();
     testStringWithMath();
-    testList();
     testAppendLiteral();
     testAppendString();
     testReverseString();

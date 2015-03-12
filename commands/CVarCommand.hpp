@@ -28,15 +28,15 @@ namespace jasl {
             std::string varName; 
             (void)m_func.getValueA<std::string>(varName);
 
-            if (type == "int") {
+            if (type == "int" || type == "integer") {
 
                 return handleInt(varName);
 
-            } else if (type == "double") {
+            } else if (type == "double" || type == "decimal") {
 
                 return handleDouble(varName);
 
-            } else if (type == "bool") {
+            } else if (type == "bool" || type == "boolean") {
 
                 return handleBool(varName);
 

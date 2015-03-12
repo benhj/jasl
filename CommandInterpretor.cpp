@@ -121,6 +121,18 @@ namespace jasl {
 
             PROCESS_X_COMMAND(ListCommand);
 
+        } else if(searchString(func, "integer")) {
+
+            PROCESS_X_COMMAND(CVarCommand);
+
+        } else if(searchString(func, "decimal")) {
+
+            PROCESS_X_COMMAND(CVarCommand);
+
+        } else if(searchString(func, "boolean")) {
+
+            PROCESS_X_COMMAND(CVarCommand);
+
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;

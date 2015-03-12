@@ -146,6 +146,32 @@ namespace jasl
                                     | bracketedMathExpression
                                     | bracketedComparisonExpression);
 
+            // This also permits integer(i, 4) syntax
+            intNewSyntax %= string("integer")
+                         >> '('
+                         >> (genericString)
+                         >> ','
+                         >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                         >> ')'
+                         >> ';';
+
+            // also permits decimal(d, 5.0); syntax
+            doubleNewSyntax %= string("decimal")
+                            >> '('
+                            >> (genericString)
+                            >> ','
+                            >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
+                            >> ')'
+                            >> ';';
+
+            // also permits boolean(d, true); syntax
+            boolNewSyntax %= string("boolean")
+                          >> '('
+                          >> (genericString)
+                          >> ','
+                          >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
+                          >> ')'
+                          >> ';';
             
             // Rules to permit c-style variable initialization
             // e.g. int i = 4;
@@ -161,8 +187,10 @@ namespace jasl
                         >> '='
                         >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
                         >> ';';
+                        
 
             // e.g. bool b = true;
+            // also permits bool(b, true); syntax
             cBoolRule %= string("bool")
                       >> genericString
                       >> '='
@@ -360,6 +388,9 @@ namespace jasl
                          | block
                          | call 
                          | mathRule 
+                         | intNewSyntax
+                         | doubleNewSyntax
+                         | boolNewSyntax
                          | cVarRule 
                          | ifRule 
                          | commentFunc
@@ -409,6 +440,9 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> cDoubleRule;
         qi::rule<Iterator, Function(), ascii::space_type> cBoolRule;
         qi::rule<Iterator, Function(), ascii::space_type> cVarRule;
+        qi::rule<Iterator, Function(), ascii::space_type> intNewSyntax;
+        qi::rule<Iterator, Function(), ascii::space_type> doubleNewSyntax;
+        qi::rule<Iterator, Function(), ascii::space_type> boolNewSyntax;
         qi::rule<Iterator, MathExpression(), ascii::space_type> mathExpression;
         qi::rule<Iterator, MathExpression(), ascii::space_type> bracketedMathExpression;
         qi::rule<Iterator, ComparisonExpression(), ascii::space_type> comparisonExpression;
