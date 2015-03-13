@@ -76,6 +76,13 @@ function build_jasl {
     $compiler $cflags -I$boostIncPath $objects jasl.cpp -o jasl
 }
 
+function build_clean {
+    echo "Removing compiled items..."
+    rm *.o
+    rm test
+    rm jasl
+}
+
 function build_all {
     build_VarCache
     build_CallCommand

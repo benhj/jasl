@@ -7,12 +7,12 @@ block binary {
     while (number > 0 ) {
         int bit = number % 2;
         var(int, number, (number / 2));
-        append(binaryString, bit);
+        string_append(binaryString, bit);
     }
 
     // reverse the string now since was constructed 
     // in reverse order
-    reverse(binaryString);
+    string_reverse(binaryString);
 
     // now finally display
     echo_nl(binaryString);
@@ -28,7 +28,7 @@ start {
     // a binary representation
     echo_nl(" ");
     string("Going to convert the number ", s);
-    append(s, number);
+    string_append(s, number);
     echo_nl(s);
     echo_nl(" ");
     call binary;
