@@ -111,11 +111,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(StringCommand);
 
-        } else if(searchString(func, "append")) {
+        } else if(searchString(func, "string_append")) {
 
             PROCESS_X_COMMAND(AppendCommand);
 
-        } else if(searchString(func, "reverse")) {
+        } else if(searchString(func, "string_reverse")) {
 
             PROCESS_X_COMMAND(ReverseCommand);
 

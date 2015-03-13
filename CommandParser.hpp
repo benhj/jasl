@@ -347,7 +347,7 @@ namespace jasl
 
             // appends to a string
             // append(name, "hello!");           
-            appendRule %= string("append")
+            appendRule %= string("string_append")
                        >> '('
                        >> genericString >> ','
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
@@ -358,7 +358,7 @@ namespace jasl
 
             // reverse(name); 
             // will reverse the string named name
-            reverseRule %= string("reverse")
+            reverseRule %= string("string_reverse")
                         >> '('
                         >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                             mathExpression | bracketedMathExpression | 
@@ -410,10 +410,10 @@ namespace jasl
                          | echo
                          | repeatLoop
                          | whileLoop
-                         | stringLengthRule
-                         | stringRule
                          | appendRule
                          | reverseRule 
+                         | stringLengthRule
+                         | stringRule
                          | stringList;
 
             start %= allCommands;

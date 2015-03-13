@@ -209,7 +209,7 @@ void testAppendLiteral()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
-    ci.parseAndInterpretSingleCommand("append(s, \", world!\");", ss);
+    ci.parseAndInterpretSingleCommand("string_append(s, \", world!\");", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendLiteral");
     clearCaches();
 }
@@ -220,7 +220,7 @@ void testAppendString()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
     ci.parseAndInterpretSingleCommand("string(\", world!\", b);", ss);
-    ci.parseAndInterpretSingleCommand("append(s, b);", ss);
+    ci.parseAndInterpretSingleCommand("string_append(s, b);", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendString");
     clearCaches();
 }
@@ -230,7 +230,7 @@ void testReverseString()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
-    ci.parseAndInterpretSingleCommand("reverse(s);", ss);
+    ci.parseAndInterpretSingleCommand("string_reverse(s);", ss);
     ASSERT_EQUAL("olleH", ll::VarCache::stringCache["s"], "testReverseString");
     clearCaches();
 }
