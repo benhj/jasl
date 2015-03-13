@@ -328,6 +328,19 @@ void testCallCommand()
     clearCaches();
 }
 
+void testArgsCommand()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ll::VarCache::args.push_back("argument1");
+    ll::VarCache::args.push_back("argument2");
+    ci.parseAndInterpretSingleCommand("args(0, arga);", ss);
+    ci.parseAndInterpretSingleCommand("args(1, argb);", ss);
+    ASSERT_EQUAL("argument1", ll::VarCache::stringCache["arga"], "testArgsCommand A");
+    ASSERT_EQUAL("argument2", ll::VarCache::stringCache["argb"], "testArgsCommand B");
+    clearCaches();
+}
+
 int main()
 {
     testVarCommand();
@@ -354,6 +367,7 @@ int main()
     testBlockCommand();
     testStartCommand();
     testCallCommand();
+    testArgsCommand();
     showResults();
     return 0;
 }

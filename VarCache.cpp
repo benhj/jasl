@@ -17,5 +17,6 @@ namespace jasl {
     std::map<std::string, std::string> VarCache::stringCache;
     std::map<std::string, std::vector<std::string>> VarCache::listCache;
     std::string VarCache::script;
+    std::vector<std::string> VarCache::args;
  
 }

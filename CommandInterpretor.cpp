@@ -10,6 +10,7 @@
 #include "CommandParser.hpp"
 #include "VarCache.hpp"
 #include "commands/AppendCommand.hpp"
+#include "commands/ArgsCommand.hpp"
 #include "commands/BlockCommand.hpp"
 #include "commands/CallCommand.hpp"
 #include "commands/CVarCommand.hpp"
@@ -123,11 +124,15 @@ namespace jasl {
 
             PROCESS_X_COMMAND(StringLengthCommand);
 
-        }  else if(searchString(func, "list")) {
+        } else if(searchString(func, "list")) {
 
             PROCESS_X_COMMAND(ListCommand);
 
-        } else if(searchString(func, "integer") ||
+        } else if(searchString(func, "args")) {
+
+            PROCESS_X_COMMAND(ArgsCommand);
+
+        }  else if(searchString(func, "integer") ||
                   searchString(func, "decimal") ||
                   searchString(func, "boolean")) {
 

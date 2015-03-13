@@ -7,6 +7,7 @@
 //
 
 #include "CommandInterpretor.hpp"
+#include "VarCache.hpp"
 #include <iostream>
 #include <sstream>
 
@@ -18,6 +19,13 @@ int main (int argc , char *argv[])
     if(argc <= 1) {
         std::cout<<"Error: please provide a jasl script"<<std::endl;
         exit(0);
+    }  
+
+    // store any command line arguments that should also be interpreted
+    if(argc >= 2) {
+        for(int i = 2; i < argc; ++i) {
+            ll::VarCache::args.push_back(std::string(argv[i]));
+        }
     }
 
     // parse input file

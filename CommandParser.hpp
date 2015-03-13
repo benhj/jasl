@@ -366,6 +366,13 @@ namespace jasl
                         >> ')'
                         >> ';';
 
+            argsRule %= string("args")
+                     >> '('
+                     >> intRule >> ','
+                     >> genericString
+                     >> ')'
+                     >> ';';
+
             // for printing out a string to screen
             echo %= string("echo")
                  >> '(' 
@@ -403,6 +410,7 @@ namespace jasl
                          | boolNewSyntax
                          | cVarRule 
                          | ifRule 
+                         | argsRule
                          | commentFunc
                          | vars 
                          | loadScript
@@ -415,7 +423,7 @@ namespace jasl
                          | stringLengthRule
                          | stringRule
                          | stringList;
-
+                         
             start %= allCommands;
         }
 
@@ -441,6 +449,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringList;
+        qi::rule<Iterator, Function(), ascii::space_type> argsRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
