@@ -12,6 +12,7 @@
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 #include <sstream>
+#include <cstdint>
 
 namespace jasl
 {
@@ -26,8 +27,8 @@ namespace jasl
 
         bool execute() override
         {
-            int arg;
-            if(!m_func.getValueA<int>(arg)) {
+            int64_t arg;
+            if(!m_func.getValueA<int64_t>(arg)) {
                 m_errorMessage = "args: couldn't parse argument index";
                 appendToOutput(m_errorMessage);
                 return false;

@@ -23,10 +23,11 @@
 #include <map>
 #include <typeinfo>
 #include <iostream>
+#include <cstdint>
 
 namespace jasl {
 
-    typedef ::boost::optional<int> OptionalInt;
+    typedef ::boost::optional<int64_t> OptionalInt;
     typedef ::boost::optional<bool> OptionalBool;
     typedef ::boost::optional<double> OptionalDouble;
     typedef ::boost::optional<std::string> OptionalString;
@@ -95,8 +96,8 @@ namespace jasl {
             // attempt to convert the any in to one of the basic types
             // storing the value in val if successful and returning true
             bool extracted = false;
-            if (typeid(T) == typeid(int)) {
-                extracted = tryAnyCast<int>((int&)t, val);
+            if (typeid(T) == typeid(int64_t)) {
+                extracted = tryAnyCast<int64_t>((int64_t&)t, val);
             } else if (typeid(T) == typeid(bool)) {
                 extracted = tryAnyCast<bool>((bool&)t, val);
             } else if (typeid(T) == typeid(double)) {
@@ -124,10 +125,10 @@ namespace jasl {
             std::string str;
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
-                if (typeid(T) == typeid(int)) {
+                if (typeid(T) == typeid(int64_t)) {
                     auto result = searchInt(str);
                     if(result) {
-                        (int&)t = *result;
+                        (int64_t&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(bool)) {
@@ -160,8 +161,8 @@ namespace jasl {
                 }
             }
             {
-                int x;
-                if (tryExtraction<int>(x, val)) {
+                int64_t x;
+                if (tryExtraction<int64_t>(x, val)) {
                     return OptionalDouble(x);
                 }
             }
@@ -178,15 +179,15 @@ namespace jasl {
         /// evaluate an expression and cast the result to an int
         static OptionalInt trySingleIntExtraction(Value &val)
         {
-            int x;
-            if (tryExtraction<int>(x, val)) {
+            int64_t x;
+            if (tryExtraction<int64_t>(x, val)) {
                 return OptionalInt(x);
             }
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val)) {
 
-                return OptionalInt(static_cast<int>(me.evaluate()));
+                return OptionalInt(static_cast<int64_t>(me.evaluate()));
             }
 
             return OptionalInt();
@@ -195,8 +196,8 @@ namespace jasl {
         /// Tries to extract a single int but doesn't bother with math if that doesn't work
         static OptionalInt trySingleIntExtractionNoMath(Value &val)
         {
-            int x;
-            if (tryExtraction<int>(x, val)) {
+            int64_t x;
+            if (tryExtraction<int64_t>(x, val)) {
                 return OptionalInt(x);
             }
 

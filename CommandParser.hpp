@@ -26,6 +26,8 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/io.hpp>
 
+#include <cstdint>
+
 namespace jasl
 {
     namespace qi = boost::spirit::qi;
@@ -37,7 +39,7 @@ namespace jasl
         CommandParser() : CommandParser::base_type(start)
         {
             // token types that we're interested in using
-            using qi::int_;
+            using qi::long_long;
             using qi::lit;
             using qi::double_;
             using qi::bool_;
@@ -210,9 +212,9 @@ namespace jasl
             typedef boost::spirit::qi::strict_real_policies<double> DoublePolicy;
             typedef boost::spirit::qi::real_parser<double, DoublePolicy> DoubleParse;
             DoubleParse double_with_point;
-            doubleRule %= (int_ >> 'f')
+            doubleRule %= (long_long >> 'f')
                         | (double_with_point >> -lit('f'));
-            intRule %= int_;
+            intRule %= long_long;
             boolRule %= bool_;
 
             brackets %= "()";
@@ -464,7 +466,7 @@ namespace jasl
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
-        qi::rule<Iterator, int(), ascii::space_type> intRule;
+        qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
         qi::rule<Iterator, bool(), ascii::space_type> boolRule;
         qi::rule<Iterator, Value(), ascii::space_type> multiType;
         qi::rule<Iterator, Function(), ascii::space_type> mathRule;

@@ -97,7 +97,7 @@ namespace jasl
                 if (!resultIsInteger) {
                     VarCache::doubleCache[varName] = val;
                 } else {
-                    VarCache::intCache[varName] = static_cast<int>(val);
+                    VarCache::intCache[varName] = static_cast<int64_t>(val);
                 }
                 return true;
             } 

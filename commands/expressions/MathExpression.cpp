@@ -9,6 +9,7 @@
 #include "MathExpression.hpp"
 #include "../../VarExtractor.hpp"
 #include <stdexcept>
+#include <cstdint>
 
 namespace jasl {
 
@@ -67,7 +68,7 @@ namespace jasl {
         } else if (symbolOperator == "*" || symbolOperator == "mult") {
             return vleft * vright;
         } else if (symbolOperator == "%" || symbolOperator == "mod") {
-            return (int)vleft % (int)vright;
+            return (int64_t)vleft % (int64_t)vright;
         }  else {
             throw std::runtime_error("Unknown binary operand");
         }

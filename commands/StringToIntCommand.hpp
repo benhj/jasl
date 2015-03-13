@@ -15,6 +15,7 @@
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <sstream>
+#include <cstdint>
 
 namespace jasl
 {
@@ -47,7 +48,7 @@ namespace jasl
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
                 try {
-                    VarCache::intCache[varName] = boost::lexical_cast<int>(literalString.literal);
+                    VarCache::intCache[varName] = boost::lexical_cast<int64_t>(literalString.literal);
                     return true;
                 } catch( boost::bad_lexical_cast const& ) {
                     m_errorMessage = "string_to_integer: couldn't parse string literal.";
@@ -67,7 +68,7 @@ namespace jasl
                 if(result) {
 
                     try {
-                        VarCache::intCache[varName] = boost::lexical_cast<int>(*result);
+                        VarCache::intCache[varName] = boost::lexical_cast<int64_t>(*result);
                         return true;
                     } catch( boost::bad_lexical_cast const& ) {
                         m_errorMessage = "string_to_integer: couldn't parse string literal.";
