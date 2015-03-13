@@ -21,16 +21,11 @@ int main (int argc , char *argv[])
     }
 
     // parse input file
-    std::stringstream ss;
     auto functions = ci.parseCommandFile(argv[1]);
     for(auto &f : functions) {
         if(f.name == "start") {
-            (void)ci.interpretFunc(f, ss);
+            (void)ci.interpretFunc(f, std::cout);
             break;
         }
     }
-
-    // file has been parsed. Print out program output
-    std::cout<<ss.str().c_str();
-
 }
