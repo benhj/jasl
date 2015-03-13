@@ -149,27 +149,27 @@ namespace jasl
             // This also permits integer(i, 4) syntax
             intNewSyntax %= string("integer")
                          >> '('
-                         >> (genericString)
-                         >> ','
                          >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                         >> ','
+                         >> (genericString)
                          >> ')'
                          >> ';';
 
             // also permits decimal(d, 5.0); syntax
             doubleNewSyntax %= string("decimal")
                             >> '('
-                            >> (genericString)
-                            >> ','
                             >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
+                            >> ','
+                            >> (genericString)
                             >> ')'
                             >> ';';
 
             // also permits boolean(d, true); syntax
             boolNewSyntax %= string("boolean")
                           >> '('
-                          >> (genericString)
-                          >> ','
                           >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
+                          >> ','
+                          >> (genericString)
                           >> ')'
                           >> ';';
             
@@ -314,12 +314,22 @@ namespace jasl
 
             // a string type
             // string(name, "hello");
+            stringLengthRule %= string("string_length")
+                             >> '('
+                             >> (doubleQuotedString | genericString) 
+                             >> ','
+                             >> genericString
+                             >> ')'
+                             >> ';';
+
+            // a string type
+            // string(name, "hello");
             stringRule %= string("string")
                        >> '('
-                       >> genericString >> ','
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
-                           comparisonExpression | bracketedComparisonExpression)
+                           comparisonExpression | bracketedComparisonExpression) >> ','
+                       >> genericString 
                        >> ')'
                        >> ';';
 
@@ -400,6 +410,7 @@ namespace jasl
                          | echo
                          | repeatLoop
                          | whileLoop
+                         | stringLengthRule
                          | stringRule
                          | appendRule
                          | reverseRule 
@@ -426,6 +437,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, Function(), ascii::space_type> echo_nl;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
+        qi::rule<Iterator, Function(), ascii::space_type> stringLengthRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringList;

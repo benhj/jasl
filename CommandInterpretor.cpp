@@ -18,12 +18,14 @@
 #include "commands/IfCommand.hpp"
 #include "commands/ListCommand.hpp"
 #include "commands/MathCommand.hpp"
+#include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
 #include "commands/VarCommand.hpp"
 #include "commands/WhileCommand.hpp"
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
+#include "commands/StringLengthCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -117,21 +119,19 @@ namespace jasl {
 
             PROCESS_X_COMMAND(ReverseCommand);
 
-        } else if(searchString(func, "list")) {
+        } else if(searchString(func, "string_length")) {
+
+            PROCESS_X_COMMAND(StringLengthCommand);
+
+        }  else if(searchString(func, "list")) {
 
             PROCESS_X_COMMAND(ListCommand);
 
-        } else if(searchString(func, "integer")) {
+        } else if(searchString(func, "integer") ||
+                  searchString(func, "decimal") ||
+                  searchString(func, "boolean")) {
 
-            PROCESS_X_COMMAND(CVarCommand);
-
-        } else if(searchString(func, "decimal")) {
-
-            PROCESS_X_COMMAND(CVarCommand);
-
-        } else if(searchString(func, "boolean")) {
-
-            PROCESS_X_COMMAND(CVarCommand);
+            PROCESS_X_COMMAND(NewPrimitiveSyntaxCommand);
 
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }

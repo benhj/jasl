@@ -28,7 +28,7 @@ namespace jasl
         bool execute() override
         {
             std::string stringName;
-            if(!m_func.getValueA<std::string>(stringName)) {
+            if(!m_func.getValueB<std::string>(stringName)) {
                 m_errorMessage = "string: couldn't parse";
                 appendToOutput(m_errorMessage);
                 return false;
@@ -46,7 +46,7 @@ namespace jasl
         bool tryLiteralExtraction(std::string const &key) 
         {
             LiteralString literalString;
-            if(m_func.getValueB<LiteralString>(literalString)) {
+            if(m_func.getValueA<LiteralString>(literalString)) {
                 VarCache::stringCache[key] = literalString.literal;
                 return true;
             }
@@ -57,7 +57,7 @@ namespace jasl
         {
                         // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueB<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol)) {
                 {
                     auto result = VarExtractor::searchInt(symbol);
                     if(result) {
@@ -96,7 +96,7 @@ namespace jasl
         {
 
             {
-                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramB);
+                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramA);
                 if(result) {
                     VarCache::stringCache[key] = std::to_string(*result);
                     return true;
@@ -104,7 +104,7 @@ namespace jasl
             }
 
             {
-                auto result = VarExtractor::tryToGetADouble(m_func.paramB);
+                auto result = VarExtractor::tryToGetADouble(m_func.paramA);
                 if(result) {
                     std::ostringstream ss;
                     ss << *result;
@@ -114,7 +114,7 @@ namespace jasl
             }
 
             {
-                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramB);
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA);
                 if(result) {
                     VarCache::stringCache[key] = std::to_string(*result);
                     return true;

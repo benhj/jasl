@@ -102,9 +102,9 @@ void testCVarCommandsCompound()
 void testCVarNewSyntax()
 {
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer(i, 1);");
-    ci.parseAndInterpretSingleCommand("decimal(j, 1.1);");
-    ci.parseAndInterpretSingleCommand("boolean(k, true);");
+    ci.parseAndInterpretSingleCommand("integer(1, i);");
+    ci.parseAndInterpretSingleCommand("decimal(1.1, j);");
+    ci.parseAndInterpretSingleCommand("boolean(true, k);");
     ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testCVarNewSyntax::i is 1");
     ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testCVarNewSyntax::j is 1.1");
     ASSERT_EQUAL(true, ll::VarCache::boolCache["k"], "testCVarNewSyntax::k is true");
@@ -120,12 +120,12 @@ void testEchoLiterals()
     clearCaches();
 }
 
-void testecho_nlLiterals()
+void testEchoNLLiterals()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("echo_nl(\"Hello, world!\");", ss);
-    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testecho_nl: Hello, world!");
+    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
     clearCaches();
 }
 
@@ -167,7 +167,7 @@ void testEchoString()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello, world!\", hello);", ss);
     ci.parseAndInterpretSingleCommand("echo_nl(hello);", ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
     clearCaches();
@@ -177,7 +177,7 @@ void testStringWithLiteral()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(hello, \"Hello, world!\");", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello, world!\", hello);", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["hello"], "testStringWithLiteral");
     clearCaches();
 }
@@ -186,9 +186,9 @@ void testStringWithNumbers()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(numberFive, 5);", ss);
+    ci.parseAndInterpretSingleCommand("string(5, numberFive);", ss);
     ASSERT_EQUAL("5", ll::VarCache::stringCache["numberFive"], "testStringWithNumbers integer");
-    ci.parseAndInterpretSingleCommand("string(numberDecimal, 5.5);", ss);
+    ci.parseAndInterpretSingleCommand("string(5.5, numberDecimal);", ss);
     ASSERT_EQUAL("5.5", ll::VarCache::stringCache["numberDecimal"], "testStringWithNumbers decimal");
     clearCaches();
 }
@@ -197,8 +197,8 @@ void testStringWithMath()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(numberMath, (5 + 2) * 5.6);", ss);
-    ci.parseAndInterpretSingleCommand("string(numberMathB, (5 + 2) * 5);", ss);
+    ci.parseAndInterpretSingleCommand("string((5 + 2) * 5.6, numberMath);", ss);
+    ci.parseAndInterpretSingleCommand("string((5 + 2) * 5, numberMathB);", ss);
     ASSERT_EQUAL("39.2", ll::VarCache::stringCache["numberMath"], "testStringWithMath A");
     ASSERT_EQUAL("35", ll::VarCache::stringCache["numberMathB"], "testStringWithMath B");
     clearCaches();
@@ -208,7 +208,7 @@ void testAppendLiteral()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(s, \"Hello\");", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
     ci.parseAndInterpretSingleCommand("append(s, \", world!\");", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendLiteral");
     clearCaches();
@@ -218,8 +218,8 @@ void testAppendString()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(s, \"Hello\");", ss);
-    ci.parseAndInterpretSingleCommand("string(b, \", world!\");", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
+    ci.parseAndInterpretSingleCommand("string(\", world!\", b);", ss);
     ci.parseAndInterpretSingleCommand("append(s, b);", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendString");
     clearCaches();
@@ -229,9 +229,21 @@ void testReverseString()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string(s, \"Hello\");", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello\", s);", ss);
     ci.parseAndInterpretSingleCommand("reverse(s);", ss);
     ASSERT_EQUAL("olleH", ll::VarCache::stringCache["s"], "testReverseString");
+    clearCaches();
+}
+
+void testStringLength()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string_length(\"Hello\", s);", ss);
+    ci.parseAndInterpretSingleCommand("string(\"Hello, world!\", sb);", ss);
+    ci.parseAndInterpretSingleCommand("string_length(sb, sc);", ss);
+    ASSERT_EQUAL(5, ll::VarCache::intCache["s"], "testStringLength A");
+    ASSERT_EQUAL(13, ll::VarCache::intCache["sc"], "testStringLength B");
     clearCaches();
 }
 
@@ -324,7 +336,7 @@ int main()
     testCVarCommandsCompound();
     testCVarNewSyntax();
     testEchoLiterals();
-    testecho_nlLiterals();
+    testEchoNLLiterals();
     testEchoSymbols();
     testEchoPrimitives(); 
     testEchoMath();   
@@ -335,6 +347,7 @@ int main()
     testAppendLiteral();
     testAppendString();
     testReverseString();
+    testStringLength();
     testIfCommand();
     testRepeatCommand();
     testWhileCommand();

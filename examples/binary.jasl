@@ -2,7 +2,7 @@ block binary {
     
     // make a string to store the binary string.
     // starts out empty
-    string(binaryString, " ");
+    string(" ", binaryString);
 
     while (number > 0 ) {
         int bit = number % 2;
@@ -27,7 +27,7 @@ start {
     // convert the above arbitrary integer to 
     // a binary representation
     echo_nl(" ");
-    string(s, "Going to convert the number ");
+    string("Going to convert the number ", s);
     append(s, number);
     echo_nl(s);
     echo_nl(" ");
