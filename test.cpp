@@ -204,6 +204,25 @@ void testStringWithMath()
     clearCaches();
 }
 
+void testLiteralStringToInteger()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string_to_integer(\"123\", a);", ss);
+    ASSERT_EQUAL(123, ll::VarCache::intCache["a"], "testLiteralStringToInteger");
+    clearCaches();
+}
+
+void testSymbolStringToInteger()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string(\"456\", a);", ss);
+    ci.parseAndInterpretSingleCommand("string_to_integer(a, s);", ss);
+    ASSERT_EQUAL(456, ll::VarCache::intCache["s"], "testSymbolStringToInteger");
+    clearCaches();
+}
+
 void testAppendLiteral()
 {
     std::ostringstream ss;
@@ -357,6 +376,8 @@ int main()
     testStringWithLiteral();
     testStringWithNumbers();
     testStringWithMath();
+    testLiteralStringToInteger();
+    testSymbolStringToInteger();
     testAppendLiteral();
     testAppendString();
     testReverseString();

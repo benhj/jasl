@@ -19,10 +19,19 @@ block binary {
 
 }
 
+// requires an input program argument. For example run as:
+// ./jasl examples/binary.jasl 542354326
 start {
     
+    // get first program argument which should be a number
+    // should probably add some protection
+    args(0, a);
+
+    // convert a to an integer i
+    string_to_integer(a, i);
+
     // all variables in jasl are global so we can do this!
-    var(int, number, 2654365);
+    var(int, number, i);
 
     // convert the above arbitrary integer to 
     // a binary representation

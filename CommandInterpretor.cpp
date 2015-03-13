@@ -27,6 +27,7 @@
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
 #include "commands/StringLengthCommand.hpp"
+#include "commands/StringToIntCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -123,6 +124,10 @@ namespace jasl {
         } else if(searchString(func, "string_length")) {
 
             PROCESS_X_COMMAND(StringLengthCommand);
+
+        } else if(searchString(func, "string_to_integer")) {
+
+            PROCESS_X_COMMAND(StringToIntCommand);
 
         } else if(searchString(func, "list")) {
 

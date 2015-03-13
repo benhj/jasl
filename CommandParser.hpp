@@ -366,6 +366,15 @@ namespace jasl
                         >> ')'
                         >> ';';
 
+            // will try and convert a string to an int
+            stringToIntRule %= string("string_to_integer")
+                            >> '('
+                            >> (doubleQuotedString | genericString) 
+                            >> ','
+                            >> genericString
+                            >> ')'
+                            >> ';';
+
             argsRule %= string("args")
                      >> '('
                      >> intRule >> ','
@@ -420,6 +429,7 @@ namespace jasl
                          | whileLoop
                          | appendRule
                          | reverseRule 
+                         | stringToIntRule
                          | stringLengthRule
                          | stringRule
                          | stringList;
@@ -450,6 +460,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringList;
         qi::rule<Iterator, Function(), ascii::space_type> argsRule;
+        qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
