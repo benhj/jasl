@@ -125,7 +125,8 @@ namespace jasl {
 
             PROCESS_X_COMMAND(StringLength);
 
-        } else if(searchString(func, "string_to_integer")) {
+        } else if(searchString(func, "string_to_integer") ||
+                  searchString(func, "string_to_decimal")) {
 
             PROCESS_X_COMMAND(StringToPrimitive);
 

@@ -377,6 +377,15 @@ namespace jasl
                             >> ')'
                             >> ';';
 
+            // will try and convert a string to a double
+            stringToDoubleRule %= string("string_to_decimal")
+                               >> '('
+                               >> (doubleQuotedString | genericString) 
+                               >> ','
+                               >> genericString
+                               >> ')'
+                               >> ';';
+
             argsRule %= string("args")
                      >> '('
                      >> intRule >> ','
@@ -431,6 +440,7 @@ namespace jasl
                          | whileLoop
                          | appendRule
                          | reverseRule 
+                         | stringToDoubleRule
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
@@ -463,6 +473,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> stringList;
         qi::rule<Iterator, Function(), ascii::space_type> argsRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
+        qi::rule<Iterator, Function(), ascii::space_type> stringToDoubleRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

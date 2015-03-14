@@ -48,10 +48,16 @@ namespace jasl
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
                 try {
-                    VarCache::intCache[varName] = boost::lexical_cast<int64_t>(literalString.literal);
-                    return true;
+                    if(m_func.name == "string_to_integer") {
+                        VarCache::intCache[varName] = boost::lexical_cast<int64_t>(literalString.literal);
+                        return true;
+                    } else if(m_func.name == "string_to_decimal") {
+                        VarCache::doubleCache[varName] = boost::lexical_cast<double>(literalString.literal);
+                        return true;
+                    }
+                    return false;
                 } catch( boost::bad_lexical_cast const& ) {
-                    m_errorMessage = "string_to_integer: couldn't parse string literal.";
+                    m_errorMessage = "string_to_: couldn't parse string literal.";
                     appendToOutput(m_errorMessage);
                     return false;
                 }
@@ -68,10 +74,16 @@ namespace jasl
                 if(result) {
 
                     try {
-                        VarCache::intCache[varName] = boost::lexical_cast<int64_t>(*result);
-                        return true;
+                        if(m_func.name == "string_to_integer") {
+                            VarCache::intCache[varName] = boost::lexical_cast<int64_t>(*result);
+                            return true;
+                        } else if(m_func.name == "string_to_decimal") {
+                            VarCache::doubleCache[varName] = boost::lexical_cast<double>(*result);
+                            return true;
+                        }
+                        return false;
                     } catch( boost::bad_lexical_cast const& ) {
-                        m_errorMessage = "string_to_integer: couldn't parse string literal.";
+                        m_errorMessage = "string_to_: couldn't parse string literal.";
                         appendToOutput(m_errorMessage);
                         return false;
                     }
