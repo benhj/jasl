@@ -38,6 +38,7 @@ start {
     echo_nl(" ");
     string("Going to convert the number ", s);
     string_append(s, number);
+    string_append(s, " to binary:");
     echo_nl(s);
     echo_nl(" ");
     call binary;

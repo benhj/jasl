@@ -1,5 +1,5 @@
 //
-//  StringToIntCommand.cpp
+//  StringToPrimitiveCommand.cpp
 //  jasl
 //
 //  Created by Ben Jones on 13/03/15
@@ -19,11 +19,11 @@
 
 namespace jasl
 {
-    class StringToIntCommand : public Command
+    class StringToPrimitiveCommand : public Command
     {
     public:
-        StringToIntCommand(Function &func_,
-                           OptionalOutputStream const &output = OptionalOutputStream())
+        StringToPrimitiveCommand(Function &func_,
+                                 OptionalOutputStream const &output = OptionalOutputStream())
         : Command(func_, output)
         {
         }

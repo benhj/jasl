@@ -27,7 +27,7 @@
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
 #include "commands/StringLengthCommand.hpp"
-#include "commands/StringToIntCommand.hpp"
+#include "commands/StringToPrimitiveCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -36,9 +36,9 @@
 #include <string>
 #include <iterator>
 
-#define PROCESS_X_COMMAND(X)           \
-    X c(func, outputStream);           \
-    (void)c.execute();                 \
+#define PROCESS_X_COMMAND(X)            \
+    X##Command c(func, outputStream);   \
+    (void)c.execute();                  \
     errorMessage = c.getErrorMessage();
 
 
@@ -65,84 +65,83 @@ namespace jasl {
         std::string errorMessage;
         if (searchString(func, "var")) {
 
-            PROCESS_X_COMMAND(VarCommand);
+            PROCESS_X_COMMAND(Var);
 
         } else if(searchString(func, "m_")) {
 
-            PROCESS_X_COMMAND(MathCommand);
+            PROCESS_X_COMMAND(Math);
 
         } else if(searchString(func, "int") ||
                   searchString(func, "double") ||
                   searchString(func, "bool")) {
 
-            PROCESS_X_COMMAND(CVarCommand);
+            PROCESS_X_COMMAND(CVar);
 
         } else if(searchString(func, "echo")) {
 
-            PROCESS_X_COMMAND(EchoCommand);
+            PROCESS_X_COMMAND(Echo);
 
         } else if(searchString(func, "echo_nl")) {
 
-            PROCESS_X_COMMAND(echo_nlCommand);
+            PROCESS_X_COMMAND(EchoNL);
 
         }  else if(searchString(func, "if")) {
 
-            PROCESS_X_COMMAND(IfCommand);
+            PROCESS_X_COMMAND(If);
 
         } else if(searchString(func, "repeat")) {
 
-            PROCESS_X_COMMAND(RepeatCommand);
+            PROCESS_X_COMMAND(Repeat);
 
         } else if(searchString(func, "while")) {
 
-            PROCESS_X_COMMAND(WhileCommand);
+            PROCESS_X_COMMAND(While);
 
         }  else if(searchString(func, "block")) {
             
-            PROCESS_X_COMMAND(BlockCommand);
+            PROCESS_X_COMMAND(Block);
 
         } else if(searchString(func, "start")) {
             
-            PROCESS_X_COMMAND(StartCommand);
+            PROCESS_X_COMMAND(Start);
 
         } else if(searchString(func, "call")) {
 
-            PROCESS_X_COMMAND(CallCommand);
+            PROCESS_X_COMMAND(Call);
 
         } else if(searchString(func, "string")) {
 
-            PROCESS_X_COMMAND(StringCommand);
+            PROCESS_X_COMMAND(String);
 
         } else if(searchString(func, "string_append")) {
 
-            PROCESS_X_COMMAND(AppendCommand);
+            PROCESS_X_COMMAND(Append);
 
         } else if(searchString(func, "string_reverse")) {
 
-            PROCESS_X_COMMAND(ReverseCommand);
+            PROCESS_X_COMMAND(Reverse);
 
         } else if(searchString(func, "string_length")) {
 
-            PROCESS_X_COMMAND(StringLengthCommand);
+            PROCESS_X_COMMAND(StringLength);
 
         } else if(searchString(func, "string_to_integer")) {
 
-            PROCESS_X_COMMAND(StringToIntCommand);
+            PROCESS_X_COMMAND(StringToPrimitive);
 
         } else if(searchString(func, "list")) {
 
-            PROCESS_X_COMMAND(ListCommand);
+            PROCESS_X_COMMAND(List);
 
         } else if(searchString(func, "args")) {
 
-            PROCESS_X_COMMAND(ArgsCommand);
+            PROCESS_X_COMMAND(Args);
 
         }  else if(searchString(func, "integer") ||
                   searchString(func, "decimal") ||
                   searchString(func, "boolean")) {
 
-            PROCESS_X_COMMAND(NewPrimitiveSyntaxCommand);
-
+            PROCESS_X_COMMAND(NewPrimitiveSyntax);
         }
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;

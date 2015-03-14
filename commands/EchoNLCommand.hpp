@@ -1,5 +1,5 @@
 //
-//  echo_nlCommand.hpp
+//  EchoNLCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones 
@@ -15,10 +15,10 @@
 
 namespace jasl
 {
-    class echo_nlCommand : public Command
+    class EchoNLCommand : public Command
     {
     public:
-        echo_nlCommand(Function &func_,
+        EchoNLCommand(Function &func_,
                       OptionalOutputStream const &output = OptionalOutputStream())
         : Command(func_, output)
         {
