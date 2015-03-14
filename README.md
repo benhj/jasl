@@ -8,10 +8,12 @@ Why? I read somewhere that every programmer worth his salt should attempt to wri
 Every JASL script has a main entry point. I call this 'start':
 
 <pre>
+
 // start is the main entry point
 start {
     echo_nl("Hello, world!");
 }
+
 </pre>
 
 The above fragment will print out what you think it will print out. 
@@ -21,6 +23,7 @@ The above fragment will print out what you think it will print out.
 So I should probably show these echo commands. We basically have two of them:
 
 <pre>
+
 echo("Hello"); 
 
 // or with a new line
@@ -28,24 +31,36 @@ echo_nl("Hello");
 
 // can also print out the result of math expressions
 echo_nl((3*6) + (1*5));
+
 </pre>
 
 **Variables**
 
 In JASL, we have 64 bit signed integers, doubles and strings:
 <pre>
-// the following all do the same thing:
+
+// the following all do the same thing
+// Note: all integer types are unsigned 64 bit
 var(int, a, 1);
 int a = 1;
 integer(1, a);
+
+</pre>
+
+</pre>
 
 // as do the following
 var(double, d, 2.2);
 double d = 2.2;
 decimal(2.2, d);
 
+</pre>
+
+<pre>
+
 // for strings we simply have
 string("Hello!", s);
+
 </pre>
 
 **More on strings**
@@ -53,6 +68,7 @@ string("Hello!", s);
 JASL features a number of string utility functions:
 
 <pre>
+
 // create a string s and reverse it
 string("Hello!", s);
 string_reverse(s);
@@ -75,6 +91,10 @@ string_length(s, len);
 
 // prints out 13
 echo_nl(len);
+
+</pre>
+
+<pre>
 
 // convert a string to an integer
 string("123", k);
@@ -111,14 +131,14 @@ Currently, two loops are supported:
 repeat 5 times {
     echo_nl("Hello");
 }
-
+</pre>
+<pre>
 // or using a while loop
 var(int, a, 1);
 while (a < 5) {
     echo_nl("Hello");
     var(int, a, (a + 1));
 }
-
 </pre>
 
 Other stuff todo...
