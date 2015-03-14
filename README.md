@@ -106,7 +106,7 @@ Currently, two loops are supported:
 
 <pre>
 // print hello 5 times:
-repeat 5 time {
+repeat 5 times {
     echo_nl("Hello");
 }
 
