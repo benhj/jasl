@@ -87,7 +87,7 @@ string_to_decimal(p, pi);
 
 ### Functions
 
-In JASL, fUnctions are really subroutines. I call them blocks:
+In JASL, functions are really subroutines. I call them blocks:
 
 <pre>
 block foo {
