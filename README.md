@@ -30,7 +30,7 @@ echo_nl("Hello");
 echo_nl((3*6) + (1*5));
 </pre>
 
-### Variables
+#### Variables
 In JASL, we have 64 bit signed integers, doubles and strings:
 <pre>
 // the following all do the same thing:
@@ -47,7 +47,7 @@ decimal(2.2, d);
 string("Hello!", s);
 </pre>
 
-### More on strings
+#### More on strings
 
 JASL features a number of string utility functions:
 
@@ -85,7 +85,7 @@ string_to_decimal(p, pi);
 
 </pre>
 
-### Functions
+#### Functions
 
 In JASL, functions are really subroutines. I call them blocks:
 
@@ -101,7 +101,7 @@ start {
 }
 </pre>
 
-### Loops
+#### Loops
 Currently, two loops are supported:
 
 <pre>
@@ -119,5 +119,4 @@ while (a < 5) {
 
 </pre>
 
-### Program flow
-TODO
+Other stuff todo...
