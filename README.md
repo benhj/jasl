@@ -74,6 +74,15 @@ string_length(s, len);
 
 // prints out 13
 echo_nl(len);
+
+// convert a string to an integer
+string("123", k);
+string_to_integer(k, i);
+
+// and to decimals..
+string("3.14", p);
+string_to_decimal(p, pi);
+
 </pre>
 
 ### Functions
