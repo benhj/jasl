@@ -52,7 +52,7 @@ string("Hello!", s);
 JASL features a number of string utility functions:
 
 <pre>
-// create s rting and reverse it
+// create a string s and reverse it
 string("Hello!", s);
 string_reverse(s);
 
@@ -61,16 +61,18 @@ echo_nl(s);
 
 // now put back to correct "Hello!"
 string_reverse(s);
+
+// Now append " World!"
 string(" World!", w);
 string_append(s, w);
 
-// will print out "Hello! World!"
+// Will print out "Hello! World!"
 echo_nl(s);
 
 // get length of string
 string_length(s, len);
 
-// print out 13
+// prints out 13
 echo_nl(len);
 </pre>
 
