@@ -114,6 +114,7 @@ string_to_decimal("3.14", pi);
 In JASL, functions are really subroutines. I call them blocks:
 
 <pre>
+
 block foo {
     echo_nl("In foo");
 }
@@ -130,18 +131,25 @@ start {
 Currently, two loops are supported:
 
 <pre>
+
 // print hello 5 times:
 repeat 5 times {
     echo_nl("Hello");
 }
+
 </pre>
+
 <pre>
-// or using a while loop
+
+// print hello 5 times
 var(int, a, 1);
 while (a < 5) {
     echo_nl("Hello");
     var(int, a, (a + 1));
 }
+
 </pre>
+
+**Conditionals**
 
 Other stuff todo...
