@@ -1,7 +1,7 @@
 JASL: Just Another Scripting Language
 -------------------------------------
 
-Why? I read somewhere that every programmer worth his salt should attempt to write their own programming language. Challenge accepted! (Granted I cheat a little by using boost::spirit)..
+Why? I read somewhere that every programmer worth his salt should attempt to write their own programming language. This is my attempt! :-)
 
 ### The basics
 
