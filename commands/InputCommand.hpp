@@ -28,14 +28,9 @@ namespace jasl
 
         bool execute() override
         {
-            LiteralString query;
-            if(!m_func.getValueA<LiteralString>(query)) {
-                m_errorMessage = "input: couldn't parse";
-                appendToOutput(m_errorMessage);
-                return false;
+            if(!tryLiteralExtraction()) {
+                if(!trySymbolExtraction()) { return false; }
             }
-
-            appendToOutput(query.literal);
 
             std::string answer;
             if(!m_func.getValueB<std::string>(answer)) {
@@ -45,7 +40,34 @@ namespace jasl
             }
 
             std::getline(std::cin, VarCache::stringCache[answer]);
+            return false;
+        }
 
+    private:
+        bool tryLiteralExtraction() 
+        {
+            LiteralString query;
+            if(m_func.getValueA<LiteralString>(query)) {
+                appendToOutput(query.literal);
+                return true;
+            }
+            return false;
+        }
+
+        bool trySymbolExtraction()
+        {
+            // Now try extracting a symbol
+            std::string symbol;
+            if(m_func.getValueA<std::string>(symbol)) {
+                {
+                    auto result = VarExtractor::searchString(symbol);
+                    if(result) {
+                        appendToOutput(*result);
+                        return true;
+                    }
+                }
+                return false;
+            }
             return false;
         }
 
