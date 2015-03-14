@@ -14,7 +14,7 @@ start {
 }
 </pre>
 
-The above fragment will print out what you think it will print out when run with `./jasl hello.jasl'.
+The above fragment will print out what you think it will print out. 
 
 ### Program output
 
