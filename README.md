@@ -21,9 +21,11 @@ The above fragment will print out what you think it will print out when run with
 So I should probably show these echo commands. We basically have two of them:
 
 <pre>
-echo("Hello");
+echo("Hello"); 
+
 // or with a new line
 echo_nl("Hello");
+
 // can also print out the result of math expressions
 echo_nl((3*6) + (1*5));
 </pre>
@@ -40,10 +42,37 @@ integer(1, a);
 var(double, d, 2.2);
 double d = 2.2;
 decimal(2.2, d);
+
+// for strings we simply have
+string("Hello!", s);
 </pre>
 
-// fr strings we simply have
+### More on strings
+
+JASL features a number of string utility functions:
+
+<pre>
+// create s rting and reverse it
 string("Hello!", s);
+string_reverse(s);
+
+// will print out "!olleH"
+echo_nl(s); 
+
+// now put back to correct "Hello!"
+string_reverse(s);
+string(" World!", w);
+string_append(s, w);
+
+// will print out "Hello! World!"
+echo_nl(s);
+
+// get length of string
+string_length(s, len);
+
+// print out 13
+echo_nl(len);
+</pre>
 
 ### Functions
 
