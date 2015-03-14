@@ -100,9 +100,12 @@ echo_nl(len);
 string("123", k);
 string_to_integer(k, i);
 
-// and to decimals..
-string("3.14", p);
-string_to_decimal(p, pi);
+</pre>
+
+<pre>
+
+// convert a string to a decimal..
+string_to_decimal("3.14", pi);
 
 </pre>
 
