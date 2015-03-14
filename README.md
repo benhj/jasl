@@ -47,7 +47,7 @@ integer(1, a);
 
 </pre>
 
-</pre>
+<pre>
 
 // as do the following
 var(double, d, 2.2);
