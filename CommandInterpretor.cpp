@@ -17,6 +17,7 @@
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
 #include "commands/IfCommand.hpp"
+#include "commands/InputCommand.hpp"
 #include "commands/ListCommand.hpp"
 #include "commands/MathCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
@@ -143,7 +144,12 @@ namespace jasl {
                   searchString(func, "boolean")) {
 
             PROCESS_X_COMMAND(NewPrimitiveSyntax);
-        }
+
+        } else if(searchString(func, "input")) {
+
+            PROCESS_X_COMMAND(Input);
+
+        }  
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }

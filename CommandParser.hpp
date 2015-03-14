@@ -324,6 +324,15 @@ namespace jasl
                              >> ')'
                              >> ';';
 
+             // queries for user input
+            // input("What do you want ?", s);
+            inputRule %= string("input")
+                      >> '('
+                      >> (doubleQuotedString | genericString) >> ','
+                      >> genericString 
+                      >> ')'
+                      >> ';';
+
             // a string type
             // string(name, "hello");
             stringRule %= string("string")
@@ -444,7 +453,8 @@ namespace jasl
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
-                         | stringList;
+                         | stringList
+                         | inputRule;
                          
             start %= allCommands;
         }
@@ -474,6 +484,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> argsRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToDoubleRule;
+        qi::rule<Iterator, Function(), ascii::space_type> inputRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
