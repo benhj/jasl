@@ -2,20 +2,20 @@ block binary {
     
     // make a string to store the binary string.
     // starts out empty
-    string(" ", binaryString);
+    string " " -> binaryString;
 
     while (number > 0 ) {
-        int bit = number % 2;
-        var(int, number, (number / 2));
-        string_append(binaryString, bit);
+        integer (number % 2) -> bit;
+        integer (number / 2) -> number;
+        string_append binaryString, bit;
     }
 
     // reverse the string now since was constructed 
     // in reverse order
-    string_reverse(binaryString);
+    string_reverse binaryString;
 
     // now finally display
-    echo_nl(binaryString);
+    echo_nl binaryString;
 
 }
 
@@ -25,22 +25,22 @@ start {
     
     // get first program argument which should be a number
     // should probably add some protection
-    args(0, a);
+    args 0 -> a;
 
     // convert a to an integer i
-    string_to_integer(a, i);
+    string_to_integer a -> i;
 
     // all variables in jasl are global so we can do this!
-    var(int, number, i);
+    integer i -> number;
 
     // convert the above arbitrary integer to 
     // a binary representation
-    echo_nl(" ");
-    string("Going to convert the number ", s);
-    string_append(s, number);
-    string_append(s, " to binary:");
-    echo_nl(s);
-    echo_nl(" ");
+    echo_nl " ";
+    string "Going to convert the number " -> s;
+    string_append s, number;
+    string_append s, " to binary:";
+    echo_nl s;
+    echo_nl " ";
     call binary;
-    echo_nl(" ");
+    echo_nl " ";
 }

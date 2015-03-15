@@ -1,8 +1,8 @@
 // start is the main entry point
 start {
     // query for user input
-    input("What is your name? ", name);
-    string("Hello, ", s);
-    string_append(s, name);
-    echo_nl(s);
+    input "What is your name? " -> name;
+    string "Hello, " -> s;
+    string_append s, name;
+    echo_nl s;
 }

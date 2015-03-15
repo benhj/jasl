@@ -4,31 +4,31 @@
 block fib {
     
     // create some variables to store state
-    var(int, x, 1);
-    var(int, oldx, x);
-    var(int, olderx, x);
+    integer 1 -> x;
+    integer x -> oldx;
+    integer x -> olderx;
 
     // perform the sequence a number of times
-    repeat 20 times {
+    repeat 50 times {
 
-        echo(x);
-        echo(" ");
+        echo x;
+        echo " ";
 
-        var(int, olderx, oldx);
-        var(int, oldx, x);
+        integer oldx -> olderx;
+        integer x -> oldx;
 
         // compute new x value
-        var(int, x, (olderx + oldx));
+        integer (olderx + oldx) -> x;
  
     }
 
-    echo_nl(" ");
+    echo_nl " ";
 
 }
 
 start {
     
-    echo_nl("Calling block fib");
+    echo_nl "Calling block fib";
     call fib;
 
 }

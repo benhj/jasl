@@ -64,28 +64,6 @@ namespace jasl
             // a type that can be a double, an int or a string
             multiType %= (doubleRule | intRule | genericString);
 
-            // A rule to represent the math syntax
-            // m_add(5, 6, output) for binary math functions
-            // OR
-            // m_sin(5, output) for unary math functions
-            mathRule %= string("m_")
-                        >> genericString
-                        >> '('
-                        >> (doubleRule | intRule | genericString)
-                        >> ','
-                        >> (doubleRule | intRule | genericString)
-                        >> ','
-                        >> genericString
-                        >> ')' >> ';'
-                        |
-                        string("m_")
-                        >> genericString
-                        >> '('
-                        >> (doubleRule | intRule | genericString)
-                        >> ','
-                        >> genericString
-                        >> ')' >> ';';
-
             // symbols to be used in a math expression
             mathSymbols %= lexeme[ string("%")
                                  | string("+")
@@ -150,58 +128,24 @@ namespace jasl
 
             // This also permits integer(i, 4) syntax
             intNewSyntax %= string("integer")
-                         >> '('
                          >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                         >> ','
+                         >> lit("->")
                          >> (genericString)
-                         >> ')'
                          >> ';';
 
             // also permits decimal(d, 5.0); syntax
             doubleNewSyntax %= string("decimal")
-                            >> '('
                             >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
-                            >> ','
+                            >> lit("->")
                             >> (genericString)
-                            >> ')'
                             >> ';';
 
             // also permits boolean(d, true); syntax
             boolNewSyntax %= string("boolean")
-                          >> '('
                           >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
-                          >> ','
+                          >> lit("->")
                           >> (genericString)
-                          >> ')'
                           >> ';';
-            
-            // Rules to permit c-style variable initialization
-            // e.g. int i = 4;
-            cIntRule %= string("int")
-                     >> genericString
-                     >> '='
-                     >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                     >> ';';
-
-            // e.g. double d = 5.0;
-            cDoubleRule %= string("double")
-                        >> genericString
-                        >> '='
-                        >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
-                        >> ';';
-                        
-
-            // e.g. bool b = true;
-            // also permits bool(b, true); syntax
-            cBoolRule %= string("bool")
-                      >> genericString
-                      >> '='
-                      >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
-                      >> ';';
-
-            // support c style initialization
-            cVarRule %= (cBoolRule | cIntRule | cDoubleRule);
-
 
             //
             // with thanks to sehe and llonesmix @
@@ -228,28 +172,10 @@ namespace jasl
                              >> (doubleRule | intRule | genericString) >> ','
                              >> (doubleRule | intRule | genericString) >> ')';
         
-            // for setting a variable 
-            // (e.g. var(int, b, 5) will set an integer 'b' to the value 5)
-            var %= string("var") 
-                >> '('
-                >> genericString >> ','
-                >> genericString >> ','
-                >> (doubleRule | intRule | boolRule | quotedString | genericString |
-                    mathExpression | bracketedMathExpression | 
-                    comparisonExpression | bracketedComparisonExpression)
-                >> ')' >> ';';
-
             // prints out the value of a given variable
             query %= string("query") >> '('
                   >> genericString
                    >> ')' >> ';';
-
-            // retrieves the value of a given type
-            // e.g. get(int, a) will retrieve the value of the
-            // a integer
-            get  %= string("get") >> '('
-                 >> genericString >> ','
-                 >> genericString >> ')' >> ';';
 
             // the entire set of instructions at out disposal
             commandCollection %= *allCommands;
@@ -317,31 +243,25 @@ namespace jasl
             // a string type
             // string(name, "hello");
             stringLengthRule %= string("string_length")
-                             >> '('
                              >> (doubleQuotedString | genericString) 
-                             >> ','
+                             >> lit("->")
                              >> genericString
-                             >> ')'
                              >> ';';
 
-             // queries for user input
+            // queries for user input
             // input("What do you want ?", s);
             inputRule %= string("input")
-                      >> '('
-                      >> (doubleQuotedString | genericString) >> ','
+                      >> (doubleQuotedString | genericString) >> lit("->")
                       >> genericString 
-                      >> ')'
                       >> ';';
 
             // a string type
             // string(name, "hello");
             stringRule %= string("string")
-                       >> '('
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
-                           comparisonExpression | bracketedComparisonExpression) >> ','
+                           comparisonExpression | bracketedComparisonExpression) >> lit("->")
                        >> genericString 
-                       >> ')'
                        >> ';';
 
             // a list of words
@@ -359,64 +279,50 @@ namespace jasl
             // appends to a string
             // append(name, "hello!");           
             appendRule %= string("string_append")
-                       >> '('
                        >> genericString >> ','
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
                            comparisonExpression | bracketedComparisonExpression)
-                       >> ')'
                        >> ';';
 
             // reverse(name); 
             // will reverse the string named name
             reverseRule %= string("string_reverse")
-                        >> '('
-                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
-                            mathExpression | bracketedMathExpression | 
-                            comparisonExpression | bracketedComparisonExpression)
-                        >> ')'
+                        >> (doubleQuotedString | genericString)
                         >> ';';
 
             // will try and convert a string to an int
             stringToIntRule %= string("string_to_integer")
-                            >> '('
                             >> (doubleQuotedString | genericString) 
-                            >> ','
+                            >> lit("->")
                             >> genericString
-                            >> ')'
                             >> ';';
 
             // will try and convert a string to a double
             stringToDoubleRule %= string("string_to_decimal")
-                               >> '('
                                >> (doubleQuotedString | genericString) 
-                               >> ','
+                               >> lit("->")
                                >> genericString
-                               >> ')'
                                >> ';';
 
             argsRule %= string("args")
-                     >> '('
-                     >> intRule >> ','
+                     >> intRule >> lit("->")
                      >> genericString
-                     >> ')'
                      >> ';';
 
             // for printing out a string to screen
             echo %= string("echo")
-                 >> '(' 
                  >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                      mathExpression | bracketedMathExpression | 
                      comparisonExpression | bracketedComparisonExpression)
-                 >> ')' >> ';';
+                 >> ';';
 
             // for printing out a string to screen with newline
             echo_nl %= string("echo_nl")
-                   >> '(' 
                    >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                        mathExpression | bracketedMathExpression | 
                        comparisonExpression | bracketedComparisonExpression)
-                   >> ')' >> ';';
+                   >> ';';
 
             // lists all variables
             vars %= string("vars") >> brackets >> ';';
@@ -426,18 +332,14 @@ namespace jasl
                        >> quotedString >> ')' >> ';';
 
             // all the instructions at out disposal
-            allCommands %= var 
-                         | get 
-                         | forLoop
+            allCommands %= forLoop
                          | query 
                          | startFunction 
                          | block
                          | call 
-                         | mathRule 
                          | intNewSyntax
                          | doubleNewSyntax
                          | boolNewSyntax
-                         | cVarRule 
                          | ifRule 
                          | argsRule
                          | commentFunc
@@ -461,13 +363,11 @@ namespace jasl
 
         // Individual rules will specify the grammar for the different
         // commandFunction types
-        qi::rule<Iterator, Function(), ascii::space_type> get;
         qi::rule<Iterator, Function(), ascii::space_type> loadScript;
         qi::rule<Iterator, Function(), ascii::space_type> forLoop;
         qi::rule<Iterator, Function(), ascii::space_type> repeatLoop;
         qi::rule<Iterator, Function(), ascii::space_type> whileLoop;
         qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
-        qi::rule<Iterator, Function(), ascii::space_type> var;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
@@ -491,11 +391,6 @@ namespace jasl
         qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
         qi::rule<Iterator, bool(), ascii::space_type> boolRule;
         qi::rule<Iterator, Value(), ascii::space_type> multiType;
-        qi::rule<Iterator, Function(), ascii::space_type> mathRule;
-        qi::rule<Iterator, Function(), ascii::space_type> cIntRule;
-        qi::rule<Iterator, Function(), ascii::space_type> cDoubleRule;
-        qi::rule<Iterator, Function(), ascii::space_type> cBoolRule;
-        qi::rule<Iterator, Function(), ascii::space_type> cVarRule;
         qi::rule<Iterator, Function(), ascii::space_type> intNewSyntax;
         qi::rule<Iterator, Function(), ascii::space_type> doubleNewSyntax;
         qi::rule<Iterator, Function(), ascii::space_type> boolNewSyntax;

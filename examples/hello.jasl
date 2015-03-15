@@ -1,4 +1,4 @@
 // start is the main entry point
 start {
-    echo_nl("Hello, world!");
+    echo_nl "Hello, world!";
 }

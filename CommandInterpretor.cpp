@@ -13,17 +13,14 @@
 #include "commands/ArgsCommand.hpp"
 #include "commands/BlockCommand.hpp"
 #include "commands/CallCommand.hpp"
-#include "commands/CVarCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
 #include "commands/IfCommand.hpp"
 #include "commands/InputCommand.hpp"
 #include "commands/ListCommand.hpp"
-#include "commands/MathCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
-#include "commands/VarCommand.hpp"
 #include "commands/WhileCommand.hpp"
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
@@ -64,21 +61,7 @@ namespace jasl {
                                         OptionalOutputStream const &outputStream) const
     {
         std::string errorMessage;
-        if (searchString(func, "var")) {
-
-            PROCESS_X_COMMAND(Var);
-
-        } else if(searchString(func, "m_")) {
-
-            PROCESS_X_COMMAND(Math);
-
-        } else if(searchString(func, "int") ||
-                  searchString(func, "double") ||
-                  searchString(func, "bool")) {
-
-            PROCESS_X_COMMAND(CVar);
-
-        } else if(searchString(func, "echo")) {
+        if(searchString(func, "echo")) {
 
             PROCESS_X_COMMAND(Echo);
 
