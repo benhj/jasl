@@ -343,6 +343,25 @@ void testList()
     clearCaches();
 }
 
+void testRawListToString()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list_to_string [hello there] -> s;", ss);
+    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["s"], "testListToString raw list");
+    clearCaches();
+}
+
+void testSymbolListToString()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [hello there] -> l;", ss);
+    ci.parseAndInterpretSingleCommand("list_to_string l -> s;", ss);
+    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["s"], "testListToString symbol list");
+    clearCaches();
+}
+
 int main()
 {
     testMath();
@@ -372,6 +391,8 @@ int main()
     testCallCommand();
     testArgsCommand();
     testList();
+    testRawListToString();
+    testSymbolListToString();
     showResults();
     return 0;
 }

@@ -121,21 +121,21 @@ namespace jasl
                                     | bracketedMathExpression
                                     | bracketedComparisonExpression);
 
-            // This also permits integer(i, 4) syntax
+            // integer 4 -> i;
             intNewSyntax %= string("integer")
                          >> (mathExpression | bracketedMathExpression | intRule | genericString)
                          >> lit("->")
                          >> (genericString)
                          >> ';';
 
-            // also permits decimal(d, 5.0); syntax
+            // decimal 5.0 -> d;
             doubleNewSyntax %= string("decimal")
                             >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
                             >> lit("->")
                             >> (genericString)
                             >> ';';
 
-            // also permits boolean(d, true); syntax
+            // boolean true -> b;
             boolNewSyntax %= string("boolean")
                           >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
                           >> lit("->")
@@ -235,8 +235,8 @@ namespace jasl
                  >> genericString // functionName
                  >> ';';
 
-            // a string type
-            // string(name, "hello");
+            // string length
+            // string_length "hello" -> len;
             stringLengthRule %= string("string_length")
                              >> (doubleQuotedString | genericString) 
                              >> lit("->")
@@ -244,14 +244,14 @@ namespace jasl
                              >> ';';
 
             // queries for user input
-            // input("What do you want ?", s);
+            // input "What do you want ?" -> s;
             inputRule %= string("input")
                       >> (doubleQuotedString | genericString) >> lit("->")
                       >> genericString 
                       >> ';';
 
-            // a string type
-            // string(name, "hello");
+            // string type
+            // string "hello" -> name;
             stringRule %= string("string")
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
@@ -276,8 +276,15 @@ namespace jasl
                           >> genericString // the name of the list
                           >> ';';
 
+            // list_to_string [hello there] -> s;
+            listToString  %= string("list_to_string")
+                          >> (('[' >> words >> ']') | genericString)
+                          >> lit("->")
+                          >> genericString // the name of the list
+                          >> ';';
+
             // appends to a string
-            // append(name, "hello!");           
+            // string_append name, "hello!";           
             appendRule %= string("string_append")
                        >> genericString >> ','
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
@@ -285,8 +292,7 @@ namespace jasl
                            comparisonExpression | bracketedComparisonExpression)
                        >> ';';
 
-            // reverse(name); 
-            // will reverse the string named name
+            // string_reverse name; 
             reverseRule %= string("string_reverse")
                         >> (doubleQuotedString | genericString)
                         >> ';';
@@ -355,6 +361,7 @@ namespace jasl
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
+                         | listToString
                          | stringList
                          | inputRule;
                          
@@ -385,6 +392,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToDoubleRule;
         qi::rule<Iterator, Function(), ascii::space_type> inputRule;
+        qi::rule<Iterator, Function(), ascii::space_type> listToString;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

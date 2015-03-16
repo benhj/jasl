@@ -18,6 +18,7 @@
 #include "commands/IfCommand.hpp"
 #include "commands/InputCommand.hpp"
 #include "commands/ListCommand.hpp"
+#include "commands/ListToStringCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
@@ -132,7 +133,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(Input);
 
-        }  
+        } else if(searchString(func, "list_to_string")) {
+
+            PROCESS_X_COMMAND(ListToString);
+
+        }   
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }
