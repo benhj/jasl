@@ -29,29 +29,23 @@ namespace jasl
 
         bool execute() override
         {
-            std::cout<<"HERE!!!"<<std::endl;
+            // now try and extract the actual words
+            ValueArray list;
+            if(!m_func.getValueA<decltype(list)>(list)) {
+                m_errorMessage = "list: couldn't parse word list";
+                return false;
+            }
+
             std::string listName;
-            if(!m_func.getValueA<std::string>(listName)) {
+            if(!m_func.getValueB<std::string>(listName)) {
                 m_errorMessage = "list: couldn't parse name";
                 appendToOutput(m_errorMessage);
                 return false;
             }
 
-            std::cout<<"break!!!"<<std::endl;
-
-            // now try and extract the actual words
-            std::vector<std::string> list;
-            if(!m_func.getValueB<decltype(list)>(list)) {
-                m_errorMessage = "list: couldn't parse word list";
-                return false;
-            }
-
-            std::cout<<"done!!!"<<std::endl;
-
             // add list to list cache
             VarCache::listCache[listName] = list;
             return true;
-
         }
         
     };

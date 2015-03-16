@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "Value.hpp"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -22,7 +24,7 @@ namespace jasl {
         static std::map<std::string, bool> boolCache;
         static std::map<std::string, double> doubleCache;
         static std::map<std::string, std::string> stringCache;
-        static std::map<std::string, std::vector<std::string>> listCache;
+        static std::map<std::string, ValueArray> listCache;
         static std::vector<std::string> args;
 
         /// the script represents the whole program

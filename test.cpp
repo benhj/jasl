@@ -326,6 +326,23 @@ void testArgsCommand()
     clearCaches();
 }
 
+void testList()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [hello there] -> s;", ss);
+
+    std::string tokenA;
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["s"][0]);
+    ASSERT_EQUAL("hello", tokenA, "testList tokenA");
+
+    std::string tokenB;
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["s"][1]);
+    ASSERT_EQUAL("there", tokenB, "testList tokenB");
+
+    clearCaches();
+}
+
 int main()
 {
     testMath();
@@ -354,6 +371,7 @@ int main()
     testStartCommand();
     testCallCommand();
     testArgsCommand();
+    testList();
     showResults();
     return 0;
 }
