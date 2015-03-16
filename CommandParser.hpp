@@ -278,8 +278,17 @@ namespace jasl
             listToString  %= string("list_to_string")
                           >> (bracketedWords | genericString)
                           >> lit("->")
-                          >> genericString // the name of the list
+                          >> genericString 
                           >> ';';
+
+            // list_token_index "hello" in [hello there] -> s;
+            listTokenIndex  %= string("list_token_index")
+                            >> (genericString | doubleQuotedString)
+                            >> lit("in")
+                            >> (bracketedWords | genericString)
+                            >> lit("->")
+                            >> genericString 
+                            >> ';';
 
             // appends to a string
             // string_append name, "hello!";           
@@ -360,6 +369,7 @@ namespace jasl
                          | stringLengthRule
                          | stringRule
                          | listToString
+                         | listTokenIndex
                          | stringList
                          | inputRule;
                          
@@ -391,6 +401,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> stringToDoubleRule;
         qi::rule<Iterator, Function(), ascii::space_type> inputRule;
         qi::rule<Iterator, Function(), ascii::space_type> listToString;
+        qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

@@ -362,6 +362,23 @@ void testSymbolListToString()
     clearCaches();
 }
 
+void testListTokenIndex()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list_token_index \"are\" in [hello there what are you doing] -> i;", ss);
+    ci.parseAndInterpretSingleCommand("string \"you\" -> token;");
+    ci.parseAndInterpretSingleCommand("list_token_index token in [hello there what are you doing] -> j;", ss);
+    ci.parseAndInterpretSingleCommand("list [hello there what are you doing] -> L;");
+    ci.parseAndInterpretSingleCommand("list_token_index token in L -> p;", ss);
+    ci.parseAndInterpretSingleCommand("list_token_index token in [hello there what are you doing] -> q;", ss);
+    ASSERT_EQUAL(3, ll::VarCache::intCache["i"], "list_token_index A");
+    ASSERT_EQUAL(4, ll::VarCache::intCache["j"], "list_token_index B");
+    ASSERT_EQUAL(4, ll::VarCache::intCache["p"], "list_token_index C");
+    ASSERT_EQUAL(4, ll::VarCache::intCache["q"], "list_token_index D");
+    clearCaches();
+}
+
 int main()
 {
     testMath();
@@ -393,6 +410,7 @@ int main()
     testList();
     testRawListToString();
     testSymbolListToString();
+    testListTokenIndex();
     showResults();
     return 0;
 }
