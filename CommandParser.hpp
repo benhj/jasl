@@ -266,19 +266,17 @@ namespace jasl
             // e.g. list [hello there] -> L;
             // will be useful for pattern matching
             // a collection of words
-            words         %= (*word); // zero of more words
-            //bracketedWord %= '[' >> words >> ']';
-            stringList    %= string("list")
-                          >> '['
-                          >> words
-                          >> ']'
-                          >> lit("->")
-                          >> genericString // the name of the list
-                          >> ';';
+            words          %= (*word); // zero or more words
+            bracketedWords %= '[' >> words >> ']';
+            stringList     %= string("list")
+                           >> bracketedWords
+                           >> lit("->")
+                           >> genericString // the name of the list
+                           >> ';';
 
             // list_to_string [hello there] -> s;
             listToString  %= string("list_to_string")
-                          >> (('[' >> words >> ']') | genericString)
+                          >> (bracketedWords | genericString)
                           >> lit("->")
                           >> genericString // the name of the list
                           >> ';';
@@ -412,6 +410,7 @@ namespace jasl
         // Core rule declarations
         // qi::rule<Iterator, Function(), ascii::space_type> bracketedWord;
         qi::rule<Iterator, std::string(), ascii::space_type> word;
+        qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;
         qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
