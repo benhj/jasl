@@ -32,7 +32,7 @@ namespace jasl
         {
             std::string varName;
             if(!m_func.getValueC<std::string>(varName)) {
-                m_errorMessage = "list_token_index: couldn't parse list";
+                m_errorMessage = "index: couldn't parse list";
                 appendToOutput(m_errorMessage);
                 return false;
             }

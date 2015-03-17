@@ -282,7 +282,7 @@ namespace jasl
                           >> ';';
 
             // list_token_index "hello" in [hello there] -> s;
-            listTokenIndex  %= string("list_token_index")
+            listTokenIndex  %= string("index of")
                             >> (genericString | doubleQuotedString)
                             >> lit("in")
                             >> (bracketedWords | genericString)

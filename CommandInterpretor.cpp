@@ -138,7 +138,7 @@ namespace jasl {
 
             PROCESS_X_COMMAND(ListToString);
 
-        } else if(searchString(func, "list_token_index")) {
+        } else if(searchString(func, "index of")) {
 
             PROCESS_X_COMMAND(ListTokenIndex);
 
