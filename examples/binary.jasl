@@ -2,12 +2,12 @@ block binary {
     
     // make a string to store the binary string.
     // starts out empty
-    string " " -> binaryString;
+    string [] -> binaryString;
 
     while (number > 0 ) {
         integer (number % 2) -> bit;
         integer (number / 2) -> number;
-        string_append binaryString, bit;
+        append bit to end of binaryString -> binaryString;
     }
 
     // reverse the string now since was constructed 
@@ -33,9 +33,10 @@ start {
     // convert the above arbitrary integer to 
     // a binary representation
     echo_nl " ";
-    string "Going to convert the number " -> s;
-    string_append s, number;
-    string_append s, " to binary:";
+    string [Going to convert the number] -> s;
+    append " " to end of s -> s;
+    append number to end of s -> s;
+    append " to binary:" to end of s -> s;
     echo_nl s;
     echo_nl " ";
     call binary;

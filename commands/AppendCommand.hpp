@@ -27,34 +27,46 @@ namespace jasl
 
         bool execute() override
         {
-            std::string stringName;
-            if(!m_func.getValueA<std::string>(stringName)) {
-                m_errorMessage = "string: couldn't parse";
-                appendToOutput(m_errorMessage);
+
+            std::string key;
+            if(!m_func.getValueC<std::string>(key)) {
                 return false;
             }
 
-            if(tryLiteralExtraction(stringName)) { return true; }
-            if(trySymbolExtraction(stringName)) { return true; }
-            if(tryNumericExtraction(stringName)) { return true; }
+            if(tryLiteralExtraction(key)) { return true; }
+            if(trySymbolExtraction(key)) { return true; }
+            if(tryNumericExtraction(key)) { return true; }
             m_errorMessage = "echo: couldn't parse";
             appendToOutput(m_errorMessage);
             return false;
         }
 
     private:
+
+        OptionalString getStringBeingAppendedTo()
+        {
+            std::string stringBeingAppendedTo;
+            if(!m_func.getValueB<std::string>(stringBeingAppendedTo)) {
+                LiteralString literal;
+                if(!m_func.getValueB<LiteralString>(literal)) {
+                    return OptionalString();
+                }
+                return OptionalString(literal.literal);
+            }
+            auto result = VarExtractor::searchString(stringBeingAppendedTo);
+            if(result) {
+                return OptionalString(*result);
+            }
+            return OptionalString();
+        }
+
         bool tryLiteralExtraction(std::string const &key) 
         {
-
-            // gracefully fail if string with name cannot be found
-            auto it = VarCache::stringCache.find(key);
-            if(it == std::end(VarCache::stringCache)) {
-                return false;
-            }
-            
+            auto stringBeingAppendedTo(getStringBeingAppendedTo());
+            if(!stringBeingAppendedTo) { return false; }
             LiteralString literalString;
-            if(m_func.getValueB<LiteralString>(literalString)) {
-                VarCache::stringCache[key] = VarCache::stringCache[key].append(literalString.literal);
+            if(m_func.getValueA<LiteralString>(literalString)) {
+                VarCache::stringCache[key] = (*stringBeingAppendedTo).append(literalString.literal);
                 return true;
             }
             return false;
@@ -62,41 +74,37 @@ namespace jasl
 
         bool trySymbolExtraction(std::string const &key)
         {
-
-            // gracefully fail if string with name cannot be found
-            auto it = VarCache::stringCache.find(key);
-            if(it == std::end(VarCache::stringCache)) {
-                return false;
-            }
+            auto stringBeingAppendedTo(getStringBeingAppendedTo());
+            if(!stringBeingAppendedTo) { return false; }
 
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueB<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol)) {
                 {
                     auto result = VarExtractor::searchInt(symbol);
                     if(result) {
-                        VarCache::stringCache[key] = VarCache::stringCache[key].append(std::to_string(*result));
+                        VarCache::stringCache[key] = (*stringBeingAppendedTo).append(std::to_string(*result));
                         return true;
                     }
                 }
                 {
                     auto result = VarExtractor::searchDouble(symbol);
                     if(result) {
-                        VarCache::stringCache[key] = VarCache::stringCache[key].append(std::to_string(*result));
+                        VarCache::stringCache[key] = (*stringBeingAppendedTo).append(std::to_string(*result));
                         return true;
                     }
                 }
                 {
                     auto result = VarExtractor::searchBool(symbol);
                     if(result) {
-                        VarCache::stringCache[key] = VarCache::stringCache[key].append(std::to_string(*result));
+                        VarCache::stringCache[key] = (*stringBeingAppendedTo).append(std::to_string(*result));
                         return true;
                     }
                 }
                 {
                     auto result = VarExtractor::searchString(symbol);
                     if(result) {
-                        VarCache::stringCache[key] = VarCache::stringCache[key].append(*result);
+                        VarCache::stringCache[key] = (*stringBeingAppendedTo).append(*result);
                         return true;
                     }
                 }
@@ -108,17 +116,13 @@ namespace jasl
 
         bool tryNumericExtraction(std::string const &key)
         {
-
-            // gracefully fail if string with name cannot be found
-            auto it = VarCache::stringCache.find(key);
-            if(it == std::end(VarCache::stringCache)) {
-                return false;
-            }
+            auto stringBeingAppendedTo(getStringBeingAppendedTo());
+            if(!stringBeingAppendedTo) { return false; }
 
             {
                 auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramB);
                 if(result) {
-                    VarCache::stringCache[key] = VarCache::stringCache[key].append(std::to_string(*result));
+                    VarCache::stringCache[key] = (*stringBeingAppendedTo).append(std::to_string(*result));
                     return true;
                 }
             }
@@ -128,7 +132,7 @@ namespace jasl
                 if(result) {
                     std::ostringstream ss;
                     ss << *result;
-                     VarCache::stringCache[key] = VarCache::stringCache[key].append(ss.str());
+                     VarCache::stringCache[key] = (*stringBeingAppendedTo).append(ss.str());
                     return true;
                 }
             }
@@ -136,7 +140,7 @@ namespace jasl
             {
                 auto result = VarExtractor::trySingleBoolExtraction(m_func.paramB);
                 if(result) {
-                    VarCache::stringCache[key] = VarCache::stringCache[key].append(std::to_string(*result));
+                    VarCache::stringCache[key] = (*stringBeingAppendedTo).append(std::to_string(*result));
                     return true;
                 }
             }

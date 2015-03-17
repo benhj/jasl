@@ -291,12 +291,15 @@ namespace jasl
                             >> ';';
 
             // appends to a string
-            // string_append name, "hello!";           
-            appendRule %= string("string_append")
-                       >> genericString >> ','
+            // append "hello" to end of s -> result;    
+            appendRule %= string("append")
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
                            comparisonExpression | bracketedComparisonExpression)
+                       >> lit("to end of")
+                       >> (doubleQuotedString | genericString)
+                       >> lit("->")
+                       >> genericString
                        >> ';';
 
             // string_reverse name; 

@@ -182,7 +182,7 @@ void testAppendLiteral()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("string_append s, \", world!\";", ss);
+    ci.parseAndInterpretSingleCommand("append \", world!\" to end of s -> s;", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendLiteral");
     clearCaches();
 }
@@ -193,7 +193,7 @@ void testAppendString()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("string \", world!\" -> b;", ss);
-    ci.parseAndInterpretSingleCommand("string_append s, b;", ss);
+    ci.parseAndInterpretSingleCommand("append b to end of s -> s;", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendString");
     clearCaches();
 }

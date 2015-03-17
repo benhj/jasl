@@ -99,7 +99,7 @@ namespace jasl {
 
             PROCESS_X_COMMAND(String);
 
-        } else if(searchString(func, "string_append")) {
+        } else if(searchString(func, "append")) {
 
             PROCESS_X_COMMAND(Append);
 
