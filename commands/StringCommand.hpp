@@ -57,7 +57,7 @@ namespace jasl
 
         bool trySymbolExtraction(std::string const &key)
         {
-                        // Now try extracting a symbol
+            // Now try extracting a symbol
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
                 {
@@ -88,7 +88,6 @@ namespace jasl
                         return true;
                     }
                 }
-                return true;
             }
 
             return false;
