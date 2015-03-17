@@ -62,8 +62,14 @@ void testVarNewSyntaxFromString()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer \"1\" -> i;");
     ci.parseAndInterpretSingleCommand("decimal \"1.1\" -> j;");
-    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testVarNewSyntax::i is 1");
-    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testVarNewSyntax::j is 1.1");
+    ci.parseAndInterpretSingleCommand("string \"2\" -> sint;");
+    ci.parseAndInterpretSingleCommand("string \"2.2\" -> sdouble;");
+    ci.parseAndInterpretSingleCommand("integer sint -> k;");
+    ci.parseAndInterpretSingleCommand("decimal sdouble -> l;");
+    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testVarNewSyntaxFromString A");
+    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testVarNewSyntaxFromString B");
+    ASSERT_EQUAL(2, ll::VarCache::intCache["k"], "testVarNewSyntaxFromString C");
+    ASSERT_EQUAL(2.2, ll::VarCache::doubleCache["l"], "testVarNewSyntaxFromString D");
     clearCaches();
 }
 
