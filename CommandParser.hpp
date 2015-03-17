@@ -123,21 +123,21 @@ namespace jasl
 
             // integer 4 -> i;
             intNewSyntax %= string("integer")
-                         >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                         >> (mathExpression | bracketedMathExpression | intRule | genericString | doubleQuotedString)
                          >> lit("->")
                          >> (genericString)
                          >> ';';
 
-            // decimal 5.0 -> d;
+            // decimal 5.0 -> d; 
             doubleNewSyntax %= string("decimal")
-                            >> (mathExpression | bracketedMathExpression | doubleRule | genericString)
+                            >> (mathExpression | bracketedMathExpression | doubleRule | genericString | doubleQuotedString)
                             >> lit("->")
                             >> (genericString)
                             >> ';';
 
             // boolean true -> b;
             boolNewSyntax %= string("boolean")
-                          >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString)
+                          >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString | doubleQuotedString)
                           >> lit("->")
                           >> (genericString)
                           >> ';';
@@ -255,7 +255,7 @@ namespace jasl
             stringRule %= string("string")
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
-                           comparisonExpression | bracketedComparisonExpression) >> lit("->")
+                           comparisonExpression | bracketedComparisonExpression | bracketedWords) >> lit("->")
                        >> genericString 
                        >> ';';
 

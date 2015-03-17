@@ -57,6 +57,16 @@ void testVarNewSyntax()
     clearCaches();
 }
 
+void testVarNewSyntaxFromString()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("integer \"1\" -> i;");
+    ci.parseAndInterpretSingleCommand("decimal \"1.1\" -> j;");
+    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testVarNewSyntax::i is 1");
+    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testVarNewSyntax::j is 1.1");
+    clearCaches();
+}
+
 void testEchoLiterals()
 {
     std::ostringstream ss;
@@ -148,6 +158,17 @@ void testStringWithMath()
     ASSERT_EQUAL("39.2", ll::VarCache::stringCache["numberMath"], "testStringWithMath A");
     ASSERT_EQUAL("35", ll::VarCache::stringCache["numberMathB"], "testStringWithMath B");
     clearCaches();
+}
+
+void testStringFromList()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string [hello there] -> listString;", ss);
+    ci.parseAndInterpretSingleCommand("list [another list] -> listB;");
+    ci.parseAndInterpretSingleCommand("string listB -> listStringB;", ss);
+    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["listString"], "testStringFromList A");
+    ASSERT_EQUAL("another list", ll::VarCache::stringCache["listStringB"], "testStringFromList B");
 }
 
 void testLiteralStringToInteger()
@@ -383,6 +404,7 @@ int main()
 {
     testMath();
     testVarNewSyntax();
+    testVarNewSyntaxFromString();
     testEchoLiterals();
     testEchoNLLiterals();
     testEchoSymbols();
@@ -392,6 +414,7 @@ int main()
     testStringWithLiteral();
     testStringWithNumbers();
     testStringWithMath();
+    testStringFromList();
     testLiteralStringToInteger();
     testSymbolStringToInteger();
     testLiteralStringToDecimal();

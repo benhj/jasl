@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Command.hpp"
+#include "ListToStringCommand.hpp"
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 #include <sstream>
@@ -37,6 +38,7 @@ namespace jasl
             if(tryLiteralExtraction(stringName)) { return true; }
             if(trySymbolExtraction(stringName)) { return true; }
             if(tryNumericExtraction(stringName)) { return true; }
+            if(tryListExtraction()) { return true; }
             m_errorMessage = "echo: couldn't parse";
             appendToOutput(m_errorMessage);
             return false;
@@ -123,6 +125,11 @@ namespace jasl
 
             return false;
 
+        }
+
+        bool tryListExtraction()
+        {
+            return ListToStringCommand(m_func, m_outputStream).execute();
         }
 
     };

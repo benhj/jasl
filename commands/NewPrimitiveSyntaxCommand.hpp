@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Command.hpp"
+#include "StringToPrimitiveCommand.hpp"
 #include "../VarCache.hpp"
 
 namespace jasl {
@@ -52,7 +53,8 @@ namespace jasl {
         {
             auto a = VarExtractor::trySingleIntExtraction(m_func.paramA);
             if (!a) {
-                return false;
+                // try converting a string to an integer
+                return StringToPrimitiveCommand(m_func, m_outputStream).execute();
             } 
             VarCache::intCache[varName] = *a;
             return true;
@@ -62,7 +64,8 @@ namespace jasl {
         {
             auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramA);
             if (!a) {
-                return false;
+                // try converting a string to a double
+                return StringToPrimitiveCommand(m_func, m_outputStream).execute();
             } 
 
             VarCache::doubleCache[varName] = *a;

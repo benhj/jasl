@@ -48,10 +48,12 @@ namespace jasl
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
                 try {
-                    if(m_func.name == "string_to_integer") {
+                    // also handled off directy from NewPrimitiveSyntaxCommand so need
+                    // to also check if function name is integer or decimal in respective branch
+                    if(m_func.name == "string_to_integer" || m_func.name == "integer") {
                         VarCache::intCache[varName] = boost::lexical_cast<int64_t>(literalString.literal);
                         return true;
-                    } else if(m_func.name == "string_to_decimal") {
+                    } else if(m_func.name == "string_to_decimal" || m_func.name == "decimal") {
                         VarCache::doubleCache[varName] = boost::lexical_cast<double>(literalString.literal);
                         return true;
                     }
