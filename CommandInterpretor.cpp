@@ -111,11 +111,6 @@ namespace jasl {
 
             PROCESS_X_COMMAND(StringLength);
 
-        } else if(searchString(func, "string_to_integer") ||
-                  searchString(func, "string_to_decimal")) {
-
-            PROCESS_X_COMMAND(StringToPrimitive);
-
         } else if(searchString(func, "list")) {
 
             PROCESS_X_COMMAND(List);
@@ -133,10 +128,6 @@ namespace jasl {
         } else if(searchString(func, "input")) {
 
             PROCESS_X_COMMAND(Input);
-
-        } else if(searchString(func, "list_to_string")) {
-
-            PROCESS_X_COMMAND(ListToString);
 
         } else if(searchString(func, "index of")) {
 

@@ -23,15 +23,12 @@ block binary {
 // ./jasl examples/binary.jasl 542354326
 start {
     
-    // get first program argument which should be a number
-    // should probably add some protection
+    // get first program argument which is a string
+    // that will need to be converted to a number
     args 0 -> a;
 
-    // convert a to an integer i
-    string_to_integer a -> i;
-
-    // all variables in jasl are global so we can do this!
-    integer i -> number;
+    // convert a to an integer 
+    integer a -> number;
 
     // convert the above arbitrary integer to 
     // a binary representation

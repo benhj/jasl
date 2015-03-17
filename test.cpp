@@ -177,45 +177,6 @@ void testStringFromList()
     ASSERT_EQUAL("another list", ll::VarCache::stringCache["listStringB"], "testStringFromList B");
 }
 
-void testLiteralStringToInteger()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string_to_integer \"123\" -> a;", ss);
-    ASSERT_EQUAL(123, ll::VarCache::intCache["a"], "testLiteralStringToInteger");
-    clearCaches();
-}
-
-void testLiteralStringToDecimal()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string_to_decimal \"3.14\" -> a;", ss);
-    ASSERT_EQUAL(3.14, ll::VarCache::doubleCache["a"], "testLiteralStringToDecimal");
-    clearCaches();
-}
-
-void testSymbolStringToInteger()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"456\" -> a;", ss);
-    ci.parseAndInterpretSingleCommand("string_to_integer a -> s;", ss);
-    ASSERT_EQUAL(456, ll::VarCache::intCache["s"], "testSymbolStringToInteger");
-    clearCaches();
-}
-
-
-void testSymbolStringToDecimal()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"3.14\" -> a;", ss);
-    ci.parseAndInterpretSingleCommand("string_to_decimal a -> s;", ss);
-    ASSERT_EQUAL(3.14, ll::VarCache::doubleCache["s"], "testSymbolStringToDecimal");
-    clearCaches();
-}
-
 void testAppendLiteral()
 {
     std::ostringstream ss;
@@ -370,25 +331,6 @@ void testList()
     clearCaches();
 }
 
-void testRawListToString()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list_to_string [hello there] -> s;", ss);
-    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["s"], "testListToString raw list");
-    clearCaches();
-}
-
-void testSymbolListToString()
-{
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list [hello there] -> l;", ss);
-    ci.parseAndInterpretSingleCommand("list_to_string l -> s;", ss);
-    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["s"], "testListToString symbol list");
-    clearCaches();
-}
-
 void testListTokenIndex()
 {
     std::ostringstream ss;
@@ -421,10 +363,6 @@ int main()
     testStringWithNumbers();
     testStringWithMath();
     testStringFromList();
-    testLiteralStringToInteger();
-    testSymbolStringToInteger();
-    testLiteralStringToDecimal();
-    testSymbolStringToDecimal();
     testAppendLiteral();
     testAppendString();
     testReverseString();
@@ -437,8 +375,6 @@ int main()
     testCallCommand();
     testArgsCommand();
     testList();
-    testRawListToString();
-    testSymbolListToString();
     testListTokenIndex();
     showResults();
     return 0;
