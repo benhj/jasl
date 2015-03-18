@@ -356,6 +356,54 @@ void testListGetTokenSymbol()
     clearCaches();
 }
 
+void testListSetTokenRaw()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("set token 0 in [hello there] to \"goodbye\" -> s;", ss);
+    std::string tokenA;
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["s"][0]);
+    ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenRaw A");
+
+    ci.parseAndInterpretSingleCommand("string \"yes\" -> b;", ss);
+    ci.parseAndInterpretSingleCommand("set token 1 in [hello there] to b -> s;", ss);
+    std::string tokenB;
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["s"][1]);
+    ASSERT_EQUAL("yes", tokenB, "testListSetTokenRaw B");
+
+    clearCaches();
+}
+
+void testListSetTokenSymbol()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", ss);
+    ci.parseAndInterpretSingleCommand("list [what are you doing] -> lb;", ss);
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", ss);
+    ci.parseAndInterpretSingleCommand("integer 3 -> i;", ss);
+    ci.parseAndInterpretSingleCommand("integer 2 -> j;", ss);
+    ci.parseAndInterpretSingleCommand("set token 0 in la to \"goodbye\" -> sa;", ss);
+    ci.parseAndInterpretSingleCommand("set token i in lb to \"indeed\" -> sb;", ss);
+
+    std::string tokenA;
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["sa"][0]);
+    ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenSymbol A");
+    std::string tokenB;
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["sb"][3]);
+    ASSERT_EQUAL("indeed", tokenB, "testListSetTokenSymbol B");
+    std::string tokenC;
+    ll::VarExtractor::tryAnyCast(tokenC, ll::VarCache::listCache["lb"][2]);
+    ASSERT_EQUAL("you", tokenC, "testListSetTokenSymbol C");
+    ci.parseAndInterpretSingleCommand("set token j in lb to \"no\" -> lb;", ss);
+    std::string tokenD;
+    ll::VarExtractor::tryAnyCast(tokenD, ll::VarCache::listCache["lb"][2]);
+    ASSERT_EQUAL("no", tokenD, "testListSetTokenSymbol D");
+
+
+    clearCaches();
+}
+
 void testListTokenIndex()
 {
     std::ostringstream ss;
@@ -403,6 +451,8 @@ int main()
     testListTokenIndex();
     testListGetTokenRaw();
     testListGetTokenSymbol();
+    testListSetTokenRaw();
+    testListSetTokenSymbol();
     showResults();
     return 0;
 }

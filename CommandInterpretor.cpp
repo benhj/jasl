@@ -19,6 +19,7 @@
 #include "commands/InputCommand.hpp"
 #include "commands/ListCommand.hpp"
 #include "commands/ListGetTokenCommand.hpp"
+#include "commands/ListSetTokenCommand.hpp"
 #include "commands/ListToStringCommand.hpp"
 #include "commands/ListTokenIndexCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
@@ -135,8 +136,12 @@ namespace jasl {
             PROCESS_X_COMMAND(ListTokenIndex);
 
         } else if(searchString(func, "get token")) {
-            
+
             PROCESS_X_COMMAND(ListGetToken);
+
+        } else if(searchString(func, "set token")) {
+
+            PROCESS_X_COMMAND(ListSetToken);
 
         }      
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
