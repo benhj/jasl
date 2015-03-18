@@ -331,6 +331,31 @@ void testList()
     clearCaches();
 }
 
+void testListGetTokenRaw()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("get token 0 from [hello there] -> s;", ss);
+    ci.parseAndInterpretSingleCommand("integer 1 -> i;");
+    ci.parseAndInterpretSingleCommand("get token i from [hello there] -> b;", ss);
+    ASSERT_EQUAL("hello", ll::VarCache::stringCache["s"], "testListGetTokenRaw A");
+    ASSERT_EQUAL("there", ll::VarCache::stringCache["b"], "testListGetTokenRaw B");
+    clearCaches();
+}
+
+void testListGetTokenSymbol()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [hello there] -> lst;", ss);
+    ci.parseAndInterpretSingleCommand("get token 1 from lst -> s;", ss);
+    ci.parseAndInterpretSingleCommand("integer 0 -> i;");
+    ci.parseAndInterpretSingleCommand("get token i from lst -> b;", ss);
+    ASSERT_EQUAL("there", ll::VarCache::stringCache["s"], "testListGetTokenSymbol A");
+    ASSERT_EQUAL("hello", ll::VarCache::stringCache["b"], "testListGetTokenSymbol B");
+    clearCaches();
+}
+
 void testListTokenIndex()
 {
     std::ostringstream ss;
@@ -376,6 +401,8 @@ int main()
     testArgsCommand();
     testList();
     testListTokenIndex();
+    testListGetTokenRaw();
+    testListGetTokenSymbol();
     showResults();
     return 0;
 }

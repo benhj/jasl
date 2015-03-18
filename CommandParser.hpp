@@ -281,7 +281,7 @@ namespace jasl
                           >> genericString 
                           >> ';';
 
-            // list_token_index "hello" in [hello there] -> s;
+            // index of "hello" in [hello there] -> s;
             listTokenIndex  %= string("index of")
                             >> (genericString | doubleQuotedString)
                             >> lit("in")
@@ -289,6 +289,26 @@ namespace jasl
                             >> lit("->")
                             >> genericString 
                             >> ';';
+
+            // get token 0 from [hello there] -> t;
+            listGetToken  %= string("get token")
+                          >> (genericString | intRule)
+                          >> lit("from")
+                          >> (bracketedWords | genericString)
+                          >> lit("->")
+                          >> genericString 
+                          >> ';';
+
+            // set token 0 in [hello there] to "goodbye" -> t;
+            listSetToken  %= string("set token")
+                          >> (genericString | intRule)
+                          >> lit("in")
+                          >> (bracketedWords | genericString)
+                          >> lit("to")
+                          >> (genericString | doubleQuotedString)
+                          >> lit("->")
+                          >> genericString 
+                          >> ';';
 
             // appends to a string
             // append "hello" to end of s -> result;    
@@ -371,6 +391,8 @@ namespace jasl
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
+                         | listGetToken
+                         | listSetToken
                          | listToString
                          | listTokenIndex
                          | stringList
@@ -405,6 +427,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> inputRule;
         qi::rule<Iterator, Function(), ascii::space_type> listToString;
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
+        qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
+        qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

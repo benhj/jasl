@@ -29,6 +29,9 @@ namespace jasl {
 
         /// the script represents the whole program
         static std::string script;
+
+        /// for storing last known error
+        static std::string lastKnownError;
     };
 
 }

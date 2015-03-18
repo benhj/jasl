@@ -1,8 +1,8 @@
 //
-//  ListTokenIndexCommand.cpp
+//  ListGetTokenCommand.cpp
 //  jasl
 //
-//  Created by Ben Jones on 16/03/15
+//  Created by Ben Jones on 18/03/15
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
@@ -19,11 +19,11 @@
 
 namespace jasl
 {
-    class ListTokenIndexCommand : public Command
+    class ListGetTokenCommand : public Command
     {
     public:
-        ListTokenIndexCommand(Function &func_,
-                              OptionalOutputStream const &output = OptionalOutputStream())
+        ListGetTokenCommand(Function &func_,
+                            OptionalOutputStream const &output = OptionalOutputStream())
         : Command(func_, output)
         {
         }
@@ -32,42 +32,27 @@ namespace jasl
         {
             std::string varName;
             if(!m_func.getValueC<std::string>(varName)) {
-                VarCache::lastKnownError = "index: couldn't parse list";
+                setLastErrorMessage("get token: couldn't parse variable name");
                 return false;
             }
 
             if(tryWithRawList(varName)) { return true; }
             if(tryWithSymbolList(varName)) { return true; }
-
+            setLastErrorMessage("get token: no list found");
             return false;
         }
     private:
 
-        OptionalString getTestToken()
+        OptionalInt getIndex()
         {
-            LiteralString literal;
-            std::string testString;
-            if(!m_func.getValueA<LiteralString>(literal)) {
-                std::string symbol;
-                if(!m_func.getValueA<std::string>(symbol)) {
-                    return OptionalString();
-                } 
-
-                auto it = VarCache::stringCache.find(symbol);
-                if(it == VarCache::stringCache.end()) {
-                    return OptionalString();
-                }
-                return OptionalString(it->second); 
-            } else {
-                return OptionalString(literal.literal);
-            }
-            return OptionalString();
+            return VarExtractor::trySingleIntExtraction(m_func.paramA);
         }
 
         bool tryWithRawList(std::string const &varName) 
         {
-            auto testToken(getTestToken());
-            if(!testToken) {
+            auto index(getIndex());
+            if(!index) {
+                setLastErrorMessage("get token: error getting index");
                 return false;
             }
 
@@ -79,16 +64,19 @@ namespace jasl
                     for(auto & val : v) {
                         std::string tok;
                         if(!VarExtractor::tryAnyCast(tok, val)) {
+                            setLastErrorMessage("get token: error getting list token");
                             return false;
                         }
-                        if(tok == testToken) {
-                            VarCache::intCache[varName] = i;
+                        if(i == *index) {
+                            VarCache::stringCache[varName] = tok;
                             return true;
                         }
                         ++i;
                     }
+                    setLastErrorMessage("get token: error getting list");
                     return false;
                 } catch( boost::bad_lexical_cast const& ) {
+                    setLastErrorMessage("get token: error in lexical cast");
                     return false;
                 }
             }
@@ -98,8 +86,9 @@ namespace jasl
         bool tryWithSymbolList(std::string const &varName)
         {
 
-            auto testToken(getTestToken());
-            if(!testToken) {
+            auto index(getIndex());
+            if(!index) {
+                setLastErrorMessage("get token: error getting index");
                 return false;
             }
             
@@ -118,16 +107,19 @@ namespace jasl
                         for(auto & val : it->second) {
                             std::string tok;
                             if(!VarExtractor::tryAnyCast(tok, val)) {
+                                setLastErrorMessage("get token: error getting list token");
                                 return false;
                             }
-                            if(tok == testToken) {
-                                VarCache::intCache[varName] = i;
+                            if(i == *index) {
+                                VarCache::stringCache[varName] = tok;
                                 return true;
                             }
                             ++i;
                         }
+                        setLastErrorMessage("get token: error getting list");
                         return false;
                     } catch( boost::bad_lexical_cast const& ) {
+                        setLastErrorMessage("get token: error in lexical cast");
                         return false;
                     }
                 }

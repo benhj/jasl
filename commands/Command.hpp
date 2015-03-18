@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../Function.hpp"
+#include "../VarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>
@@ -59,6 +60,11 @@ namespace jasl
             if(m_outputStream) {
                 *m_outputStream << message << std::endl;
             }
+        }
+
+        void setLastErrorMessage(std::string const &error)
+        {
+            VarCache::lastKnownError = error;
         }
 
     };
