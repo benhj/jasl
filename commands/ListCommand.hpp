@@ -32,14 +32,13 @@ namespace jasl
             // now try and extract the actual words
             ValueArray list;
             if(!m_func.getValueA<decltype(list)>(list)) {
-                m_errorMessage = "list: couldn't parse word list";
+                setLastErrorMessage("list: couldn't parse word list");
                 return false;
             }
 
             std::string listName;
             if(!m_func.getValueB<std::string>(listName)) {
-                m_errorMessage = "list: couldn't parse name";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("list: couldn't parse name");
                 return false;
             }
 

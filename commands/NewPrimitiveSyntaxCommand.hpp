@@ -43,8 +43,7 @@ namespace jasl {
 
             } 
 
-            m_errorMessage = "cvar: type not supported";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("cvar: type not supported");
             return false;
         }
 

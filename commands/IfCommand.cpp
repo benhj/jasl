@@ -43,8 +43,7 @@ namespace jasl
             if (success) {
                 success = parseCommands(innerFuncs);
             } else {
-                m_errorMessage = "IfCommand: Error interpreting if statement";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("IfCommand: Error interpreting if statement");
                 return false;
             }
         }

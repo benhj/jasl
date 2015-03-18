@@ -32,8 +32,7 @@ namespace jasl
         {
             std::string varName;
             if(!m_func.getValueB<std::string>(varName)) {
-                m_errorMessage = "string_to_: couldn't parse integer name";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("string_to_: couldn't parse integer name");
                 return false;
             }
 
@@ -59,8 +58,7 @@ namespace jasl
                     }
                     return false;
                 } catch( boost::bad_lexical_cast const& ) {
-                    m_errorMessage = "string_to_: couldn't parse string literal.";
-                    appendToOutput(m_errorMessage);
+                    setLastErrorMessage("string_to_: couldn't parse string literal.");
                     return false;
                 }
             }
@@ -86,8 +84,7 @@ namespace jasl
                         }
                         return false;
                     } catch( boost::bad_lexical_cast const& ) {
-                        m_errorMessage = "string_to_: couldn't parse string literal.";
-                        appendToOutput(m_errorMessage);
+                        setLastErrorMessage("string_to_: couldn't parse string literal.");
                         return false;
                     }
                 }

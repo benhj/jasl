@@ -32,8 +32,7 @@ namespace jasl
         {
             std::string varName;
             if(!m_func.getValueB<std::string>(varName)) {
-                m_errorMessage = "list_to_string: couldn't parse list";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("list_to_string: couldn't parse list");
                 return false;
             }
 
@@ -65,8 +64,7 @@ namespace jasl
                     VarCache::stringCache[varName] = s;
                     return true;
                 } catch( boost::bad_lexical_cast const& ) {
-                    m_errorMessage = "list_to_string: couldn't parse list";
-                    appendToOutput(m_errorMessage);
+                    setLastErrorMessage("list_to_string: couldn't parse list");
                     return false;
                 }
             }
@@ -102,8 +100,7 @@ namespace jasl
                         VarCache::stringCache[varName] = s;
                         return true;
                     } catch( boost::bad_lexical_cast const& ) {
-                        m_errorMessage = "list_to_string: couldn't parse list";
-                        appendToOutput(m_errorMessage);
+                        setLastErrorMessage("list_to_string: couldn't parse list");
                         return false;
                     }
                 }

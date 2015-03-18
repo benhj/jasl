@@ -30,8 +30,7 @@ namespace jasl
         {
             std::string stringName;
             if(!m_func.getValueB<std::string>(stringName)) {
-                m_errorMessage = "string: couldn't parse";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("string: couldn't parse");
                 return false;
             }
 
@@ -39,8 +38,7 @@ namespace jasl
             if(trySymbolExtraction(stringName)) { return true; }
             if(tryNumericExtraction(stringName)) { return true; }
             if(tryListExtraction()) { return true; }
-            m_errorMessage = "echo: couldn't parse";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("echo: couldn't parse");
             return false;
         }
 

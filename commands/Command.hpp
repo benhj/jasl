@@ -26,13 +26,7 @@ namespace jasl
                 OptionalOutputStream const &output = OptionalOutputStream())
         : m_func(func_) 
         , m_outputStream(output)
-        , m_errorMessage("")
         {
-        }
-
-        std::string getErrorMessage() const 
-        {
-            return m_errorMessage;
         }
 
         virtual bool execute() = 0;
@@ -42,9 +36,6 @@ namespace jasl
 
         /// for optionally capturing output
         ::boost::optional<std::ostream&> m_outputStream;
-
-        /// for setting an error message that can be later queried
-        std::string m_errorMessage;
 
         template <typename T>
         void appendToOutput(T const &message) 

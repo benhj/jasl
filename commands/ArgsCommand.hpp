@@ -29,15 +29,13 @@ namespace jasl
         {
             int64_t arg;
             if(!m_func.getValueA<int64_t>(arg)) {
-                m_errorMessage = "args: couldn't parse argument index";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("args: couldn't parse argument index");
                 return false;
             }
 
             std::string argString;
             if(!m_func.getValueB<std::string>(argString)) {
-                m_errorMessage = "args: couldn't parse argument string variable name";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("args: couldn't parse argument string variable name");
                 return false;
             }
 

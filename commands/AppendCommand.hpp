@@ -36,8 +36,7 @@ namespace jasl
             if(tryLiteralExtraction(key)) { return true; }
             if(trySymbolExtraction(key)) { return true; }
             if(tryNumericExtraction(key)) { return true; }
-            m_errorMessage = "echo: couldn't parse";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("append: couldn't parse");
             return false;
         }
 

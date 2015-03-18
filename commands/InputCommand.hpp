@@ -34,8 +34,7 @@ namespace jasl
 
             std::string answer;
             if(!m_func.getValueB<std::string>(answer)) {
-                m_errorMessage = "input: couldn't parse answer variable";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("input: couldn't parse answer variable");
                 return false;
             }
 

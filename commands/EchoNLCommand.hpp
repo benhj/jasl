@@ -30,8 +30,7 @@ namespace jasl
             if(tryLiteralExtraction()) { return true; }
             if(trySymbolExtraction()) { return true; }
             if(tryNumericExtraction()) { return true; }
-            m_errorMessage = "echo: couldn't parse";
-            appendToOutputWithNewLine(m_errorMessage);
+            setLastErrorMessage("echo_nl: couldn't parse");
             return false;
         }
 

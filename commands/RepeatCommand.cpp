@@ -24,8 +24,7 @@ namespace jasl {
         // how many time should repeat loop for?
         auto extracted = VarExtractor::trySingleIntExtraction(m_func.paramA);
         if(!extracted) {
-            m_errorMessage = "repeat: problem extracting integer";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("repeat: problem extracting integer");
             return false;
         }
         return doLoop(*extracted);
@@ -41,8 +40,7 @@ namespace jasl {
             if (success) {
                 success = parseCommands(innerFuncs);
             } else {
-                m_errorMessage = "repeat: Error interpreting repeat's body";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("repeat: Error interpreting repeat's body");
                 return false;
             }
         }

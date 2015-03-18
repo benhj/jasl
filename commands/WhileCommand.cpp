@@ -24,8 +24,7 @@ namespace jasl {
         // how many time should repeat loop for?
         auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA);
         if(!extracted) {
-            m_errorMessage = "while: problem extracting boolean expression";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("while: problem extracting boolean expression");
             return false;
         }
         return doLoop(*extracted);
@@ -43,8 +42,7 @@ namespace jasl {
             if (success) {
                 success = parseCommands(innerFuncs);
             } else {
-                m_errorMessage = "repeat: Error interpreting while's body";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("repeat: Error interpreting while's body");
                 return false;
             }
 

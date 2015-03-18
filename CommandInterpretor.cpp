@@ -41,7 +41,7 @@
 #define PROCESS_X_COMMAND(X)            \
     X##Command c(func, outputStream);   \
     (void)c.execute();                  \
-    errorMessage = c.getErrorMessage();
+    errorMessage = VarCache::lastKnownError;
 
 
 namespace jasl {

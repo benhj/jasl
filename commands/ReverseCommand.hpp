@@ -30,8 +30,7 @@ namespace jasl
         {
             std::string stringName;
             if(!m_func.getValueA<std::string>(stringName)) {
-                m_errorMessage = "string: couldn't parse";
-                appendToOutput(m_errorMessage);
+                setLastErrorMessage("string: couldn't parse");
                 return false;
             }
 

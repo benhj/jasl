@@ -32,7 +32,7 @@ namespace jasl
         {
             std::string varName;
             if(!m_func.getValueC<std::string>(varName)) {
-                VarCache::lastKnownError = "index: couldn't parse list";
+                setLastErrorMessage("index: couldn't parse list");
                 return false;
             }
 

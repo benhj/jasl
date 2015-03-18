@@ -32,8 +32,7 @@ namespace jasl {
         if (success) {
             success = parseCommands(innerFuncs);
         } else {
-            m_errorMessage = "start: Error interpreting start's body";
-            appendToOutput(m_errorMessage);
+            setLastErrorMessage("start: Error interpreting start's body");
             return false;
         }
         return true;
