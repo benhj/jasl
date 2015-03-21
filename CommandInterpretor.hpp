@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Function.hpp"
+#include "SharedVarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>
@@ -31,22 +32,27 @@ namespace jasl {
          */
         std::string
         parseAndInterpretSingleCommand(std::string const &cs,
-                                       OptionalOutputStream const &outputStream = OptionalOutputStream())const;
+                                       OptionalOutputStream const &outputStream = OptionalOutputStream(),
+                                       SharedVarCache const &varCache = SharedVarCache())const;
         
         std::vector<Function>
-        parseCommandFile(std::string const &path) const;
+        parseCommandFile(std::string const &path, 
+                         SharedVarCache const &varCache = SharedVarCache()) const;
         
         std::vector<Function>
-        parseStringCollection(std::string const &stringCollection) const;
+        parseStringCollection(std::string const &stringCollection, 
+                              SharedVarCache const &varCache = SharedVarCache()) const;
 
         std::string
         interpretFunc(Function &func,
-                      OptionalOutputStream const &outputStream) const;
+                      OptionalOutputStream const &outputStream,
+                      SharedVarCache const &varCache = SharedVarCache()) const;
         
     private:
         std::string
         doInterpretFunc(Function &func,
-                        OptionalOutputStream const &outputStream) const;
+                        OptionalOutputStream const &outputStream,
+                        SharedVarCache const &varCache) const;
     };
     
 }

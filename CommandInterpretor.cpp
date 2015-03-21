@@ -55,14 +55,16 @@ namespace jasl {
 
     std::string
     CommandInterpretor::interpretFunc(Function &func,
-                                      OptionalOutputStream const &outputStream) const
+                                      OptionalOutputStream const &outputStream,
+                                      SharedVarCache const &varCache) const
     {
-        return doInterpretFunc(func, outputStream);
+        return doInterpretFunc(func, outputStream, varCache);
     }
 
     std::string
     CommandInterpretor::doInterpretFunc(Function &func,
-                                        OptionalOutputStream const &outputStream) const
+                                        OptionalOutputStream const &outputStream,
+                                        SharedVarCache const &varCache) const
     {
         std::string errorMessage;
         if(searchString(func, "echo")) {
@@ -150,7 +152,8 @@ namespace jasl {
     
     std::string
     CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs,
-                                                       OptionalOutputStream const &outputStream) const
+                                                       OptionalOutputStream const &outputStream,
+                                                       SharedVarCache const &varCache) const
     {
 
         using boost::spirit::ascii::space;
@@ -162,13 +165,14 @@ namespace jasl {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            return doInterpretFunc(func, outputStream);
+            return doInterpretFunc(func, outputStream, varCache);
         } 
         return std::string("Unsuccessful parse");
     }
 
     std::vector<Function>
-    CommandInterpretor::parseCommandFile(std::string const &path) const
+    CommandInterpretor::parseCommandFile(std::string const &path,
+                                         SharedVarCache const &varCache) const
     {
         using boost::spirit::ascii::space;
         typedef boost::spirit::istream_iterator iterator_type;
@@ -193,7 +197,8 @@ namespace jasl {
     }
 
     std::vector<Function>
-    CommandInterpretor::parseStringCollection(std::string const &stringCollection) const
+    CommandInterpretor::parseStringCollection(std::string const &stringCollection,
+                                              SharedVarCache const &varCache) const
     {
 
         // store the script in global static. Used to do block 
