@@ -190,27 +190,6 @@ namespace jasl {
         }
         return parseStringCollection(script);
         
-        /*
-        // wrap istream into iterator
-        boost::spirit::istream_iterator begin(in);
-        boost::spirit::istream_iterator end;
-
-        bool result;
-        while (begin != end) {
-            result = boost::spirit::qi::phrase_parse(begin,
-                                                     end,
-                                                     functionGrammar,
-                                                     space,
-                                                     functions);
-            if (!result) {
-                break;
-            }
-        }
-
-        // store the script in global static. Used to do block 
-        // (jasl name for subroutine) lookups
-        VarCache::script = stringCollection;
-        return functions;*/
     }
 
     std::vector<Function>
