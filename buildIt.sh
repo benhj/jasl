@@ -21,6 +21,11 @@ function build_VarCache {
     $compiler $cflags -I$boostIncPath -c VarCache.cpp -o VarCache.o 
 }
 
+function build_VarCacheManager {
+    echo "Building VarCacheManager..."
+    $compiler $cflags -I$boostIncPath -c VarCacheManager.cpp -o VarCacheManager.o 
+}
+
 function build_CallCommand {
     echo "Building CallCommand..."
     $compiler $cflags -I$boostIncPath -c commands/CallCommand.cpp -o CallCommand.o 
@@ -85,6 +90,7 @@ function build_clean {
 
 function build_all {
     build_VarCache
+    build_VarCacheManager
     build_CallCommand
     build_IfCommand
     build_RepeatCommand
