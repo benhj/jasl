@@ -3,6 +3,6 @@ start {
     // query for user input
     input "What is your name? " -> name;
     string "Hello, " -> s;
-    append name to end of s -> s;
+    append (s, name) -> s;
     echo_nl s;
 }

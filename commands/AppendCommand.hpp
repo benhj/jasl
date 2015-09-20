@@ -45,9 +45,9 @@ namespace jasl
         OptionalString getStringBeingAppendedTo()
         {
             std::string stringBeingAppendedTo;
-            if(!m_func.getValueB<std::string>(stringBeingAppendedTo)) {
+            if(!m_func.getValueA<std::string>(stringBeingAppendedTo)) {
                 LiteralString literal;
-                if(!m_func.getValueB<LiteralString>(literal)) {
+                if(!m_func.getValueA<LiteralString>(literal)) {
                     return OptionalString();
                 }
                 return OptionalString(literal.literal);
@@ -64,7 +64,7 @@ namespace jasl
             auto stringBeingAppendedTo(getStringBeingAppendedTo());
             if(!stringBeingAppendedTo) { return false; }
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
+            if(m_func.getValueB<LiteralString>(literalString)) {
                 VarCache::stringCache[key] = (*stringBeingAppendedTo).append(literalString.literal);
                 return true;
             }
@@ -78,7 +78,7 @@ namespace jasl
 
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
+            if(m_func.getValueB<std::string>(symbol)) {
                 {
                     auto result = VarExtractor::searchInt(symbol);
                     if(result) {

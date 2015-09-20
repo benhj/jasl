@@ -182,7 +182,7 @@ void testAppendLiteral()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("append \", world!\" to end of s -> s;", ss);
+    ci.parseAndInterpretSingleCommand("append (s, \", world!\") -> s;", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendLiteral");
     clearCaches();
 }
@@ -193,7 +193,7 @@ void testAppendString()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("string \", world!\" -> b;", ss);
-    ci.parseAndInterpretSingleCommand("append b to end of s -> s;", ss);
+    ci.parseAndInterpretSingleCommand("append (s, b) -> s;", ss);
     ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendString");
     clearCaches();
 }
@@ -335,9 +335,9 @@ void testListGetTokenRaw()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("get token 0 from [hello there] -> s;", ss);
+    ci.parseAndInterpretSingleCommand("get_token (0, [hello there]) -> s;", ss);
     ci.parseAndInterpretSingleCommand("integer 1 -> i;");
-    ci.parseAndInterpretSingleCommand("get token i from [hello there] -> b;", ss);
+    ci.parseAndInterpretSingleCommand("get_token (i, [hello there]) -> b;", ss);
     ASSERT_EQUAL("hello", ll::VarCache::stringCache["s"], "testListGetTokenRaw A");
     ASSERT_EQUAL("there", ll::VarCache::stringCache["b"], "testListGetTokenRaw B");
     clearCaches();
@@ -348,9 +348,9 @@ void testListGetTokenSymbol()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> lst;", ss);
-    ci.parseAndInterpretSingleCommand("get token 1 from lst -> s;", ss);
+    ci.parseAndInterpretSingleCommand("get_token (1, lst) -> s;", ss);
     ci.parseAndInterpretSingleCommand("integer 0 -> i;");
-    ci.parseAndInterpretSingleCommand("get token i from lst -> b;", ss);
+    ci.parseAndInterpretSingleCommand("get_token (i, lst) -> b;", ss);
     ASSERT_EQUAL("there", ll::VarCache::stringCache["s"], "testListGetTokenSymbol A");
     ASSERT_EQUAL("hello", ll::VarCache::stringCache["b"], "testListGetTokenSymbol B");
     clearCaches();
@@ -360,13 +360,13 @@ void testListSetTokenRaw()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("set token 0 in [hello there] to \"goodbye\" -> s;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (0, [hello there], \"goodbye\") -> s;", ss);
     std::string tokenA;
     ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["s"][0]);
     ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenRaw A");
 
     ci.parseAndInterpretSingleCommand("string \"yes\" -> b;", ss);
-    ci.parseAndInterpretSingleCommand("set token 1 in [hello there] to b -> s;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (1, [hello there], b) -> s;", ss);
     std::string tokenB;
     ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["s"][1]);
     ASSERT_EQUAL("yes", tokenB, "testListSetTokenRaw B");
@@ -383,8 +383,8 @@ void testListSetTokenSymbol()
     ci.parseAndInterpretSingleCommand("list [hello there] -> la;", ss);
     ci.parseAndInterpretSingleCommand("integer 3 -> i;", ss);
     ci.parseAndInterpretSingleCommand("integer 2 -> j;", ss);
-    ci.parseAndInterpretSingleCommand("set token 0 in la to \"goodbye\" -> sa;", ss);
-    ci.parseAndInterpretSingleCommand("set token i in lb to \"indeed\" -> sb;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (0, la, \"goodbye\") -> sa;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (i, lb, \"indeed\") -> sb;", ss);
 
     std::string tokenA;
     ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["sa"][0]);
@@ -395,11 +395,10 @@ void testListSetTokenSymbol()
     std::string tokenC;
     ll::VarExtractor::tryAnyCast(tokenC, ll::VarCache::listCache["lb"][2]);
     ASSERT_EQUAL("you", tokenC, "testListSetTokenSymbol C");
-    ci.parseAndInterpretSingleCommand("set token j in lb to \"no\" -> lb;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (j, lb, \"no\") -> lb;", ss);
     std::string tokenD;
     ll::VarExtractor::tryAnyCast(tokenD, ll::VarCache::listCache["lb"][2]);
     ASSERT_EQUAL("no", tokenD, "testListSetTokenSymbol D");
-
 
     clearCaches();
 }
@@ -408,12 +407,12 @@ void testListTokenIndex()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("index of \"are\" in [hello there what are you doing] -> i;", ss);
+    ci.parseAndInterpretSingleCommand("index_of (\"are\", [hello there what are you doing]) -> i;", ss);
     ci.parseAndInterpretSingleCommand("string \"you\" -> token;");
-    ci.parseAndInterpretSingleCommand("index of token in [hello there what are you doing] -> j;", ss);
+    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> j;", ss);
     ci.parseAndInterpretSingleCommand("list [hello there what are you doing] -> L;");
-    ci.parseAndInterpretSingleCommand("index of token in L -> p;", ss);
-    ci.parseAndInterpretSingleCommand("index of token in [hello there what are you doing] -> q;", ss);
+    ci.parseAndInterpretSingleCommand("index_of (token, L) -> p;", ss);
+    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> q;", ss);
     ASSERT_EQUAL(3, ll::VarCache::intCache["i"], "index A");
     ASSERT_EQUAL(4, ll::VarCache::intCache["j"], "index B");
     ASSERT_EQUAL(4, ll::VarCache::intCache["p"], "index C");

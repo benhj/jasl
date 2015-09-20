@@ -281,43 +281,51 @@ namespace jasl
                           >> genericString 
                           >> ';';
 
-            // index of "hello" in [hello there] -> s;
-            listTokenIndex  %= string("index of")
+            // index_of ("hello", [hello there]) -> s;
+            listTokenIndex  %= string("index_of")
+                            >> '('
                             >> (genericString | doubleQuotedString)
-                            >> lit("in")
+                            >> lit(",")
                             >> (bracketedWords | genericString)
+                            >> (')')
                             >> lit("->")
                             >> genericString 
                             >> ';';
 
-            // get token 0 from [hello there] -> t;
-            listGetToken  %= string("get token")
+            // get_token(0, [hello there]) -> t;
+            listGetToken  %= string("get_token")
+                          >> ('(')
                           >> (genericString | intRule)
-                          >> lit("from")
+                          >> (',')
                           >> (bracketedWords | genericString)
+                          >> (')')
                           >> lit("->")
                           >> genericString 
                           >> ';';
 
-            // set token 0 in [hello there] to "goodbye" -> t;
-            listSetToken  %= string("set token")
+            // set_token (0, [hello there], "goodbye") -> t;
+            listSetToken  %= string("set_token")
+                          >> ('(')
                           >> (genericString | intRule)
-                          >> lit("in")
+                          >> (',')
                           >> (bracketedWords | genericString)
-                          >> lit("to")
+                          >> (',')
                           >> (genericString | doubleQuotedString)
+                          >> (')')
                           >> lit("->")
                           >> genericString 
                           >> ';';
 
-            // appends to a string
-            // append "hello" to end of s -> result;    
+            // appends to end of a string, s  
+            // append (s, "hello") --> result;
             appendRule %= string("append")
+                       >> ('(')
+                       >> (doubleQuotedString | genericString)
+                       >> ','
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
                            comparisonExpression | bracketedComparisonExpression)
-                       >> lit("to end of")
-                       >> (doubleQuotedString | genericString)
+                       >> ')'
                        >> lit("->")
                        >> genericString
                        >> ';';

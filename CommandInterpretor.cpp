@@ -133,15 +133,15 @@ namespace jasl {
 
             PROCESS_X_COMMAND(Input);
 
-        } else if(searchString(func, "index of")) {
+        } else if(searchString(func, "index_of")) {
 
             PROCESS_X_COMMAND(ListTokenIndex);
 
-        } else if(searchString(func, "get token")) {
+        } else if(searchString(func, "get_token")) {
 
             PROCESS_X_COMMAND(ListGetToken);
 
-        } else if(searchString(func, "set token")) {
+        } else if(searchString(func, "set_token")) {
 
             PROCESS_X_COMMAND(ListSetToken);
 
