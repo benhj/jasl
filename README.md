@@ -9,7 +9,7 @@ Every program requires a `start` entry point, and can take any number of argumen
 <pre>
 // main entry point
 start {
-    // If script expects input arguments use 'arg' keyword. 
+    // If script expects input arguments use 'args' keyword. 
     // This will put the 0th argument in the variable a. 
     // Note that a is a string.
     args 0 -> a;
@@ -28,7 +28,7 @@ boolean true -> c;
 string "Hello!" -> d;
 </pre>
 
-Above, I create three types, an integer, a real, a boolean and a string and store them in variables `a`, `b`, `c` and `d` respectively. Note that in jasl, all variables are global.
+Above, I create four types, an integer, a real, a boolean and a string and store them in variables `a`, `b`, `c` and `d` respectively. Note that in jasl, all variables are global.
 
 Functions
 ---------
