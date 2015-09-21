@@ -208,6 +208,17 @@ namespace jasl
                       >> commandCollection
                       >> '}';
 
+            // Executes a system command having the syntax
+            // exec("/path/to/command"); 
+            // or
+            // exec(s); 
+            // where s is a string
+            execCommand %= string("exec") 
+                        >> '(' 
+                        >> (doubleQuotedString | genericString)
+                        >> ')'
+                        >> ';';
+
             // the main entry point of a given program
             startFunction %= string("start")
                          >> '{'
@@ -404,7 +415,8 @@ namespace jasl
                          | listToString
                          | listTokenIndex
                          | stringList
-                         | inputRule;
+                         | inputRule
+                         | execCommand;
                          
             start %= allCommands;
         }
@@ -437,6 +449,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
         qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
         qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
+        qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

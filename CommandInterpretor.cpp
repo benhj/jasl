@@ -15,6 +15,7 @@
 #include "commands/CallCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
+#include "commands/ExecCommand.hpp"
 #include "commands/IfCommand.hpp"
 #include "commands/InputCommand.hpp"
 #include "commands/ListCommand.hpp"
@@ -145,7 +146,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(ListSetToken);
 
-        }      
+        } else if(searchString(func, "exec")) {
+
+            PROCESS_X_COMMAND(Exec);
+
+        }        
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }

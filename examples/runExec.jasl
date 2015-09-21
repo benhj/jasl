@@ -1,0 +1,12 @@
+// A simple program that allows running
+// a system executable
+// E.g. ./jasl runExec /path/to/exec
+start {
+
+	// extract 0th argument from command line
+    args 0 -> s;
+
+    // execute the command
+    exec(s);
+    
+}
