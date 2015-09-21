@@ -21,6 +21,10 @@ int main (int argc , char *argv[])
         exit(0);
     }  
 
+    // Store how many arguments there are
+    // in special reserved integer, 'argsCount'
+    ll::VarCache::intCache["argsCount"] = argc - 2;
+
     // store any command line arguments that should also be interpreted
     if(argc >= 2) {
         for(int i = 2; i < argc; ++i) {

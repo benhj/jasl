@@ -27,9 +27,10 @@ namespace jasl
 
         bool execute() override
         {
-            int64_t arg;
-            if(!m_func.getValueA<int64_t>(arg)) {
-                setLastErrorMessage("args: couldn't parse argument index");
+
+            auto arg = VarExtractor::trySingleIntExtraction(m_func.paramA);
+            if(!arg) {
+                setLastErrorMessage("repeat: problem extracting integer");
                 return false;
             }
 
@@ -39,8 +40,8 @@ namespace jasl
                 return false;
             }
 
-            if(arg < VarCache::args.size()) {
-                auto argument(VarCache::args[arg]);
+            if(*arg < VarCache::args.size()) {
+                auto argument(VarCache::args[*arg]);
                 VarCache::stringCache[argString] = argument;
                 return true;
             }

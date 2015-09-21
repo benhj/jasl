@@ -192,7 +192,7 @@ namespace jasl
             // for a loop having the syntax
             // repeat N times {  }
             repeatLoop %= string("repeat") 
-                        >> intRule
+                        >> (intRule | genericString | bracketedMathExpression)
                         >> lit("times")
                         >> '{'
                         >> commandCollection
@@ -361,7 +361,8 @@ namespace jasl
                                >> ';';
 
             argsRule %= string("args")
-                     >> intRule >> lit("->")
+                     >> (intRule | genericString) 
+                     >> lit("->")
                      >> genericString
                      >> ';';
 
