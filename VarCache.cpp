@@ -53,29 +53,39 @@ namespace jasl {
         listCache[key][index] = value;
     }
 
-    int64_t VarCache::getInt(std::string const &key)
+    OptionalInt VarCache::getInt(std::string const &key)
     {
-        return intCache[key];
+        auto it = intCache.find(key);
+        if(it != std::end(intCache)) { return it->second; }
+        return OptionalInt();
     }
 
-    double VarCache::getDouble(std::string const &key)
+    OptionalDouble VarCache::getDouble(std::string const &key)
     {
-        return doubleCache[key];
+        auto it = doubleCache.find(key);
+        if(it != std::end(doubleCache)) { return it->second; }
+        return OptionalDouble();
     }
 
-    bool VarCache::getBool(std::string const &key)
+    OptionalBool VarCache::getBool(std::string const &key)
     {
-        return boolCache[key];
+        auto it = boolCache.find(key);
+        if(it != std::end(boolCache))  { return it->second; }
+        return OptionalBool();
     }
 
-    std::string VarCache::getString(std::string const &key)
+    OptionalString VarCache::getString(std::string const &key)
     {
-        return stringCache[key];
+        auto it = stringCache.find(key);
+        if(it != std::end(stringCache))  { return it->second; }
+        return OptionalString();
     }
 
-    ValueArray VarCache::getList(std::string const &key)
+    OptionalValueArray VarCache::getList(std::string const &key)
     {
-        return listCache[key];
+        auto it = listCache.find(key);
+        if(it != std::end(listCache))  { return it->second; }
+        return OptionalValueArray();
     }
 
 

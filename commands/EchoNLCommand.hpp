@@ -51,28 +51,28 @@ namespace jasl
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
                 {
-                    auto result = VarExtractor::searchInt(symbol);
+                    auto result = VarCache::getInt(symbol);
                     if(result) {
                         appendToOutputWithNewLine(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchDouble(symbol);
+                    auto result = VarCache::getDouble(symbol);
                     if(result) {
                         appendToOutputWithNewLine(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchBool(symbol);
+                    auto result = VarCache::getBool(symbol);
                     if(result) {
                         appendToOutputWithNewLine(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchString(symbol);
+                    auto result = VarCache::getString(symbol);
                     if(result) {
                         appendToOutputWithNewLine(*result);
                         return true;

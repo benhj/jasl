@@ -49,7 +49,7 @@ namespace jasl
             // Now try extracting a symbol
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
-            	auto result = VarExtractor::searchString(symbol);
+            	auto result = VarCache::getString(symbol);
                 if(result) {
                     system((*result).c_str());
                     return true;

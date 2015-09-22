@@ -52,11 +52,7 @@ namespace jasl
                 }
                 return OptionalString(literal.literal);
             }
-            auto result = VarExtractor::searchString(stringBeingAppendedTo);
-            if(result) {
-                return OptionalString(*result);
-            }
-            return OptionalString();
+            return VarCache::getString(stringBeingAppendedTo);
         }
 
         bool tryLiteralExtraction(std::string const &key) 
@@ -80,28 +76,28 @@ namespace jasl
             std::string symbol;
             if(m_func.getValueB<std::string>(symbol)) {
                 {
-                    auto result = VarExtractor::searchInt(symbol);
+                    auto result = VarCache::getInt(symbol);
                     if(result) {
                         VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchDouble(symbol);
+                    auto result = VarCache::getDouble(symbol);
                     if(result) {
                         VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchBool(symbol);
+                    auto result = VarCache::getBool(symbol);
                     if(result) {
                         VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarExtractor::searchString(symbol);
+                    auto result = VarCache::getString(symbol);
                     if(result) {
                         VarCache::setString(key, (*stringBeingAppendedTo).append(*result));
                         return true;

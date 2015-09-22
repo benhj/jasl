@@ -57,7 +57,7 @@ namespace jasl
                     return OptionalString(literal.literal);
                 }
             } else {
-                auto result = VarExtractor::searchString(token);
+                auto result = VarCache::getString(token);
                 if(result) {
                     return OptionalString(*result);
                 }

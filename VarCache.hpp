@@ -15,7 +15,15 @@
 #include <vector>
 #include <cstdint>
 
+#include <boost/optional.hpp>
+
 namespace jasl {
+
+    typedef ::boost::optional<int64_t> OptionalInt;
+    typedef ::boost::optional<bool> OptionalBool;
+    typedef ::boost::optional<double> OptionalDouble;
+    typedef ::boost::optional<std::string> OptionalString;
+    typedef ::boost::optional<ValueArray> OptionalValueArray;
 
     struct VarCache 
     {
@@ -51,11 +59,11 @@ namespace jasl {
         /// functions for getting different types.
         /// These are convenience functions and
         /// shouldn't be used unless it is know values exist.
-        static int64_t getInt(std::string const &key);
-        static double getDouble(std::string const &key);
-        static bool getBool(std::string const &key);
-        static std::string getString(std::string const &key);
-        static ValueArray getList(std::string const &key);
+        static OptionalInt getInt(std::string const &key);
+        static OptionalDouble getDouble(std::string const &key);
+        static OptionalBool getBool(std::string const &key);
+        static OptionalString getString(std::string const &key);
+        static OptionalValueArray getList(std::string const &key);
     };
 
 }

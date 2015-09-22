@@ -59,7 +59,7 @@ namespace jasl
             std::string symbol;
             if(m_func.getValueA<std::string>(symbol)) {
                 {
-                    auto result = VarExtractor::searchString(symbol);
+                    auto result = VarCache::getString(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;

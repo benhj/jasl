@@ -27,56 +27,8 @@
 
 namespace jasl {
 
-    typedef ::boost::optional<int64_t> OptionalInt;
-    typedef ::boost::optional<bool> OptionalBool;
-    typedef ::boost::optional<double> OptionalDouble;
-    typedef ::boost::optional<std::string> OptionalString;
-
     struct VarExtractor
     {
-        /// searches integer cache for an int with key key storing the
-        /// result in output and returning true if successful
-        static OptionalInt searchInt(std::string const &key)
-        {
-            auto it = VarCache::intCache.find(key);
-            if (it != VarCache::intCache.end()) {
-                return OptionalInt(it->second);
-            } 
-            return OptionalInt();
-        }
-
-        /// searches boolean cache for a boolean with key key storing the
-        /// result in output and returning true if successful
-        static OptionalBool searchBool(std::string const &key)
-        {
-            auto it = VarCache::boolCache.find(key);
-            if (it != VarCache::boolCache.end()) {
-                return OptionalBool(it->second);
-            }
-            return OptionalBool();
-        }
-
-        /// searches double cache for a double with key key storing the
-        /// result in output and returning true if successful
-        static OptionalDouble searchDouble(std::string const &key)
-        {
-            auto it = VarCache::doubleCache.find(key);
-            if (it != VarCache::doubleCache.end()) {
-                return OptionalDouble(it->second);
-            } 
-            return OptionalDouble();
-        }
-
-        /// searches string cache for a string with key key storing the
-        /// result in output and returning true if successful
-        static OptionalString searchString(std::string const &key)
-        {
-            auto it = VarCache::stringCache.find(key);
-            if (it != VarCache::stringCache.end()) {
-                return OptionalString(it->second);
-            } 
-            return OptionalString();
-        }
 
         template <typename T>
         static bool tryAnyCast(T &t, Value &val)
@@ -126,19 +78,19 @@ namespace jasl {
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
                 if (typeid(T) == typeid(int64_t)) {
-                    auto result = searchInt(str);
+                    auto result = VarCache::getInt(str);
                     if(result) {
                         (int64_t&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(bool)) {
-                    auto result = searchBool(str);
+                    auto result = VarCache::getBool(str);
                     if(result) {
                         (bool&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
-                    auto result = searchDouble(str);
+                    auto result = VarCache::getDouble(str);
                     if(result) {
                         (double&)t = *result;
                         return true;
