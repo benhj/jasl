@@ -82,7 +82,7 @@ namespace jasl
                             return false;
                         }
                         if(tok == testToken) {
-                            VarCache::intCache[varName] = i;
+                            VarCache::setInt(varName, i);
                             return true;
                         }
                         ++i;
@@ -121,7 +121,7 @@ namespace jasl
                                 return false;
                             }
                             if(tok == testToken) {
-                                VarCache::intCache[varName] = i;
+                                VarCache::setInt(varName, i);
                                 return true;
                             }
                             ++i;

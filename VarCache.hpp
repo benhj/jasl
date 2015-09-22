@@ -32,6 +32,30 @@ namespace jasl {
 
         /// for storing last known error
         static std::string lastKnownError;
+
+        /// functions for setting different types
+        static void setInt(std::string const &key,
+                           int64_t const value);
+        static void setDouble(std::string const &key,
+                              double const value);
+        static void setBool(std::string const &key,
+                            bool const value);
+        static void setString(std::string const &key,
+                              std::string const &value);
+        static void setList(std::string const &key,
+                            ValueArray const &value);
+        static void setTokenInList(std::string const &key,
+                                   int const index,
+                                   Value const &value);
+
+        /// functions for getting different types.
+        /// These are convenience functions and
+        /// shouldn't be used unless it is know values exist.
+        static int64_t getInt(std::string const &key);
+        static double getDouble(std::string const &key);
+        static bool getBool(std::string const &key);
+        static std::string getString(std::string const &key);
+        static ValueArray getList(std::string const &key);
     };
 
 }

@@ -68,7 +68,7 @@ namespace jasl
                             return false;
                         }
                         if(i == *index) {
-                            VarCache::stringCache[varName] = tok;
+                            VarCache::setString(varName, tok);
                             return true;
                         }
                         ++i;
@@ -111,7 +111,7 @@ namespace jasl
                                 return false;
                             }
                             if(i == *index) {
-                                VarCache::stringCache[varName] = tok;
+                                VarCache::setString(varName, tok);
                                 return true;
                             }
                             ++i;

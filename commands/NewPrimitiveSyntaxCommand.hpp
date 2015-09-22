@@ -55,7 +55,7 @@ namespace jasl {
                 // try converting a string to an integer
                 return StringToPrimitiveCommand(m_func, m_outputStream).execute();
             } 
-            VarCache::intCache[varName] = *a;
+            VarCache::setInt(varName, *a);
             return true;
         }
 
@@ -67,7 +67,7 @@ namespace jasl {
                 return StringToPrimitiveCommand(m_func, m_outputStream).execute();
             } 
 
-            VarCache::doubleCache[varName] = *a;
+            VarCache::setDouble(varName, *a);
             return true;
         }
 
@@ -78,7 +78,7 @@ namespace jasl {
                 return false;
             } 
 
-            VarCache::boolCache[varName] = *a;
+            VarCache::setBool(varName, *a);
             return true;
         }
     };

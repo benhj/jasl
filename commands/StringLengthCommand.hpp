@@ -45,7 +45,7 @@ namespace jasl
         {
             LiteralString literalString;
             if(m_func.getValueA<LiteralString>(literalString)) {
-                VarCache::intCache[varName] = literalString.literal.length();
+                VarCache::setInt(varName, literalString.literal.length());
                 return true;
             }
             return false;
@@ -58,7 +58,7 @@ namespace jasl
             if(m_func.getValueA<std::string>(symbol)) {
                 auto result = VarExtractor::searchString(symbol);
                 if(result) {
-                    VarCache::intCache[varName] = result->length();
+                    VarCache::setInt(varName, result->length());
                     return true;
                 }
             }

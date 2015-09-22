@@ -50,10 +50,10 @@ namespace jasl
                     // also handled off directy from NewPrimitiveSyntaxCommand so need
                     // to also check if function name is integer or decimal in respective branch
                     if(m_func.name == "string_to_integer" || m_func.name == "integer") {
-                        VarCache::intCache[varName] = boost::lexical_cast<int64_t>(literalString.literal);
+                        VarCache::setInt(varName, boost::lexical_cast<int64_t>(literalString.literal));
                         return true;
                     } else if(m_func.name == "string_to_decimal" || m_func.name == "decimal") {
-                        VarCache::doubleCache[varName] = boost::lexical_cast<double>(literalString.literal);
+                        VarCache::setDouble(varName, boost::lexical_cast<double>(literalString.literal));
                         return true;
                     }
                     return false;
@@ -76,10 +76,10 @@ namespace jasl
                         // also handled off directy from NewPrimitiveSyntaxCommand so need
                         // to also check if function name is integer or decimal in respective branch
                         if(m_func.name == "string_to_integer" || m_func.name == "integer") {
-                            VarCache::intCache[varName] = boost::lexical_cast<int64_t>(*result);
+                            VarCache::setInt(varName, boost::lexical_cast<int64_t>(*result));
                             return true;
                         } else if(m_func.name == "string_to_decimal" || m_func.name == "decimal") {
-                            VarCache::doubleCache[varName] = boost::lexical_cast<double>(*result);
+                            VarCache::setDouble(varName, boost::lexical_cast<double>(*result));
                             return true;
                         }
                         return false;

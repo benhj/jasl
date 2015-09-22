@@ -42,7 +42,7 @@ namespace jasl
 
             if(*arg < VarCache::args.size()) {
                 auto argument(VarCache::args[*arg]);
-                VarCache::stringCache[argString] = argument;
+                VarCache::setString(argString, argument);
                 return true;
             }
 

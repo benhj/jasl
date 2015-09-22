@@ -61,7 +61,7 @@ namespace jasl
                     s.pop_back();
                     
                     // now finally store string in cache
-                    VarCache::stringCache[varName] = s;
+                    VarCache::setString(varName, s);
                     return true;
                 } catch( boost::bad_lexical_cast const& ) {
                     setLastErrorMessage("list_to_string: couldn't parse list");
@@ -97,7 +97,7 @@ namespace jasl
                         s.pop_back();
 
                         // now finally store string in cache
-                        VarCache::stringCache[varName] = s;
+                        VarCache::setString(varName, s);
                         return true;
                     } catch( boost::bad_lexical_cast const& ) {
                         setLastErrorMessage("list_to_string: couldn't parse list");

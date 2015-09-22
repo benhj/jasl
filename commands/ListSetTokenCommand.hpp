@@ -87,7 +87,7 @@ namespace jasl
                     return false;
                 }
                 v[*index] = Value(*newToken);
-                VarCache::listCache[varName] = v;
+                VarCache::setList(varName, v);
                 return true;
             }
             return false;
@@ -125,13 +125,13 @@ namespace jasl
                     // if list to which token is being set is the same one as the variable
                     // then update by reference else update by copy
                     if(symbol == varName) {
-                        VarCache::listCache[varName][*index] = Value(*newToken);
+                        VarCache::setTokenInList(varName, *index, Value(*newToken));
                         return true;
                     }
 
                     auto vals = it->second;
                     vals[*index] = Value(*newToken);
-                    VarCache::listCache[varName] = vals;
+                    VarCache::setList(varName, vals);
                     return true;
 
                 }
