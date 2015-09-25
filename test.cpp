@@ -33,15 +33,15 @@ void testMath()
     ASSERT_UNEQUAL(ll::VarCache::intCache.find("result"), 
                    ll::VarCache::intCache.end(), 
                    "testMath::found integer result");
-    ASSERT_EQUAL(30, ll::VarCache::intCache["result"], "testMath::result is 30");
+    ASSERT_EQUAL(30, *ll::VarCache::getInt("result"), "testMath::result is 30");
     ci.parseAndInterpretSingleCommand("integer 2 -> x;");
     ci.parseAndInterpretSingleCommand("integer (result * x) -> result;");
-    ASSERT_EQUAL(60, ll::VarCache::intCache["result"], "testMath::result is 60");
+    ASSERT_EQUAL(60, *ll::VarCache::getInt("result"), "testMath::result is 60");
     ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;");
     ASSERT_UNEQUAL(ll::VarCache::doubleCache.find("resultDouble"), 
                    ll::VarCache::doubleCache.end(), 
                    "testMath::found float resultDouble");
-    ASSERT_EQUAL(57.5, ll::VarCache::doubleCache["resultDouble"], "testMath::resultDouble is 57.5");
+    ASSERT_EQUAL(57.5, *ll::VarCache::getDouble("resultDouble"), "testMath::resultDouble is 57.5");
     clearCaches();
 }
 
@@ -51,9 +51,9 @@ void testVarNewSyntax()
     ci.parseAndInterpretSingleCommand("integer 1->i;");
     ci.parseAndInterpretSingleCommand("decimal 1.1->j;");
     ci.parseAndInterpretSingleCommand("boolean true->k;");
-    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testVarNewSyntax::i is 1");
-    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testVarNewSyntax::j is 1.1");
-    ASSERT_EQUAL(true, ll::VarCache::boolCache["k"], "testVarNewSyntax::k is true");
+    ASSERT_EQUAL(1, *ll::VarCache::getInt("i"), "testVarNewSyntax::i is 1");
+    ASSERT_EQUAL(1.1, *ll::VarCache::getDouble("j"), "testVarNewSyntax::j is 1.1");
+    ASSERT_EQUAL(true, *ll::VarCache::getBool("k"), "testVarNewSyntax::k is true");
     clearCaches();
 }
 
@@ -66,10 +66,10 @@ void testVarNewSyntaxFromString()
     ci.parseAndInterpretSingleCommand("string \"2.2\" -> sdouble;");
     ci.parseAndInterpretSingleCommand("integer sint -> k;");
     ci.parseAndInterpretSingleCommand("decimal sdouble -> l;");
-    ASSERT_EQUAL(1, ll::VarCache::intCache["i"], "testVarNewSyntaxFromString A");
-    ASSERT_EQUAL(1.1, ll::VarCache::doubleCache["j"], "testVarNewSyntaxFromString B");
-    ASSERT_EQUAL(2, ll::VarCache::intCache["k"], "testVarNewSyntaxFromString C");
-    ASSERT_EQUAL(2.2, ll::VarCache::doubleCache["l"], "testVarNewSyntaxFromString D");
+    ASSERT_EQUAL(1, *ll::VarCache::getInt("i"), "testVarNewSyntaxFromString A");
+    ASSERT_EQUAL(1.1, *ll::VarCache::getDouble("j"), "testVarNewSyntaxFromString B");
+    ASSERT_EQUAL(2, *ll::VarCache::getInt("k"), "testVarNewSyntaxFromString C");
+    ASSERT_EQUAL(2.2, *ll::VarCache::getDouble("l"), "testVarNewSyntaxFromString D");
     clearCaches();
 }
 
@@ -140,7 +140,7 @@ void testStringWithLiteral()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", ss);
-    ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["hello"], "testStringWithLiteral");
+    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("hello"), "testStringWithLiteral");
     clearCaches();
 }
 
@@ -149,9 +149,9 @@ void testStringWithNumbers()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string 5 -> numberFive;", ss);
-    ASSERT_EQUAL("5", ll::VarCache::stringCache["numberFive"], "testStringWithNumbers integer");
+    ASSERT_EQUAL("5", *ll::VarCache::getString("numberFive"), "testStringWithNumbers integer");
     ci.parseAndInterpretSingleCommand("string 5.5 -> numberDecimal;", ss);
-    ASSERT_EQUAL("5.5", ll::VarCache::stringCache["numberDecimal"], "testStringWithNumbers decimal");
+    ASSERT_EQUAL("5.5", *ll::VarCache::getString("numberDecimal"), "testStringWithNumbers decimal");
     clearCaches();
 }
 
@@ -161,8 +161,8 @@ void testStringWithMath()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string (5 + 2) * 5.6 -> numberMath;", ss);
     ci.parseAndInterpretSingleCommand("string (5 + 2) * 5 -> numberMathB;", ss);
-    ASSERT_EQUAL("39.2", ll::VarCache::stringCache["numberMath"], "testStringWithMath A");
-    ASSERT_EQUAL("35", ll::VarCache::stringCache["numberMathB"], "testStringWithMath B");
+    ASSERT_EQUAL("39.2", *ll::VarCache::getString("numberMath"), "testStringWithMath A");
+    ASSERT_EQUAL("35", *ll::VarCache::getString("numberMathB"), "testStringWithMath B");
     clearCaches();
 }
 
@@ -173,8 +173,8 @@ void testStringFromList()
     ci.parseAndInterpretSingleCommand("string [hello there] -> listString;", ss);
     ci.parseAndInterpretSingleCommand("list [another list] -> listB;");
     ci.parseAndInterpretSingleCommand("string listB -> listStringB;", ss);
-    ASSERT_EQUAL("hello there", ll::VarCache::stringCache["listString"], "testStringFromList A");
-    ASSERT_EQUAL("another list", ll::VarCache::stringCache["listStringB"], "testStringFromList B");
+    ASSERT_EQUAL("hello there", *ll::VarCache::getString("listString"), "testStringFromList A");
+    ASSERT_EQUAL("another list", *ll::VarCache::getString("listStringB"), "testStringFromList B");
 }
 
 void testAppendLiteral()
@@ -183,7 +183,7 @@ void testAppendLiteral()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("append (s, \", world!\") -> s;", ss);
-    ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendLiteral");
+    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("s"), "testAppendLiteral");
     clearCaches();
 }
 
@@ -194,7 +194,7 @@ void testAppendString()
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("string \", world!\" -> b;", ss);
     ci.parseAndInterpretSingleCommand("append (s, b) -> s;", ss);
-    ASSERT_EQUAL("Hello, world!", ll::VarCache::stringCache["s"], "testAppendString");
+    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("s"), "testAppendString");
     clearCaches();
 }
 
@@ -204,7 +204,7 @@ void testReverseString()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("string_reverse s;", ss);
-    ASSERT_EQUAL("olleH", ll::VarCache::stringCache["s"], "testReverseString");
+    ASSERT_EQUAL("olleH", *ll::VarCache::getString("s"), "testReverseString");
     clearCaches();
 }
 
@@ -215,8 +215,8 @@ void testStringLength()
     ci.parseAndInterpretSingleCommand("string_length \"Hello\" -> s;", ss);
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> sb;", ss);
     ci.parseAndInterpretSingleCommand("string_length sb -> sc;", ss);
-    ASSERT_EQUAL(5, ll::VarCache::intCache["s"], "testStringLength A");
-    ASSERT_EQUAL(13, ll::VarCache::intCache["sc"], "testStringLength B");
+    ASSERT_EQUAL(5, *ll::VarCache::getInt("s"), "testStringLength A");
+    ASSERT_EQUAL(13, *ll::VarCache::getInt("sc"), "testStringLength B");
     clearCaches();
 }
 
@@ -226,7 +226,7 @@ void testIfCommand()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("if(1 < 2) { echo \"Hello, world!\"; integer 5 -> x; }", ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
-    ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testIfCommand: x is 5");
+    ASSERT_EQUAL(5, *ll::VarCache::getInt("x"), "testIfCommand: x is 5");
     clearCaches();
 }
 
@@ -240,7 +240,7 @@ void testRepeatCommand()
         (void)ci.interpretFunc(f, ss);
     }
     ASSERT_EQUAL("HelloHelloHelloHelloHello", ss.str(), "testRepeatCommand::repeat hello");
-    ASSERT_EQUAL(5, ll::VarCache::intCache["x"], "testRepeatCommand::x is 5");
+    ASSERT_EQUAL(5, *ll::VarCache::getInt("x"), "testRepeatCommand::x is 5");
     clearCaches();
 }
 
@@ -267,7 +267,7 @@ void testBlockCommand()
         (void)ci.interpretFunc(f, ss);
     }
     ASSERT_EQUAL("Hello", ss.str(), "testBlockCommand::print hello");
-    ASSERT_EQUAL(1, ll::VarCache::intCache["x"], "testBlockCommand::x is 1");
+    ASSERT_EQUAL(1, *ll::VarCache::getInt("x"), "testBlockCommand::x is 1");
     clearCaches();
 }
 
@@ -278,7 +278,7 @@ void testStartCommand()
     std::string const command("start { echo \"Hello\"; integer 21 -> x; }");
     ci.parseAndInterpretSingleCommand(command, ss);
     ASSERT_EQUAL("Hello", ss.str(), "testStartCommand::print hello");
-    ASSERT_EQUAL(21, ll::VarCache::intCache["x"], "testStartCommand::x is 21");
+    ASSERT_EQUAL(21, *ll::VarCache::getInt("x"), "testStartCommand::x is 21");
     clearCaches();
 }
 
@@ -297,7 +297,7 @@ void testCallCommand()
         }
     }
     ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallCommand::print-outs");
-    ASSERT_EQUAL(16, ll::VarCache::intCache["x"], "testStartCommand::x is 16");
+    ASSERT_EQUAL(16, *ll::VarCache::getInt("x"), "testStartCommand::x is 16");
     clearCaches();
 }
 
@@ -309,8 +309,8 @@ void testArgsCommand()
     ll::VarCache::args.push_back("argument2");
     ci.parseAndInterpretSingleCommand("args 0 -> arga;", ss);
     ci.parseAndInterpretSingleCommand("args 1 -> argb;", ss);
-    ASSERT_EQUAL("argument1", ll::VarCache::stringCache["arga"], "testArgsCommand A");
-    ASSERT_EQUAL("argument2", ll::VarCache::stringCache["argb"], "testArgsCommand B");
+    ASSERT_EQUAL("argument1", *ll::VarCache::getString("arga"), "testArgsCommand A");
+    ASSERT_EQUAL("argument2", *ll::VarCache::getString("argb"), "testArgsCommand B");
     clearCaches();
 }
 
@@ -338,8 +338,8 @@ void testListGetTokenRaw()
     ci.parseAndInterpretSingleCommand("get_token (0, [hello there]) -> s;", ss);
     ci.parseAndInterpretSingleCommand("integer 1 -> i;");
     ci.parseAndInterpretSingleCommand("get_token (i, [hello there]) -> b;", ss);
-    ASSERT_EQUAL("hello", ll::VarCache::stringCache["s"], "testListGetTokenRaw A");
-    ASSERT_EQUAL("there", ll::VarCache::stringCache["b"], "testListGetTokenRaw B");
+    ASSERT_EQUAL("hello", *ll::VarCache::getString("s"), "testListGetTokenRaw A");
+    ASSERT_EQUAL("there", *ll::VarCache::getString("b"), "testListGetTokenRaw B");
     clearCaches();
 }
 
@@ -351,8 +351,8 @@ void testListGetTokenSymbol()
     ci.parseAndInterpretSingleCommand("get_token (1, lst) -> s;", ss);
     ci.parseAndInterpretSingleCommand("integer 0 -> i;");
     ci.parseAndInterpretSingleCommand("get_token (i, lst) -> b;", ss);
-    ASSERT_EQUAL("there", ll::VarCache::stringCache["s"], "testListGetTokenSymbol A");
-    ASSERT_EQUAL("hello", ll::VarCache::stringCache["b"], "testListGetTokenSymbol B");
+    ASSERT_EQUAL("there", *ll::VarCache::getString("s"), "testListGetTokenSymbol A");
+    ASSERT_EQUAL("hello", *ll::VarCache::getString("b"), "testListGetTokenSymbol B");
     clearCaches();
 }
 
@@ -413,10 +413,10 @@ void testListTokenIndex()
     ci.parseAndInterpretSingleCommand("list [hello there what are you doing] -> L;");
     ci.parseAndInterpretSingleCommand("index_of (token, L) -> p;", ss);
     ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> q;", ss);
-    ASSERT_EQUAL(3, ll::VarCache::intCache["i"], "index A");
-    ASSERT_EQUAL(4, ll::VarCache::intCache["j"], "index B");
-    ASSERT_EQUAL(4, ll::VarCache::intCache["p"], "index C");
-    ASSERT_EQUAL(4, ll::VarCache::intCache["q"], "index D");
+    ASSERT_EQUAL(3, *ll::VarCache::getInt("i"), "index A");
+    ASSERT_EQUAL(4, *ll::VarCache::getInt("j"), "index B");
+    ASSERT_EQUAL(4, *ll::VarCache::getInt("p"), "index C");
+    ASSERT_EQUAL(4, *ll::VarCache::getInt("q"), "index D");
     clearCaches();
 }
 
