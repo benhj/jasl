@@ -111,13 +111,13 @@ namespace jasl
             std::string symbol;
             if(m_func.getValueB<std::string>(symbol)) {
 
-                // find the ValueArray in the listCache having symbol symbol
-                auto it = VarCache::listCache.find(symbol);
+                // find the ValueArray in the list cache having symbol symbol
+                auto found = VarCache::getList(symbol);
 
                 // if found then process list
-                if(it != std::end(VarCache::listCache)) {
+                if(found) {
 
-                    if(*index >= it->second.size()) {
+                    if(*index >= found->size()) {
                         setLastErrorMessage("get token: index bigger than list");
                         return false;
                     }
@@ -129,7 +129,7 @@ namespace jasl
                         return true;
                     }
 
-                    auto vals = it->second;
+                    auto vals = *found;
                     vals[*index] = Value(*newToken);
                     VarCache::setList(varName, vals);
                     return true;

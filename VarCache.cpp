@@ -88,5 +88,16 @@ namespace jasl {
         return OptionalValueArray();
     }
 
+    Value VarCache::getListToken(std::string const &key, int const index)
+    {
+        auto it = listCache.find(key);
+        if(it != std::end(listCache))  { 
+            if(index < it->second.size()) {
+                return Value(it->second[index]); 
+            }
+        }
+        return Value();
+    }
+
 
 }

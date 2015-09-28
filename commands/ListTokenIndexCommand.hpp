@@ -107,15 +107,15 @@ namespace jasl
             std::string symbol;
             if(m_func.getValueB<std::string>(symbol)) {
 
-                // find the ValueArray in the listCache having symbol symbol
-                auto it = VarCache::listCache.find(symbol);
+                // find the ValueArray in the list cache having symbol symbol
+                auto found = VarCache::getList(symbol);
 
                 // if found then process list
-                if(it != std::end(VarCache::listCache)) {
+                if(found) {
                     std::string s;
                     try {
                         int i = 0;
-                        for(auto & val : it->second) {
+                        for(auto & val : *found) {
                             std::string tok;
                             if(!VarExtractor::tryAnyCast(tok, val)) {
                                 return false;

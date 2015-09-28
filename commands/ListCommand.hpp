@@ -43,7 +43,7 @@ namespace jasl
             }
 
             // add list to list cache
-            VarCache::listCache[listName] = list;
+            VarCache::setList(listName, list);
             return true;
         }
         

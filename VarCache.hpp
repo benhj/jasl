@@ -64,6 +64,7 @@ namespace jasl {
         static OptionalBool getBool(std::string const &key);
         static OptionalString getString(std::string const &key);
         static OptionalValueArray getList(std::string const &key);
+        static Value getListToken(std::string const &key, int const index);
     };
 
 }
