@@ -321,11 +321,11 @@ void testList()
     ci.parseAndInterpretSingleCommand("list [hello there] -> s;", ss);
 
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["s"][0]);
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("s", 0));
     ASSERT_EQUAL("hello", tokenA, "testList tokenA");
 
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["s"][1]);
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("s", 1));
     ASSERT_EQUAL("there", tokenB, "testList tokenB");
 
     clearCaches();
@@ -362,13 +362,13 @@ void testListSetTokenRaw()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("set_token (0, [hello there], \"goodbye\") -> s;", ss);
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["s"][0]);
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("s", 0));
     ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenRaw A");
 
     ci.parseAndInterpretSingleCommand("string \"yes\" -> b;", ss);
     ci.parseAndInterpretSingleCommand("set_token (1, [hello there], b) -> s;", ss);
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["s"][1]);
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("s", 1));
     ASSERT_EQUAL("yes", tokenB, "testListSetTokenRaw B");
 
     clearCaches();
@@ -387,17 +387,17 @@ void testListSetTokenSymbol()
     ci.parseAndInterpretSingleCommand("set_token (i, lb, \"indeed\") -> sb;", ss);
 
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::listCache["sa"][0]);
+    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("sa", 0));
     ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenSymbol A");
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::listCache["sb"][3]);
+    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("sb", 3));
     ASSERT_EQUAL("indeed", tokenB, "testListSetTokenSymbol B");
     std::string tokenC;
-    ll::VarExtractor::tryAnyCast(tokenC, ll::VarCache::listCache["lb"][2]);
+    ll::VarExtractor::tryAnyCast(tokenC, ll::VarCache::getListToken("lb", 2));
     ASSERT_EQUAL("you", tokenC, "testListSetTokenSymbol C");
     ci.parseAndInterpretSingleCommand("set_token (j, lb, \"no\") -> lb;", ss);
     std::string tokenD;
-    ll::VarExtractor::tryAnyCast(tokenD, ll::VarCache::listCache["lb"][2]);
+    ll::VarExtractor::tryAnyCast(tokenD, ll::VarCache::getListToken("lb", 2));
     ASSERT_EQUAL("no", tokenD, "testListSetTokenSymbol D");
 
     clearCaches();

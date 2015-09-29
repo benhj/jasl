@@ -30,8 +30,8 @@ namespace jasl {
     struct VarExtractor
     {
 
-        template <typename T>
-        static bool tryAnyCast(T &t, Value &val)
+        template <typename T, typename V>
+        static bool tryAnyCast(T & t, V && val)
         {
             try {
                 t = boost::any_cast<T>(val);
