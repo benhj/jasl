@@ -23,7 +23,6 @@ namespace jasl {
     double
     MathExpression::evaluate() 
     {
-
         // Note, for convenience, all math operations are done using doubles
         // The client of this function is responsible for casting to
         // an integer if integer precision is required
@@ -45,7 +44,6 @@ namespace jasl {
         }
 
         auto valB = VarExtractor::trySingleDoubleExtraction(right);
-
         // extracting a double didn't work. Maybe an integer
         if(!valB) {
             auto valD = VarExtractor::trySingleIntExtraction(right);

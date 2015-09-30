@@ -53,11 +53,7 @@ namespace jasl
                     return OptionalString();
                 } 
 
-                auto it = VarCache::stringCache.find(symbol);
-                if(it == VarCache::stringCache.end()) {
-                    return OptionalString();
-                }
-                return OptionalString(it->second); 
+                return VarCache::getString(symbol);
             } else {
                 return OptionalString(literal.literal);
             }

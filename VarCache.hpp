@@ -16,6 +16,7 @@
 #include <cstdint>
 
 #include <boost/optional.hpp>
+#include <boost/variant.hpp>
 
 namespace jasl {
 
@@ -24,15 +25,13 @@ namespace jasl {
     typedef ::boost::optional<double> OptionalDouble;
     typedef ::boost::optional<std::string> OptionalString;
     typedef ::boost::optional<ValueArray> OptionalValueArray;
+    typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
 
     struct VarCache 
     {
         /// caches for ints, bools and doubles
-        static std::map<std::string, int64_t> intCache;
-        static std::map<std::string, bool> boolCache;
-        static std::map<std::string, double> doubleCache;
-        static std::map<std::string, std::string> stringCache;
-        static std::map<std::string, ValueArray> listCache;
+        static std::map<std::string, CacheVariant> bigCache;
+
         static std::vector<std::string> args;
 
         /// the script represents the whole program

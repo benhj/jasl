@@ -35,13 +35,14 @@ namespace jasl
             }
 
             // gracefully fail if string with name cannot be found
-            auto it = VarCache::stringCache.find(stringName);
-            if(it == std::end(VarCache::stringCache)) {
+            auto found = VarCache::getString(stringName);
+            if(!found) {
                 return false;
             }
 
-            std::reverse(std::begin(VarCache::stringCache[stringName]), 
-                         std::end(VarCache::stringCache[stringName]));
+            auto result = *found;
+            std::reverse(std::begin(result), std::end(result));
+            VarCache::setString(stringName, result);
             return true;
         }
         

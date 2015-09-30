@@ -38,7 +38,9 @@ namespace jasl
                 return false;
             }
 
-            std::getline(std::cin, VarCache::stringCache[answer]);
+            std::string result;
+            std::getline(std::cin, result);
+            VarCache::setString(answer, result);
             return false;
         }
 

@@ -19,10 +19,7 @@ using namespace simpletest;
 /// reset variable caches after tests
 void clearCaches()
 {
-    decltype(ll::VarCache::intCache)().swap(ll::VarCache::intCache);
-    decltype(ll::VarCache::doubleCache)().swap(ll::VarCache::doubleCache);
-    decltype(ll::VarCache::boolCache)().swap(ll::VarCache::boolCache);
-    decltype(ll::VarCache::stringCache)().swap(ll::VarCache::stringCache);
+    decltype(ll::VarCache::bigCache)().swap(ll::VarCache::bigCache);
     decltype(ll::VarCache::script)().swap(ll::VarCache::script);
 }
 
@@ -30,16 +27,16 @@ void testMath()
 {
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer (10 + 20) -> result;");
-    ASSERT_UNEQUAL(ll::VarCache::intCache.find("result"), 
-                   ll::VarCache::intCache.end(), 
+    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("result"), 
+                   ll::VarCache::bigCache.end(), 
                    "testMath::found integer result");
     ASSERT_EQUAL(30, *ll::VarCache::getInt("result"), "testMath::result is 30");
     ci.parseAndInterpretSingleCommand("integer 2 -> x;");
     ci.parseAndInterpretSingleCommand("integer (result * x) -> result;");
     ASSERT_EQUAL(60, *ll::VarCache::getInt("result"), "testMath::result is 60");
     ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;");
-    ASSERT_UNEQUAL(ll::VarCache::doubleCache.find("resultDouble"), 
-                   ll::VarCache::doubleCache.end(), 
+    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("resultDouble"), 
+                   ll::VarCache::bigCache.end(), 
                    "testMath::found float resultDouble");
     ASSERT_EQUAL(57.5, *ll::VarCache::getDouble("resultDouble"), "testMath::resultDouble is 57.5");
     clearCaches();
@@ -253,7 +250,7 @@ void testWhileCommand()
     for(auto &f : functions) {
         (void)ci.interpretFunc(f, ss);
     }
-    ASSERT_EQUAL(0, ll::VarCache::intCache["x"], "testWhileCommand::x is 0");
+    ASSERT_EQUAL(0, *ll::VarCache::getInt("x"), "testWhileCommand::x is 0");
     clearCaches();
 }
 
