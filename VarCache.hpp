@@ -29,7 +29,7 @@ namespace jasl {
 
     struct VarCache 
     {
-        /// caches for ints, bools and doubles
+        /// caches for ints, bools and doubles, and other types
         static std::map<std::string, CacheVariant> bigCache;
 
         static std::vector<std::string> args;
@@ -42,15 +42,20 @@ namespace jasl {
 
         /// functions for setting different types
         static void setInt(std::string const &key,
-                           int64_t const value);
+                           int64_t const value,
+                           bool const updateAllowed = true);
         static void setDouble(std::string const &key,
-                              double const value);
+                              double const value,
+                              bool const updateAllowed = true);
         static void setBool(std::string const &key,
-                            bool const value);
+                            bool const value,
+                            bool const updateAllowed = true);
         static void setString(std::string const &key,
-                              std::string const &value);
+                              std::string const &value,
+                              bool const updateAllowed = true);
         static void setList(std::string const &key,
-                            ValueArray const &value);
+                            ValueArray const &value,
+                            bool const updateAllowed = true);
         static void setTokenInList(std::string const &key,
                                    int const index,
                                    Value const &value);

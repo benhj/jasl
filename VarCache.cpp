@@ -18,28 +18,48 @@ namespace jasl {
     std::string VarCache::lastKnownError;
  
     void VarCache::setInt(std::string const &key,
-                          int64_t const value)
+                          int64_t const value,
+                          bool const updateAllowed)
     {
-        bigCache[key] = CacheVariant((int64_t)value);
+        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
+            return;
+        }
+        bigCache[key] = CacheVariant(value);
     }
     void VarCache::setDouble(std::string const &key,
-                             double const value)
+                             double const value,
+                             bool const updateAllowed)
     {
-        bigCache[key] = CacheVariant((double)value);
+        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
+            return;
+        }
+        bigCache[key] = CacheVariant(value);
     }
     void VarCache::setBool(std::string const &key,
-                           bool const value)
+                           bool const value,
+                           bool const updateAllowed)
     {
-        bigCache[key] = CacheVariant((bool)value);
+        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
+            return;
+        }
+        bigCache[key] = CacheVariant(value);
     }
     void VarCache::setString(std::string const &key,
-                             std::string const &value)
+                             std::string const &value,
+                             bool const updateAllowed)
     {
+        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
+            return;
+        }
         bigCache[key] = CacheVariant(value);
     }
     void VarCache::setList(std::string const &key,
-                           ValueArray const &value)
+                           ValueArray const &value,
+                           bool const updateAllowed)
     {
+        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
+            return;
+        }
         bigCache[key] = CacheVariant(value);
     }
 
