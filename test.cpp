@@ -23,21 +23,34 @@ void clearCaches()
     decltype(ll::VarCache::script)().swap(ll::VarCache::script);
 }
 
+void testRelease()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("integer 5 -> result;");
+
+    // Test that variable result can be found
+    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("result"),
+                   std::end(ll::VarCache::bigCache),
+                   "testRelease::result variable found.");
+
+    // Now release the variable
+    ci.parseAndInterpretSingleCommand("release result;");
+
+    // Test that it can no longer be found
+    ASSERT_EQUAL(ll::VarCache::bigCache.find("result"),
+                 std::end(ll::VarCache::bigCache),
+                 "testRelease::result variable not found.");
+}
+
 void testMath()
 {
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer (10 + 20) -> result;");
-    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("result"), 
-                   ll::VarCache::bigCache.end(), 
-                   "testMath::found integer result");
     ASSERT_EQUAL(30, *ll::VarCache::getInt("result"), "testMath::result is 30");
     ci.parseAndInterpretSingleCommand("integer 2 -> x;");
     ci.parseAndInterpretSingleCommand("integer (result * x) -> result;");
     ASSERT_EQUAL(60, *ll::VarCache::getInt("result"), "testMath::result is 60");
     ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;");
-    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("resultDouble"), 
-                   ll::VarCache::bigCache.end(), 
-                   "testMath::found float resultDouble");
     ASSERT_EQUAL(57.5, *ll::VarCache::getDouble("resultDouble"), "testMath::resultDouble is 57.5");
     clearCaches();
 }
@@ -419,6 +432,7 @@ void testListTokenIndex()
 
 int main()
 {
+    testRelease();
     testMath();
     testVarNewSyntax();
     testVarNewSyntaxFromString();

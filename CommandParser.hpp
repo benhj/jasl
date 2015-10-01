@@ -387,6 +387,10 @@ namespace jasl
             loadScript %= string("script") >> '('
                        >> quotedString >> ')' >> ';';
 
+            // erases a variable from the cache
+            releaseCommand %= string("release")
+                           >> genericString >> ';';
+
             // all the instructions at out disposal
             allCommands %= forLoop
                          | query 
@@ -417,7 +421,8 @@ namespace jasl
                          | listTokenIndex
                          | stringList
                          | inputRule
-                         | execCommand;
+                         | execCommand
+                         | releaseCommand;
                          
             start %= allCommands;
         }
@@ -451,6 +456,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
         qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

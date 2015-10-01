@@ -31,6 +31,7 @@
 #include "commands/StringCommand.hpp"
 #include "commands/StringLengthCommand.hpp"
 #include "commands/StringToPrimitiveCommand.hpp"
+#include "commands/ReleaseCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -150,7 +151,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(Exec);
 
-        }        
+        } else if(searchString(func, "release")) {
+
+            PROCESS_X_COMMAND(Release);
+
+        }         
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }

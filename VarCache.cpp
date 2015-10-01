@@ -52,6 +52,12 @@ namespace jasl {
         array[index] = value;
     }
 
+    void VarCache::eraseValue(std::string const &key)
+    {
+        auto it = bigCache.find(key);
+        if(it != std::end(bigCache)) { bigCache.erase(it); }
+    }
+
     OptionalInt VarCache::getInt(std::string const &key)
     {
         try {

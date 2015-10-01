@@ -54,6 +54,7 @@ namespace jasl {
         static void setTokenInList(std::string const &key,
                                    int const index,
                                    Value const &value);
+        static void eraseValue(std::string const &key);
 
         /// functions for getting different types.
         /// These are convenience functions and
