@@ -52,7 +52,7 @@ namespace jasl
         {
             auto index(getIndex());
             if(!index) {
-                setLastErrorMessage("get token: error getting index");
+                setLastErrorMessage("get_token: error getting index");
                 return false;
             }
 
@@ -62,18 +62,32 @@ namespace jasl
                 try {
                     int i = 0;
                     for(auto & val : v) {
-                        std::string tok;
-                        if(!VarExtractor::tryAnyCast(tok, val)) {
-                            setLastErrorMessage("get token: error getting list token");
+                        if(i == *index) {
+                            // First try pulling a string out
+                            {
+                                std::string tok;
+                                if(VarExtractor::tryAnyCast(tok, val)) {
+                                    VarCache::setString(varName, tok);
+                                    return true;
+                                }
+                            }
+                            // Second, try pulling ValueArray out (nb, a nested list)
+                            {
+                                ValueArray tok;
+                                if(VarExtractor::tryAnyCast(tok, val)) {
+                                    VarCache::setList(varName, tok);
+                                    return true;
+                                }
+                            }
+
+                            // Failed, set error state
+                            setLastErrorMessage("get_token: problem extracting token");
                             return false;
                         }
-                        if(i == *index) {
-                            VarCache::setString(varName, tok);
-                            return true;
-                        }
+                        
                         ++i;
                     }
-                    setLastErrorMessage("get token: error getting list");
+                    setLastErrorMessage("get_token: problem extracting token");
                     return false;
                 } catch( boost::bad_lexical_cast const& ) {
                     setLastErrorMessage("get token: error in lexical cast");
@@ -105,15 +119,28 @@ namespace jasl
                     try {
                         int i = 0;
                         for(auto & val : *list) {
-                            std::string tok;
-                            if(!VarExtractor::tryAnyCast(tok, val)) {
-                                setLastErrorMessage("get token: error getting list token");
-                                return false;
-                            }
                             if(i == *index) {
-                                VarCache::setString(varName, tok);
-                                return true;
+                            // First try pulling a string out
+                            {
+                                std::string tok;
+                                if(VarExtractor::tryAnyCast(tok, val)) {
+                                    VarCache::setString(varName, tok);
+                                    return true;
+                                }
                             }
+                            // Second, try pulling ValueArray out (nb, a nested list)
+                            {
+                                ValueArray tok;
+                                if(VarExtractor::tryAnyCast(tok, val)) {
+                                    VarCache::setList(varName, tok);
+                                    return true;
+                                }
+                            }
+
+                            // Failed, set error state
+                            setLastErrorMessage("get_token: problem extracting token");
+                            return false;
+                        }
                             ++i;
                         }
                         setLastErrorMessage("get token: error getting list");

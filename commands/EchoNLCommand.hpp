@@ -78,10 +78,40 @@ namespace jasl
                         return true;
                     }
                 }
+                {
+                    auto result = VarCache::getList(symbol);
+                    if(result) {
+                        processListElement(*result);
+                        appendToOutput("\n");
+                        return true;
+                    }
+                }
                 return true;
             }
 
             return false;
+        }
+
+        void processListElement(ValueArray const &valueArray)
+        {
+            // Print out tokens, one after another
+            for(auto const & it : valueArray) {
+                // First try pulling a string out
+                {
+                    std::string tok;
+                    if(VarExtractor::tryAnyCast(tok, it)) {
+                        appendToOutput(tok);
+                        appendToOutput(" ");
+                    }
+                }
+                // Second, try pulling ValueArray out (nb, a nested list)
+                {
+                    ValueArray tok;
+                    if(VarExtractor::tryAnyCast(tok, it)) {
+                        processListElement(tok);
+                    }
+                }
+            }
         }
 
         bool tryNumericExtraction()

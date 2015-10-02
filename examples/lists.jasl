@@ -5,7 +5,21 @@ start {
     list [[very nested] a list] -> M;
     list [a list [very nested]] -> N;
     list [an very [very [even more nested] nested] nested list] -> Q;
-    
-  
+
+    // will print out flattened versions of above lists    
+    echo_nl A;
+    echo_nl L;
+    echo_nl M;
+    echo_nl N;
+    echo_nl Q;
+
+    // extract list element
+    get_token(2, Q) -> tokenOne;
+    echo_nl tokenOne;  
+
+    // will print out 'event more nested'
+    get_token(1, tokenOne) -> innerToken;
+    echo_nl innerToken;
+
     echo_nl "Done!";
 }
