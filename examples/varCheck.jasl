@@ -1,0 +1,18 @@
+start {
+
+    // check that variables can only be instantiated once
+    integer 5 -> a;
+    decimal 1.1 -> a;
+
+    // should print out 5    
+    echo_nl a;
+    
+    // delete var a
+    release a;
+    
+    decimal 1.1 -> a;
+    integer 5 -> a;
+    
+    // should print out 1.1
+    echo_nl a;
+}
