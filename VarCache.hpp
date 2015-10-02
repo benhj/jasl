@@ -29,8 +29,20 @@ namespace jasl {
 
     struct VarCache 
     {
+
+        /// Represents the type of a cached variable entry
+        enum class Type {
+            Int, Bool, Double, String, ValueArray
+        };
+
+        /// For representing a variable entry in the 'big cache'
+        struct CacheEntry {
+            Type type;
+            CacheVariant cv;
+        };
+
         /// caches for ints, bools and doubles, and other types
-        static std::map<std::string, CacheVariant> bigCache;
+        static std::map<std::string, CacheEntry> bigCache;
 
         static std::vector<std::string> args;
 
@@ -42,20 +54,15 @@ namespace jasl {
 
         /// functions for setting different types
         static void setInt(std::string const &key,
-                           int64_t const value,
-                           bool const updateAllowed = true);
+                           int64_t const value);
         static void setDouble(std::string const &key,
-                              double const value,
-                              bool const updateAllowed = true);
+                              double const value);
         static void setBool(std::string const &key,
-                            bool const value,
-                            bool const updateAllowed = true);
+                            bool const value);
         static void setString(std::string const &key,
-                              std::string const &value,
-                              bool const updateAllowed = true);
+                              std::string const &value);
         static void setList(std::string const &key,
-                            ValueArray const &value,
-                            bool const updateAllowed = true);
+                            ValueArray const &value);
         static void setTokenInList(std::string const &key,
                                    int const index,
                                    Value const &value);

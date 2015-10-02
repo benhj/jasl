@@ -12,55 +12,95 @@
 namespace jasl {
 
     /// caches for ints, bools and doubles
-    std::map<std::string, CacheVariant> VarCache::bigCache;
+    std::map<std::string, VarCache::CacheEntry> VarCache::bigCache;
     std::vector<std::string> VarCache::args;
     std::string VarCache::script;
     std::string VarCache::lastKnownError;
  
     void VarCache::setInt(std::string const &key,
-                          int64_t const value,
-                          bool const updateAllowed)
+                          int64_t const value)
     {
-        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
-            return;
+        auto found = bigCache.find(key);
+        auto proceed = true;
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(bigCache)) {
+            if(found->second.type != Type::Int) {
+                proceed = false;
+            }
         }
-        bigCache[key] = CacheVariant(value);
+        if(proceed) {
+            bigCache[key] = { Type::Int, CacheVariant(value) };
+        }
     }
     void VarCache::setDouble(std::string const &key,
-                             double const value,
-                             bool const updateAllowed)
+                             double const value)
     {
-        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
-            return;
+        auto found = bigCache.find(key);
+        auto proceed = true;
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(bigCache)) {
+            if(found->second.type != Type::Double) {
+                proceed = false;
+            }
         }
-        bigCache[key] = CacheVariant(value);
+        if(proceed) {
+            bigCache[key] = { Type::Double, CacheVariant(value) };
+        }
     }
     void VarCache::setBool(std::string const &key,
-                           bool const value,
-                           bool const updateAllowed)
+                           bool const value)
     {
-        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
-            return;
+        auto found = bigCache.find(key);
+        auto proceed = true;
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(bigCache)) {
+            if(found->second.type != Type::Bool) {
+                proceed = false;
+            }
         }
-        bigCache[key] = CacheVariant(value);
+        if(proceed) {
+            bigCache[key] = { Type::Bool, CacheVariant(value) };
+        }
     }
     void VarCache::setString(std::string const &key,
-                             std::string const &value,
-                             bool const updateAllowed)
+                             std::string const &value)
     {
-        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
-            return;
+        auto found = bigCache.find(key);
+        auto proceed = true;
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(bigCache)) {
+            if(found->second.type != Type::String) {
+                proceed = false;
+            }
         }
-        bigCache[key] = CacheVariant(value);
+        if(proceed) {
+            bigCache[key] = { Type::String, CacheVariant(value) };
+        }
     }
     void VarCache::setList(std::string const &key,
-                           ValueArray const &value,
-                           bool const updateAllowed)
+                           ValueArray const &value)
     {
-        if(!updateAllowed && bigCache.find(key) != std::end(bigCache)) {
-            return;
+        auto found = bigCache.find(key);
+        auto proceed = true;
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(bigCache)) {
+            if(found->second.type != Type::ValueArray) {
+                proceed = false;
+            }
         }
-        bigCache[key] = CacheVariant(value);
+        if(proceed) {
+            bigCache[key] = { Type::ValueArray, CacheVariant(value) };
+        }
     }
 
     void VarCache::setTokenInList(std::string const &key,
@@ -68,7 +108,7 @@ namespace jasl {
                                   Value const &value)
     {
         auto &keyed = bigCache[key];
-        auto &array = ::boost::get<ValueArray>(keyed);
+        auto &array = ::boost::get<ValueArray>(keyed.cv);
         array[index] = value;
     }
 
@@ -82,7 +122,9 @@ namespace jasl {
     {
         try {
             auto it = bigCache.find(key);
-            if(it != std::end(bigCache)) { return ::boost::get<int64_t>(it->second); }
+            if(it != std::end(bigCache)) { 
+                return ::boost::get<int64_t>(it->second.cv); 
+            }
         } catch (...) {}
         return OptionalInt();
     }
@@ -91,7 +133,9 @@ namespace jasl {
     {
         try {
             auto it = bigCache.find(key);
-            if(it != std::end(bigCache)) { return ::boost::get<double>(it->second);  }
+            if(it != std::end(bigCache)) { 
+                return ::boost::get<double>(it->second.cv);  
+            }
         } catch (...) {}
         return OptionalDouble();
     }
@@ -100,7 +144,9 @@ namespace jasl {
     {
         try {
             auto it = bigCache.find(key);
-            if(it != std::end(bigCache)) { return ::boost::get<bool>(it->second);  }
+            if(it != std::end(bigCache)) { 
+                return ::boost::get<bool>(it->second.cv);  
+            }
         } catch (...) {}
         return OptionalBool();
     }
@@ -109,7 +155,9 @@ namespace jasl {
     {
         try {
             auto it = bigCache.find(key);
-            if(it != std::end(bigCache)) { return ::boost::get<std::string>(it->second);  }
+            if(it != std::end(bigCache)) { 
+                return ::boost::get<std::string>(it->second.cv);  
+            }
         } catch (...) {}
         return OptionalString();
     }
@@ -118,7 +166,9 @@ namespace jasl {
     {
         try {
             auto it = bigCache.find(key);
-            if(it != std::end(bigCache)) { return ::boost::get<ValueArray>(it->second);  }
+            if(it != std::end(bigCache)) { 
+                return ::boost::get<ValueArray>(it->second.cv);  
+            }
         } catch (...) {}
         return OptionalValueArray();
     }
@@ -128,7 +178,7 @@ namespace jasl {
         try {
             auto it = bigCache.find(key);
             if(it != std::end(bigCache)) { 
-                auto array = ::boost::get<ValueArray>(it->second);  
+                auto array = ::boost::get<ValueArray>(it->second.cv);  
                 if(index < array.size()) {
                     return Value(array[index]); 
                 }
