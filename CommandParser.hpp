@@ -275,10 +275,12 @@ namespace jasl
 
             // a list of words
             // e.g. list [hello there] -> L;
+            // Should also be possible to have lists of lists
+            // e.g. list [hello [nested list] there] -> L;
             // will be useful for pattern matching
             // a collection of words
             words          %= (*word); // zero or more words
-            bracketedWords %= '[' >> words >> ']';
+            bracketedWords %= '[' >> (words | bracketedWords) >> ']';
             stringList     %= string("list")
                            >> bracketedWords
                            >> lit("->")
