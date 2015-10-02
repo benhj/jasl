@@ -1,0 +1,11 @@
+start {
+
+    list [just a plain list] -> A;
+    list [Test a [very nested] list] -> L;
+    list [[very nested] a list] -> M;
+    list [a list [very nested]] -> N;
+    list [an very [very [even more nested] nested] nested list] -> Q;
+    
+  
+    echo_nl "Done!";
+}
