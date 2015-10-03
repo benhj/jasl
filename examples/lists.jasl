@@ -7,26 +7,41 @@ start {
     list [an very [very [even more nested] nested] nested list] -> Q;
 
     // will print out flattened versions of above lists    
+    echo "A list: ";
     echo_nl A;
+    echo "L list: ";
     echo_nl L;
+    echo "M list: ";
     echo_nl M;
+    echo "N list: ";
     echo_nl N;
+    echo "Q list: ";
     echo_nl Q;
+
+    echo_nl "Elements of Q list: ";
+    // attempt to print out elements of list using range-based loop
+    for i in Q {
+        echo_nl i;
+    }
 
     // extract list element
     get_token(2, Q) -> tokenOne;
+    echo "Token 2 of Q list: ";
     echo_nl tokenOne;  
 
     // will print out 'event more nested'
     get_token(1, tokenOne) -> innerToken;
+    echo "Token 1 of token 2 of Q list: ";
     echo_nl innerToken;
 
     // set token in list
     set_token(1, A, "some") -> A;
+    echo "Setting token 1 of A list to some ";
     echo_nl A;
 
     // add a nested token
     set_token(2, A, [nested part]) -> A;
+    echo "Adding a nested part to token 2 of A list: ";
     echo_nl A;
 
     echo_nl "Done!";

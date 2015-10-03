@@ -175,16 +175,12 @@ namespace jasl
             // the entire set of instructions at out disposal
             commandCollection %= *allCommands;
 
-            // a simple for-loop
-            // e.g. for(c = i : j) { ... }
+            // a for-loop for iterating over elements in a list
+            // e.g. for i in list {...}
             forLoop %= string("for")
-                    >> '('
                     >> genericString // variable e.g. c
-                    >> '='
-                    >> (intRule | genericString | bracketedMathExpression) // variable e.g. i
-                    >> ':'
-                    >> (intRule | genericString | bracketedMathExpression) // variable e.g. j
-                    >> ')'
+                    >> lit("in")
+                    >> (genericString | bracketedWords) 
                     >> '{'
                     >>  commandCollection
                     >> '}';

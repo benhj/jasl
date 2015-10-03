@@ -27,6 +27,7 @@
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
 #include "commands/WhileCommand.hpp"
+#include "commands/ForCommand.hpp"
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
 #include "commands/StringLengthCommand.hpp"
@@ -89,7 +90,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(While);
 
-        }  else if(searchString(func, "block")) {
+        } else if(searchString(func, "for")) {
+
+            PROCESS_X_COMMAND(For);
+
+        }    else if(searchString(func, "block")) {
             
             PROCESS_X_COMMAND(Block);
 

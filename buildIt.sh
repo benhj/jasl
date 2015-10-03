@@ -9,6 +9,7 @@ objects="VarCache.o \
          IfCommand.o \
          RepeatCommand.o \
          WhileCommand.o \
+         ForCommand.o \
          BlockCommand.o \
          StartCommand.o \
          CallCommand.o \
@@ -44,6 +45,11 @@ function build_RepeatCommand {
 function build_WhileCommand {
     echo "Building WhileCommand..."
     $compiler $cflags -I$boostIncPath -c commands/WhileCommand.cpp -o WhileCommand.o 
+}
+
+function build_ForCommand {
+    echo "Building ForCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/ForCommand.cpp -o ForCommand.o 
 }
 
 function build_StartCommand {
@@ -95,6 +101,7 @@ function build_all {
     build_IfCommand
     build_RepeatCommand
     build_WhileCommand
+    build_ForCommand
     build_StartCommand
     build_BlockCommand
     build_MathExpression
