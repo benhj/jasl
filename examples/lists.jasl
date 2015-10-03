@@ -6,7 +6,7 @@ start {
     list [a list [very nested]] -> N;
     list [an very [very [even more nested] nested] nested list] -> Q;
 
-    // will print out flattened versions of above lists    
+    // will print out above lists    
     echo "A list: ";
     echo_nl A;
     echo "L list: ";

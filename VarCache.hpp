@@ -27,13 +27,15 @@ namespace jasl {
     typedef ::boost::optional<ValueArray> OptionalValueArray;
     typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
 
+    /// Represents the type of a cached variable entry
+    enum class Type {
+        Int, Bool, Double, String, ValueArray
+    };
+
+    typedef ::boost::optional<Type> OptionalType;
+
     struct VarCache 
     {
-
-        /// Represents the type of a cached variable entry
-        enum class Type {
-            Int, Bool, Double, String, ValueArray
-        };
 
         /// For representing a variable entry in the 'big cache'
         struct CacheEntry {
@@ -77,6 +79,7 @@ namespace jasl {
         static OptionalString getString(std::string const &key);
         static OptionalValueArray getList(std::string const &key);
         static Value getListToken(std::string const &key, size_t const index);
+        static OptionalType getType(std::string const &key);
     };
 
 }

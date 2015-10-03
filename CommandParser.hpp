@@ -387,6 +387,14 @@ namespace jasl
             releaseCommand %= string("release")
                            >> genericString >> ';';
 
+            // determines the type of a variable and stores in a string
+            typeCommand %= string("type") >> '('
+                        >> genericString >> ')'
+                        >> lit("->") 
+                        >> genericString
+                        >> ';';
+
+
             // all the instructions at out disposal
             allCommands %= forLoop
                          | query 
@@ -418,7 +426,8 @@ namespace jasl
                          | stringList
                          | inputRule
                          | execCommand
-                         | releaseCommand;
+                         | releaseCommand
+                         | typeCommand;
                          
             start %= allCommands;
         }
@@ -453,6 +462,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
@@ -470,7 +480,6 @@ namespace jasl
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // Core rule declarations
-        // qi::rule<Iterator, Function(), ascii::space_type> bracketedWord;
         qi::rule<Iterator, std::string(), ascii::space_type> word;
         qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;

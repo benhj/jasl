@@ -187,5 +187,12 @@ namespace jasl {
         return Value();
     }
 
-
+    OptionalType VarCache::getType(std::string const &key)
+    {
+        auto it = bigCache.find(key);
+        if(it != std::end(bigCache)) { 
+            return it->second.type;
+        }
+        return OptionalType();
+    }
 }
