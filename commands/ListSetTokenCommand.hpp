@@ -48,7 +48,7 @@ namespace jasl
             return VarExtractor::trySingleIntExtraction(m_func.paramA);
         }
 
-        OptionalString getNewToken()
+        OptionalString getNewStringToken()
         {
             std::string token;
             if(!m_func.getValueC<std::string>(token)) {
@@ -66,6 +66,24 @@ namespace jasl
             return OptionalString();
         }
 
+        OptionalValueArray getNewVAToken()
+        {
+            std::string token;
+            if(!m_func.getValueC<std::string>(token)) {
+                ValueArray va;
+                if(m_func.getValueC<ValueArray>(va)) {
+                    return va;
+                }
+            } else {
+                auto result = VarCache::getList(token);
+                if(result) {
+                    return *result;
+                }
+            }
+            setLastErrorMessage("get token: problem getting new token");
+            return OptionalValueArray();
+        }
+
         bool tryWithRawList(std::string const &varName) 
         {
             auto index(getIndex());
@@ -74,11 +92,6 @@ namespace jasl
                 return false;
             }
 
-            auto newToken(getNewToken());
-            if(!newToken) {
-                setLastErrorMessage("get token: error getting new token");
-                return false;
-            }
 
             ValueArray v;
             if(m_func.getValueB<ValueArray>(v)) {
@@ -86,10 +99,27 @@ namespace jasl
                     setLastErrorMessage("get token: index bigger than list");
                     return false;
                 }
-                v[*index] = Value(*newToken);
-                VarCache::setList(varName, v);
-                return true;
+                // string token
+                {
+                    auto newToken(getNewStringToken());
+                    if(newToken) {
+                        v[*index] = Value(*newToken);
+                        VarCache::setList(varName, v);
+                        return true;
+                    }
+                }
+                // list token
+                {
+                    auto newToken(getNewVAToken());
+                    if(newToken) {
+                        v[*index] = Value(*newToken);
+                        VarCache::setList(varName, v);
+                        return true;
+                    }
+                }
             }
+
+            setLastErrorMessage("get token: problem setting token");
             return false;
         }
 
@@ -98,12 +128,6 @@ namespace jasl
             auto index(getIndex());
             if(!index) {
                 setLastErrorMessage("get token: error getting index");
-                return false;
-            }
-
-            auto newToken(getNewToken());
-            if(!newToken) {
-                setLastErrorMessage("get token: error getting new token");
                 return false;
             }
             
@@ -124,15 +148,40 @@ namespace jasl
 
                     // if list to which token is being set is the same one as the variable
                     // then update by reference else update by copy
-                    if(symbol == varName) {
-                        VarCache::setTokenInList(varName, *index, Value(*newToken));
-                        return true;
-                    }
+                    // string token
+                    {
+                        auto newToken(getNewStringToken());
+                        if(newToken) {
+                            
+                            if(symbol == varName) {
 
-                    auto vals = *found;
-                    vals[*index] = Value(*newToken);
-                    VarCache::setList(varName, vals);
-                    return true;
+                                VarCache::setTokenInList(varName, *index, Value(*newToken));
+                                return true;
+                            }
+
+                            auto vals = *found;
+                            vals[*index] = Value(*newToken);
+                            VarCache::setList(varName, vals);
+                            return true;
+                        }
+                    }
+                    // list token
+                    {
+                        auto newToken(getNewVAToken());
+                        if(newToken) {
+                            
+                            if(symbol == varName) {
+
+                                VarCache::setTokenInList(varName, *index, Value(*newToken));
+                                return true;
+                            }
+
+                            auto vals = *found;
+                            vals[*index] = Value(*newToken);
+                            VarCache::setList(varName, vals);
+                            return true;
+                        }
+                    }
 
                 }
             }

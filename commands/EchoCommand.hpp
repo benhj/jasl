@@ -95,13 +95,17 @@ namespace jasl
         void processListElement(ValueArray const &valueArray)
         {
             // Print out tokens, one after another
+            appendToOutput("[");
+            size_t count = 0;
             for(auto const & it : valueArray) {
                 // First try pulling a string out
                 {
                     std::string tok;
                     if(VarExtractor::tryAnyCast(tok, it)) {
                         appendToOutput(tok);
-                        appendToOutput(" ");
+                        if(count < valueArray.size() - 1) {
+                            appendToOutput(" ");
+                        }
                     }
                 }
                 // Second, try pulling ValueArray out (nb, a nested list)
@@ -111,7 +115,9 @@ namespace jasl
                         processListElement(tok);
                     }
                 }
+                ++count;
             }
+            appendToOutput("] ");
         }
 
         bool tryNumericExtraction()

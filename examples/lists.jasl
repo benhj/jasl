@@ -21,5 +21,13 @@ start {
     get_token(1, tokenOne) -> innerToken;
     echo_nl innerToken;
 
+    // set token in list
+    set_token(1, A, "some") -> A;
+    echo_nl A;
+
+    // add a nested token
+    set_token(2, A, [nested part]) -> A;
+    echo_nl A;
+
     echo_nl "Done!";
 }

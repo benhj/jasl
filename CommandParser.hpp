@@ -314,13 +314,14 @@ namespace jasl
                           >> ';';
 
             // set_token (0, [hello there], "goodbye") -> t;
+            // set_token (0, [hello there], [nested bit]) -> t;
             listSetToken  %= string("set_token")
                           >> ('(')
                           >> (genericString | intRule)
                           >> (',')
                           >> (bracketedWords | genericString)
                           >> (',')
-                          >> (genericString | doubleQuotedString)
+                          >> (genericString | doubleQuotedString | bracketedWords)
                           >> (')')
                           >> lit("->")
                           >> genericString 
