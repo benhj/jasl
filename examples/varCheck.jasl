@@ -15,4 +15,31 @@ start {
     
     // should print out 1.1
     echo_nl a;
+
+    // extract and print out type information
+    release a;
+    integer 5 -> a;
+    decimal 1.1 -> b;
+    boolean true -> c;
+    string "hello" -> d;
+    list [lists of words] -> e;
+    type(a) -> atype;
+    type(b) -> btype;
+    type(c) -> ctype;
+    type(d) -> dtype;
+    type(e) -> etype;
+    echo_nl atype;
+    echo_nl btype;
+    echo_nl ctype;
+    echo_nl dtype;
+    echo_nl etype;
+
+    // print out types of elements in a list
+    list [list [with nested] list] -> f;
+    for i in f {
+        type(i) -> elementType;
+        echo "type: ";
+        echo_nl elementType;
+    }
+
 }
