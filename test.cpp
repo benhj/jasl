@@ -42,6 +42,26 @@ void testRelease()
                  "testRelease::result variable not found.");
 }
 
+void testTypes()
+{
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("integer 5 -> a;");
+    ci.parseAndInterpretSingleCommand("decimal 1.1 -> b;");
+    ci.parseAndInterpretSingleCommand("boolean true -> c;");
+    ci.parseAndInterpretSingleCommand("string \"hello\" -> d;");
+    ci.parseAndInterpretSingleCommand("list [some big list] -> e;");
+    ci.parseAndInterpretSingleCommand("type(a) -> atype;");
+    ci.parseAndInterpretSingleCommand("type(b) -> btype;");
+    ci.parseAndInterpretSingleCommand("type(c) -> ctype;");
+    ci.parseAndInterpretSingleCommand("type(d) -> dtype;");
+    ci.parseAndInterpretSingleCommand("type(e) -> etype;");
+    ASSERT_EQUAL("integer", *ll::VarCache::getString("atype"), "testType::a is integer");
+    ASSERT_EQUAL("decimal", *ll::VarCache::getString("btype"), "testType::b is decimal");
+    ASSERT_EQUAL("boolean", *ll::VarCache::getString("ctype"), "testType::c is boolean");
+    ASSERT_EQUAL("string", *ll::VarCache::getString("dtype"), "testType::d is string");
+    ASSERT_EQUAL("list", *ll::VarCache::getString("etype"), "testType::e is list");
+}
+
 void testMath()
 {
     ll::CommandInterpretor ci;
@@ -413,6 +433,16 @@ void testListSetTokenSymbol()
     clearCaches();
 }
 
+void testListAddToken()
+{
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;");
+    ci.parseAndInterpretSingleCommand("add_token(\"again\", la);");
+    ci.parseAndInterpretSingleCommand("echo la;", ss);
+    ASSERT_EQUAL("[hello there again]", ss.str(), "testListAddToken");
+}
+
 void testListTokenIndex()
 {
     std::ostringstream ss;
@@ -433,6 +463,7 @@ void testListTokenIndex()
 int main()
 {
     testRelease();
+    testTypes();
     testMath();
     testVarNewSyntax();
     testVarNewSyntaxFromString();
@@ -463,6 +494,7 @@ int main()
     testListGetTokenSymbol();
     testListSetTokenRaw();
     testListSetTokenSymbol();
+    testListAddToken();
     showResults();
     return 0;
 }

@@ -300,14 +300,24 @@ namespace jasl
 
             // get_token(0, [hello there]) -> t;
             listGetToken  %= string("get_token")
-                          >> ('(')
+                          >> '('
                           >> (genericString | intRule)
-                          >> (',')
+                          >> ','
                           >> (bracketedWords | genericString)
-                          >> (')')
+                          >> ')'
                           >> lit("->")
                           >> genericString 
                           >> ';';
+
+            // add_token("token", L);
+            listAddToken  %= string("add_token")
+                          >> '('
+                          >> (genericString | doubleQuotedString | bracketedWords)
+                          >> ','
+                          >> (genericString)
+                          >> ')'
+                          >> ';';
+
 
             // set_token (0, [hello there], "goodbye") -> t;
             // set_token (0, [hello there], [nested bit]) -> t;
@@ -421,6 +431,7 @@ namespace jasl
                          | stringRule
                          | listGetToken
                          | listSetToken
+                         | listAddToken
                          | listToString
                          | listTokenIndex
                          | stringList
@@ -460,6 +471,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
         qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
         qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
+        qi::rule<Iterator, Function(), ascii::space_type> listAddToken;
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> typeCommand;

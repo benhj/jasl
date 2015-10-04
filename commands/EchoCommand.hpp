@@ -13,6 +13,8 @@
 #include "../VarExtractor.hpp"
 #include "../VarCache.hpp"
 
+#include <boost/algorithm/string.hpp>
+
 namespace jasl
 {
     class EchoCommand : public Command
@@ -81,8 +83,10 @@ namespace jasl
                 {
                     auto result = VarCache::getList(symbol);
                     if(result) {
-                        processListElement(*result);
-                        appendToOutput("\n");
+                        std::string output;
+                        processListElement(*result, output);
+                        ::boost::algorithm::trim_right(output);
+                        appendToOutput(output);
                         return true;
                     }
                 }
@@ -92,19 +96,20 @@ namespace jasl
             return false;
         }
 
-        void processListElement(ValueArray const &valueArray)
+        void processListElement(ValueArray const &valueArray,
+                                std::string &output)
         {
             // Print out tokens, one after another
-            appendToOutput("[");
+            output.append("[");
             size_t count = 0;
             for(auto const & it : valueArray) {
                 // First try pulling a string out
                 {
                     std::string tok;
                     if(VarExtractor::tryAnyCast(tok, it)) {
-                        appendToOutput(tok);
+                        output.append(tok);
                         if(count < valueArray.size() - 1) {
-                            appendToOutput(" ");
+                            output.append(" ");
                         }
                     }
                 }
@@ -112,12 +117,12 @@ namespace jasl
                 {
                     ValueArray tok;
                     if(VarExtractor::tryAnyCast(tok, it)) {
-                        processListElement(tok);
+                        processListElement(tok, output);
                     }
                 }
                 ++count;
             }
-            appendToOutput("] ");
+            output.append("] ");
         }
 
         bool tryNumericExtraction()

@@ -21,6 +21,7 @@
 #include "commands/ListCommand.hpp"
 #include "commands/ListGetTokenCommand.hpp"
 #include "commands/ListSetTokenCommand.hpp"
+#include "commands/ListAddTokenCommand.hpp"
 #include "commands/ListToStringCommand.hpp"
 #include "commands/ListTokenIndexCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
@@ -153,7 +154,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(ListSetToken);
 
-        } else if(searchString(func, "exec")) {
+        } else if(searchString(func, "add_token")) {
+
+            PROCESS_X_COMMAND(ListAddToken);
+
+        }  else if(searchString(func, "exec")) {
 
             PROCESS_X_COMMAND(Exec);
 

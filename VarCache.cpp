@@ -112,6 +112,14 @@ namespace jasl {
         array[index] = value;
     }
 
+    void VarCache::pushBackTokenInList(std::string const &key,
+                                       Value const &value)
+    {
+        auto &keyed = bigCache[key];
+        auto &array = ::boost::get<ValueArray>(keyed.cv);
+        array.push_back(value);
+    }
+
     void VarCache::eraseValue(std::string const &key)
     {
         auto it = bigCache.find(key);
