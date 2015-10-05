@@ -404,6 +404,14 @@ namespace jasl
                         >> genericString
                         >> ';';
 
+            // generates an integer in range [0, n]
+            // random_int(5) -> int;
+            randomIntCommand %= string("random_int") >> '('
+                             >> (genericString | intRule) >> ')'
+                             >> lit("->") 
+                             >> genericString
+                             >> ';';
+
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -438,7 +446,8 @@ namespace jasl
                          | inputRule
                          | execCommand
                          | releaseCommand
-                         | typeCommand;
+                         | typeCommand
+                         | randomIntCommand;
                          
             start %= allCommands;
         }
@@ -475,6 +484,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> randomIntCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

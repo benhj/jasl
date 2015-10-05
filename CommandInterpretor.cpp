@@ -35,6 +35,7 @@
 #include "commands/StringToPrimitiveCommand.hpp"
 #include "commands/ReleaseCommand.hpp"
 #include "commands/TypeCommand.hpp"
+#include "commands/RandomIntCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -170,7 +171,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(Type);
 
-        }          
+        } else if(searchString(func, "random_int")) {
+
+            PROCESS_X_COMMAND(RandomInt);
+
+        }           
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }
