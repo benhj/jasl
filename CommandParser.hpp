@@ -275,7 +275,7 @@ namespace jasl
             words          %= *(word | bracketedWords); // zero or more words
             bracketedWords %= '[' >> words >> ']';
             stringList     %= string("list")
-                           >> bracketedWords
+                           >> (bracketedWords | genericString)
                            >> lit("->")
                            >> genericString // the name of the list
                            >> ';';

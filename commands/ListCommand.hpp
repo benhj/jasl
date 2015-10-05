@@ -32,8 +32,16 @@ namespace jasl
             // now try and extract the actual words
             ValueArray list;
             if(!m_func.getValueA<decltype(list)>(list)) {
-                setLastErrorMessage("list: couldn't parse word list");
-                return false;
+                std::string varName;
+                if(m_func.getValueA<decltype(varName)>(varName)) {
+                    auto theList = VarCache::getList(varName);
+                    if(theList) {
+                        list = *theList;
+                    }
+                } else {
+                    setLastErrorMessage("list: couldn't understand list");
+                    return false;
+                }
             }
 
             std::string listName;

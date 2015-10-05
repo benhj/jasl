@@ -1,0 +1,172 @@
+// A script to solve the N-Queens problem
+
+block initialize {
+    
+    // build the representation
+    args 0 -> stringN;
+    integer stringN -> N;
+    list [] -> representation;
+    list [] -> errors;
+    integer 1 -> i;
+    repeat N times {
+        string i -> istring;
+        string 8 -> errorString;
+        add_token(istring, representation);
+        add_token(errorString, errors);
+        integer (i + 1) -> i;
+    }
+    release i;
+    release stringN;
+    release istring;
+}
+
+block showBoard {
+
+    // create one of the rows of the board
+    list [] -> row;
+    repeat N times {
+        add_token ("-", row);
+    }
+
+    // create the board representation
+    integer 0 -> i;
+    repeat N times {
+        // make sure correct '-' is set with a 'Q'
+        get_token(i, representation) -> token;
+
+        // token is a string to needs to be 
+        // converted to an integer
+        integer token -> itoken;
+
+        // need one less than the integer since
+        // list indexing starts at 0
+        integer (itoken - 1) -> itoken;
+
+        // now set the token to a 'Q'
+        set_token(itoken, row, "Q") -> theRow;
+
+        // iterate to next row
+        integer (i + 1) -> i;
+
+        // print the row out
+        echo_nl theRow;
+    }
+
+}
+
+// computes the error of the board
+block computeError {
+
+    release error;
+
+    // compute the number of queens attacking each queen
+    integer 0 -> i;
+    repeat N times {
+        get_token(i, representation) -> token;
+        integer token -> itoken;
+        integer 0 -> e;
+        integer 0 -> k;
+        repeat N times {
+            get_token(k, representation) -> token;
+            integer token -> ktoken;
+            if (itoken == ktoken) {
+                if ( i != k) {
+                    integer (e + 1) -> e;
+                }
+            }
+            if (k < i) {
+                if(ktoken == (itoken - (i - k))) {
+                    integer (e + 1) -> e;
+                }
+                if(ktoken == (itoken - (k - i))) {
+                    integer (e + 1) -> e;
+                }
+            }
+            if (k > i) {
+                if(ktoken == (itoken + (k - i))) {
+                    integer (e + 1) -> e;
+                }
+                if(ktoken == (itoken + (i - k))) {
+                    integer (e + 1) -> e;
+                }
+            }
+            integer (k + 1) -> k;
+        }
+        integer (i + 1) -> i;
+        integer (error + e) -> error;
+    }
+}
+
+
+
+start {
+
+    // initialize the representation and
+    // the number of errors for each Q
+    call initialize;
+
+    call computeError;
+
+    // minimize error
+    integer error -> currentError;
+    integer 1 -> moveBy;
+    while (currentError > 0) {
+        
+        integer 0 -> count;
+        repeat N times {
+            integer currentError -> error;
+            get_token(count, representation) -> tok;
+            integer tok -> itok;
+            list representation -> oldRep;
+            integer 1 -> doit;
+            if((itok + moveBy) > N) {
+                set_token(count, representation, "1") -> representation;
+                integer 0 -> doit;
+            }
+            if(doit == 1) {
+                if((itok + moveBy) <= N) {
+                    integer (itok + moveBy) -> itok;
+                    string itok -> strtok;
+                    set_token(count, representation, strtok) -> representation;
+                    integer 0 -> doit;
+                }
+            }
+            if(doit == 1) {
+                if(itok == N) {
+                    set_token(count, representation, "1") -> representation;
+                }
+            }
+            // now compute new error based on update
+            call computeError;
+            // now based on update decide whether to keep or go
+            // back to original
+            integer 1 -> doit;
+            if(error == currentError) {
+                
+            }
+            if(error <= currentError) {
+                integer error -> currentError;
+            }
+            if(error > currentError) {
+                list oldRep -> representation;
+                
+            }
+            integer (moveBy + 1) -> moveBy;
+            if(moveBy > (N - 1)) {
+                integer 1 -> moveBy;
+            }
+            integer (count + 1) -> count;
+        }
+        
+        echo "Error: ";
+        echo_nl currentError;
+        //call showBoard;
+
+
+    }
+
+    // print out the board representation
+    call showBoard;
+
+}
+
