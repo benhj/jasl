@@ -140,10 +140,7 @@ start {
             call computeError;
             // now based on update decide whether to keep or go
             // back to original
-            integer 1 -> doit;
-            if(error == currentError) {
-                
-            }
+
             if(error <= currentError) {
                 integer error -> currentError;
             }
@@ -151,10 +148,13 @@ start {
                 list oldRep -> representation;
                 
             }
-            integer (moveBy + 1) -> moveBy;
+
+            random_int(7) -> randomValue;
+            integer (moveBy + randomValue) -> moveBy;
             if(moveBy > (N - 1)) {
                 integer 1 -> moveBy;
             }
+
             integer (count + 1) -> count;
         }
         

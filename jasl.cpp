@@ -10,9 +10,15 @@
 #include "VarCache.hpp"
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
+#include <time.h>
 
 int main (int argc , char *argv[])
 {
+
+    /* initialize random seed: */
+    srand (time(NULL));
+
     namespace ll = jasl;
     ll::CommandInterpretor ci;
 
