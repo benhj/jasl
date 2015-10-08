@@ -6,14 +6,15 @@ block initialize {
     args 0 -> stringN;
     integer stringN -> N;
     list [] -> representation;
-    list [] -> errors;
     integer 1 -> i;
+    // board initialization with heuristic
     repeat N times {
         string i -> istring;
-        string 8 -> errorString;
         add_token(istring, representation);
-        add_token(errorString, errors);
-        integer (i + 1) -> i;
+        integer (i + 2) -> i;
+        if(i > N) {
+            integer 1 -> i;
+        }
     }
     release i;
     release stringN;
@@ -120,7 +121,9 @@ start {
             list representation -> oldRep;
             integer 1 -> doit;
             if((itok + moveBy) > N) {
-                set_token(count, representation, "1") -> representation;
+                integer ((itok + moveBy) % N) -> amount;
+                string amount -> strtok;
+                set_token(count, representation, strtok) -> representation;
                 integer 0 -> doit;
             }
             if(doit == 1) {
@@ -149,7 +152,8 @@ start {
                 
             }
 
-            random_int(7) -> randomValue;
+            integer (N-1) -> value;
+            random_int(value) -> randomValue;
             integer (moveBy + randomValue) -> moveBy;
             if(moveBy > (N - 1)) {
                 integer 1 -> moveBy;
@@ -160,13 +164,9 @@ start {
         
         echo "Error: ";
         echo_nl currentError;
-        //call showBoard;
-
-
     }
 
     // print out the board representation
     call showBoard;
 
 }
-
