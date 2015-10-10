@@ -1,4 +1,16 @@
-// A script to solve the N-Queens problem
+// A script to solve the N-Queens problem,
+// a problem whereby no queen should be attacked
+// by another queen.
+// For example, for 8-queens, the solution might
+// eventually be:
+// [- - - - - - Q -]
+// [- - - Q - - - -]
+// [- Q - - - - - -]
+// [- - - - - - - Q]
+// [- - - - - Q - -]
+// [Q - - - - - - -]
+// [- - Q - - - - -]
+// [- - - - Q - - -]
 
 block initialize {
     
@@ -78,17 +90,20 @@ block computeError {
             if (k < i) {
                 if(ktoken == (itoken - (i - k))) {
                     integer (e + 1) -> e;
+                } else {
+                    if(ktoken == (itoken - (k - i))) {
+                        integer (e + 1) -> e;
+                    }
                 }
-                if(ktoken == (itoken - (k - i))) {
-                    integer (e + 1) -> e;
-                }
-            }
-            if (k > i) {
-                if(ktoken == (itoken + (k - i))) {
-                    integer (e + 1) -> e;
-                }
-                if(ktoken == (itoken + (i - k))) {
-                    integer (e + 1) -> e;
+            } else {
+                if (k > i) {
+                    if(ktoken == (itoken + (k - i))) {
+                        integer (e + 1) -> e;
+                    } else {
+                        if(ktoken == (itoken + (i - k))) {
+                            integer (e + 1) -> e;
+                        }
+                    }
                 }
             }
             integer (k + 1) -> k;
@@ -119,26 +134,16 @@ start {
             get_token(count, representation) -> tok;
             integer tok -> itok;
             list representation -> oldRep;
-            integer 1 -> doit;
             if((itok + moveBy) > N) {
                 integer ((itok + moveBy) % N) -> amount;
                 string amount -> strtok;
                 set_token(count, representation, strtok) -> representation;
-                integer 0 -> doit;
+            } else {
+                integer (itok + moveBy) -> itok;
+                string itok -> strtok;
+                set_token(count, representation, strtok) -> representation;
             }
-            if(doit == 1) {
-                if((itok + moveBy) <= N) {
-                    integer (itok + moveBy) -> itok;
-                    string itok -> strtok;
-                    set_token(count, representation, strtok) -> representation;
-                    integer 0 -> doit;
-                }
-            }
-            if(doit == 1) {
-                if(itok == N) {
-                    set_token(count, representation, "1") -> representation;
-                }
-            }
+            
             // now compute new error based on update
             call computeError;
             // now based on update decide whether to keep or go

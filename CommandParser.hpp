@@ -235,7 +235,9 @@ namespace jasl
                    >> ')'
                    >> '{'
                    >>  commandCollection
-                   >> '}';
+                   >> '}'
+                   // optional 'else part'
+                   >> -(lit("else") >> '{' >> commandCollection >> '}');
 
             // calls a subroutine with given name
             call %= string("call")

@@ -46,6 +46,15 @@ namespace jasl
                 setLastErrorMessage("IfCommand: Error interpreting if statement");
                 return false;
             }
+        } else {
+            std::vector<Function> innerFuncs;
+            success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+            if (success) {
+                success = parseCommands(innerFuncs);
+            } else {
+                setLastErrorMessage("IfCommand: Error interpreting if statement");
+                return false;
+            }
         }
         return success;
     }
