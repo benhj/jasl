@@ -1,8 +1,10 @@
+// ----------------------------------------------
 // A script to solve the N-Queens problem,
 // a problem whereby no queen should be attacked
 // by another queen.
 // For example, for 8-queens, the solution might
 // eventually be:
+//
 // [- - - - - - Q -]
 // [- - - Q - - - -]
 // [- Q - - - - - -]
@@ -11,6 +13,7 @@
 // [Q - - - - - - -]
 // [- - Q - - - - -]
 // [- - - - Q - - -]
+// ----------------------------------------------
 
 block initialize {
     
@@ -71,6 +74,7 @@ block showBoard {
 block computeError {
 
     release error;
+    integer 0 -> error;
 
     // compute the number of queens attacking each queen
     integer 0 -> i;
@@ -113,8 +117,6 @@ block computeError {
     }
 }
 
-
-
 start {
 
     // initialize the representation and
@@ -126,11 +128,9 @@ start {
     // minimize error
     integer error -> currentError;
     integer 1 -> moveBy;
-    while (currentError > 0) {
-        
+    while (currentError != 0) {
         integer 0 -> count;
         repeat N times {
-            integer currentError -> error;
             get_token(count, representation) -> tok;
             integer tok -> itok;
             list representation -> oldRep;
@@ -146,18 +146,16 @@ start {
             
             // now compute new error based on update
             call computeError;
+
             // now based on update decide whether to keep or go
             // back to original
-
             if(error <= currentError) {
                 integer error -> currentError;
-            }
-            if(error > currentError) {
-                list oldRep -> representation;
-                
+            } else {
+                list oldRep -> representation;   
             }
 
-            integer (N-1) -> value;
+            integer (N - 1) -> value;
             random_int(value) -> randomValue;
             integer (moveBy + randomValue) -> moveBy;
             if(moveBy > (N - 1)) {
