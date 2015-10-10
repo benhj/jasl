@@ -12,6 +12,7 @@
 #include "commands/AppendCommand.hpp"
 #include "commands/ArgsCommand.hpp"
 #include "commands/BlockCommand.hpp"
+#include "commands/ReturnableCommand.hpp"
 #include "commands/CallCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
@@ -97,11 +98,15 @@ namespace jasl {
 
             PROCESS_X_COMMAND(For);
 
-        }    else if(searchString(func, "block")) {
+        } else if(searchString(func, "block")) {
             
             PROCESS_X_COMMAND(Block);
 
-        } else if(searchString(func, "start")) {
+        } else if(searchString(func, "returnable")) {
+            
+            PROCESS_X_COMMAND(Returnable);
+
+        }  else if(searchString(func, "start")) {
             
             PROCESS_X_COMMAND(Start);
 

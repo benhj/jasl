@@ -15,25 +15,28 @@
 // [- - - - Q - - -]
 // ----------------------------------------------
 
-block initialize {
+returnable list initialize -> rep {
     
     // build the representation
     args 0 -> stringN;
     integer stringN -> N;
-    list [] -> representation;
-    integer 1 -> i;
+    list [] -> rep;
+    integer 0 -> i;
     // board initialization with heuristic
     repeat N times {
         string i -> istring;
-        add_token(istring, representation);
+        add_token(istring, rep);
         integer (i + 2) -> i;
-        if(i > N) {
-            integer 1 -> i;
+        if(i == N) {
+            integer 0 -> i;
         }
     }
     release i;
     release stringN;
     release istring;
+
+    return rep;
+
 }
 
 block showBoard {
@@ -54,10 +57,6 @@ block showBoard {
         // converted to an integer
         integer token -> itoken;
 
-        // need one less than the integer since
-        // list indexing starts at 0
-        integer (itoken - 1) -> itoken;
-
         // now set the token to a 'Q'
         set_token(itoken, row, "Q") -> theRow;
 
@@ -71,10 +70,9 @@ block showBoard {
 }
 
 // computes the error of the board
-block computeError {
+returnable integer computeError -> theError {
 
-    release error;
-    integer 0 -> error;
+    integer 0 -> theError;
 
     // compute the number of queens attacking each queen
     integer 0 -> i;
@@ -113,17 +111,22 @@ block computeError {
             integer (k + 1) -> k;
         }
         integer (i + 1) -> i;
-        integer (error + e) -> error;
+        integer (theError + e) -> theError;
     }
+    return theError;
+
 }
 
 start {
 
-    // initialize the representation and
-    // the number of errors for each Q
-    call initialize;
+    // initialize the representation 
+    call initialize -> representation;
 
-    call computeError;
+    // find out what initial error is. Note, we can
+    // see that the returnable computeError returns
+    // an integer so the car 'error' is implicitly
+    // set to an integer type
+    call computeError -> error;
 
     // minimize error
     integer error -> currentError;
@@ -134,8 +137,8 @@ start {
             get_token(count, representation) -> tok;
             integer tok -> itok;
             list representation -> oldRep;
-            if((itok + moveBy) > N) {
-                integer ((itok + moveBy) % N) -> amount;
+            if((itok + moveBy) >= N) {
+                integer ((itok + moveBy) % (N - 1)) -> amount;
                 string amount -> strtok;
                 set_token(count, representation, strtok) -> representation;
             } else {
@@ -145,7 +148,7 @@ start {
             }
             
             // now compute new error based on update
-            call computeError;
+            call computeError -> error;
 
             // now based on update decide whether to keep or go
             // back to original
@@ -158,7 +161,7 @@ start {
             integer (N - 1) -> value;
             random_int(value) -> randomValue;
             integer (moveBy + randomValue) -> moveBy;
-            if(moveBy > (N - 1)) {
+            if(moveBy >= (N - 1)) {
                 integer 1 -> moveBy;
             }
 

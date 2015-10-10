@@ -13,6 +13,7 @@ objects="VarCache.o \
          BlockCommand.o \
          StartCommand.o \
          CallCommand.o \
+         ReturnableCommand.o \
          MathExpression.o \
          ComparisonExpression.o \
          CommandInterpretor.o"
@@ -30,6 +31,11 @@ function build_VarCacheManager {
 function build_CallCommand {
     echo "Building CallCommand..."
     $compiler $cflags -I$boostIncPath -c commands/CallCommand.cpp -o CallCommand.o 
+}
+
+function build_ReturnableCommand {
+    echo "Building ReturnableCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/ReturnableCommand.cpp -o ReturnableCommand.o 
 }
 
 function build_IfCommand {
@@ -98,6 +104,7 @@ function build_all {
     build_VarCache
     build_VarCacheManager
     build_CallCommand
+    build_ReturnableCommand
     build_IfCommand
     build_RepeatCommand
     build_WhileCommand

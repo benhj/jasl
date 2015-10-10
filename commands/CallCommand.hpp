@@ -18,7 +18,12 @@ namespace jasl
         CallCommand(Function &func_, OptionalOutputStream const &output);
         bool execute() override;
     private:
-        bool searchForFunction(std::string &functionName);
-        bool parseCommand(Function &function);
+        bool searchForFunction(std::string &functionName, 
+                               std::string const &kind = "block",
+                               std::string const &returnSymbol = "");
+
+        bool parseCommand(Function &function,
+                          std::string const &kind = "block",
+                          std::string const &returnSymbol = "");
     };
 }

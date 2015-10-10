@@ -228,6 +228,24 @@ namespace jasl
                   >>  commandCollection
                   >> '}';
 
+            // a returnable function
+            // E.g. a function that returns an integer
+            // returnable integer func -> result {
+            //     return result;
+            // }
+            returnable %= string("returnable")
+                       >> genericString // return type
+                       >> genericString // functionName
+                       >> lit("->")
+                       >> genericString // variable name
+                       >> '{'
+                       >> commandCollection
+                       // all returnables require a return statement
+                       >> lit("return")
+                       >> genericString
+                       >> ';'
+                       >> '}';
+
             // a simple if statement
             ifRule %= string("if")
                    >> '(' 
@@ -242,6 +260,8 @@ namespace jasl
             // calls a subroutine with given name
             call %= string("call")
                  >> genericString // functionName
+                 // optional return part
+                 >> -(lit("->") >> genericString)
                  >> ';';
 
             // string length
@@ -421,6 +441,7 @@ namespace jasl
                          | startFunction 
                          | block
                          | call 
+                         | returnable
                          | intNewSyntax
                          | doubleNewSyntax
                          | boolNewSyntax
@@ -466,6 +487,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
         qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;
+        qi::rule<Iterator, Function(), ascii::space_type> returnable;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, Function(), ascii::space_type> echo_nl;

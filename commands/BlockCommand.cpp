@@ -32,7 +32,7 @@ namespace jasl {
         if (success) {
             success = parseCommands(innerFuncs);
         } else {
-            setLastErrorMessage("repeat: Error interpreting repeat's body");
+            setLastErrorMessage("block: Error interpreting block's body");
             return false;
         }
         return true;
