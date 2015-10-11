@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Value.hpp"
-#include "VarCache.hpp"
+#include "SharedVarCache.hpp"
 #include "LiteralString.hpp"
 #include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
@@ -43,7 +43,7 @@ namespace jasl {
 
         /// tries to extract a value from val storing the result in t
         template <typename T>
-        static bool tryExtraction(T &t, Value &val)
+        static bool tryExtraction(T &t, Value &val, SharedVarCache const &sharedCache)
         {
             // attempt to convert the any in to one of the basic types
             // storing the value in val if successful and returning true
@@ -78,19 +78,19 @@ namespace jasl {
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
                 if (typeid(T) == typeid(int64_t)) {
-                    auto result = VarCache::getInt(str);
+                    auto result = sharedCache->getInt(str);
                     if(result) {
                         (int64_t&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(bool)) {
-                    auto result = VarCache::getBool(str);
+                    auto result = sharedCache->getBool(str);
                     if(result) {
                         (bool&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
-                    auto result = VarCache::getDouble(str);
+                    auto result = sharedCache->getDouble(str);
                     if(result) {
                         (double&)t = *result;
                         return true;
@@ -103,42 +103,41 @@ namespace jasl {
         /// Following tries to cast to a double. If that fails, then it casts from an
         /// int and then casts the result as a double. Failing both, it tries to
         /// see if its a math expression which it can then evaluate.
-        static OptionalDouble tryToGetADouble(Value &val)
+        static OptionalDouble tryToGetADouble(Value &val, SharedVarCache const &sharedCache)
         {
-
             {
                 double x;
-                if (tryExtraction<double>(x, val)) {
+                if (tryExtraction<double>(x, val, sharedCache)) {
                     return OptionalDouble(x);
                 }
             }
             {
                 int64_t x;
-                if (tryExtraction<int64_t>(x, val)) {
+                if (tryExtraction<int64_t>(x, val, sharedCache)) {
                     return OptionalDouble(x);
                 }
             }
 
             MathExpression me;
-            if (tryExtraction<MathExpression>(me, val)) {
+            if (tryExtraction<MathExpression>(me, val, sharedCache)) {
+                me.sharedCache = sharedCache;
                 return OptionalDouble(me.evaluate());
             }
-
             return OptionalDouble();
         }
 
         /// Tries to extract an integer. Failing that tries to extract and
         /// evaluate an expression and cast the result to an int
-        static OptionalInt trySingleIntExtraction(Value &val)
+        static OptionalInt trySingleIntExtraction(Value &val, SharedVarCache const &sharedCache)
         {
             int64_t x;
-            if (tryExtraction<int64_t>(x, val)) {
+            if (tryExtraction<int64_t>(x, val, sharedCache)) {
                 return OptionalInt(x);
             }
 
             MathExpression me;
-            if (tryExtraction<MathExpression>(me, val)) {
-
+            if (tryExtraction<MathExpression>(me, val, sharedCache)) {
+                me.sharedCache = sharedCache;
                 return OptionalInt(static_cast<int64_t>(me.evaluate()));
             }
 
@@ -146,10 +145,10 @@ namespace jasl {
         }
 
         /// Tries to extract a single int but doesn't bother with math if that doesn't work
-        static OptionalInt trySingleIntExtractionNoMath(Value &val)
+        static OptionalInt trySingleIntExtractionNoMath(Value &val, SharedVarCache const &sharedCache)
         {
             int64_t x;
-            if (tryExtraction<int64_t>(x, val)) {
+            if (tryExtraction<int64_t>(x, val, sharedCache)) {
                 return OptionalInt(x);
             }
 
@@ -161,15 +160,16 @@ namespace jasl {
         /// Note if extraction of a doulbe is initially unsuccesful it tries
         /// to extract a math expression storing the result of that in x instead
         /// and returning true.
-        static OptionalDouble trySingleDoubleExtraction(Value &val)
+        static OptionalDouble trySingleDoubleExtraction(Value &val, SharedVarCache const &sharedCache)
         {
             double x;
-            if (tryExtraction<double>(x, val)) {
+            if (tryExtraction<double>(x, val, sharedCache)) {
                 return OptionalDouble(x);
             }
 
             MathExpression me;
-            if (tryExtraction<MathExpression>(me, val)) {
+            if (tryExtraction<MathExpression>(me, val, sharedCache)) {
+                me.sharedCache = sharedCache;
                 return OptionalDouble(me.evaluate());
             }
 
@@ -180,15 +180,16 @@ namespace jasl {
         /// and returning true if successful. If not initially successful,
         /// tries to extract out a logical expression instead and storing the 
         /// result of that in x and returning true.
-        static OptionalBool trySingleBoolExtraction(Value &val)
+        static OptionalBool trySingleBoolExtraction(Value &val, SharedVarCache const &sharedCache)
         {
             bool x;
-            if (tryExtraction<bool>(x, val)) {
+            if (tryExtraction<bool>(x, val, sharedCache)) {
                 return OptionalBool(x);
             }
 
             ComparisonExpression ce;
-            if (tryExtraction<ComparisonExpression>(ce, val)) {
+            if (tryExtraction<ComparisonExpression>(ce, val, sharedCache)) {
+                ce.m_sharedCache = sharedCache;
                 try {
                     return OptionalBool(ce.evaluate());
                 } catch (...) {

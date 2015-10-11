@@ -1,5 +1,5 @@
 //
-//  VarCache.hpp
+//  GlobalCache.hpp
 //  jasl
 //
 //  Created by Ben Jones 
@@ -11,27 +11,15 @@
 #include "Value.hpp"
 #include "ScopedVarCache.hpp"
 
-#include <map>
-#include <string>
-#include <vector>
-#include <cstdint>
-
 #include <boost/optional.hpp>
-#include <boost/variant.hpp>
 
 namespace jasl {
 
-    struct VarCache 
+    struct GlobalCache 
     {
 
-        /// For representing a variable entry in the 'big cache'
-        struct CacheEntry {
-            Type type;
-            CacheVariant cv;
-        };
-
-        /// caches for ints, bools and doubles, and other types
-        static std::map<std::string, CacheEntry> bigCache;
+        /// For storing global variables
+        static ScopedVarCache bigCache;
 
         static std::vector<std::string> args;
 

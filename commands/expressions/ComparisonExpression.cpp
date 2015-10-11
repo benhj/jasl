@@ -46,21 +46,22 @@ namespace jasl {
         template <typename T>
         bool doStage1(T const valA, 
                       Value & right, 
-                      std::string const &symbolOperator)
+                      std::string const &symbolOperator,
+                      SharedVarCache const &cache)
         {
 
             try {
 
                 // where the comparison is between two doubles
                 {
-                    auto result = VarExtractor::tryToGetADouble(right);
+                    auto result = VarExtractor::tryToGetADouble(right, cache);
                     if (result) {
                         return doStage2<T, double>(valA, *result, symbolOperator);
                     }
                 }
 
                 // where the comparison is between two booleans
-                auto result = VarExtractor::trySingleBoolExtraction(right);
+                auto result = VarExtractor::trySingleBoolExtraction(right, cache);
                 if (result) {
                     return doStage2<T, bool>(valA, *result, symbolOperator);
                 }
@@ -79,16 +80,16 @@ namespace jasl {
 
             // tries to get a double for the first operand
             {
-                auto result = VarExtractor::tryToGetADouble(m_left);
+                auto result = VarExtractor::tryToGetADouble(m_left, m_sharedCache);
                 if (result) {
-                    return doStage1<double>(*result, m_right, m_symbolOperator);
+                    return doStage1<double>(*result, m_right, m_symbolOperator, m_sharedCache);
                 }
             }
 
             // tries to get a boolean for the left operand
-            auto result = VarExtractor::trySingleBoolExtraction(m_left);
+            auto result = VarExtractor::trySingleBoolExtraction(m_left, m_sharedCache);
             if (result) {
-                return doStage1<bool>(*result, m_right, m_symbolOperator);
+                return doStage1<bool>(*result, m_right, m_symbolOperator, m_sharedCache);
             }
         } catch (...) {
             

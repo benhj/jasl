@@ -38,7 +38,7 @@ namespace jasl
         bool tryLiteralExtraction() 
         {
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
+            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
                 system(literalString.literal.c_str());
                 return true;
             }
@@ -49,8 +49,8 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
-            	auto result = VarCache::getString(symbol);
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
+            	auto result = m_sharedCache->getString(symbol);
                 if(result) {
                     system((*result).c_str());
                     return true;

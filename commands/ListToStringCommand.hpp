@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <sstream>
@@ -32,7 +31,7 @@ namespace jasl
         bool execute() override
         {
             std::string varName;
-            if(!m_func.getValueB<std::string>(varName)) {
+            if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
                 setLastErrorMessage("list_to_string: couldn't parse list");
                 return false;
             }
@@ -46,7 +45,7 @@ namespace jasl
         bool tryRawListExtraction(std::string const &varName) 
         {
             ValueArray v;
-            if(m_func.getValueA<ValueArray>(v)) {
+            if(m_func.getValueA<ValueArray>(v, m_sharedCache)) {
                 std::string s;
                 try {
                     for(auto & val : v) {
@@ -62,7 +61,7 @@ namespace jasl
                     s.pop_back();
                     
                     // now finally store string in cache
-                    VarCache::setString(varName, s);
+                    m_sharedCache->setString(varName, s);
                     return true;
                 } catch( boost::bad_lexical_cast const& ) {
                     setLastErrorMessage("list_to_string: couldn't parse list");
@@ -76,10 +75,10 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
 
                 // find the ValueArray in the list cache having symbol symbol
-                auto found = VarCache::getList(symbol);
+                auto found = m_sharedCache->getList(symbol);
 
                 // if found then process list
                 if(found) {
@@ -98,7 +97,7 @@ namespace jasl
                         s.pop_back();
 
                         // now finally store string in cache
-                        VarCache::setString(varName, s);
+                        m_sharedCache->setString(varName, s);
                         return true;
                     } catch( boost::bad_lexical_cast const& ) {
                         setLastErrorMessage("list_to_string: couldn't parse list");

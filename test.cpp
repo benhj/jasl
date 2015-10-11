@@ -8,7 +8,8 @@
 
 #include "SimpleTest.hpp"
 #include "CommandInterpretor.hpp"
-#include "VarCache.hpp"
+#include "GlobalCache.hpp"
+#include "SharedVarCache.hpp"
 
 #include <sstream>
 #include <vector>
@@ -16,304 +17,281 @@
 namespace ll = jasl;
 using namespace simpletest;
 
-/// reset variable caches after tests
-void clearCaches()
-{
-    decltype(ll::VarCache::bigCache)().swap(ll::VarCache::bigCache);
-    decltype(ll::VarCache::script)().swap(ll::VarCache::script);
-}
-
-void testRelease()
-{
-    ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer 5 -> result;");
-
-    // Test that variable result can be found
-    ASSERT_UNEQUAL(ll::VarCache::bigCache.find("result"),
-                   std::end(ll::VarCache::bigCache),
-                   "testRelease::result variable found.");
-
-    // Now release the variable
-    ci.parseAndInterpretSingleCommand("release result;");
-
-    // Test that it can no longer be found
-    ASSERT_EQUAL(ll::VarCache::bigCache.find("result"),
-                 std::end(ll::VarCache::bigCache),
-                 "testRelease::result variable not found.");
-}
-
 void testTypes()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer 5 -> a;");
-    ci.parseAndInterpretSingleCommand("decimal 1.1 -> b;");
-    ci.parseAndInterpretSingleCommand("boolean true -> c;");
-    ci.parseAndInterpretSingleCommand("string \"hello\" -> d;");
-    ci.parseAndInterpretSingleCommand("list [some big list] -> e;");
-    ci.parseAndInterpretSingleCommand("type(a) -> atype;");
-    ci.parseAndInterpretSingleCommand("type(b) -> btype;");
-    ci.parseAndInterpretSingleCommand("type(c) -> ctype;");
-    ci.parseAndInterpretSingleCommand("type(d) -> dtype;");
-    ci.parseAndInterpretSingleCommand("type(e) -> etype;");
-    ASSERT_EQUAL("integer", *ll::VarCache::getString("atype"), "testType::a is integer");
-    ASSERT_EQUAL("decimal", *ll::VarCache::getString("btype"), "testType::b is decimal");
-    ASSERT_EQUAL("boolean", *ll::VarCache::getString("ctype"), "testType::c is boolean");
-    ASSERT_EQUAL("string", *ll::VarCache::getString("dtype"), "testType::d is string");
-    ASSERT_EQUAL("list", *ll::VarCache::getString("etype"), "testType::e is list");
+    ci.parseAndInterpretSingleCommand("integer 5 -> a;", cache);
+    ci.parseAndInterpretSingleCommand("decimal 1.1 -> b;", cache);
+    ci.parseAndInterpretSingleCommand("boolean true -> c;", cache);
+    ci.parseAndInterpretSingleCommand("string \"hello\" -> d;", cache);
+    ci.parseAndInterpretSingleCommand("list [some big list] -> e;", cache);
+    ci.parseAndInterpretSingleCommand("type(a) -> atype;", cache);
+    ci.parseAndInterpretSingleCommand("type(b) -> btype;", cache);
+    ci.parseAndInterpretSingleCommand("type(c) -> ctype;", cache);
+    ci.parseAndInterpretSingleCommand("type(d) -> dtype;", cache);
+    ci.parseAndInterpretSingleCommand("type(e) -> etype;", cache);
+    ASSERT_EQUAL("integer", *cache->getString("atype"), "testType::a is integer");
+    ASSERT_EQUAL("decimal", *cache->getString("btype"), "testType::b is decimal");
+    ASSERT_EQUAL("boolean", *cache->getString("ctype"), "testType::c is boolean");
+    ASSERT_EQUAL("string", *cache->getString("dtype"), "testType::d is string");
+    ASSERT_EQUAL("list", *cache->getString("etype"), "testType::e is list");
 }
 
 void testMath()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer (10 + 20) -> result;");
-    ASSERT_EQUAL(30, *ll::VarCache::getInt("result"), "testMath::result is 30");
-    ci.parseAndInterpretSingleCommand("integer 2 -> x;");
-    ci.parseAndInterpretSingleCommand("integer (result * x) -> result;");
-    ASSERT_EQUAL(60, *ll::VarCache::getInt("result"), "testMath::result is 60");
-    ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;");
-    ASSERT_EQUAL(57.5, *ll::VarCache::getDouble("resultDouble"), "testMath::resultDouble is 57.5");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("integer (10 + 20) -> result;", cache);
+    ASSERT_EQUAL(30, *cache->getInt("result"), "testMath::result is 30");
+    ci.parseAndInterpretSingleCommand("integer 2 -> x;", cache);
+    ci.parseAndInterpretSingleCommand("integer (result * x) -> result;", cache);
+    ASSERT_EQUAL(60, *cache->getInt("result"), "testMath::result is 60");
+    ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;", cache);
+    ASSERT_EQUAL(57.5, *cache->getDouble("resultDouble"), "testMath::resultDouble is 57.5");
 }
 
 void testVarNewSyntax()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer 1->i;");
-    ci.parseAndInterpretSingleCommand("decimal 1.1->j;");
-    ci.parseAndInterpretSingleCommand("boolean true->k;");
-    ASSERT_EQUAL(1, *ll::VarCache::getInt("i"), "testVarNewSyntax::i is 1");
-    ASSERT_EQUAL(1.1, *ll::VarCache::getDouble("j"), "testVarNewSyntax::j is 1.1");
-    ASSERT_EQUAL(true, *ll::VarCache::getBool("k"), "testVarNewSyntax::k is true");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("integer 1->i;", cache);
+    ci.parseAndInterpretSingleCommand("decimal 1.1->j;", cache);
+    ci.parseAndInterpretSingleCommand("boolean true->k;", cache);
+    ASSERT_EQUAL(1, *cache->getInt("i"), "testVarNewSyntax::i is 1");
+    ASSERT_EQUAL(1.1, *cache->getDouble("j"), "testVarNewSyntax::j is 1.1");
+    ASSERT_EQUAL(true, *cache->getBool("k"), "testVarNewSyntax::k is true");
 }
 
 void testVarNewSyntaxFromString()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer \"1\" -> i;");
-    ci.parseAndInterpretSingleCommand("decimal \"1.1\" -> j;");
-    ci.parseAndInterpretSingleCommand("string \"2\" -> sint;");
-    ci.parseAndInterpretSingleCommand("string \"2.2\" -> sdouble;");
-    ci.parseAndInterpretSingleCommand("integer sint -> k;");
-    ci.parseAndInterpretSingleCommand("decimal sdouble -> l;");
-    ASSERT_EQUAL(1, *ll::VarCache::getInt("i"), "testVarNewSyntaxFromString A");
-    ASSERT_EQUAL(1.1, *ll::VarCache::getDouble("j"), "testVarNewSyntaxFromString B");
-    ASSERT_EQUAL(2, *ll::VarCache::getInt("k"), "testVarNewSyntaxFromString C");
-    ASSERT_EQUAL(2.2, *ll::VarCache::getDouble("l"), "testVarNewSyntaxFromString D");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("integer \"1\" -> i;", cache);
+    ci.parseAndInterpretSingleCommand("decimal \"1.1\" -> j;", cache);
+    ci.parseAndInterpretSingleCommand("string \"2\" -> sint;", cache);
+    ci.parseAndInterpretSingleCommand("string \"2.2\" -> sdouble;", cache);
+    ci.parseAndInterpretSingleCommand("integer sint -> k;", cache);
+    ci.parseAndInterpretSingleCommand("decimal sdouble -> l;", cache);
+    ASSERT_EQUAL(1, *cache->getInt("i"), "testVarNewSyntaxFromString A");
+    ASSERT_EQUAL(1.1, *cache->getDouble("j"), "testVarNewSyntaxFromString B");
+    ASSERT_EQUAL(2, *cache->getInt("k"), "testVarNewSyntaxFromString C");
+    ASSERT_EQUAL(2.2, *cache->getDouble("l"), "testVarNewSyntaxFromString D");
 }
 
 void testEchoLiterals()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo \"Hello, world!\";", ss);
+    ci.parseAndInterpretSingleCommand("echo \"Hello, world!\";", cache, ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testEcho: Hello, world!");
-    clearCaches();
 }
 
 void testEchoNLLiterals()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl \"Hello, world!\";", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl \"Hello, world!\";", cache, ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
-    clearCaches();
 }
 
 void testEchoSymbols()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("integer 10 -> b;");
-    ci.parseAndInterpretSingleCommand("decimal 1.1 -> c;");
-    ci.parseAndInterpretSingleCommand("boolean true -> d;");
-    ci.parseAndInterpretSingleCommand("echo b;", ss);
-    ci.parseAndInterpretSingleCommand("echo c;", ss);
-    ci.parseAndInterpretSingleCommand("echo_nl d;", ss);
+    ci.parseAndInterpretSingleCommand("integer 10 -> b;", cache);
+    ci.parseAndInterpretSingleCommand("decimal 1.1 -> c;", cache);
+    ci.parseAndInterpretSingleCommand("boolean true -> d;", cache);
+    ci.parseAndInterpretSingleCommand("echo b;", cache, ss);
+    ci.parseAndInterpretSingleCommand("echo c;", cache, ss);
+    ci.parseAndInterpretSingleCommand("echo_nl d;", cache, ss);
     ASSERT_EQUAL("101.11\n", ss.str(), "testEchoSymbols");
-    clearCaches();
 }
 
 void testEchoPrimitives()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl 2;", ss);
-    ci.parseAndInterpretSingleCommand("echo_nl 5.67;", ss);
-    ci.parseAndInterpretSingleCommand("echo_nl 3.14;", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl 2;", cache, ss);
+    ci.parseAndInterpretSingleCommand("echo_nl 5.67;", cache, ss);
+    ci.parseAndInterpretSingleCommand("echo_nl 3.14;", cache, ss);
     ASSERT_EQUAL("2\n5.67\n3.14\n", ss.str(), "testEchoPrimitives");
-    clearCaches();
 }
 
 void testEchoMath()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl (5 + 2) * 5.6;", ss);
+    ci.parseAndInterpretSingleCommand("echo_nl (5 + 2) * 5.6;", cache, ss);
     ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
-    clearCaches();
 }
 
 void testEchoString()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", ss);
-    ci.parseAndInterpretSingleCommand("echo_nl hello;", ss);
+    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", cache, ss);
+    ci.parseAndInterpretSingleCommand("echo_nl hello;", cache, ss);
     ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
-    clearCaches();
 }
 
 void testStringWithLiteral()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", ss);
-    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("hello"), "testStringWithLiteral");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", cache, ss);
+    ASSERT_EQUAL("Hello, world!", *cache->getString("hello"), "testStringWithLiteral");
 }
 
 void testStringWithNumbers()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string 5 -> numberFive;", ss);
-    ASSERT_EQUAL("5", *ll::VarCache::getString("numberFive"), "testStringWithNumbers integer");
-    ci.parseAndInterpretSingleCommand("string 5.5 -> numberDecimal;", ss);
-    ASSERT_EQUAL("5.5", *ll::VarCache::getString("numberDecimal"), "testStringWithNumbers decimal");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string 5 -> numberFive;", cache, ss);
+    ASSERT_EQUAL("5", *cache->getString("numberFive"), "testStringWithNumbers integer");
+    ci.parseAndInterpretSingleCommand("string 5.5 -> numberDecimal;", cache, ss);
+    ASSERT_EQUAL("5.5", *cache->getString("numberDecimal"), "testStringWithNumbers decimal");
 }
 
 void testStringWithMath()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string (5 + 2) * 5.6 -> numberMath;", ss);
-    ci.parseAndInterpretSingleCommand("string (5 + 2) * 5 -> numberMathB;", ss);
-    ASSERT_EQUAL("39.2", *ll::VarCache::getString("numberMath"), "testStringWithMath A");
-    ASSERT_EQUAL("35", *ll::VarCache::getString("numberMathB"), "testStringWithMath B");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string (5 + 2) * 5.6 -> numberMath;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string (5 + 2) * 5 -> numberMathB;", cache, ss);
+    ASSERT_EQUAL("39.2", *cache->getString("numberMath"), "testStringWithMath A");
+    ASSERT_EQUAL("35", *cache->getString("numberMathB"), "testStringWithMath B");
 }
 
 void testStringFromList()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string [hello there] -> listString;", ss);
-    ci.parseAndInterpretSingleCommand("list [another list] -> listB;");
-    ci.parseAndInterpretSingleCommand("string listB -> listStringB;", ss);
-    ASSERT_EQUAL("hello there", *ll::VarCache::getString("listString"), "testStringFromList A");
-    ASSERT_EQUAL("another list", *ll::VarCache::getString("listStringB"), "testStringFromList B");
+    ci.parseAndInterpretSingleCommand("string [hello there] -> listString;", cache, ss);
+    ci.parseAndInterpretSingleCommand("list [another list] -> listB;", cache);
+    ci.parseAndInterpretSingleCommand("string listB -> listStringB;", cache, ss);
+    ASSERT_EQUAL("hello there", *cache->getString("listString"), "testStringFromList A");
+    ASSERT_EQUAL("another list", *cache->getString("listStringB"), "testStringFromList B");
 }
 
 void testAppendLiteral()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("append (s, \", world!\") -> s;", ss);
-    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("s"), "testAppendLiteral");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("append (s, \", world!\") -> s;", cache, ss);
+    ASSERT_EQUAL("Hello, world!", *cache->getString("s"), "testAppendLiteral");
 }
 
 void testAppendString()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("string \", world!\" -> b;", ss);
-    ci.parseAndInterpretSingleCommand("append (s, b) -> s;", ss);
-    ASSERT_EQUAL("Hello, world!", *ll::VarCache::getString("s"), "testAppendString");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string \", world!\" -> b;", cache, ss);
+    ci.parseAndInterpretSingleCommand("append (s, b) -> s;", cache, ss);
+    ASSERT_EQUAL("Hello, world!", *cache->getString("s"), "testAppendString");
 }
 
 void testReverseString()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("string_reverse s;", ss);
-    ASSERT_EQUAL("olleH", *ll::VarCache::getString("s"), "testReverseString");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string_reverse s;", cache, ss);
+    ASSERT_EQUAL("olleH", *cache->getString("s"), "testReverseString");
 }
 
 void testStringLength()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string_length \"Hello\" -> s;", ss);
-    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> sb;", ss);
-    ci.parseAndInterpretSingleCommand("string_length sb -> sc;", ss);
-    ASSERT_EQUAL(5, *ll::VarCache::getInt("s"), "testStringLength A");
-    ASSERT_EQUAL(13, *ll::VarCache::getInt("sc"), "testStringLength B");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("string_length \"Hello\" -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> sb;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string_length sb -> sc;", cache, ss);
+    ASSERT_EQUAL(5, *cache->getInt("s"), "testStringLength A");
+    ASSERT_EQUAL(13, *cache->getInt("sc"), "testStringLength B");
 }
 
 void testIfCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo \"Hello, world!\"; integer 5 -> x; }", ss);
+    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo \"Hello, world!\"; integer 5 -> x; }", cache, ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
-    ASSERT_EQUAL(5, *ll::VarCache::getInt("x"), "testIfCommand: x is 5");
-    clearCaches();
+    ASSERT_EQUAL(5, *cache->getInt("x"), "testIfCommand: x is 5");
 }
 
 void testRepeatCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const commands("integer 0 -> x; repeat 5 times { echo \"Hello\"; integer (x + 1) -> x; }");
-    auto functions = ci.parseStringCollection(commands);
+    auto functions = ci.parseStringCollection(commands, cache);
     for(auto &f : functions) {
-        (void)ci.interpretFunc(f, ss);
+        (void)ci.interpretFunc(f, cache, ss);
     }
     ASSERT_EQUAL("HelloHelloHelloHelloHello", ss.str(), "testRepeatCommand::repeat hello");
-    ASSERT_EQUAL(5, *ll::VarCache::getInt("x"), "testRepeatCommand::x is 5");
-    clearCaches();
+    ASSERT_EQUAL(5, *cache->getInt("x"), "testRepeatCommand::x is 5");
 }
 
 void testWhileCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const commands("integer 5 -> x; while(x > 0) { integer (x - 1) -> x; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
-        (void)ci.interpretFunc(f, ss);
+        (void)ci.interpretFunc(f, cache, ss);
     }
-    ASSERT_EQUAL(0, *ll::VarCache::getInt("x"), "testWhileCommand::x is 0");
-    clearCaches();
+    ASSERT_EQUAL(0, *cache->getInt("x"), "testWhileCommand::x is 0");
 }
 
 void testBlockCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("integer 0 -> x; block foo() { echo \"Hello\"; integer (x + 1) -> x; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
-        (void)ci.interpretFunc(f, ss);
+        (void)ci.interpretFunc(f, cache, ss);
     }
     ASSERT_EQUAL("Hello", ss.str(), "testBlockCommand::print hello");
-    ASSERT_EQUAL(1, *ll::VarCache::getInt("x"), "testBlockCommand::x is 1");
-    clearCaches();
+    ASSERT_EQUAL(1, *cache->getInt("x"), "testBlockCommand::x is 1");
 }
 
 void testStartCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const command("start { echo \"Hello\"; integer 21 -> x; }");
-    ci.parseAndInterpretSingleCommand(command, ss);
+    ci.parseAndInterpretSingleCommand(command, cache, ss);
     ASSERT_EQUAL("Hello", ss.str(), "testStartCommand::print hello");
-    ASSERT_EQUAL(21, *ll::VarCache::getInt("x"), "testStartCommand::x is 21");
-    clearCaches();
+    ASSERT_EQUAL(21, *cache->getInt("x"), "testStartCommand::x is 21");
 }
 
 void testCallCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("start { echo \"Starting..\"; call foo (); call bar (); integer (x - 5) -> x;}");
@@ -322,147 +300,145 @@ void testCallCommand()
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
-            (void)ci.interpretFunc(f, ss);
+            (void)ci.interpretFunc(f, cache, ss);
             break;
         }
     }
     ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallCommand::print-outs");
-    ASSERT_EQUAL(16, *ll::VarCache::getInt("x"), "testStartCommand::x is 16");
-    clearCaches();
+    ASSERT_EQUAL(16, *cache->getInt("x"), "testCallCommand::x is 16");
 }
 
 void testArgsCommand()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ll::VarCache::args.push_back("argument1");
-    ll::VarCache::args.push_back("argument2");
-    ci.parseAndInterpretSingleCommand("args 0 -> arga;", ss);
-    ci.parseAndInterpretSingleCommand("args 1 -> argb;", ss);
-    ASSERT_EQUAL("argument1", *ll::VarCache::getString("arga"), "testArgsCommand A");
-    ASSERT_EQUAL("argument2", *ll::VarCache::getString("argb"), "testArgsCommand B");
-    clearCaches();
+    ll::GlobalCache::args.push_back("argument1");
+    ll::GlobalCache::args.push_back("argument2");
+    ci.parseAndInterpretSingleCommand("args 0 -> arga;", cache, ss);
+    ci.parseAndInterpretSingleCommand("args 1 -> argb;", cache, ss);
+    ASSERT_EQUAL("argument1", *cache->getString("arga"), "testArgsCommand A");
+    ASSERT_EQUAL("argument2", *cache->getString("argb"), "testArgsCommand B");
 }
 
 void testList()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list [hello there] -> s;", ss);
+    ci.parseAndInterpretSingleCommand("list [hello there] -> s;", cache, ss);
 
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("s", 0));
+    ll::VarExtractor::tryAnyCast(tokenA, cache->getListToken("s", 0));
     ASSERT_EQUAL("hello", tokenA, "testList tokenA");
 
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("s", 1));
+    ll::VarExtractor::tryAnyCast(tokenB, cache->getListToken("s", 1));
     ASSERT_EQUAL("there", tokenB, "testList tokenB");
 
-    clearCaches();
 }
 
 void testListGetTokenRaw()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("get_token (0, [hello there]) -> s;", ss);
-    ci.parseAndInterpretSingleCommand("integer 1 -> i;");
-    ci.parseAndInterpretSingleCommand("get_token (i, [hello there]) -> b;", ss);
-    ASSERT_EQUAL("hello", *ll::VarCache::getString("s"), "testListGetTokenRaw A");
-    ASSERT_EQUAL("there", *ll::VarCache::getString("b"), "testListGetTokenRaw B");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("get_token (0, [hello there]) -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("integer 1 -> i;", cache);
+    ci.parseAndInterpretSingleCommand("get_token (i, [hello there]) -> b;", cache, ss);
+    ASSERT_EQUAL("hello", *cache->getString("s"), "testListGetTokenRaw A");
+    ASSERT_EQUAL("there", *cache->getString("b"), "testListGetTokenRaw B");
 }
 
 void testListGetTokenSymbol()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list [hello there] -> lst;", ss);
-    ci.parseAndInterpretSingleCommand("get_token (1, lst) -> s;", ss);
-    ci.parseAndInterpretSingleCommand("integer 0 -> i;");
-    ci.parseAndInterpretSingleCommand("get_token (i, lst) -> b;", ss);
-    ASSERT_EQUAL("there", *ll::VarCache::getString("s"), "testListGetTokenSymbol A");
-    ASSERT_EQUAL("hello", *ll::VarCache::getString("b"), "testListGetTokenSymbol B");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("list [hello there] -> lst;", cache, ss);
+    ci.parseAndInterpretSingleCommand("get_token (1, lst) -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("integer 0 -> i;", cache);
+    ci.parseAndInterpretSingleCommand("get_token (i, lst) -> b;", cache, ss);
+    ASSERT_EQUAL("there", *cache->getString("s"), "testListGetTokenSymbol A");
+    ASSERT_EQUAL("hello", *cache->getString("b"), "testListGetTokenSymbol B");
 }
 
 void testListSetTokenRaw()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("set_token (0, [hello there], \"goodbye\") -> s;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (0, [hello there], \"goodbye\") -> s;", cache, ss);
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("s", 0));
+    ll::VarExtractor::tryAnyCast(tokenA, cache->getListToken("s", 0));
     ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenRaw A");
 
-    ci.parseAndInterpretSingleCommand("string \"yes\" -> b;", ss);
-    ci.parseAndInterpretSingleCommand("set_token (1, [hello there], b) -> s;", ss);
+    ci.parseAndInterpretSingleCommand("string \"yes\" -> b;", cache, ss);
+    ci.parseAndInterpretSingleCommand("set_token (1, [hello there], b) -> s;", cache, ss);
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("s", 1));
+    ll::VarExtractor::tryAnyCast(tokenB, cache->getListToken("s", 1));
     ASSERT_EQUAL("yes", tokenB, "testListSetTokenRaw B");
-
-    clearCaches();
 }
 
 void testListSetTokenSymbol()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", ss);
-    ci.parseAndInterpretSingleCommand("list [what are you doing] -> lb;", ss);
-    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", ss);
-    ci.parseAndInterpretSingleCommand("integer 3 -> i;", ss);
-    ci.parseAndInterpretSingleCommand("integer 2 -> j;", ss);
-    ci.parseAndInterpretSingleCommand("set_token (0, la, \"goodbye\") -> sa;", ss);
-    ci.parseAndInterpretSingleCommand("set_token (i, lb, \"indeed\") -> sb;", ss);
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache, ss);
+    ci.parseAndInterpretSingleCommand("list [what are you doing] -> lb;", cache, ss);
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache, ss);
+    ci.parseAndInterpretSingleCommand("integer 3 -> i;", cache, ss);
+    ci.parseAndInterpretSingleCommand("integer 2 -> j;", cache, ss);
+    ci.parseAndInterpretSingleCommand("set_token (0, la, \"goodbye\") -> sa;", cache, ss);
+    ci.parseAndInterpretSingleCommand("set_token (i, lb, \"indeed\") -> sb;", cache, ss);
 
     std::string tokenA;
-    ll::VarExtractor::tryAnyCast(tokenA, ll::VarCache::getListToken("sa", 0));
+    ll::VarExtractor::tryAnyCast(tokenA, cache->getListToken("sa", 0));
     ASSERT_EQUAL("goodbye", tokenA, "testListSetTokenSymbol A");
     std::string tokenB;
-    ll::VarExtractor::tryAnyCast(tokenB, ll::VarCache::getListToken("sb", 3));
+    ll::VarExtractor::tryAnyCast(tokenB, cache->getListToken("sb", 3));
     ASSERT_EQUAL("indeed", tokenB, "testListSetTokenSymbol B");
     std::string tokenC;
-    ll::VarExtractor::tryAnyCast(tokenC, ll::VarCache::getListToken("lb", 2));
+    ll::VarExtractor::tryAnyCast(tokenC, cache->getListToken("lb", 2));
     ASSERT_EQUAL("you", tokenC, "testListSetTokenSymbol C");
-    ci.parseAndInterpretSingleCommand("set_token (j, lb, \"no\") -> lb;", ss);
+    ci.parseAndInterpretSingleCommand("set_token (j, lb, \"no\") -> lb;", cache, ss);
     std::string tokenD;
-    ll::VarExtractor::tryAnyCast(tokenD, ll::VarCache::getListToken("lb", 2));
+    ll::VarExtractor::tryAnyCast(tokenD,  cache->getListToken("lb", 2));
     ASSERT_EQUAL("no", tokenD, "testListSetTokenSymbol D");
 
-    clearCaches();
 }
 
 void testListAddToken()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("list [hello there] -> la;");
-    ci.parseAndInterpretSingleCommand("add_token(\"again\", la);");
-    ci.parseAndInterpretSingleCommand("echo la;", ss);
+    ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache);
+    ci.parseAndInterpretSingleCommand("add_token(\"again\", la);", cache);
+    ci.parseAndInterpretSingleCommand("echo la;", cache, ss);
     ASSERT_EQUAL("[hello there again]", ss.str(), "testListAddToken");
 }
 
 void testListTokenIndex()
 {
+    auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("index_of (\"are\", [hello there what are you doing]) -> i;", ss);
-    ci.parseAndInterpretSingleCommand("string \"you\" -> token;");
-    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> j;", ss);
-    ci.parseAndInterpretSingleCommand("list [hello there what are you doing] -> L;");
-    ci.parseAndInterpretSingleCommand("index_of (token, L) -> p;", ss);
-    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> q;", ss);
-    ASSERT_EQUAL(3, *ll::VarCache::getInt("i"), "index A");
-    ASSERT_EQUAL(4, *ll::VarCache::getInt("j"), "index B");
-    ASSERT_EQUAL(4, *ll::VarCache::getInt("p"), "index C");
-    ASSERT_EQUAL(4, *ll::VarCache::getInt("q"), "index D");
-    clearCaches();
+    ci.parseAndInterpretSingleCommand("index_of (\"are\", [hello there what are you doing]) -> i;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string \"you\" -> token;", cache);
+    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> j;", cache, ss);
+    ci.parseAndInterpretSingleCommand("list [hello there what are you doing] -> L;", cache);
+    ci.parseAndInterpretSingleCommand("index_of (token, L) -> p;", cache, ss);
+    ci.parseAndInterpretSingleCommand("index_of (token, [hello there what are you doing]) -> q;", cache, ss);
+    ASSERT_EQUAL(3, *cache->getInt("i"), "index A");
+    ASSERT_EQUAL(4, *cache->getInt("j"), "index B");
+    ASSERT_EQUAL(4, *cache->getInt("p"), "index C");
+    ASSERT_EQUAL(4, *cache->getInt("q"), "index D");
 }
 
 int main()
 {
-    testRelease();
     testTypes();
     testMath();
     testVarNewSyntax();

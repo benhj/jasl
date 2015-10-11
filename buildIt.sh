@@ -5,7 +5,7 @@ cflags="-std=c++11 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy"
 boostIncPath=/usr/local/include
 
 # these objects will exist after compilation of everything
-objects="VarCache.o \
+objects="GlobalCache.o \
          ScopedVarCache.o \
          IfCommand.o \
          RepeatCommand.o \
@@ -19,9 +19,9 @@ objects="VarCache.o \
          ComparisonExpression.o \
          CommandInterpretor.o"
 
-function build_VarCache {
-    echo "Building VarCache..."
-    $compiler $cflags -I$boostIncPath -c VarCache.cpp -o VarCache.o 
+function build_GlobalCache {
+    echo "Building GlobalCache..."
+    $compiler $cflags -I$boostIncPath -c GlobalCache.cpp -o GlobalCache.o 
 }
 
 function build_ScopedVarCache {
@@ -102,7 +102,7 @@ function build_clean {
 }
 
 function build_all {
-    build_VarCache
+    build_GlobalCache
     build_ScopedVarCache
     build_CallCommand
     build_ReturnableCommand

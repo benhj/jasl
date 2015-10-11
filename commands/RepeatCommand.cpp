@@ -24,7 +24,7 @@ namespace jasl {
     {
 
         // how many time should repeat loop for?
-        auto extracted = VarExtractor::trySingleIntExtraction(m_func.paramA);
+        auto extracted = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
         if(!extracted) {
             setLastErrorMessage("repeat: problem extracting integer");
             return false;
@@ -53,7 +53,7 @@ namespace jasl {
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

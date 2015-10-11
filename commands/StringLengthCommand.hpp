@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <algorithm>
 #include <sstream>
 
@@ -31,7 +30,7 @@ namespace jasl
         bool execute() override
         {
             std::string varName;
-            if(!m_func.getValueB<std::string>(varName)) {
+            if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
                 setLastErrorMessage("string_length: couldn't parse");
                 return false;
             }
@@ -45,8 +44,8 @@ namespace jasl
         bool tryLiteralExtraction(std::string const &varName) 
         {
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
-                VarCache::setInt(varName, literalString.literal.length());
+            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
+                m_sharedCache->setInt(varName, literalString.literal.length());
                 return true;
             }
             return false;
@@ -56,10 +55,10 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
-                auto result = VarCache::getString(symbol);
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
+                auto result = m_sharedCache->getString(symbol);
                 if(result) {
-                    VarCache::setInt(varName, result->length());
+                    m_sharedCache->setInt(varName, result->length());
                     return true;
                 }
             }

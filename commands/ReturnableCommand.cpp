@@ -8,6 +8,7 @@
 
 #include "ReturnableCommand.hpp"
 #include "../CommandInterpretor.hpp"
+#include "../GlobalCache.hpp"
 #include <vector>
 
 namespace jasl 
@@ -15,29 +16,29 @@ namespace jasl
     ReturnableCommand::ReturnableCommand(Function &func_,
                                          SharedVarCache const &sharedCache,
                                          OptionalOutputStream const &output)
-    : Command(func_, sharedCache, output)
+    : Command(func_, std::make_shared<ScopedVarCache>(), output)
     {
     }
 
     bool ReturnableCommand::execute()
     {
         std::string type;
-        (void)m_func.getValueA<std::string>(type);
+        (void)m_func.getValueA<std::string>(type, m_sharedCache);
         std::string returnName;
-        (void)m_func.getValueD<std::string>(returnName);
+        (void)m_func.getValueD<std::string>(returnName, m_sharedCache);
         std::string functionName; 
-        (void)m_func.getValueB<std::string>(functionName);
+        (void)m_func.getValueB<std::string>(functionName, m_sharedCache);
 
         if(type == "integer") {
-            VarCache::setInt(returnName, 0);
+            GlobalCache::setInt(returnName, 0);
         } else if(type == "decimal") {
-            VarCache::setDouble(returnName, 0);
+            GlobalCache::setDouble(returnName, 0);
         } else if(type == "string") {
-            VarCache::setString(returnName, "");
+            GlobalCache::setString(returnName, "");
         } else if(type == "boolean") {
-            VarCache::setBool(returnName, false);
+            GlobalCache::setBool(returnName, false);
         } else if(type == "list") {
-            VarCache::setList(returnName, ValueArray());
+            GlobalCache::setList(returnName, ValueArray());
         } else {
             setLastErrorMessage("returnable: unknown return type");
             return false;
@@ -64,7 +65,7 @@ namespace jasl
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

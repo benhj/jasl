@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include "../VarCache.hpp"
 #include <sstream>
 
 namespace jasl
@@ -37,8 +36,8 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
-            	VarCache::eraseValue(symbol);
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
+            	m_sharedCache->eraseValue(symbol);
                 return true;
             }
             return false;

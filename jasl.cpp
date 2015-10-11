@@ -7,7 +7,8 @@
 //
 
 #include "CommandInterpretor.hpp"
-#include "VarCache.hpp"
+#include "SharedVarCache.hpp"
+#include "GlobalCache.hpp"
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
@@ -29,20 +30,21 @@ int main (int argc , char *argv[])
 
     // Store how many arguments there are
     // in special reserved integer, 'argsCount'
-    ll::VarCache::setInt("argsCount", (argc - 2));
+    ll::GlobalCache::setInt("argsCount", (argc - 2));
 
     // store any command line arguments that should also be interpreted
     if(argc >= 2) {
         for(int i = 2; i < argc; ++i) {
-            ll::VarCache::args.push_back(std::string(argv[i]));
+            ll::GlobalCache::args.push_back(std::string(argv[i]));
         }
     }
 
     // parse input file
+    auto sharedCache = std::make_shared<ll::ScopedVarCache>();
     auto functions = ci.parseCommandFile(argv[1]);
     for(auto &f : functions) {
         if(f.name == "start") {
-            (void)ci.interpretFunc(f, std::cout);
+            (void)ci.interpretFunc(f, sharedCache, std::cout);
             break;
         }
     }

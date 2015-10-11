@@ -10,7 +10,6 @@
 
 #include "Command.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <algorithm>
 #include <vector>
 #include <sstream>
@@ -32,20 +31,20 @@ namespace jasl
         {
             // now try and extract the var symbol
             std::string symbol;
-            if(!m_func.getValueA<decltype(symbol)>(symbol)) {
+            if(!m_func.getValueA<decltype(symbol)>(symbol, m_sharedCache)) {
                 setLastErrorMessage("type: couldn't determine argument");
                 return false;
             }
 
             // determine var key
             std::string key;
-            if(!m_func.getValueB<decltype(key)>(key)) {
+            if(!m_func.getValueB<decltype(key)>(key, m_sharedCache)) {
                 setLastErrorMessage("type: couldn't determine var key");
                 return false;
             }
 
             // determine type
-            auto type = VarCache::getType(symbol);
+            auto type = m_sharedCache->getType(symbol);
             if(!type) {
                 setLastErrorMessage("type: couldn't determine type");
                 return false;
@@ -64,7 +63,7 @@ namespace jasl
                 theType = "string";
             }
 
-            VarCache::setString(key, theType);
+            m_sharedCache->setString(key, theType);
             return true;
         }
         

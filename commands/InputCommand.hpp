@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <iostream>
 
 namespace jasl
@@ -34,14 +33,14 @@ namespace jasl
             }
 
             std::string answer;
-            if(!m_func.getValueB<std::string>(answer)) {
+            if(!m_func.getValueB<std::string>(answer, m_sharedCache)) {
                 setLastErrorMessage("input: couldn't parse answer variable");
                 return false;
             }
 
             std::string result;
             std::getline(std::cin, result);
-            VarCache::setString(answer, result);
+            m_sharedCache->setString(answer, result);
             return false;
         }
 
@@ -49,7 +48,7 @@ namespace jasl
         bool tryLiteralExtraction() 
         {
             LiteralString query;
-            if(m_func.getValueA<LiteralString>(query)) {
+            if(m_func.getValueA<LiteralString>(query, m_sharedCache)) {
                 appendToOutput(query.literal);
                 return true;
             }
@@ -60,9 +59,9 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
                 {
-                    auto result = VarCache::getString(symbol);
+                    auto result = m_sharedCache->getString(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;

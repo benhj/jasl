@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <sstream>
@@ -32,7 +31,7 @@ namespace jasl
         bool execute() override
         {
             std::string varName;
-            if(!m_func.getValueC<std::string>(varName)) {
+            if(!m_func.getValueC<std::string>(varName, m_sharedCache)) {
                 setLastErrorMessage("get token: couldn't parse variable name");
                 return false;
             }
@@ -46,7 +45,7 @@ namespace jasl
 
         OptionalInt getIndex()
         {
-            return VarExtractor::trySingleIntExtraction(m_func.paramA);
+            return VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
         }
 
         bool tryWithRawList(std::string const &varName) 
@@ -58,7 +57,7 @@ namespace jasl
             }
 
             ValueArray v;
-            if(m_func.getValueB<ValueArray>(v)) {
+            if(m_func.getValueB<ValueArray>(v, m_sharedCache)) {
                 std::string s;
                 try {
                     int i = 0;
@@ -68,7 +67,7 @@ namespace jasl
                             {
                                 std::string tok;
                                 if(VarExtractor::tryAnyCast(tok, val)) {
-                                    VarCache::setString(varName, tok);
+                                    m_sharedCache->setString(varName, tok);
                                     return true;
                                 }
                             }
@@ -76,7 +75,7 @@ namespace jasl
                             {
                                 ValueArray tok;
                                 if(VarExtractor::tryAnyCast(tok, val)) {
-                                    VarCache::setList(varName, tok);
+                                    m_sharedCache->setList(varName, tok);
                                     return true;
                                 }
                             }
@@ -109,10 +108,10 @@ namespace jasl
             
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueB<std::string>(symbol)) {
+            if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {
 
                 // find the ValueArray in the list cache having symbol symbol
-                auto list = VarCache::getList(symbol);
+                auto list = m_sharedCache->getList(symbol);
 
                 // if found then process list
                 if(list) {
@@ -125,7 +124,7 @@ namespace jasl
                             {
                                 std::string tok;
                                 if(VarExtractor::tryAnyCast(tok, val)) {
-                                    VarCache::setString(varName, tok);
+                                    m_sharedCache->setString(varName, tok);
                                     return true;
                                 }
                             }
@@ -133,7 +132,7 @@ namespace jasl
                             {
                                 ValueArray tok;
                                 if(VarExtractor::tryAnyCast(tok, val)) {
-                                    VarCache::setList(varName, tok);
+                                    m_sharedCache->setList(varName, tok);
                                     return true;
                                 }
                             }

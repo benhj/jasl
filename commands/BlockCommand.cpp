@@ -16,9 +16,8 @@ namespace jasl {
     BlockCommand::BlockCommand(Function &func_, 
                                SharedVarCache const &sharedCache, 
                                OptionalOutputStream const &output)
-    : Command(func_, SharedVarCache(), output)
+    : Command(func_, std::make_shared<ScopedVarCache>(), output)
     {
-
     }
 
     bool BlockCommand::execute()
@@ -44,7 +43,7 @@ namespace jasl {
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

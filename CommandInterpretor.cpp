@@ -8,7 +8,7 @@
 
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
-#include "VarCache.hpp"
+#include "GlobalCache.hpp"
 #include "commands/AppendCommand.hpp"
 #include "commands/ArgsCommand.hpp"
 #include "commands/BlockCommand.hpp"
@@ -48,7 +48,7 @@
 #define PROCESS_X_COMMAND(X)                      \
     X##Command c(func, varCache, outputStream);   \
     (void)c.execute();                            \
-    errorMessage = VarCache::lastKnownError;
+    errorMessage = GlobalCache::lastKnownError;
 
 
 namespace jasl {
@@ -62,16 +62,16 @@ namespace jasl {
 
     std::string
     CommandInterpretor::interpretFunc(Function &func,
-                                      OptionalOutputStream const &outputStream,
-                                      SharedVarCache const &varCache) const
+                                      SharedVarCache const &varCache,
+                                      OptionalOutputStream const &outputStream) const
     {
-        return doInterpretFunc(func, outputStream, varCache);
+        return doInterpretFunc(func, varCache, outputStream);
     }
 
     std::string
     CommandInterpretor::doInterpretFunc(Function &func,
-                                        OptionalOutputStream const &outputStream,
-                                        SharedVarCache const &varCache) const
+                                        SharedVarCache const &varCache,
+                                        OptionalOutputStream const &outputStream) const
     {
         std::string errorMessage;
         if(searchString(func, "echo")) {
@@ -187,8 +187,8 @@ namespace jasl {
     
     std::string
     CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs,
-                                                       OptionalOutputStream const &outputStream,
-                                                       SharedVarCache const &varCache) const
+                                                       SharedVarCache const &varCache,
+                                                       OptionalOutputStream const &outputStream) const
     {
 
         using boost::spirit::ascii::space;
@@ -200,7 +200,7 @@ namespace jasl {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            return doInterpretFunc(func, outputStream, varCache);
+            return doInterpretFunc(func, varCache, outputStream);
         } 
         return std::string("Unsuccessful parse");
     }
@@ -238,7 +238,7 @@ namespace jasl {
 
         // store the script in global static. Used to do block 
         // (jasl name for subroutine) lookups
-        VarCache::script = stringCollection;
+        GlobalCache::script = stringCollection;
 
         using boost::spirit::ascii::space;
         typedef std::string::const_iterator iterator_type;

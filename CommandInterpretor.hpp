@@ -32,8 +32,8 @@ namespace jasl {
          */
         std::string
         parseAndInterpretSingleCommand(std::string const &cs,
-                                       OptionalOutputStream const &outputStream = OptionalOutputStream(),
-                                       SharedVarCache const &varCache = SharedVarCache())const;
+                                       SharedVarCache const &varCache = SharedVarCache(),
+                                       OptionalOutputStream const &outputStream = OptionalOutputStream())const;
         
         std::vector<Function>
         parseCommandFile(std::string const &path, 
@@ -45,14 +45,14 @@ namespace jasl {
 
         std::string
         interpretFunc(Function &func,
-                      OptionalOutputStream const &outputStream,
-                      SharedVarCache const &varCache = SharedVarCache()) const;
+                      SharedVarCache const &varCache = SharedVarCache(),
+                      OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
         
     private:
         std::string
         doInterpretFunc(Function &func,
-                        OptionalOutputStream const &outputStream,
-                        SharedVarCache const &varCache) const;
+                        SharedVarCache const &varCache,
+                        OptionalOutputStream const &outputStream) const;
     };
     
 }

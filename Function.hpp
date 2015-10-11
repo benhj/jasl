@@ -10,6 +10,7 @@
 
 #include "VarExtractor.hpp"
 #include "Value.hpp"
+#include "SharedVarCache.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -37,45 +38,45 @@ namespace jasl
         Value paramG;
 
         template <typename Type>
-        bool getValueA(Type &t)
+        bool getValueA(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramA);
+            return VarExtractor::tryExtraction(t, paramA, sharedCache);
         }
 
         template <typename Type>
-        bool getValueB(Type &t)
+        bool getValueB(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramB);
+            return VarExtractor::tryExtraction(t, paramB, sharedCache);
         }
 
         template <typename Type>
-        bool getValueC(Type &t)
+        bool getValueC(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramC);
+            return VarExtractor::tryExtraction(t, paramC, sharedCache);
         }
 
         template <typename Type>
-        bool getValueD(Type &t)
+        bool getValueD(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramD);
+            return VarExtractor::tryExtraction(t, paramD, sharedCache);
         }
 
         template <typename Type>
-        bool getValueE(Type &t)
+        bool getValueE(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramE);
+            return VarExtractor::tryExtraction(t, paramE, sharedCache);
         }
 
         template <typename Type>
-        bool getValueF(Type &t)
+        bool getValueF(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramF);
+            return VarExtractor::tryExtraction(t, paramF, sharedCache);
         }
 
         template <typename Type>
-        bool getValueG(Type &t)
+        bool getValueG(Type &t, SharedVarCache const &sharedCache)
         {
-            return VarExtractor::tryExtraction(t, paramG);
+            return VarExtractor::tryExtraction(t, paramG, sharedCache);
         }
     };
 }

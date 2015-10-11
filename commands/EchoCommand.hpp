@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 
 #include <boost/algorithm/string.hpp>
 
@@ -41,7 +40,7 @@ namespace jasl
         bool tryLiteralExtraction() 
         {
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
+            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
                 appendToOutput(literalString.literal);
                 return true;
             }
@@ -52,37 +51,37 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
                 {
-                    auto result = VarCache::getInt(symbol);
+                    auto result = m_sharedCache->getInt(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getDouble(symbol);
+                    auto result = m_sharedCache->getDouble(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getBool(symbol);
+                    auto result = m_sharedCache->getBool(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getString(symbol);
+                    auto result = m_sharedCache->getString(symbol);
                     if(result) {
                         appendToOutput(*result);
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getList(symbol);
+                    auto result = m_sharedCache->getList(symbol);
                     if(result) {
                         std::string output;
                         processListElement(*result, output);
@@ -130,7 +129,7 @@ namespace jasl
         {
 
             {
-                auto result = VarExtractor::tryToGetADouble(m_func.paramA);
+                auto result = VarExtractor::tryToGetADouble(m_func.paramA, m_sharedCache);
                 if(result) {
                     appendToOutput(*result);
                     return true;
@@ -138,7 +137,7 @@ namespace jasl
             }
 
             {
-                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
                 if(result) {
                     appendToOutput(*result);
                     return true;

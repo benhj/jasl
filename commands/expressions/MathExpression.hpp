@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../../Value.hpp"
+#include "../../SharedVarCache.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
@@ -29,6 +30,9 @@ namespace jasl {
 
         /// is the result an integer or a double (implicitly casts)
         bool resultIsInteger;
+
+        /// cache of variables
+        SharedVarCache sharedCache;
 
         MathExpression();
 

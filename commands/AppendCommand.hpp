@@ -10,7 +10,6 @@
 
 #include "Command.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <sstream>
 
 namespace jasl
@@ -30,7 +29,7 @@ namespace jasl
         {
 
             std::string key;
-            if(!m_func.getValueC<std::string>(key)) {
+            if(!m_func.getValueC<std::string>(key, m_sharedCache)) {
                 return false;
             }
 
@@ -46,14 +45,14 @@ namespace jasl
         OptionalString getStringBeingAppendedTo()
         {
             std::string stringBeingAppendedTo;
-            if(!m_func.getValueA<std::string>(stringBeingAppendedTo)) {
+            if(!m_func.getValueA<std::string>(stringBeingAppendedTo, m_sharedCache)) {
                 LiteralString literal;
-                if(!m_func.getValueA<LiteralString>(literal)) {
+                if(!m_func.getValueA<LiteralString>(literal, m_sharedCache)) {
                     return OptionalString();
                 }
                 return OptionalString(literal.literal);
             }
-            return VarCache::getString(stringBeingAppendedTo);
+            return m_sharedCache->getString(stringBeingAppendedTo);
         }
 
         bool tryLiteralExtraction(std::string const &key) 
@@ -61,8 +60,8 @@ namespace jasl
             auto stringBeingAppendedTo(getStringBeingAppendedTo());
             if(!stringBeingAppendedTo) { return false; }
             LiteralString literalString;
-            if(m_func.getValueB<LiteralString>(literalString)) {
-                VarCache::setString(key, (*stringBeingAppendedTo).append(literalString.literal));
+            if(m_func.getValueB<LiteralString>(literalString, m_sharedCache)) {
+                m_sharedCache->setString(key, (*stringBeingAppendedTo).append(literalString.literal));
                 return true;
             }
             return false;
@@ -75,32 +74,32 @@ namespace jasl
 
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueB<std::string>(symbol)) {
+            if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {
                 {
-                    auto result = VarCache::getInt(symbol);
+                    auto result = m_sharedCache->getInt(symbol);
                     if(result) {
-                        VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                        m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getDouble(symbol);
+                    auto result = m_sharedCache->getDouble(symbol);
                     if(result) {
-                        VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                        m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getBool(symbol);
+                    auto result = m_sharedCache->getBool(symbol);
                     if(result) {
-                        VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                        m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getString(symbol);
+                    auto result = m_sharedCache->getString(symbol);
                     if(result) {
-                        VarCache::setString(key, (*stringBeingAppendedTo).append(*result));
+                        m_sharedCache->setString(key, (*stringBeingAppendedTo).append(*result));
                         return true;
                     }
                 }
@@ -116,27 +115,27 @@ namespace jasl
             if(!stringBeingAppendedTo) { return false; }
 
             {
-                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramB);
+                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramB, m_sharedCache);
                 if(result) {
-                    VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::tryToGetADouble(m_func.paramB);
+                auto result = VarExtractor::tryToGetADouble(m_func.paramB, m_sharedCache);
                 if(result) {
                     std::ostringstream ss;
                     ss << *result;
-                     VarCache::setString(key, (*stringBeingAppendedTo).append(ss.str()));
+                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(ss.str()));
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramB);
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramB, m_sharedCache);
                 if(result) {
-                    VarCache::setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
                     return true;
                 }
             }

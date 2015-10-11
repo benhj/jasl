@@ -10,7 +10,7 @@
 
 #include "Command.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
+#include "../GlobalCache.hpp"
 #include <sstream>
 #include <cstdint>
 
@@ -29,21 +29,21 @@ namespace jasl
         bool execute() override
         {
 
-            auto arg = VarExtractor::trySingleIntExtraction(m_func.paramA);
+            auto arg = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
             if(!arg) {
                 setLastErrorMessage("repeat: problem extracting integer");
                 return false;
             }
 
             std::string argString;
-            if(!m_func.getValueB<std::string>(argString)) {
+            if(!m_func.getValueB<std::string>(argString, m_sharedCache)) {
                 setLastErrorMessage("args: couldn't parse argument string variable name");
                 return false;
             }
 
-            if(*arg < VarCache::args.size()) {
-                auto argument(VarCache::args[*arg]);
-                VarCache::setString(argString, argument);
+            if(*arg < GlobalCache::args.size()) {
+                auto argument(GlobalCache::args[*arg]);
+                m_sharedCache->setString(argString, argument);
                 return true;
             }
 

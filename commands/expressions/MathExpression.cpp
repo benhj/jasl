@@ -28,11 +28,11 @@ namespace jasl {
         // an integer if integer precision is required
         double vleft;
         double vright;
-        auto valA = VarExtractor::trySingleDoubleExtraction(left);
+        auto valA = VarExtractor::trySingleDoubleExtraction(left, sharedCache);
 
         // extracting a double didn't work. Maybe an integer
         if(!valA) {
-            auto valC = VarExtractor::trySingleIntExtraction(left);
+            auto valC = VarExtractor::trySingleIntExtraction(left, sharedCache);
             if(valC) {
                 vleft = *valC;
             } else {
@@ -43,10 +43,10 @@ namespace jasl {
             vleft = *valA;
         }
 
-        auto valB = VarExtractor::trySingleDoubleExtraction(right);
+        auto valB = VarExtractor::trySingleDoubleExtraction(right, sharedCache);
         // extracting a double didn't work. Maybe an integer
         if(!valB) {
-            auto valD = VarExtractor::trySingleIntExtraction(right);
+            auto valD = VarExtractor::trySingleIntExtraction(right, sharedCache);
             if(valD) {
                 vright = *valD;
             } else {

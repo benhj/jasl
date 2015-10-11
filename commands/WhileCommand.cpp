@@ -21,10 +21,11 @@ namespace jasl {
 
     bool WhileCommand::execute() 
     {
-
         // how many time should repeat loop for?
-        auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+        auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
+
         if(!extracted) {
+
             setLastErrorMessage("while: problem extracting boolean expression");
             return false;
         }
@@ -35,7 +36,6 @@ namespace jasl {
     {
 
         bool goodtogo = truth;
-
         while(goodtogo) {
             // parse inner functions
             std::vector<Function> innerFuncs;
@@ -48,7 +48,7 @@ namespace jasl {
             }
 
             // update loop condition
-            auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+            auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
             goodtogo = *extracted;
         }
 
@@ -59,7 +59,7 @@ namespace jasl {
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

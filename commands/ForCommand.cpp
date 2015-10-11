@@ -27,7 +27,7 @@ namespace jasl {
         {
             std::string listSymbol;
             if(VarExtractor::tryAnyCast(listSymbol, m_func.paramB)) {
-                auto list = VarCache::getList(listSymbol);
+                auto list = m_sharedCache->getList(listSymbol);
                 if(list) {
                     return processList(*list, listSymbol);
                 }
@@ -90,7 +90,7 @@ namespace jasl {
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

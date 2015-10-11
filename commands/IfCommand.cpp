@@ -33,7 +33,8 @@ namespace jasl
 
         // Extract the boolean condition of the if-statement
         ComparisonExpression ce;
-        if (!VarExtractor::tryExtraction<ComparisonExpression>(ce, m_func.paramA)) {
+        ce.m_sharedCache = m_sharedCache;
+        if (!VarExtractor::tryExtraction<ComparisonExpression>(ce, m_func.paramA, m_sharedCache)) {
             return false;
         }
 
@@ -65,7 +66,7 @@ namespace jasl
     {
         CommandInterpretor ci;
         for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_outputStream);
+            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
         }
         return true;
     }

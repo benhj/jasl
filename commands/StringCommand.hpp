@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "ListToStringCommand.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <sstream>
 
 namespace jasl
@@ -30,7 +29,7 @@ namespace jasl
         bool execute() override
         {
             std::string stringName;
-            if(!m_func.getValueB<std::string>(stringName)) {
+            if(!m_func.getValueB<std::string>(stringName, m_sharedCache)) {
                 setLastErrorMessage("string: couldn't parse");
                 return false;
             }
@@ -47,8 +46,8 @@ namespace jasl
         bool tryLiteralExtraction(std::string const &key) 
         {
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
-                VarCache::setString(key, literalString.literal);
+            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
+                m_sharedCache->setString(key, literalString.literal);
                 return true;
             }
             return false;
@@ -58,32 +57,32 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
                 {
-                    auto result = VarCache::getInt(symbol);
+                    auto result = m_sharedCache->getInt(symbol);
                     if(result) {
-                        VarCache::setString(key, std::to_string(*result));
+                        m_sharedCache->setString(key, std::to_string(*result));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getDouble(symbol);
+                    auto result = m_sharedCache->getDouble(symbol);
                     if(result) {
-                        VarCache::setString(key, std::to_string(*result));
+                        m_sharedCache->setString(key, std::to_string(*result));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getBool(symbol);
+                    auto result = m_sharedCache->getBool(symbol);
                     if(result) {
-                        VarCache::setString(key, std::to_string(*result));
+                        m_sharedCache->setString(key, std::to_string(*result));
                         return true;
                     }
                 }
                 {
-                    auto result = VarCache::getString(symbol);
+                    auto result = m_sharedCache->getString(symbol);
                     if(result) {
-                        VarCache::setString(key, *result);
+                        m_sharedCache->setString(key, *result);
                         return true;
                     }
                 }
@@ -96,27 +95,27 @@ namespace jasl
         {
 
             {
-                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramA);
+                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramA, m_sharedCache);
                 if(result) {
-                    VarCache::setString(key, std::to_string(*result));
+                    m_sharedCache->setString(key, std::to_string(*result));
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::tryToGetADouble(m_func.paramA);
+                auto result = VarExtractor::tryToGetADouble(m_func.paramA, m_sharedCache);
                 if(result) {
                     std::ostringstream ss;
                     ss << *result;
-                    VarCache::setString(key, ss.str());
+                    m_sharedCache->setString(key, ss.str());
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
                 if(result) {
-                    VarCache::setString(key, std::to_string(*result));
+                    m_sharedCache->setString(key, std::to_string(*result));
                     return true;
                 }
             }

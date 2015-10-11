@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <sstream>
@@ -32,7 +31,7 @@ namespace jasl
         bool execute() override
         {
             std::string varName;
-            if(!m_func.getValueC<std::string>(varName)) {
+            if(!m_func.getValueC<std::string>(varName, m_sharedCache)) {
                 setLastErrorMessage("index: couldn't parse list");
                 return false;
             }
@@ -48,13 +47,13 @@ namespace jasl
         {
             LiteralString literal;
             std::string testString;
-            if(!m_func.getValueA<LiteralString>(literal)) {
+            if(!m_func.getValueA<LiteralString>(literal, m_sharedCache)) {
                 std::string symbol;
-                if(!m_func.getValueA<std::string>(symbol)) {
+                if(!m_func.getValueA<std::string>(symbol, m_sharedCache)) {
                     return OptionalString();
                 } 
 
-                return VarCache::getString(symbol);
+                return m_sharedCache->getString(symbol);
             } else {
                 return OptionalString(literal.literal);
             }
@@ -69,7 +68,7 @@ namespace jasl
             }
 
             ValueArray v;
-            if(m_func.getValueB<ValueArray>(v)) {
+            if(m_func.getValueB<ValueArray>(v, m_sharedCache)) {
                 std::string s;
                 try {
                     int i = 0;
@@ -79,7 +78,7 @@ namespace jasl
                             return false;
                         }
                         if(tok == testToken) {
-                            VarCache::setInt(varName, i);
+                            m_sharedCache->setInt(varName, i);
                             return true;
                         }
                         ++i;
@@ -102,10 +101,10 @@ namespace jasl
             
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueB<std::string>(symbol)) {
+            if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {
 
                 // find the ValueArray in the list cache having symbol symbol
-                auto found = VarCache::getList(symbol);
+                auto found = m_sharedCache->getList(symbol);
 
                 // if found then process list
                 if(found) {
@@ -118,7 +117,7 @@ namespace jasl
                                 return false;
                             }
                             if(tok == testToken) {
-                                VarCache::setInt(varName, i);
+                                m_sharedCache->setInt(varName, i);
                                 return true;
                             }
                             ++i;

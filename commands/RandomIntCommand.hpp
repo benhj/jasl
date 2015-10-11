@@ -10,7 +10,6 @@
 
 #include "Command.hpp"
 #include "StringToPrimitiveCommand.hpp"
-#include "../VarCache.hpp"
 #include <cstdlib>
 
 namespace jasl {
@@ -27,7 +26,7 @@ namespace jasl {
         bool execute() override
         {
 
-            auto a = VarExtractor::trySingleIntExtraction(m_func.paramA);
+            auto a = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
             if (!a) {
                 setLastErrorMessage("random_int: problem determining parameter");
                 return false;
@@ -41,7 +40,7 @@ namespace jasl {
                 return false;
             }
 
-            VarCache::setInt(key, output);
+            m_sharedCache->setInt(key, output);
             return true;
         }
     };

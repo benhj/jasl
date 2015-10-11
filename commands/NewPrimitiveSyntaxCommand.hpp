@@ -10,7 +10,6 @@
 
 #include "Command.hpp"
 #include "StringToPrimitiveCommand.hpp"
-#include "../VarCache.hpp"
 
 namespace jasl {
     class NewPrimitiveSyntaxCommand : public Command
@@ -28,7 +27,7 @@ namespace jasl {
 
             std::string type = m_func.name;
             std::string varName; 
-            (void)m_func.getValueB<std::string>(varName);
+            (void)m_func.getValueB<std::string>(varName, m_sharedCache);
 
             if (type == "integer") {
 
@@ -51,35 +50,35 @@ namespace jasl {
     private:
         bool handleInt(std::string const &varName)
         {
-            auto a = VarExtractor::trySingleIntExtraction(m_func.paramA);
+            auto a = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
             if (!a) {
                 // try converting a string to an integer
                 return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
-            VarCache::setInt(varName, *a);
+            m_sharedCache->setInt(varName, *a);
             return true;
         }
 
         bool handleDouble(std::string const &varName)
         {
-            auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramA);
+            auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramA, m_sharedCache);
             if (!a) {
                 // try converting a string to a double
                 return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
 
-            VarCache::setDouble(varName, *a);
+            m_sharedCache->setDouble(varName, *a);
             return true;
         }
 
         bool handleBool(std::string const &varName)
         {
-            auto a = VarExtractor::trySingleBoolExtraction(m_func.paramA);
+            auto a = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
             if (!a) {
                 return false;
             } 
 
-            VarCache::setBool(varName, *a);
+            m_sharedCache->setBool(varName, *a);
             return true;
         }
     };

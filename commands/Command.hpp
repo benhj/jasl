@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../Function.hpp"
-#include "../VarCache.hpp"
+#include "../GlobalCache.hpp"
 #include "../SharedVarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
@@ -61,7 +61,7 @@ namespace jasl
 
         void setLastErrorMessage(std::string const &error)
         {
-            VarCache::lastKnownError = error;
+            GlobalCache::lastKnownError = error;
         }
 
     };

@@ -11,7 +11,6 @@
 #include "Command.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-#include "../VarCache.hpp"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <sstream>
@@ -32,7 +31,7 @@ namespace jasl
         bool execute() override
         {
             std::string varName;
-            if(!m_func.getValueB<std::string>(varName)) {
+            if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
                 setLastErrorMessage("string_to_: couldn't parse integer name");
                 return false;
             }
@@ -46,15 +45,15 @@ namespace jasl
         bool tryLiteralExtraction(std::string const &varName) 
         {
             LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString)) {
+            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
                 try {
                     // also handled off directy from NewPrimitiveSyntaxCommand so need
                     // to also check if function name is integer or decimal in respective branch
                     if(m_func.name == "string_to_integer" || m_func.name == "integer") {
-                        VarCache::setInt(varName, boost::lexical_cast<int64_t>(literalString.literal));
+                        m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(literalString.literal));
                         return true;
                     } else if(m_func.name == "string_to_decimal" || m_func.name == "decimal") {
-                        VarCache::setDouble(varName, boost::lexical_cast<double>(literalString.literal));
+                        m_sharedCache->setDouble(varName, boost::lexical_cast<double>(literalString.literal));
                         return true;
                     }
                     return false;
@@ -70,17 +69,17 @@ namespace jasl
         {
             // Now try extracting a symbol
             std::string symbol;
-            if(m_func.getValueA<std::string>(symbol)) {
-                auto result = VarCache::getString(symbol);
+            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
+                auto result = m_sharedCache->getString(symbol);
                 if(result) {
                     try {
                         // also handled off directy from NewPrimitiveSyntaxCommand so need
                         // to also check if function name is integer or decimal in respective branch
                         if(m_func.name == "string_to_integer" || m_func.name == "integer") {
-                            VarCache::setInt(varName, boost::lexical_cast<int64_t>(*result));
+                            m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(*result));
                             return true;
                         } else if(m_func.name == "string_to_decimal" || m_func.name == "decimal") {
-                            VarCache::setDouble(varName, boost::lexical_cast<double>(*result));
+                            m_sharedCache->setDouble(varName, boost::lexical_cast<double>(*result));
                             return true;
                         }
                         return false;
