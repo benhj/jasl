@@ -1,4 +1,4 @@
-block binary {
+block binary () {
     
     // make a string to store the binary string.
     // starts out empty
@@ -38,6 +38,6 @@ start {
     append (s, " to binary:") -> s;
     echo_nl s;
     echo_nl " ";
-    call binary;
+    call binary();
     echo_nl " ";
 }

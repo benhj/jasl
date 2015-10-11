@@ -1,13 +1,13 @@
 // Tests the parsing of a returnable function
 
-returnable integer func -> returned {
+returnable integer func () -> returned {
 	echo_nl "Hello";
 	integer 5 -> returned;
 	return returned;
 }
 
 start {
-	call func -> result;
+	call func () -> result;
 	echo "called: ";
 	echo_nl result;
 }

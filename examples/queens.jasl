@@ -15,7 +15,7 @@
 // [- - - - Q - - -]
 // ----------------------------------------------
 
-returnable list initialize -> rep {
+returnable list initialize () -> rep {
     
     // build the representation
     args 0 -> stringN;
@@ -39,7 +39,7 @@ returnable list initialize -> rep {
 
 }
 
-block showBoard {
+block showBoard () {
 
     // create one of the rows of the board
     list [] -> row;
@@ -70,7 +70,7 @@ block showBoard {
 }
 
 // computes the error of the board
-returnable integer computeError -> theError {
+returnable integer computeError () -> theError {
 
     integer 0 -> theError;
 
@@ -119,13 +119,13 @@ returnable integer computeError -> theError {
 start {
 
     // initialize the representation 
-    call initialize -> representation;
+    call initialize () -> representation;
 
     // find out what initial error is. Note, we can
     // see that the returnable computeError returns
     // an integer so the car 'error' is implicitly
     // set to an integer type
-    call computeError -> error;
+    call computeError () -> error;
 
     // minimize error
     integer error -> currentError;
@@ -147,7 +147,7 @@ start {
             }
             
             // now compute new error based on update
-            call computeError -> error;
+            call computeError () -> error;
 
             // now based on update decide whether to keep or go
             // back to original
@@ -172,6 +172,6 @@ start {
     }
 
     // print out the board representation
-    call showBoard;
+    call showBoard ();
 
 }

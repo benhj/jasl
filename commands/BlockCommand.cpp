@@ -28,7 +28,7 @@ namespace jasl {
     bool BlockCommand::interpretFunctionBody()
     {
         std::vector<Function> innerFuncs;
-        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
+        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
         if (success) {
             success = parseCommands(innerFuncs);
         } else {

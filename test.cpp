@@ -291,7 +291,7 @@ void testBlockCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("integer 0 -> x; block foo { echo \"Hello\"; integer (x + 1) -> x; }");
+    std::string commands("integer 0 -> x; block foo() { echo \"Hello\"; integer (x + 1) -> x; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         (void)ci.interpretFunc(f, ss);
@@ -316,9 +316,9 @@ void testCallCommand()
 {
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; call foo; call bar; integer (x - 5) -> x;}");
-    commands.append("block bar { echo \"..and Goodbye!\"; integer (x + 1) -> x; }");
-    commands.append("block foo { echo \"Hello\"; integer 20 -> x; }");
+    std::string commands("start { echo \"Starting..\"; call foo (); call bar (); integer (x - 5) -> x;}");
+    commands.append("block bar() { echo \"..and Goodbye!\"; integer (x + 1) -> x; }");
+    commands.append("block foo() { echo \"Hello\"; integer 20 -> x; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {

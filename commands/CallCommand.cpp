@@ -19,6 +19,7 @@ namespace jasl
 
     bool CallCommand::execute()
     {
+
         std::string functionName; 
         (void)m_func.getValueA<std::string>(functionName);
 
@@ -26,7 +27,7 @@ namespace jasl
         // which case we search for returnable rather than block
         // functions
         std::string returnSymbol;
-        if(m_func.getValueB<std::string>(returnSymbol)) {
+        if(m_func.getValueC<std::string>(returnSymbol)) {
             return searchForFunction(functionName, 
                                      "returnable",
                                      returnSymbol);
@@ -89,7 +90,7 @@ namespace jasl
 
             // what is the name of the returned variable
             std::string returnName;
-            (void)function.getValueC<std::string>(returnName);
+            (void)function.getValueD<std::string>(returnName);
 
             // now set the returned variable in the returnSymbol
             // and erase the original function result

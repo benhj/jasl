@@ -33,17 +33,28 @@ Above, I create four types, an integer, a real, a boolean and a string and store
 Functions
 ---------
 
-Functions are more like routines, and since every variable is global, there is no concept of a returned value or a parameterized function. A 'function' is indicated by the keyword `block` and are called with the keyword `call`:
+There are two types 'blocks' and 'returnables' the former f which can be interpreted as a void function.
+Both are called with the keyword `call`:
 
 <pre>
 
-block otherFunction {
+returnable integer funk () -> toReturn {
+    // Note that toReturn will not be global
+    // and will be destroyed
+    integer 10 -> toReturn;
+    return toReturn;
+}
+
+block otherFunction () {
     // Variables are global and 'a'was created earlier so 
     // it can be accessed here.
     echo_nl a;
+
+    // Call returnable funk, put result into b
+    call toReturn () -> b;
 }
 
-block myFunction {
+block myFunction () {
 
     // Print out hello and add newline
     echo_nl "Hello";
@@ -54,12 +65,12 @@ block myFunction {
     // Variables are global
     integer 5 -> a;
     
-    call otherFunction;
+    call otherFunction ();
 }
 
 // main entry point
 start {
     // Run sub-routine myFunction
-    call myFunction;
+    call myFunction ();
 }
 </pre>

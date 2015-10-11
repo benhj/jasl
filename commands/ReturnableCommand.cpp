@@ -19,11 +19,10 @@ namespace jasl
 
     bool ReturnableCommand::execute()
     {
-
         std::string type;
         (void)m_func.getValueA<std::string>(type);
         std::string returnName;
-        (void)m_func.getValueC<std::string>(returnName);
+        (void)m_func.getValueD<std::string>(returnName);
         std::string functionName; 
         (void)m_func.getValueB<std::string>(functionName);
 
@@ -49,7 +48,7 @@ namespace jasl
     bool ReturnableCommand::interpretFunctionBody()
     {
         std::vector<Function> innerFuncs;
-        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramD);
+        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramE);
         if (success) {
             success = parseCommands(innerFuncs);
         } else {

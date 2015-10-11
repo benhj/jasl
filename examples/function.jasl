@@ -1,12 +1,13 @@
-// test a function called foo
-block foo {
+// test a function called foo.
+// Note, takes an empty list of parameters.
+block foo () {
     echo_nl "Now in function";
 }
 
 // entry point
 start {
     echo_nl "Going in to function..";
-    call foo;
+    call foo ();
 }
 
 

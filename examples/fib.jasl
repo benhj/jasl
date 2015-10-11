@@ -1,7 +1,7 @@
 // Note, seriously limited in the integer type being int. Maybe should make it
 // int64_t instead
 
-block fib {
+block fib () {
     
     // create some variables to store state
     integer 1 -> x;
@@ -29,6 +29,6 @@ block fib {
 start {
     
     echo_nl "Calling block fib";
-    call fib;
+    call fib ();
 
 }

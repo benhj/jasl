@@ -56,7 +56,7 @@ namespace jasl
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
             commentFunc         %= commentSlash >> -allChars;
-            word                %= lexeme[+(char_ - ' ' - '[' - ']')];
+            word                %= lexeme[+(char_ - ' ' - '[' - ']' - '(' - ')')];
             carrotWord          %= lexeme['^' >> +(char_ - '^')];
 
             // symbols to be used in a math expression
@@ -224,6 +224,8 @@ namespace jasl
             // a callable execution point
             block %= string("block")
                   >> genericString // functionName
+                  // take an optional list of arguments
+                  >> parameterList
                   >> '{'
                   >>  commandCollection
                   >> '}';
@@ -236,6 +238,7 @@ namespace jasl
             returnable %= string("returnable")
                        >> genericString // return type
                        >> genericString // functionName
+                       >> parameterList // list of parameters
                        >> lit("->")
                        >> genericString // variable name
                        >> '{'
@@ -257,9 +260,10 @@ namespace jasl
                    // optional 'else part'
                    >> -(lit("else") >> '{' >> commandCollection >> '}');
 
-            // calls a subroutine with given name
+            // calls a function with given name
             call %= string("call")
                  >> genericString // functionName
+                 >> parameterList // optional parameters
                  // optional return part
                  >> -(lit("->") >> genericString)
                  >> ';';
@@ -296,6 +300,10 @@ namespace jasl
             // a collection of words
             words          %= *(word | bracketedWords); // zero or more words
             bracketedWords %= '[' >> words >> ']';
+            // a collction of parameters
+            // to be used by a function. This coule be empty as in
+            // () or have arguments, as in (a b c);
+            parameterList %= '(' >> words >> ')';
             stringList     %= string("list")
                            >> (bracketedWords | genericString)
                            >> lit("->")
@@ -528,6 +536,7 @@ namespace jasl
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
         qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
+        qi::rule<Iterator, Value(), ascii::space_type> parameterList;
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;
         qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
