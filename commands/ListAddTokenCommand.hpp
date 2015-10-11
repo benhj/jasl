@@ -23,8 +23,9 @@ namespace jasl
     {
     public:
         ListAddTokenCommand(Function &func_,
+                            SharedVarCache const &sharedCache = SharedVarCache(),
                             OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, output)
+        : Command(func_, sharedCache, output)
         {
         }
 

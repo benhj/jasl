@@ -10,6 +10,7 @@
 
 #include "../Function.hpp"
 #include "../VarCache.hpp"
+#include "../SharedVarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>
@@ -23,8 +24,10 @@ namespace jasl
         typedef ::boost::optional<std::ostream&> OptionalOutputStream;
 
         Command(Function &func_,
+                SharedVarCache const &sharedCache,
                 OptionalOutputStream const &output = OptionalOutputStream())
         : m_func(func_) 
+        , m_sharedCache(sharedCache)
         , m_outputStream(output)
         {
         }
@@ -33,6 +36,9 @@ namespace jasl
 
     protected:
         Function &m_func;
+
+        /// Cache of variables
+        SharedVarCache m_sharedCache;
 
         /// for optionally capturing output
         ::boost::optional<std::ostream&> m_outputStream;

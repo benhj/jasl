@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include "LocalVarCache.hpp"
+#include "ScopedVarCache.hpp"
 
 #include <memory>
 
 namespace jasl {
 
-    typedef std::shared_ptr<LocalVarCache> SharedVarCache;
+    typedef std::shared_ptr<ScopedVarCache> SharedVarCache;
 
 }

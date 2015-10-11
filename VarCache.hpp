@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Value.hpp"
+#include "ScopedVarCache.hpp"
 
 #include <map>
 #include <string>
@@ -19,20 +20,6 @@
 #include <boost/variant.hpp>
 
 namespace jasl {
-
-    typedef ::boost::optional<int64_t> OptionalInt;
-    typedef ::boost::optional<bool> OptionalBool;
-    typedef ::boost::optional<double> OptionalDouble;
-    typedef ::boost::optional<std::string> OptionalString;
-    typedef ::boost::optional<ValueArray> OptionalValueArray;
-    typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
-
-    /// Represents the type of a cached variable entry
-    enum class Type {
-        Int, Bool, Double, String, ValueArray
-    };
-
-    typedef ::boost::optional<Type> OptionalType;
 
     struct VarCache 
     {

@@ -17,7 +17,9 @@ namespace jasl {
     class WhileCommand : public Command
     {
     public:
-        WhileCommand(Function &func_, OptionalOutputStream const &output);
+        WhileCommand(Function &func_,
+                     SharedVarCache const &sharedCache = SharedVarCache(),
+                     OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool doLoop(bool const truth);

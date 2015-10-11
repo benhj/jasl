@@ -18,7 +18,9 @@ namespace jasl
     {
 
     public:
-        IfCommand(Function &func_, OptionalOutputStream const &output);
+        IfCommand(Function &func_, 
+        	      SharedVarCache const &sharedCache,
+        	      OptionalOutputStream const &output);
         bool execute() override;
 
     private:

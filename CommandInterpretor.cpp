@@ -45,9 +45,9 @@
 #include <string>
 #include <iterator>
 
-#define PROCESS_X_COMMAND(X)            \
-    X##Command c(func, outputStream);   \
-    (void)c.execute();                  \
+#define PROCESS_X_COMMAND(X)                      \
+    X##Command c(func, varCache, outputStream);   \
+    (void)c.execute();                            \
     errorMessage = VarCache::lastKnownError;
 
 
@@ -227,7 +227,7 @@ namespace jasl {
             line.append("\n");
             script.append(line);
         }
-        return parseStringCollection(script);
+        return parseStringCollection(script, varCache);
         
     }
 

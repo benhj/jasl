@@ -15,7 +15,9 @@ namespace jasl
     class ReturnableCommand : public Command
     {
     public:
-		ReturnableCommand(Function &func_, OptionalOutputStream const &output);
+        ReturnableCommand(Function &func_,
+                      	  SharedVarCache const &sharedCache = SharedVarCache(),
+                      	  OptionalOutputStream const &output = OptionalOutputStream());
     	bool execute();
     private:
         bool interpretFunctionBody();

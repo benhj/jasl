@@ -12,8 +12,10 @@
 
 namespace jasl {
 
-    RepeatCommand::RepeatCommand(Function &func_, OptionalOutputStream const &output)
-    : Command(func_, output)
+    RepeatCommand::RepeatCommand(Function &func_,
+                                 SharedVarCache const &sharedCache,
+                                 OptionalOutputStream const &output)
+        : Command(func_, sharedCache, output)
     {
 
     }

@@ -12,8 +12,10 @@
 
 namespace jasl 
 {
-    CallCommand::CallCommand(Function &func_, OptionalOutputStream const &output)
-    : Command(func_, output)
+    CallCommand::CallCommand(Function &func_, 
+                             SharedVarCache const &sharedCache,
+                             OptionalOutputStream const &output)
+    : Command(func_, sharedCache, output)
     {
     }
 

@@ -17,7 +17,9 @@ namespace jasl {
     class ForCommand : public Command
     {
     public:
-        ForCommand(Function &func_, OptionalOutputStream const &output);
+        ForCommand(Function &func_, 
+        	       SharedVarCache const &sharedCache = SharedVarCache(),
+                   OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool parseCommands(std::vector<Function> &functions);

@@ -12,8 +12,10 @@
 
 namespace jasl 
 {
-    ReturnableCommand::ReturnableCommand(Function &func_, OptionalOutputStream const &output)
-    : Command(func_, output)
+    ReturnableCommand::ReturnableCommand(Function &func_,
+                                         SharedVarCache const &sharedCache,
+                                         OptionalOutputStream const &output)
+    : Command(func_, sharedCache, output)
     {
     }
 

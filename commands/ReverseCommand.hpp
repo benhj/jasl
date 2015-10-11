@@ -20,8 +20,9 @@ namespace jasl
     {
     public:
         ReverseCommand(Function &func_,
+                       SharedVarCache const &sharedCache = SharedVarCache(),
                        OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, output)
+        : Command(func_, sharedCache, output)
         {
 
         }

@@ -20,8 +20,9 @@ namespace jasl
     {
     public:
         InputCommand(Function &func_,
-                    OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, output)
+                     SharedVarCache const &sharedCache = SharedVarCache(),
+                     OptionalOutputStream const &output = OptionalOutputStream())
+        : Command(func_, sharedCache, output)
         {
 
         }

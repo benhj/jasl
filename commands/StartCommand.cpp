@@ -13,10 +13,11 @@
 
 namespace jasl {
 
-    StartCommand::StartCommand(Function &func_, OptionalOutputStream const &output)
-    : Command(func_, output)
+    StartCommand::StartCommand(Function &func_,
+                               SharedVarCache const &sharedCache,
+                               OptionalOutputStream const &output)
+    : Command(func_, sharedCache, output) 
     {
-
     }
 
     bool StartCommand::execute()

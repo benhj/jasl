@@ -20,8 +20,9 @@ namespace jasl
     {
     public:
         StringCommand(Function &func_,
+                      SharedVarCache const &sharedCache = SharedVarCache(),
                       OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, output)
+        : Command(func_, sharedCache, output)
         {
 
         }
@@ -126,7 +127,7 @@ namespace jasl
 
         bool tryListExtraction()
         {
-            return ListToStringCommand(m_func, m_outputStream).execute();
+            return ListToStringCommand(m_func, m_sharedCache, m_outputStream).execute();
         }
 
     };

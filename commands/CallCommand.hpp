@@ -15,7 +15,9 @@ namespace jasl
     class CallCommand : public Command
     {
     public:
-        CallCommand(Function &func_, OptionalOutputStream const &output);
+        CallCommand(Function &func_, 
+                    SharedVarCache const &sharedCache = SharedVarCache(),
+                    OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool searchForFunction(std::string &functionName, 

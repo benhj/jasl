@@ -13,8 +13,10 @@
 
 namespace jasl {
 
-    BlockCommand::BlockCommand(Function &func_, OptionalOutputStream const &output)
-    : Command(func_, output)
+    BlockCommand::BlockCommand(Function &func_, 
+                               SharedVarCache const &sharedCache, 
+                               OptionalOutputStream const &output)
+    : Command(func_, SharedVarCache(), output)
     {
 
     }

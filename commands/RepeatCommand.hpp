@@ -17,7 +17,9 @@ namespace jasl {
     class RepeatCommand : public Command
     {
     public:
-        RepeatCommand(Function &func_, OptionalOutputStream const &output);
+        RepeatCommand(Function &func_,
+                      SharedVarCache const &sharedCache = SharedVarCache(),
+                      OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool doLoop(int const loopCount);

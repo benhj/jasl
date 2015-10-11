@@ -15,7 +15,9 @@ namespace jasl {
     class StartCommand : public Command
     {
     public:
-        StartCommand(Function &func_, OptionalOutputStream const &output);
+        StartCommand(Function &func_,
+                     SharedVarCache const &sharedCache = SharedVarCache(),
+                     OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool interpretFunctionBody();

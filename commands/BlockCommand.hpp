@@ -15,7 +15,9 @@ namespace jasl {
     class BlockCommand : public Command
     {
     public:
-        BlockCommand(Function &func_, OptionalOutputStream const &output);
+        BlockCommand(Function &func_, 
+                     SharedVarCache const &sharedCache = SharedVarCache(),
+                     OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
         bool interpretFunctionBody();

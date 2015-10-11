@@ -17,8 +17,9 @@ namespace jasl {
     {
     public:
         NewPrimitiveSyntaxCommand(Function &func_,
+                                  SharedVarCache const &sharedCache = SharedVarCache(),
                                   OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, output)
+        : Command(func_, sharedCache, output)
         {
         }
 
@@ -53,7 +54,7 @@ namespace jasl {
             auto a = VarExtractor::trySingleIntExtraction(m_func.paramA);
             if (!a) {
                 // try converting a string to an integer
-                return StringToPrimitiveCommand(m_func, m_outputStream).execute();
+                return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
             VarCache::setInt(varName, *a);
             return true;
@@ -64,7 +65,7 @@ namespace jasl {
             auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramA);
             if (!a) {
                 // try converting a string to a double
-                return StringToPrimitiveCommand(m_func, m_outputStream).execute();
+                return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
 
             VarCache::setDouble(varName, *a);
