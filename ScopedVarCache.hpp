@@ -1,0 +1,82 @@
+//
+//  ScopedVarCache.hpp
+//  jasl
+//
+//  Created by Ben Jones 
+//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//
+
+#pragma once
+
+#include "Value.hpp"
+
+#include <map>
+#include <string>
+#include <vector>
+#include <cstdint>
+
+#include <boost/optional.hpp>
+#include <boost/variant.hpp>
+
+namespace jasl {
+
+    typedef ::boost::optional<int64_t> OptionalInt;
+    typedef ::boost::optional<bool> OptionalBool;
+    typedef ::boost::optional<double> OptionalDouble;
+    typedef ::boost::optional<std::string> OptionalString;
+    typedef ::boost::optional<ValueArray> OptionalValueArray;
+    typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
+
+    /// Represents the type of a cached variable entry
+    enum class Type {
+        Int, Bool, Double, String, ValueArray
+    };
+
+    typedef ::boost::optional<Type> OptionalType;
+
+    class ScopedVarCache 
+    {
+
+        /// For representing a variable entry in the 'big cache'
+        struct CacheEntry {
+            Type type;
+            CacheVariant cv;
+        };
+
+        /// caches for ints, bools and doubles, and other types
+        std::map<std::string, CacheEntry> m_bigCache;
+
+    public:
+        ScopedVarCache();
+
+        /// functions for setting different types
+        void setInt(std::string const &key,
+                    int64_t const value);
+        void setDouble(std::string const &key,
+                       double const value);
+        void setBool(std::string const &key,
+                     bool const value);
+        void setString(std::string const &key,
+                       std::string const &value);
+        void setList(std::string const &key,
+                            ValueArray const &value);
+        void setTokenInList(std::string const &key,
+                            int const index,
+                             Value const &value);
+        void pushBackTokenInList(std::string const &key,
+                                 Value const &value);
+        void eraseValue(std::string const &key);
+
+        /// functions for getting different types.
+        /// These are convenience functions and
+        /// shouldn't be used unless it is know values exist.
+        OptionalInt getInt(std::string const &key);
+        OptionalDouble getDouble(std::string const &key);
+        OptionalBool getBool(std::string const &key);
+        OptionalString getString(std::string const &key);
+        OptionalValueArray getList(std::string const &key);
+        Value getListToken(std::string const &key, size_t const index);
+        OptionalType getType(std::string const &key);
+    };
+
+}

@@ -6,6 +6,7 @@ boostIncPath=/usr/local/include
 
 # these objects will exist after compilation of everything
 objects="VarCache.o \
+         ScopedVarCache.o \
          IfCommand.o \
          RepeatCommand.o \
          WhileCommand.o \
@@ -21,6 +22,11 @@ objects="VarCache.o \
 function build_VarCache {
     echo "Building VarCache..."
     $compiler $cflags -I$boostIncPath -c VarCache.cpp -o VarCache.o 
+}
+
+function build_ScopedVarCache {
+    echo "Building ScopedVarCache..."
+    $compiler $cflags -I$boostIncPath -c ScopedVarCache.cpp -o ScopedVarCache.o 
 }
 
 function build_VarCacheManager {
@@ -102,6 +108,7 @@ function build_clean {
 
 function build_all {
     build_VarCache
+    build_ScopedVarCache
     build_VarCacheManager
     build_CallCommand
     build_ReturnableCommand
