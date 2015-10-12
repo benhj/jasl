@@ -36,15 +36,20 @@ namespace jasl {
 
     class ScopedVarCache 
     {
-
+    public:
         /// For representing a variable entry in the 'big cache'
         struct CacheEntry {
             Type type;
             CacheVariant cv;
         };
 
+    private:
+
         /// caches for ints, bools and doubles, and other types
         std::map<std::string, CacheEntry> m_bigCache;
+
+        /// a separate parameter stack
+        std::vector<CacheEntry> m_paramStack;
 
     public:
         ScopedVarCache();
@@ -66,6 +71,19 @@ namespace jasl {
         void pushBackTokenInList(std::string const &key,
                                  Value const &value);
         void eraseValue(std::string const &key);
+
+        void resetParamStack();
+        
+        template <typename V>
+        void addToParamStack(Type const type, V const &value)
+        {
+            CacheEntry ce;
+            ce.type = type;
+            ce.cv = CacheVariant(value);
+            m_paramStack.push_back(ce);
+        }
+
+        CacheEntry getParamFromStack(int const i);
 
         /// functions for getting different types.
         /// These are convenience functions and

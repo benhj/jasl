@@ -7,6 +7,7 @@
 //
 
 #include "BlockCommand.hpp"
+#include "ParamExtractor.hpp"
 #include "../CommandInterpretor.hpp"
 #include "../VarExtractor.hpp"
 
@@ -22,6 +23,7 @@ namespace jasl {
 
     bool BlockCommand::execute()
     {
+        extractAndUpdateParams(m_func.paramB, m_sharedCache);
         return interpretFunctionBody();
     }
 

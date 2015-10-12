@@ -1,13 +1,27 @@
 // test a function called foo.
 // Note, takes an empty list of parameters.
-block foo () {
+block foo (a, b, c, d, e) {
+    echo "a: ";
+    echo_nl a;
+    echo "b: ";
+    echo_nl b;
+    echo "c: ";
+    echo_nl c;
+    echo "d: ";
+    echo_nl d;
+    echo "e: ";
+    echo_nl e;
     echo_nl "Now in function";
+
 }
 
 // entry point
 start {
     echo_nl "Going in to function..";
-    call foo ();
+    integer 1 -> a;
+    decimal 5.5 -> b;
+    string "goodbye" -> c;
+    call foo (a, b, 10, "hello", c);
 }
 
 

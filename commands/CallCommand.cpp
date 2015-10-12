@@ -8,6 +8,7 @@
 
 
 #include "CallCommand.hpp"
+#include "ParamExtractor.hpp"
 #include "../GlobalCache.hpp"
 #include "../CommandInterpretor.hpp"
 #include <vector>
@@ -26,6 +27,12 @@ namespace jasl
 
         std::string functionName; 
         (void)m_func.getValueA<std::string>(functionName, m_sharedCache);
+
+        // try to extract input arguments, if there are any
+        ValueArray array;
+        if(m_func.getValueB<ValueArray>(array, m_sharedCache)) {
+            extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
+        }
 
         // check if call statement expecting a returnable in
         // which case we search for returnable rather than block

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Value.hpp"
-#include "ScopedVarCache.hpp"
+#include "SharedVarCache.hpp"
 
 #include <boost/optional.hpp>
 
@@ -19,7 +19,7 @@ namespace jasl {
     {
 
         /// For storing global variables
-        static ScopedVarCache bigCache;
+        static SharedVarCache bigCache;
 
         static std::vector<std::string> args;
 
@@ -46,6 +46,16 @@ namespace jasl {
         static void pushBackTokenInList(std::string const &key,
                                         Value const &value);
         static void eraseValue(std::string const &key);
+
+        static void resetParamStack();
+
+        template <typename V>
+        static void addToParamStack(Type const type, V const &value)
+        {
+            bigCache->addToParamStack(type, value);
+        }
+
+        static ScopedVarCache::CacheEntry getParamFromStack(int const i);
 
         /// functions for getting different types.
         /// These are convenience functions and

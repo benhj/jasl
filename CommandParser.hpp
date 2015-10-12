@@ -56,7 +56,7 @@ namespace jasl
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
             commentFunc         %= commentSlash >> -allChars;
-            word                %= lexeme[+(char_ - ' ' - '[' - ']' - '(' - ')')];
+            word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')')];
             carrotWord          %= lexeme['^' >> +(char_ - '^')];
 
             // symbols to be used in a math expression
@@ -299,11 +299,16 @@ namespace jasl
             // will be useful for pattern matching
             // a collection of words
             words          %= *(word | bracketedWords); // zero or more words
+            parameter      %= (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                               mathExpression | bracketedMathExpression | 
+                               comparisonExpression | bracketedComparisonExpression | bracketedWords);
+            commaParameter %= ',' >> parameter;
+            parameters     %= -(parameter >> *commaParameter); // comma-separated
             bracketedWords %= '[' >> words >> ']';
             // a collction of parameters
             // to be used by a function. This coule be empty as in
             // () or have arguments, as in (a b c);
-            parameterList %= '(' >> words >> ')';
+            parameterList %= '(' >> parameters >> ')';
             stringList     %= string("list")
                            >> (bracketedWords | genericString)
                            >> lit("->")
@@ -535,9 +540,12 @@ namespace jasl
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
+        qi::rule<Iterator, Value(), ascii::space_type> parameter;
         qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
+        qi::rule<Iterator, Value(), ascii::space_type> commaParameter;
         qi::rule<Iterator, Value(), ascii::space_type> parameterList;
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;
+        qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
         qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;

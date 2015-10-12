@@ -7,6 +7,7 @@
 //
 
 #include "ReturnableCommand.hpp"
+#include "ParamExtractor.hpp"
 #include "../CommandInterpretor.hpp"
 #include "../GlobalCache.hpp"
 #include <vector>
@@ -28,6 +29,8 @@ namespace jasl
         (void)m_func.getValueD<std::string>(returnName, m_sharedCache);
         std::string functionName; 
         (void)m_func.getValueB<std::string>(functionName, m_sharedCache);
+
+        extractAndUpdateParams(m_func.paramC, m_sharedCache);
 
         if(type == "integer") {
             GlobalCache::setInt(returnName, 0);

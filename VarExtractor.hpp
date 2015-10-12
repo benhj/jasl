@@ -199,5 +199,27 @@ namespace jasl {
 
             return OptionalBool();
         }
+
+        static OptionalString trySingleStringExtraction(Value &val, SharedVarCache const &sharedCache)
+        {
+            std::string x;
+            if (tryExtraction<std::string>(x, val, sharedCache)) {
+                return OptionalString(x);
+            }
+            LiteralString ls;
+            if (tryExtraction<LiteralString>(ls, val, sharedCache)) {
+                return OptionalString(ls.literal);
+            }
+            return OptionalString();
+        }
+
+        static OptionalValueArray trySingleListExtraction(Value &val, SharedVarCache const &sharedCache)
+        {
+            ValueArray x;
+            if (tryExtraction<ValueArray>(x, val, sharedCache)) {
+                return OptionalValueArray(x);
+            }
+            return OptionalValueArray();
+        }
     };
 }
