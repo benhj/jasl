@@ -7,6 +7,8 @@
 //
 
 #include "ForCommand.hpp"
+#include "ListGetTokenCommand.hpp"
+#include "ReleaseCommand.hpp"
 #include "../CommandInterpretor.hpp"
 #include <string>
 
@@ -54,31 +56,33 @@ namespace jasl {
             // Process tokens one by one using get_token command
             CommandInterpretor ci;
             for(int i = 0; i < va.size(); ++i) {
-                std::string commandString("get_token(");
-                commandString.append(std::to_string(i));
-                commandString.append(",");
-                commandString.append(listSymbol);
-                commandString.append(") -> ");
-                commandString.append(indexSymbol);
-                commandString.append(";");
-                ci.parseAndInterpretSingleCommand(commandString);
+                Function f;
+                f.name = "get_token";
+                f.paramA = (int64_t)i;
+                f.paramB = listSymbol;
+                f.paramC = indexSymbol;
+                ListGetTokenCommand tc(f, m_sharedCache, m_outputStream);                
+                if(tc.execute()) {
 
-                // do other commands
-                // parse inner functions
-                std::vector<Function> innerFuncs;
-                bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
-                if (success) {
-                    success = parseCommands(innerFuncs);
-                } else {
-                    setLastErrorMessage("repeat: Error interpreting while's body");
-                    return false;
+                    // do other commands
+                    // parse inner functions
+                    std::vector<Function> innerFuncs;
+                    bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+                    if (success) {
+                        success = parseCommands(innerFuncs);
+                    } else {
+                        setLastErrorMessage("repeat: Error interpreting while's body");
+                        return false;
+                    }
+
                 }
 
                 // make sure variable storing token is released before iterating
-                std::string releaseString("release ");
-                releaseString.append(indexSymbol);
-                releaseString.append(";");
-                ci.parseAndInterpretSingleCommand(releaseString);
+                Function relFunc;
+                relFunc.name = "release";
+                relFunc.paramA = indexSymbol;
+                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
+                (void)rc.execute();
             }
 
         }

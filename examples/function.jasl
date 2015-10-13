@@ -1,16 +1,13 @@
 // test a function called foo.
 // Note, takes an empty list of parameters.
-block foo (a, b, c, d, e) {
-    echo "a: ";
-    echo_nl a;
-    echo "b: ";
-    echo_nl b;
-    echo "c: ";
-    echo_nl c;
-    echo "d: ";
-    echo_nl d;
-    echo "e: ";
-    echo_nl e;
+block foo (a, b, c, d, e, f, g) {
+    echo "a: "; echo_nl a;
+    echo "b: "; echo_nl b;
+    echo "c: "; echo_nl c;
+    echo "d: "; echo_nl d;
+    echo "e: "; echo_nl e;
+    echo "f: "; echo_nl f;
+    echo "g: "; echo_nl g;
     echo_nl "Now in function";
 
 }
@@ -21,7 +18,8 @@ start {
     integer 1 -> a;
     decimal 5.5 -> b;
     string "goodbye" -> c;
-    call foo (a, b, 10, "hello", c);
+    list [another [nested] list] -> d;
+    call foo (a, b, 10, "hello", c, [a list], d);
 }
 
 

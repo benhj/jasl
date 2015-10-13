@@ -36,6 +36,7 @@ start {
 
     // print out types of elements in a list
     list [list [with nested] list] -> f;
+    echo_nl f;
     for i in f {
         type(i) -> elementType;
         echo "type: ";

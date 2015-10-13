@@ -204,7 +204,11 @@ namespace jasl {
         {
             std::string x;
             if (tryExtraction<std::string>(x, val, sharedCache)) {
-                return OptionalString(x);
+
+                // Note, x will actually be the symbol, not the string
+                // that the symbol represents. Therefore, now need to 
+                // pull out the variable associated with the symbol
+                return sharedCache->getString(x);
             }
             LiteralString ls;
             if (tryExtraction<LiteralString>(ls, val, sharedCache)) {
@@ -219,6 +223,13 @@ namespace jasl {
             if (tryExtraction<ValueArray>(x, val, sharedCache)) {
                 return OptionalValueArray(x);
             }
+
+            // couldn't extract raw list, see if one is cached 
+            std::string varName;
+            if (tryExtraction<std::string>(varName, val, sharedCache)) {
+                return sharedCache->getList(varName);
+            }
+
             return OptionalValueArray();
         }
     };

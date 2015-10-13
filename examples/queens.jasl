@@ -15,11 +15,9 @@
 // [- - - - Q - - -]
 // ----------------------------------------------
 
-returnable list initialize () -> rep {
-    
+returnable list initialize (N) -> rep {
+
     // build the representation
-    args 0 -> stringN;
-    integer stringN -> N;
     list [] -> rep;
     integer 0 -> i;
     // board initialization with heuristic
@@ -31,15 +29,11 @@ returnable list initialize () -> rep {
             integer 0 -> i;
         }
     }
-    release i;
-    release stringN;
-    release istring;
 
     return rep;
-
 }
 
-block showBoard () {
+block showBoard (N, representation) {
 
     // create one of the rows of the board
     list [] -> row;
@@ -70,7 +64,7 @@ block showBoard () {
 }
 
 // computes the error of the board
-returnable integer computeError () -> theError {
+returnable integer computeError (N, representation) -> theError {
 
     integer 0 -> theError;
 
@@ -118,16 +112,14 @@ returnable integer computeError () -> theError {
 
 start {
 
-    // initialize the representation 
-    call initialize () -> representation;
+    args 0 -> nstr;
+    integer nstr -> N;
 
-    // find out what initial error is. Note, we can
-    // see that the returnable computeError returns
-    // an integer so the car 'error' is implicitly
-    // set to an integer type
-    call computeError () -> error;
+    // initialize the representation 
+    call initialize (N) -> representation;
 
     // minimize error
+    call computeError (N, representation) -> error;
     integer error -> currentError;
     integer 1 -> moveBy;
     while (currentError != 0) {
@@ -147,7 +139,7 @@ start {
             }
             
             // now compute new error based on update
-            call computeError () -> error;
+            call computeError (N, representation) -> error;
 
             // now based on update decide whether to keep or go
             // back to original
@@ -172,6 +164,6 @@ start {
     }
 
     // print out the board representation
-    call showBoard ();
+    call showBoard (N, representation);
 
 }

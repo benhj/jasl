@@ -61,28 +61,56 @@ namespace jasl
                 {
                     auto result = m_sharedCache->getInt(symbol);
                     if(result) {
+                        // see if should update global cache, in the case that we
+                        // have a return statement and return value should go in 
+                        // to global cache
+                        if(GlobalCache::getString(key)) {
+                            GlobalCache::setString(key, std::to_string(*result));
+                        }
                         m_sharedCache->setString(key, std::to_string(*result));
+                        
                         return true;
                     }
                 }
                 {
                     auto result = m_sharedCache->getDouble(symbol);
                     if(result) {
+                        // see if should update global cache, in the case that we
+                        // have a return statement and return value should go in 
+                        // to global cache
+                        if(GlobalCache::getString(key)) {
+                            GlobalCache::setString(key, std::to_string(*result));
+                        }
                         m_sharedCache->setString(key, std::to_string(*result));
+                        
                         return true;
                     }
                 }
                 {
                     auto result = m_sharedCache->getBool(symbol);
                     if(result) {
+                        // see if should update global cache, in the case that we
+                        // have a return statement and return value should go in 
+                        // to global cache
+                        if(GlobalCache::getString(key)) {
+                            GlobalCache::setString(key, std::to_string(*result));
+                        }
                         m_sharedCache->setString(key, std::to_string(*result));
+                        
                         return true;
                     }
                 }
                 {
                     auto result = m_sharedCache->getString(symbol);
                     if(result) {
+                        // see if should update global cache, in the case that we
+                        // have a return statement and return value should go in 
+                        // to global cache
+                        if(GlobalCache::getString(key)) {
+                            GlobalCache::setString(key, *result);
+                        }
                         m_sharedCache->setString(key, *result);
+                        
                         return true;
                     }
                 }
@@ -107,7 +135,7 @@ namespace jasl
                 if(result) {
                     std::ostringstream ss;
                     ss << *result;
-                    m_sharedCache->setString(key, ss.str());
+                    m_sharedCache->setString(key, ss.str());                    
                     return true;
                 }
             }

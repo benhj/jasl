@@ -38,6 +38,7 @@ namespace jasl
 
             if(tryWithRawList(varName)) { return true; }
             if(tryWithSymbolList(varName)) { return true; }
+            std::cout<<varName<<std::endl;
             setLastErrorMessage("get token: no list found");
             return false;
         }
@@ -99,13 +100,12 @@ namespace jasl
 
         bool tryWithSymbolList(std::string const &varName)
         {
-
             auto index(getIndex());
             if(!index) {
                 setLastErrorMessage("get token: error getting index");
                 return false;
             }
-            
+
             // Now try extracting a symbol
             std::string symbol;
             if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {

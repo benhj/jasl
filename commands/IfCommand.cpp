@@ -33,10 +33,10 @@ namespace jasl
 
         // Extract the boolean condition of the if-statement
         ComparisonExpression ce;
-        ce.m_sharedCache = m_sharedCache;
         if (!VarExtractor::tryExtraction<ComparisonExpression>(ce, m_func.paramA, m_sharedCache)) {
             return false;
         }
+        ce.m_sharedCache = m_sharedCache;
 
         // Basically do the if statement and then parse the functions
         // within the if block

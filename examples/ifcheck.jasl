@@ -1,0 +1,9 @@
+start {
+    
+    integer 1 -> i;
+    integer 1 -> j;
+    if(i == j) {
+        echo_nl "yes";
+    }
+
+}

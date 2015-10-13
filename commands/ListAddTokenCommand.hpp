@@ -91,6 +91,9 @@ namespace jasl
                 {
                     auto newToken(getNewStringToken());
                     if(newToken) {
+                        if(GlobalCache::getList(varName)) {
+                            GlobalCache::pushBackTokenInList(varName, Value(*newToken));
+                        }
                         m_sharedCache->pushBackTokenInList(varName, Value(*newToken));
                         return true;
                     }
@@ -99,6 +102,9 @@ namespace jasl
                 {
                     auto newToken(getNewVAToken());
                     if(newToken) {
+                        if(GlobalCache::getList(varName)) {
+                            GlobalCache::pushBackTokenInList(varName, Value(*newToken));
+                        }
                         m_sharedCache->pushBackTokenInList(varName, Value(*newToken));
                         return true;
                     }
