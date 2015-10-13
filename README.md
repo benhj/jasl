@@ -65,7 +65,7 @@ returnable integer funk (a) -> toReturn {
 
 block otherFunction () {
     // Call returnable funk, put result into b
-    call toReturn (5) -> b;
+    call funk (5) -> b;
     
     // should print out 15
     echo_nl b;
