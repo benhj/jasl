@@ -32,12 +32,12 @@ list [This is [a nested list] list] -> f;
 
 Above, I create six variables, an integer, a real, a boolean, a string and two lists the latter of which contains a nested list 
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
-longer true. Variables now scoped at the level of a given block or returnable function. 
+longer true. Variables are now scoped at the level of a given block or returnable function. 
 
 Functions
 ---------
 
-There are two types, 'blocks' and 'returnables' the former f which can be interpreted as a void function, while the
+There are two types, 'blocks' and 'returnables' the former of which can be interpreted as a void function, while the
 latter is designed to return one of the above basic types.
 
 They have this type of syntax:
@@ -82,17 +82,17 @@ block myFunction () {
     // Variables are scoped to the function blockl
     integer 5 -> a;
 
-    // a loop that executes statements within
-    // the enclosing braces several times
+    // A loop that executes statements within
+    // the enclosing braces several times.
     // Note that since variables are scoped to the enclosing
-    // function block, the variable b will be accesseble still
+    // function block, the variable b will be accessible still
     // after the loop
     repeat 5 times {
         integer 1 -> b;
     }
 
-    // this is valid. integer b is still accessible
-    echo_nl 1;
+    // This is valid. Integer b is still accessible
+    echo_nl b;
     
     call otherFunction ();
 }
