@@ -33,21 +33,40 @@ namespace jasl
         extractAndUpdateParams(m_func.paramC, m_sharedCache);
 
         if(type == "integer") {
-            GlobalCache::setInt(returnName, 0);
+            m_returnSymbol = returnName;
+            m_returnType = Type::Int;
         } else if(type == "decimal") {
-            GlobalCache::setDouble(returnName, 0);
+            m_returnSymbol = returnName;
+            m_returnType = Type::Double;
         } else if(type == "string") {
-            GlobalCache::setString(returnName, "");
+            m_returnSymbol = returnName;
+            m_returnType = Type::String;
         } else if(type == "boolean") {
-            GlobalCache::setBool(returnName, false);
+            m_returnSymbol = returnName;
+            m_returnType = Type::Bool;
         } else if(type == "list") {
-            GlobalCache::setList(returnName, ValueArray());
+            m_returnSymbol = returnName;
+            m_returnType = Type::ValueArray;
         } else {
             setLastErrorMessage("returnable: unknown return type");
             return false;
         }
 
         interpretFunctionBody();
+
+        // Now set return param in GlobalCache
+        if(m_returnType == Type::Int) {
+            GlobalCache::setInt(m_returnSymbol, *m_sharedCache->getInt(m_returnSymbol));
+        } else if(m_returnType == Type::Bool) {
+            GlobalCache::setBool(m_returnSymbol, *m_sharedCache->getBool(m_returnSymbol));
+        } else if(m_returnType == Type::Double) {
+            GlobalCache::setDouble(m_returnSymbol, *m_sharedCache->getDouble(m_returnSymbol));
+        } else if(m_returnType == Type::String) {
+            GlobalCache::setString(m_returnSymbol, *m_sharedCache->getString(m_returnSymbol));
+        } else if(m_returnType == Type::ValueArray) {
+            GlobalCache::setList(m_returnSymbol, *m_sharedCache->getList(m_returnSymbol));
+        }
+
         return true;
     }
 
@@ -61,6 +80,7 @@ namespace jasl
             setLastErrorMessage("returnable: Error interpreting returnable's body");
             return false;
         }
+
         return true;
     }
 

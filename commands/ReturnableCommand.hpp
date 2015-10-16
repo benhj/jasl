@@ -9,11 +9,17 @@
 #pragma once
 
 #include "Command.hpp"
+#include <string>
 
 namespace jasl 
 {
     class ReturnableCommand : public Command
     {
+
+        std::string m_returnSymbol;
+        Type m_returnType;
+
+
     public:
         ReturnableCommand(Function &func_,
                       	  SharedVarCache const &sharedCache = SharedVarCache(),

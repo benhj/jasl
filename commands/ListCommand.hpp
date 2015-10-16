@@ -50,10 +50,6 @@ namespace jasl
                 return false;
             }
 
-            // add list to list cache
-            if(GlobalCache::getList(listName)) {
-                GlobalCache::setList(listName, list);
-            }
             m_sharedCache->setList(listName, list);
             return true;
         }
