@@ -1,0 +1,74 @@
+returnable integer canPlaceQueen(r, c, x) -> yes {
+
+    integer 1 -> yes;
+    
+    integer 0 -> i;
+    while(i < r) {
+        
+        get_token(i, x) -> tok;
+        integer tok -> itok;     
+        if(((itok == c) || ((i - r) == (itok -c))) || ((i - r) == (c - itok))) {
+            integer 0 -> yes;
+            // so that we can break early
+            integer r -> i; 
+        }
+        integer (i + 1) -> i;
+    }
+    return yes;
+}
+
+block printQueens(N, x) {
+
+    integer 0 -> i;
+    while(i < N) {
+        integer 0 -> j;
+        while(j < N) {
+            get_token(i, x) -> tok;
+            integer tok -> itok;
+            if (itok == j) {
+                echo "Q ";
+            } else {
+                echo "* "; 
+            }
+            integer (j + 1) -> j;
+        }
+        echo_nl " ";
+        integer (i + 1) -> i;
+    }
+
+}
+
+block placeNQueens(r, n, x) {
+    
+    integer 0 -> c;
+    while(c < n) {
+        call canPlaceQueen(r, c, x) -> yes;
+        if(yes == 1) {
+            string c -> strtok;
+            set_token(r, x, strtok) -> x; 
+            if (r == (n - 1)) {
+                call printQueens(n, x);
+                echo_nl " ";
+                integer n -> c;
+            }
+            else {
+               call placeNQueens((r + 1), n, x);
+            }
+        }
+        integer (c + 1) -> c;
+    }
+}
+
+start {
+
+    args 0 -> arg;
+    integer arg -> N;
+    list [] -> x;
+    integer 0 -> i;
+    repeat N times {
+        string i -> strtok;
+        add_token(strtok, x);
+        integer (i + 1) -> i;    
+    }
+    call placeNQueens(0, N, x);
+}
