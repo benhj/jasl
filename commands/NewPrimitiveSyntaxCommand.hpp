@@ -55,12 +55,6 @@ namespace jasl {
                 // try converting a string to an integer
                 return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
-            // see if should update global cache, in the case that we
-            // have a return statement and return value should go in 
-            // to global cache
-            if(GlobalCache::getInt(varName)) {
-                GlobalCache::setInt(varName, *a);
-            }
             m_sharedCache->setInt(varName, *a);
             
 
@@ -75,12 +69,6 @@ namespace jasl {
                 return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
             } 
 
-            // see if should update global cache, in the case that we
-            // have a return statement and return value should go in 
-            // to global cache
-            if(GlobalCache::getDouble(varName)) {
-                GlobalCache::setDouble(varName, *a);
-            }
             m_sharedCache->setDouble(varName, *a);
             
 
@@ -94,12 +82,6 @@ namespace jasl {
                 return false;
             } 
 
-            // see if should update global cache, in the case that we
-            // have a return statement and return value should go in 
-            // to global cache
-            if(GlobalCache::getBool(varName)) {
-                GlobalCache::setBool(varName, *a);
-            }
             m_sharedCache->setBool(varName, *a);
             
 
