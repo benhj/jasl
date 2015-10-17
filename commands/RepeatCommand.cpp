@@ -34,11 +34,16 @@ namespace jasl {
 
     bool RepeatCommand::doLoop(int const loopCount)
     {
+
+        std::vector<Function> innerFuncs;
+        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
+        if(!success) {
+            return false;
+        }
+
         for (int loop = 0; loop < loopCount; ++loop) {
 
             // parse commands here
-            std::vector<Function> innerFuncs;
-            bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
             if (success) {
                 success = parseCommands(innerFuncs);
             } else {

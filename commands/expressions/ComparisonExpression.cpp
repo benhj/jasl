@@ -74,7 +74,7 @@ namespace jasl {
     }
 
     bool
-    ComparisonExpression::evaluate()
+    ComparisonExpression::evaluate() const
     {
         try {
 

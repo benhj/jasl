@@ -24,8 +24,8 @@ namespace jasl {
     typedef ::boost::optional<bool> OptionalBool;
     typedef ::boost::optional<double> OptionalDouble;
     typedef ::boost::optional<std::string> OptionalString;
-    typedef ::boost::optional<ValueArray> OptionalValueArray;
-    typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
+    typedef ::boost::optional<::ValueArray> OptionalValueArray;
+    typedef ::boost::variant<int64_t, bool, double, std::string, ::ValueArray> CacheVariant;
 
     /// Represents the type of a cached variable entry
     enum class Type {

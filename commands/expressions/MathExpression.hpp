@@ -17,19 +17,19 @@ namespace jasl {
     struct MathExpression
     {
         /// the left of the binary expression
-        Value left;
+        mutable Value left;
 
         /// the mathmatical operator to be applied
         std::string symbolOperator;
 
         /// the rhs of the binary expression
-        Value right;
+        mutable Value right;
 
         /// will store any generated error that can then be queried
-        std::string errorMessage;
+        mutable std::string errorMessage;
 
         /// is the result an integer or a double (implicitly casts)
-        bool resultIsInteger;
+        mutable bool resultIsInteger;
 
         /// cache of variables
         SharedVarCache sharedCache;
@@ -37,7 +37,7 @@ namespace jasl {
         MathExpression();
 
         /// evaluate the expression
-        double evaluate();
+        double evaluate() const;
     };
 }
 

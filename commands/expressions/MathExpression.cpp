@@ -21,7 +21,7 @@ namespace jasl {
     }
 
     double
-    MathExpression::evaluate() 
+    MathExpression::evaluate() const
     {
         // Note, for convenience, all math operations are done using doubles
         // The client of this function is responsible for casting to

@@ -15,7 +15,7 @@
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 
-#include <boost/any.hpp>
+#include <boost/variant.hpp>
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>

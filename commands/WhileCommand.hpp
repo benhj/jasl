@@ -22,7 +22,7 @@ namespace jasl {
                      OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
-        bool doLoop(bool const truth);
+        bool doLoop();
         bool parseCommands(std::vector<Function> &functions);
     };
 

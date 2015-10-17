@@ -16,11 +16,11 @@
 namespace jasl {
     struct ComparisonExpression
     {
-        Value m_left;
+        mutable Value m_left;
         std::string m_symbolOperator;
-        Value m_right;
+        mutable Value m_right;
         SharedVarCache m_sharedCache;
-        bool evaluate();
+        bool evaluate() const;
     };
 }
 
