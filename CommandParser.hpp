@@ -449,6 +449,9 @@ namespace jasl
                              >> genericString
                              >> ';';
 
+            // for exiting a program
+            exitCommand %= string("exit") >> -(genericString) >> ';';
+
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -485,7 +488,8 @@ namespace jasl
                          | execCommand
                          | releaseCommand
                          | typeCommand
-                         | randomIntCommand;
+                         | randomIntCommand
+                         | exitCommand;
                          
             start %= allCommands;
         }
@@ -524,6 +528,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomIntCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;

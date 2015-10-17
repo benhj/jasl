@@ -48,8 +48,7 @@ block placeNQueens(r, n, x) {
             set_token(r, x, strtok) -> x; 
             if (r == (n - 1)) {
                 call printQueens(n, x);
-                echo_nl " ";
-                integer n -> c;
+                exit;
             }
             else {
                call placeNQueens((r + 1), n, x);

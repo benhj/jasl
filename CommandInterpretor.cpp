@@ -180,7 +180,11 @@ namespace jasl {
 
             PROCESS_X_COMMAND(RandomInt);
 
-        }           
+        } else if(searchString(func, "exit")) {
+
+            exit(0);
+
+        }            
         if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         return errorMessage;
     }
