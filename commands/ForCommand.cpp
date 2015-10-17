@@ -53,6 +53,13 @@ namespace jasl {
     {
         std::string indexSymbol;
         if(VarExtractor::tryAnyCast(indexSymbol, m_func.paramA)) {
+
+            std::vector<Function> innerFuncs;
+            bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+            if(!success) {
+                return false;
+            }
+
             // Process tokens one by one using get_token command
             CommandInterpretor ci;
             for(int i = 0; i < va.size(); ++i) {
@@ -66,12 +73,10 @@ namespace jasl {
 
                     // do other commands
                     // parse inner functions
-                    std::vector<Function> innerFuncs;
-                    bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
                     if (success) {
                         success = parseCommands(innerFuncs);
                     } else {
-                        setLastErrorMessage("repeat: Error interpreting while's body");
+                        setLastErrorMessage("repeat: Error interpreting for's body");
                         return false;
                     }
 

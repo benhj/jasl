@@ -24,6 +24,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <cstdint>
+#include <functional>
 
 namespace jasl {
 
@@ -196,8 +197,27 @@ namespace jasl {
                     
                 }
             }
-
             return OptionalBool();
+        }
+
+        static 
+        std::function<bool()> trySingleBoolExtraction_V2(Value &val, SharedVarCache const &sharedCache)
+        {
+            bool x;
+            if (tryExtraction<bool>(x, val, sharedCache)) {
+                return [=](){return x;};
+            }
+
+            ComparisonExpression ce;
+            if (tryExtraction<ComparisonExpression>(ce, val, sharedCache)) {
+                ce.m_sharedCache = sharedCache;
+                try {
+                    return [=](){return ce.evaluate();};
+                } catch (...) {
+                    
+                }
+            }
+            return [](){return false;};
         }
 
         static OptionalString trySingleStringExtraction(Value &val, SharedVarCache const &sharedCache)

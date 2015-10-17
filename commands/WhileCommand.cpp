@@ -21,35 +21,26 @@ namespace jasl {
 
     bool WhileCommand::execute() 
     {
-        // how many time should repeat loop for?
-        auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-
-        if(!extracted) {
-
-            setLastErrorMessage("while: problem extracting boolean expression");
-            return false;
-        }
-        return doLoop(*extracted);
+        return doLoop();
     }
 
-    bool WhileCommand::doLoop(bool const truth)
+    bool WhileCommand::doLoop()
     {
 
-        bool goodtogo = truth;
-        while(goodtogo) {
-            // parse inner functions
-            std::vector<Function> innerFuncs;
-            bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
+        std::vector<Function> innerFuncs;
+        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
+        if(!success) {
+            return false;
+        }
+        auto goodtogo = VarExtractor::trySingleBoolExtraction_V2(m_func.paramA, m_sharedCache);
+
+        while(goodtogo()) {
             if (success) {
                 success = parseCommands(innerFuncs);
             } else {
                 setLastErrorMessage("repeat: Error interpreting while's body");
                 return false;
             }
-
-            // update loop condition
-            auto extracted = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-            goodtogo = *extracted;
         }
 
         return true;
