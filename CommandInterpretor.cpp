@@ -50,8 +50,13 @@
     (void)c.execute();                            \
     errorMessage = GlobalCache::lastKnownError;
 
-
 namespace jasl {
+
+    /// Make the parser static as an optimization. We will
+    /// only ever have one ot these so this is ok, I think.
+    typedef std::string::const_iterator iterator_type;
+    typedef CommandParser<iterator_type> Parser;
+    static Parser functionGrammar;
 
     namespace {
         bool searchString(Function &func, std::string const &name)
@@ -196,9 +201,6 @@ namespace jasl {
     {
 
         using boost::spirit::ascii::space;
-        typedef std::string::const_iterator iterator_type;
-        typedef CommandParser<iterator_type> Parser;
-        Parser functionGrammar;
         auto iter = std::begin(cs);
         auto end = std::end(cs);
         Function func;
@@ -214,9 +216,6 @@ namespace jasl {
                                          SharedVarCache const &varCache) const
     {
         using boost::spirit::ascii::space;
-        typedef boost::spirit::istream_iterator iterator_type;
-        typedef CommandParser<iterator_type> Parser;
-        Parser functionGrammar;
         std::vector<Function> functions;
 
         // open file, disable skipping of whitespace
@@ -245,9 +244,6 @@ namespace jasl {
         GlobalCache::script = stringCollection;
 
         using boost::spirit::ascii::space;
-        typedef std::string::const_iterator iterator_type;
-        typedef CommandParser<iterator_type> Parser;
-        Parser functionGrammar;
         auto iter = std::begin(stringCollection);
         auto end = std::end(stringCollection);
         std::vector<Function> functions;

@@ -9,6 +9,7 @@
 #include "CommandInterpretor.hpp"
 #include "SharedVarCache.hpp"
 #include "GlobalCache.hpp"
+#include <boost/progress.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
@@ -42,6 +43,7 @@ int main (int argc , char *argv[])
     // parse input file
     auto sharedCache = std::make_shared<ll::ScopedVarCache>();
     auto functions = ci.parseCommandFile(argv[1]);
+    ::boost::progress_timer t;
     for(auto &f : functions) {
         if(f.name == "start") {
             (void)ci.interpretFunc(f, sharedCache, std::cout);
