@@ -14,6 +14,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <map>
 
 namespace jasl {
     
@@ -23,6 +24,15 @@ namespace jasl {
     public:
 
         typedef ::boost::optional<std::ostream&> OptionalOutputStream;
+
+        typedef std::function<bool(Function &, 
+                                   SharedVarCache const &, 
+                                   OptionalOutputStream const &)> CommandFunction;
+        typedef std::map<std::string, CommandFunction> CommandMap;
+
+        static CommandMap m_commandMap;
+
+        CommandInterpretor();
 
         /**
          * @brief Attempts to parse and interpret a single command

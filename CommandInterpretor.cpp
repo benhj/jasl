@@ -50,7 +50,18 @@
     (void)c.execute();                            \
     errorMessage = GlobalCache::lastKnownError;
 
+#define BUILD_COMMAND_FUNCTION(X)                   \
+    [](Function &func,                              \
+       SharedVarCache const &varCache,              \
+       OptionalOutputStream const &outputStream) {  \
+        X##Command c(func, varCache, outputStream); \
+        return c.execute();                         \
+    }
+
 namespace jasl {
+
+    /// Build the default set of commands
+    CommandInterpretor::CommandMap CommandInterpretor::m_commandMap;
 
     /// Make the parser static as an optimization. We will
     /// only ever have one ot these so this is ok, I think.
@@ -63,6 +74,51 @@ namespace jasl {
         {
             return func.name == name;
         }
+    }
+
+    CommandInterpretor::CommandInterpretor()
+    {
+        // Populate the command map with  basic command.
+        // TODO: ability to dynamically register new commands at runtime
+        if(m_commandMap.empty()) {
+            m_commandMap.insert(std::make_pair("echo", BUILD_COMMAND_FUNCTION(Echo)));
+            m_commandMap.insert(std::make_pair("echo_nl", BUILD_COMMAND_FUNCTION(EchoNL)));
+            m_commandMap.insert(std::make_pair("if", BUILD_COMMAND_FUNCTION(If)));
+            m_commandMap.insert(std::make_pair("repeat", BUILD_COMMAND_FUNCTION(Repeat)));
+            m_commandMap.insert(std::make_pair("while", BUILD_COMMAND_FUNCTION(While)));
+            m_commandMap.insert(std::make_pair("for", BUILD_COMMAND_FUNCTION(For)));
+            m_commandMap.insert(std::make_pair("block", BUILD_COMMAND_FUNCTION(Block)));
+            m_commandMap.insert(std::make_pair("returnable", BUILD_COMMAND_FUNCTION(Returnable)));
+            m_commandMap.insert(std::make_pair("start", BUILD_COMMAND_FUNCTION(Start)));
+            m_commandMap.insert(std::make_pair("string", BUILD_COMMAND_FUNCTION(String)));
+            m_commandMap.insert(std::make_pair("call", BUILD_COMMAND_FUNCTION(Call)));
+            m_commandMap.insert(std::make_pair("append", BUILD_COMMAND_FUNCTION(Append)));
+
+            m_commandMap.insert(std::make_pair("string_reverse", BUILD_COMMAND_FUNCTION(Reverse)));
+            m_commandMap.insert(std::make_pair("string_length", BUILD_COMMAND_FUNCTION(StringLength)));
+            m_commandMap.insert(std::make_pair("list", BUILD_COMMAND_FUNCTION(List)));
+            m_commandMap.insert(std::make_pair("args", BUILD_COMMAND_FUNCTION(Args)));
+            m_commandMap.insert(std::make_pair("integer", BUILD_COMMAND_FUNCTION(NewPrimitiveSyntax)));
+            m_commandMap.insert(std::make_pair("decimal", BUILD_COMMAND_FUNCTION(NewPrimitiveSyntax)));
+            m_commandMap.insert(std::make_pair("boolean", BUILD_COMMAND_FUNCTION(NewPrimitiveSyntax)));
+            m_commandMap.insert(std::make_pair("input", BUILD_COMMAND_FUNCTION(Input)));
+            m_commandMap.insert(std::make_pair("index_of", BUILD_COMMAND_FUNCTION(ListTokenIndex)));
+            m_commandMap.insert(std::make_pair("get_token", BUILD_COMMAND_FUNCTION(ListGetToken)));
+            m_commandMap.insert(std::make_pair("set_token", BUILD_COMMAND_FUNCTION(ListSetToken)));
+
+            m_commandMap.insert(std::make_pair("add_token", BUILD_COMMAND_FUNCTION(ListAddToken)));
+            m_commandMap.insert(std::make_pair("exec", BUILD_COMMAND_FUNCTION(Exec)));
+            m_commandMap.insert(std::make_pair("release", BUILD_COMMAND_FUNCTION(Release)));
+            m_commandMap.insert(std::make_pair("type", BUILD_COMMAND_FUNCTION(Type)));
+            m_commandMap.insert(std::make_pair("random_int", BUILD_COMMAND_FUNCTION(RandomInt)));
+            m_commandMap.insert(std::make_pair("exit", [](Function &,
+                                                          SharedVarCache const &,              
+                                                          OptionalOutputStream const &) {  
+                                                              exit(0);
+                                                              return false;
+                                                          }));
+        }
+        
     }
 
     std::string
@@ -78,119 +134,13 @@ namespace jasl {
                                         SharedVarCache const &varCache,
                                         OptionalOutputStream const &outputStream) const
     {
+
         std::string errorMessage;
-        if(searchString(func, "echo")) {
-
-            PROCESS_X_COMMAND(Echo);
-
-        } else if(searchString(func, "echo_nl")) {
-
-            PROCESS_X_COMMAND(EchoNL);
-
-        }  else if(searchString(func, "if")) {
-
-            PROCESS_X_COMMAND(If);
-
-        } else if(searchString(func, "repeat")) {
-
-            PROCESS_X_COMMAND(Repeat);
-
-        } else if(searchString(func, "while")) {
-
-            PROCESS_X_COMMAND(While);
-
-        } else if(searchString(func, "for")) {
-
-            PROCESS_X_COMMAND(For);
-
-        } else if(searchString(func, "block")) {
-            
-            PROCESS_X_COMMAND(Block);
-
-        } else if(searchString(func, "returnable")) {
-            
-            PROCESS_X_COMMAND(Returnable);
-
-        }  else if(searchString(func, "start")) {
-            
-            PROCESS_X_COMMAND(Start);
-
-        } else if(searchString(func, "call")) {
-
-            PROCESS_X_COMMAND(Call);
-
-        } else if(searchString(func, "string")) {
-
-            PROCESS_X_COMMAND(String);
-
-        } else if(searchString(func, "append")) {
-
-            PROCESS_X_COMMAND(Append);
-
-        } else if(searchString(func, "string_reverse")) {
-
-            PROCESS_X_COMMAND(Reverse);
-
-        } else if(searchString(func, "string_length")) {
-
-            PROCESS_X_COMMAND(StringLength);
-
-        } else if(searchString(func, "list")) {
-
-            PROCESS_X_COMMAND(List);
-
-        } else if(searchString(func, "args")) {
-
-            PROCESS_X_COMMAND(Args);
-
-        }  else if(searchString(func, "integer") ||
-                  searchString(func, "decimal") ||
-                  searchString(func, "boolean")) {
-
-            PROCESS_X_COMMAND(NewPrimitiveSyntax);
-
-        } else if(searchString(func, "input")) {
-
-            PROCESS_X_COMMAND(Input);
-
-        } else if(searchString(func, "index_of")) {
-
-            PROCESS_X_COMMAND(ListTokenIndex);
-
-        } else if(searchString(func, "get_token")) {
-
-            PROCESS_X_COMMAND(ListGetToken);
-
-        } else if(searchString(func, "set_token")) {
-
-            PROCESS_X_COMMAND(ListSetToken);
-
-        } else if(searchString(func, "add_token")) {
-
-            PROCESS_X_COMMAND(ListAddToken);
-
-        }  else if(searchString(func, "exec")) {
-
-            PROCESS_X_COMMAND(Exec);
-
-        } else if(searchString(func, "release")) {
-
-            PROCESS_X_COMMAND(Release);
-
-        } else if(searchString(func, "type")) {
-
-            PROCESS_X_COMMAND(Type);
-
-        } else if(searchString(func, "random_int")) {
-
-            PROCESS_X_COMMAND(RandomInt);
-
-        } else if(searchString(func, "exit")) {
-
-            exit(0);
-
-        }            
-        if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
+        if(func.name != "//") {
+            m_commandMap[func.name](func, varCache, outputStream);
+            errorMessage = GlobalCache::lastKnownError;
+            if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
+        }
         return errorMessage;
     }
     
