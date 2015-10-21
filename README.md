@@ -1,6 +1,18 @@
 # jasl -- Just Another Scripting Language
 
-My probably crappy attempt at a programming language. Please check out the examples folder for examples!
+My probably crappy attempt at a programming language. Please check out the examples folder for examples! To build the actual `jasl` interpretor, probably best to just run the following in a terminal prompt:
+
+<pre>
+sh build.sh all
+</pre>
+
+Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build.
+
+The interpretor will let you run a jasl script. E.g.:
+
+<pre>
+./jasl examples/recursiveQueens.jasl 8
+</pre>
 
 A program
 ---------
