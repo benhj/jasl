@@ -136,11 +136,11 @@ namespace jasl {
     {
 
         std::string errorMessage;
-        if(func.name != "//") {
+        try {
             m_commandMap[func.name](func, varCache, outputStream);
             errorMessage = GlobalCache::lastKnownError;
             if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
-        }
+        } catch (...) {}
         return errorMessage;
     }
     
