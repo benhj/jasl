@@ -5,25 +5,7 @@ cflags="-std=c++11 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy"
 boostIncPath=/usr/local/include
 
 # these objects will exist after compilation of everything
-objects="GlobalCache.o \
-         ScopedVarCache.o \
-         Command.o \
-         AppendCommand.o \
-         ArgsCommand.o \
-         EchoNLCommand.o \
-         EchoCommand.o \
-         ExecCommand.o \
-         IfCommand.o \
-         RepeatCommand.o \
-         WhileCommand.o \
-         ForCommand.o \
-         BlockCommand.o \
-         StartCommand.o \
-         CallCommand.o \
-         ReturnableCommand.o \
-         MathExpression.o \
-         ComparisonExpression.o \
-         CommandInterpretor.o"
+objects="*.o"
 
 function build_GlobalCache {
     echo "Building GlobalCache..."
