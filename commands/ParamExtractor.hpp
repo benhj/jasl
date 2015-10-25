@@ -2,6 +2,7 @@
 
 #include "../Function.hpp"
 #include "../VarExtractor.hpp"
+#include "../GlobalCache.hpp"
 
 namespace jasl 
 {

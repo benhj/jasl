@@ -7,6 +7,10 @@ boostIncPath=/usr/local/include
 # these objects will exist after compilation of everything
 objects="GlobalCache.o \
          ScopedVarCache.o \
+         Command.o \
+         AppendCommand.o \
+         ArgsCommand.o \
+         EchoCommand.o \
          IfCommand.o \
          RepeatCommand.o \
          WhileCommand.o \
@@ -29,9 +33,29 @@ function build_ScopedVarCache {
     $compiler $cflags -I$boostIncPath -c ScopedVarCache.cpp -o ScopedVarCache.o 
 }
 
+function build_Command {
+    echo "Building Command..."
+    $compiler $cflags -I$boostIncPath -c commands/Command.cpp -o Command.o 
+}
+
+function build_AppendCommand {
+    echo "Building AppendCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/AppendCommand.cpp -o AppendCommand.o 
+}
+
+function build_ArgsCommand {
+    echo "Building ArgsCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/ArgsCommand.cpp -o ArgsCommand.o 
+}
+
 function build_CallCommand {
     echo "Building CallCommand..."
     $compiler $cflags -I$boostIncPath -c commands/CallCommand.cpp -o CallCommand.o 
+}
+
+function build_EchoCommand {
+    echo "Building EchoCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/EchoCommand.cpp -o EchoCommand.o 
 }
 
 function build_ReturnableCommand {
@@ -104,7 +128,11 @@ function build_clean {
 function build_all {
     build_GlobalCache
     build_ScopedVarCache
+    build_Command
+    build_AppendCommand
+    build_ArgsCommand
     build_CallCommand
+    build_EchoCommand
     build_ReturnableCommand
     build_IfCommand
     build_RepeatCommand

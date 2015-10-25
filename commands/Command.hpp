@@ -9,7 +9,6 @@
 #pragma once
 
 #include "../Function.hpp"
-#include "../GlobalCache.hpp"
 #include "../SharedVarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
@@ -25,12 +24,7 @@ namespace jasl
 
         Command(Function &func_,
                 SharedVarCache const &sharedCache,
-                OptionalOutputStream const &output = OptionalOutputStream())
-        : m_func(func_) 
-        , m_sharedCache(sharedCache)
-        , m_outputStream(output)
-        {
-        }
+                OptionalOutputStream const &output = OptionalOutputStream());
 
         virtual bool execute() = 0;
 
@@ -59,10 +53,7 @@ namespace jasl
             }
         }
 
-        void setLastErrorMessage(std::string const &error)
-        {
-            GlobalCache::lastKnownError = error;
-        }
+        void setLastErrorMessage(std::string const &error);
 
     };
 
