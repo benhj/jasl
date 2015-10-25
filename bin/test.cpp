@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
-#include "SimpleTest.hpp"
-#include "CommandInterpretor.hpp"
-#include "GlobalCache.hpp"
-#include "SharedVarCache.hpp"
+#include "../SimpleTest.hpp"
+#include "../CommandInterpretor.hpp"
+#include "../GlobalCache.hpp"
+#include "../SharedVarCache.hpp"
 
 #include <sstream>
 #include <vector>

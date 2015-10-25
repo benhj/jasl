@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
-#include "CommandInterpretor.hpp"
-#include "SharedVarCache.hpp"
-#include "GlobalCache.hpp"
+#include "../CommandInterpretor.hpp"
+#include "../SharedVarCache.hpp"
+#include "../GlobalCache.hpp"
 #include <boost/progress.hpp>
 #include <iostream>
 #include <sstream>
