@@ -1,5 +1,5 @@
 //
-//  ExecCommand.cpp
+//  ExecCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 21/09/15
@@ -9,8 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include "../VarExtractor.hpp"
-#include <sstream>
 
 namespace jasl
 {
@@ -19,45 +17,13 @@ namespace jasl
     public:
         ExecCommand(Function &func_,
                     SharedVarCache const &sharedCache = SharedVarCache(),
-                    OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
-        {
+                    OptionalOutputStream const &output = OptionalOutputStream());
 
-        }
-
-        bool execute() override
-        {
-            if(tryLiteralExtraction()) { return true; }
-            if(trySymbolExtraction()) { return true; }
-            setLastErrorMessage("exec: couldn't parse");
-            return false;
-        }
+        bool execute() override;
 
     private:
-
-        bool tryLiteralExtraction() 
-        {
-            LiteralString literalString;
-            if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
-                system(literalString.literal.c_str());
-                return true;
-            }
-            return false;
-        }
-
-        bool trySymbolExtraction()
-        {
-            // Now try extracting a symbol
-            std::string symbol;
-            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
-            	auto result = m_sharedCache->getString(symbol);
-                if(result) {
-                    system((*result).c_str());
-                    return true;
-                }
-            }
-            return false;
-        }
+        bool tryLiteralExtraction();
+        bool trySymbolExtraction();
     };
 
 }

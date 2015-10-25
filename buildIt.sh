@@ -10,7 +10,9 @@ objects="GlobalCache.o \
          Command.o \
          AppendCommand.o \
          ArgsCommand.o \
+         EchoNLCommand.o \
          EchoCommand.o \
+         ExecCommand.o \
          IfCommand.o \
          RepeatCommand.o \
          WhileCommand.o \
@@ -56,6 +58,16 @@ function build_CallCommand {
 function build_EchoCommand {
     echo "Building EchoCommand..."
     $compiler $cflags -I$boostIncPath -c commands/EchoCommand.cpp -o EchoCommand.o 
+}
+
+function build_EchoNLCommand {
+    echo "Building EchoNLCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/EchoNLCommand.cpp -o EchoNLCommand.o 
+}
+
+function build_ExecCommand {
+    echo "Building ExecCommand..."
+    $compiler $cflags -I$boostIncPath -c commands/ExecCommand.cpp -o ExecCommand.o 
 }
 
 function build_ReturnableCommand {
@@ -133,6 +145,8 @@ function build_all {
     build_ArgsCommand
     build_CallCommand
     build_EchoCommand
+    build_EchoNLCommand
+    build_ExecCommand
     build_ReturnableCommand
     build_IfCommand
     build_RepeatCommand
