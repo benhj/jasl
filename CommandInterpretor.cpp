@@ -180,6 +180,11 @@ namespace jasl {
             line.append("\n");
             script.append(line);
         }
+        
+        // store the script in global static. Used to do block 
+        // (jasl name for subroutine) lookups
+        GlobalCache::script = script;
+        
         return parseStringCollection(script, varCache);
         
     }
@@ -188,10 +193,6 @@ namespace jasl {
     CommandInterpretor::parseStringCollection(std::string const &stringCollection,
                                               SharedVarCache const &varCache) const
     {
-
-        // store the script in global static. Used to do block 
-        // (jasl name for subroutine) lookups
-        GlobalCache::script = stringCollection;
 
         using boost::spirit::ascii::space;
         auto iter = std::begin(stringCollection);
