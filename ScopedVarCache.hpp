@@ -20,19 +20,19 @@
 
 namespace jasl {
 
-    typedef ::boost::optional<int64_t> OptionalInt;
-    typedef ::boost::optional<bool> OptionalBool;
-    typedef ::boost::optional<double> OptionalDouble;
-    typedef ::boost::optional<std::string> OptionalString;
-    typedef ::boost::optional<ValueArray> OptionalValueArray;
-    typedef ::boost::variant<int64_t, bool, double, std::string, ValueArray> CacheVariant;
+    using OptionalInt = ::boost::optional<int64_t>;
+    using OptionalBool = ::boost::optional<bool>;
+    using OptionalDouble = ::boost::optional<double>;
+    using OptionalString = ::boost::optional<std::string>;
+    using OptionalValueArray = ::boost::optional<ValueArray>;
+    using CacheVariant = ::boost::variant<int64_t, bool, double, std::string, ValueArray>;
 
     /// Represents the type of a cached variable entry
     enum class Type {
         Int, Bool, Double, String, ValueArray
     };
 
-    typedef ::boost::optional<Type> OptionalType;
+    using OptionalType = ::boost::optional<Type>;
 
     class ScopedVarCache 
     {

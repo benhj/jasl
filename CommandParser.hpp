@@ -148,8 +148,8 @@ namespace jasl
             // using-boostspirit-to-parse-multiple-types-of-single-value
             // #comment21459703_15212671
             //
-            typedef boost::spirit::qi::strict_real_policies<double> DoublePolicy;
-            typedef boost::spirit::qi::real_parser<double, DoublePolicy> DoubleParse;
+            using DoublePolicy = boost::spirit::qi::strict_real_policies<double>;
+            using DoubleParse = boost::spirit::qi::real_parser<double, DoublePolicy>;
             DoubleParse double_with_point;
             doubleRule %= (long_long >> 'f')
                         | (double_with_point >> -lit('f'));

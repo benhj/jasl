@@ -23,12 +23,12 @@ namespace jasl {
 
     public:
 
-        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
+        using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
-        typedef std::function<bool(Function &, 
-                                   SharedVarCache const &, 
-                                   OptionalOutputStream const &)> CommandFunction;
-        typedef std::map<std::string, CommandFunction> CommandMap;
+        using CommandFunction = std::function<bool(Function &, 
+                                                   SharedVarCache const &, 
+                                                   OptionalOutputStream const &)>;
+        using CommandMap = std::map<std::string, CommandFunction>;
 
         static CommandMap m_commandMap;
 

@@ -20,7 +20,7 @@ namespace jasl
     {
     public:
         /// for capturing any output
-        typedef ::boost::optional<std::ostream&> OptionalOutputStream;
+        using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
         Command(Function &func_,
                 SharedVarCache const &sharedCache,

@@ -14,6 +14,6 @@
 
 namespace jasl {
 
-    typedef std::shared_ptr<ScopedVarCache> SharedVarCache;
+    using SharedVarCache = std::shared_ptr<ScopedVarCache>;
 
 }

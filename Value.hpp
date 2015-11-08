@@ -11,5 +11,5 @@
 #include <boost/any.hpp>
 #include <vector>
 
-typedef boost::any Value;
-typedef std::vector<Value> ValueArray;
+using Value = boost::any;
+using ValueArray = std::vector<Value>;
