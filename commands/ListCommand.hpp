@@ -1,5 +1,5 @@
 //
-//  ListCommand.cpp
+//  ListCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
@@ -9,10 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include "../VarExtractor.hpp"
-#include <algorithm>
-#include <vector>
-#include <sstream>
 
 namespace jasl
 {
@@ -21,39 +17,9 @@ namespace jasl
     public:
         ListCommand(Function &func_,
                     SharedVarCache const &sharedCache = SharedVarCache(),
-                    OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
-        {
+                    OptionalOutputStream const &output = OptionalOutputStream());
 
-        }
-
-        bool execute() override
-        {
-            // now try and extract the actual words
-            ValueArray list;
-            if(!m_func.getValueA<decltype(list)>(list, m_sharedCache)) {
-                std::string varName;
-                if(m_func.getValueA<decltype(varName)>(varName, m_sharedCache)) {
-                    auto theList = m_sharedCache->getList(varName);
-                    if(theList) {
-                        list = *theList;
-                    }
-                } else {
-                    setLastErrorMessage("list: couldn't understand list");
-                    return false;
-                }
-            }
-
-            std::string listName;
-            if(!m_func.getValueB<std::string>(listName, m_sharedCache)) {
-                setLastErrorMessage("list: couldn't parse name");
-                return false;
-            }
-
-            m_sharedCache->setList(listName, list);
-            return true;
-        }
-        
+        bool execute() override;
     };
 
 }
