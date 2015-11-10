@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <boost/any.hpp>
+#include "any.hpp"
 #include <vector>
 
-using Value = boost::any;
+using Value = simple_any::any;
 using ValueArray = std::vector<Value>;

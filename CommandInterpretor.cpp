@@ -45,16 +45,11 @@
 #include <string>
 #include <iterator>
 
-#define PROCESS_X_COMMAND(X)                      \
-    X##Command c(func, varCache, outputStream);   \
-    (void)c.execute();                            \
-    errorMessage = GlobalCache::lastKnownError;
-
 #define BUILD_COMMAND_FUNCTION(X)                   \
     [](Function &func,                              \
        SharedVarCache const &varCache,              \
        OptionalOutputStream const &outputStream) {  \
-        X##Command c(func, varCache, outputStream); \
+        X##Command c(func, std::move(varCache), std::move(outputStream)); \
         return c.execute();                         \
     }
 
@@ -126,7 +121,7 @@ namespace jasl {
                                       SharedVarCache const &varCache,
                                       OptionalOutputStream const &outputStream) const
     {
-        return doInterpretFunc(func, varCache, outputStream);
+        return doInterpretFunc(func, std::move(varCache), std::move(outputStream));
     }
 
     std::string
@@ -137,7 +132,7 @@ namespace jasl {
 
         std::string errorMessage;
         try {
-            m_commandMap[func.name](func, varCache, outputStream);
+            m_commandMap[func.name](func, std::move(varCache), std::move(outputStream));
             errorMessage = GlobalCache::lastKnownError;
             if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         } catch (...) {}
@@ -156,7 +151,7 @@ namespace jasl {
         Function func;
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
-            return doInterpretFunc(func, varCache, outputStream);
+            return doInterpretFunc(func, std::move(varCache), std::move(outputStream));
         } 
         return std::string("Unsuccessful parse");
     }
@@ -181,7 +176,7 @@ namespace jasl {
             script.append(line);
         }
         
-        return parseStringCollection(script, varCache);
+        return parseStringCollection(std::move(script), std::move(varCache));
         
     }
 

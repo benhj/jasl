@@ -18,7 +18,7 @@ namespace jasl
     IfCommand::IfCommand(Function &func_,
                          SharedVarCache const &sharedCache,
                          OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
+        : Command(func_, std::move(sharedCache), std::move(output))
     {
     }
 

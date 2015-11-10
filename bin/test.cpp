@@ -264,20 +264,6 @@ void testWhileCommand()
     ASSERT_EQUAL(0, *cache->getInt("x"), "testWhileCommand::x is 0");
 }
 
-void testBlockCommand()
-{
-    auto cache = std::make_shared<ll::ScopedVarCache>();
-    std::ostringstream ss;
-    ll::CommandInterpretor ci;
-    std::string commands("integer 0 -> x; block foo() { echo \"Hello\"; integer (x + 1) -> x; }");
-    auto functions = ci.parseStringCollection(commands);
-    for(auto &f : functions) {
-        (void)ci.interpretFunc(f, cache, ss);
-    }
-    ASSERT_EQUAL("Hello", ss.str(), "testBlockCommand::print hello");
-    ASSERT_EQUAL(1, *cache->getInt("x"), "testBlockCommand::x is 1");
-}
-
 void testStartCommand()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
@@ -289,14 +275,14 @@ void testStartCommand()
     ASSERT_EQUAL(21, *cache->getInt("x"), "testStartCommand::x is 21");
 }
 
-void testCallCommand()
+void testCallReturnableCommand()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; call foo (); call bar (); integer (x - 5) -> x;}");
-    commands.append("block bar() { echo \"..and Goodbye!\"; integer (x + 1) -> x; }");
-    commands.append("block foo() { echo \"Hello\"; integer 20 -> x; }");
+    std::string commands("start { echo \"Starting..\"; integer 0 -> x; call foo (x) -> x; call bar (x) -> x; integer (x - 5) -> x;}");
+    commands.append("returnable integer bar(x) -> x { echo \"..and Goodbye!\"; integer (x + 1) -> x; return x;}");
+    commands.append("returnable integer foo(x) -> x { echo \"Hello\"; integer 20 -> x; return x;}");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
@@ -304,8 +290,26 @@ void testCallCommand()
             break;
         }
     }
-    ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallCommand::print-outs");
-    ASSERT_EQUAL(16, *cache->getInt("x"), "testCallCommand::x is 16");
+    ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallReturnableCommand::print-outs");
+    ASSERT_EQUAL(16, *cache->getInt("x"), "testCallReturnableCommand::x is 16");
+}
+
+void testCallBlockCommand()
+{
+    auto cache = std::make_shared<ll::ScopedVarCache>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string commands("start { echo \"Starting..\"; call foo (); call bar ();}");
+    commands.append("block bar() { echo \"..and Goodbye!\"; }");
+    commands.append("block foo() { echo \"Hello\"; }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        if(f.name == "start") {
+            (void)ci.interpretFunc(f, cache, ss);
+            break;
+        }
+    }
+    ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallBlockCommand::print-outs");
 }
 
 void testArgsCommand()
@@ -460,9 +464,9 @@ int main()
     testIfCommand();
     testRepeatCommand();
     testWhileCommand();
-    testBlockCommand();
     testStartCommand();
-    testCallCommand();
+    testCallReturnableCommand();
+    testCallBlockCommand();
     testArgsCommand();
     testList();
     testListTokenIndex();
