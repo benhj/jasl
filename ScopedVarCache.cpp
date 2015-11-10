@@ -142,6 +142,18 @@ namespace jasl {
         return OptionalInt();
     }
 
+    bool ScopedVarCache::getInt_(std::string const &key, int64_t &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::Int) {
+                val = ::boost::get<int64_t>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
     OptionalDouble ScopedVarCache::getDouble(std::string const &key)
     {
         auto it = m_bigCache.find(key);

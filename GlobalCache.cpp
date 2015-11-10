@@ -66,6 +66,11 @@ namespace jasl {
         return bigCache->getInt(key);
     }
 
+    bool GlobalCache::getInt_(std::string const &key, int64_t &val)
+    {
+        return bigCache->getInt_(key, val);
+    }
+
     OptionalDouble GlobalCache::getDouble(std::string const &key)
     {
         return bigCache->getDouble(key);

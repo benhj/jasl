@@ -56,7 +56,9 @@ namespace jasl
 
         // Now set return param in GlobalCache
         if(m_returnType == Type::Int) {
-            GlobalCache::setInt(m_returnSymbol, *m_sharedCache->getInt(m_returnSymbol));
+            int64_t value;
+            (void)m_sharedCache->getInt_(m_returnSymbol, value);
+            GlobalCache::setInt(m_returnSymbol, value);
         } else if(m_returnType == Type::Bool) {
             GlobalCache::setBool(m_returnSymbol, *m_sharedCache->getBool(m_returnSymbol));
         } else if(m_returnType == Type::Double) {

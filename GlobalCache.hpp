@@ -61,6 +61,7 @@ namespace jasl {
         /// These are convenience functions and
         /// shouldn't be used unless it is know values exist.
         static OptionalInt getInt(std::string const &key);
+        static bool getInt_(std::string const &key, int64_t &val);
         static OptionalDouble getDouble(std::string const &key);
         static OptionalBool getBool(std::string const &key);
         static OptionalString getString(std::string const &key);

@@ -108,8 +108,9 @@ namespace jasl
             // Note, values reurned from the function are on
             // the global stack so need to access from GlobalCache
             if(type == "integer") {
-                auto result = GlobalCache::getInt(returnName);
-                m_sharedCache->setInt(returnSymbol, *result);
+                int64_t value;
+                (void)GlobalCache::getInt_(returnName, value);
+                m_sharedCache->setInt(returnSymbol, value);
             } else if(type == "decimal") {
                 auto result = GlobalCache::getDouble(returnName);
                 m_sharedCache->setDouble(returnSymbol, *result);
