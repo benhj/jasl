@@ -89,6 +89,7 @@ namespace jasl {
         /// These are convenience functions and
         /// shouldn't be used unless it is know values exist.
         OptionalInt getInt(std::string const &key);
+        bool getInt_(std::string const &key, int64_t &val);
         OptionalDouble getDouble(std::string const &key);
         OptionalBool getBool(std::string const &key);
         OptionalString getString(std::string const &key);

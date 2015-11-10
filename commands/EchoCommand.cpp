@@ -47,9 +47,9 @@ namespace jasl
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
             {
-                auto result = m_sharedCache->getInt(symbol);
-                if(result) {
-                    appendToOutput(*result);
+                int64_t value;
+                if(m_sharedCache->getInt_(symbol, value)) {
+                    appendToOutput(value);
                     return true;
                 }
             }

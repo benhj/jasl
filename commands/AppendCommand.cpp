@@ -70,9 +70,10 @@ namespace jasl
         std::string symbol;
         if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {
             {
-                auto result = m_sharedCache->getInt(symbol);
-                if(result) {
-                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(*result)));
+                int64_t value;
+                
+                if(m_sharedCache->getInt_(symbol, value)){
+                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
                     return true;
                 }
             }
