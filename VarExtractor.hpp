@@ -17,7 +17,6 @@
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-#include <boost/any.hpp>
 #include <boost/optional.hpp>
 
 #include <map>
@@ -35,7 +34,7 @@ namespace jasl {
         static bool tryAnyCast(T & t, V && val)
         {
             try {
-                t = boost::any_cast<T>(val);
+                t = std::move(::simple_any::any_cast<T>(val));
                 return true;
             } catch (...) {
             }
@@ -205,14 +204,14 @@ namespace jasl {
         {
             bool x;
             if (tryExtraction<bool>(x, val, sharedCache)) {
-                return [=](){return x;};
+                return [x](){return x;};
             }
 
             ComparisonExpression ce;
             if (tryExtraction<ComparisonExpression>(ce, val, sharedCache)) {
                 ce.m_sharedCache = sharedCache;
                 try {
-                    return [=](){return ce.evaluate();};
+                    return [ce = std::move(ce)](){return ce.evaluate();};
                 } catch (...) {
                     
                 }

@@ -17,7 +17,7 @@ namespace jasl
     ReturnableCommand::ReturnableCommand(Function &func_,
                                          SharedVarCache const &sharedCache,
                                          OptionalOutputStream const &output)
-    : Command(func_, std::make_shared<ScopedVarCache>(), output)
+    : Command(func_, std::move(std::make_shared<ScopedVarCache>()), std::move(output))
     {
     }
 

@@ -15,8 +15,8 @@ namespace jasl
             SharedVarCache const &sharedCache,
             OptionalOutputStream const &output)
     : m_func(func_) 
-    , m_sharedCache(sharedCache)
-    , m_outputStream(output)
+    , m_sharedCache(std::move(sharedCache))
+    , m_outputStream(std::move(output))
     {
     }
 

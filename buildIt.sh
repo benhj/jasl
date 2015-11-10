@@ -1,7 +1,7 @@
 #!/bin/bash 
 # set build flags
 compiler=clang++
-cflags="-std=c++11 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy"
+cflags="-std=c++1y -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy"
 boostIncPath=/usr/local/include
 
 # these objects will exist after compilation of everything

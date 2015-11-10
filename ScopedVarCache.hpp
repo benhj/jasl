@@ -75,11 +75,11 @@ namespace jasl {
         void resetParamStack();
         
         template <typename V>
-        void addToParamStack(Type const type, V const &value)
+        void addToParamStack(Type const type, V && value)
         {
             CacheEntry ce;
             ce.type = type;
-            ce.cv = CacheVariant(value);
+            ce.cv = CacheVariant(std::forward<V>(value));
             m_paramStack.push_back(ce);
         }
 

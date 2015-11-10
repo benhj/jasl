@@ -24,7 +24,7 @@ namespace jasl
         StringToPrimitiveCommand(Function &func_,
                                  SharedVarCache const &sharedCache = SharedVarCache(),
                                  OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
+        : Command(func_, std::move(sharedCache), std::move(output))
         {
         }
 
