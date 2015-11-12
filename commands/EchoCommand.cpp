@@ -9,15 +9,14 @@
 #include "EchoCommand.hpp"
 #include "../LiteralString.hpp"
 #include "../VarExtractor.hpp"
-
 #include <boost/algorithm/string.hpp>
 
 namespace jasl
 {
     EchoCommand::EchoCommand(Function &func_,
-                             SharedVarCache const &sharedCache,
-                             OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+                                 SharedVarCache const &sharedCache,
+                                 OptionalOutputStream const &output)
+    : Command(func_, sharedCache, output)
     {
 
     }
@@ -27,7 +26,7 @@ namespace jasl
         if(tryLiteralExtraction()) { return true; }
         if(trySymbolExtraction()) { return true; }
         if(tryNumericExtraction()) { return true; }
-        setLastErrorMessage("echo: couldn't parse");
+        setLastErrorMessage("echo_nl: couldn't parse");
         return false;
     }
 
@@ -54,31 +53,32 @@ namespace jasl
                 }
             }
             {
-                auto result = m_sharedCache->getDouble(symbol);
-                if(result) {
-                    appendToOutput(*result);
+                double value;
+                if(m_sharedCache->getDouble_(symbol, value)) {
+                    appendToOutput(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getBool(symbol);
-                if(result) {
-                    appendToOutput(*result);
+                bool value;
+                if(m_sharedCache->getBool_(symbol, value)) {
+                    appendToOutput(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getString(symbol);
-                if(result) {
-                    appendToOutput(*result);
+                std::string value;
+                if(m_sharedCache->getString_(symbol, value)) {
+                    appendToOutput(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getList(symbol);
+                ValueArray value;
+                auto result = m_sharedCache->getList_(symbol, value);
                 if(result) {
                     std::string output;
-                    processListElement(*result, output);
+                    processListElement(value, output);
                     ::boost::algorithm::trim_right(output);
                     appendToOutput(output);
                     return true;
@@ -90,11 +90,10 @@ namespace jasl
         return false;
     }
 
-    void EchoCommand::processListElement(ValueArray const &valueArray,
-                                         std::string &output)
+    void EchoCommand::processListElement(ValueArray const &valueArray, std::string &output)
     {
-        // Print out tokens, one after another
         output.append("[");
+        // Print out tokens, one after another
         size_t count = 0;
         for(auto const & it : valueArray) {
             // First try pulling a string out
@@ -121,19 +120,18 @@ namespace jasl
 
     bool EchoCommand::tryNumericExtraction()
     {
-
         {
-            auto result = VarExtractor::tryToGetADouble(m_func.paramA, m_sharedCache);
-            if(result) {
-                appendToOutput(*result);
+            double value;
+            if(VarExtractor::tryToGetADouble(m_func.paramA, value, m_sharedCache)) {
+                appendToOutput(value);
                 return true;
             }
         }
 
         {
-            auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-            if(result) {
-                appendToOutput(*result);
+            bool value;
+            if(VarExtractor::trySingleBoolExtraction(m_func.paramA, value, m_sharedCache)) {
+                appendToOutput(value);
                 return true;
             }
         }

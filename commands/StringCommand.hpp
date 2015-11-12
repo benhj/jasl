@@ -21,7 +21,7 @@ namespace jasl
         StringCommand(Function &func_,
                       SharedVarCache const &sharedCache = SharedVarCache(),
                       OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, std::move(sharedCache), std::move(output))
+        : Command(func_, sharedCache, output)
         {
 
         }
@@ -68,28 +68,28 @@ namespace jasl
                     }
                 }
                 {
-                    auto result = m_sharedCache->getDouble(symbol);
-                    if(result) {
+                    double value;
+                    if(m_sharedCache->getDouble_(symbol, value)) {
 
-                        m_sharedCache->setString(key, std::to_string(*result));
+                        m_sharedCache->setString(key, std::to_string(value));
                         
                         return true;
                     }
                 }
                 {
-                    auto result = m_sharedCache->getBool(symbol);
-                    if(result) {
+                    bool value;
+                    if(m_sharedCache->getBool_(symbol, value)) {
 
-                        m_sharedCache->setString(key, std::to_string(*result));
+                        m_sharedCache->setString(key, std::to_string(value));
                         
                         return true;
                     }
                 }
                 {
-                    auto result = m_sharedCache->getString(symbol);
-                    if(result) {
+                    std::string value;
+                    if(m_sharedCache->getString_(symbol, value)) {
 
-                        m_sharedCache->setString(key, *result);
+                        m_sharedCache->setString(key, value);
                         
                         return true;
                     }
@@ -103,27 +103,27 @@ namespace jasl
         {
 
             {
-                auto result = VarExtractor::trySingleIntExtractionNoMath(m_func.paramA, m_sharedCache);
-                if(result) {
-                    m_sharedCache->setString(key, std::to_string(*result));
+                int64_t result;
+                if(VarExtractor::trySingleIntExtractionNoMath(m_func.paramA, result, m_sharedCache)) {
+                    m_sharedCache->setString(key, std::to_string(result));
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::tryToGetADouble(m_func.paramA, m_sharedCache);
-                if(result) {
+                double result;
+                if(VarExtractor::tryToGetADouble(m_func.paramA, result, m_sharedCache)) {
                     std::ostringstream ss;
-                    ss << *result;
+                    ss << result;
                     m_sharedCache->setString(key, ss.str());                    
                     return true;
                 }
             }
 
             {
-                auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-                if(result) {
-                    m_sharedCache->setString(key, std::to_string(*result));
+                bool result;
+                if(VarExtractor::trySingleBoolExtraction(m_func.paramA, result, m_sharedCache)) {
+                    m_sharedCache->setString(key, std::to_string(result));
                     return true;
                 }
             }

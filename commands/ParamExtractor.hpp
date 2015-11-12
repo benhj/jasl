@@ -15,41 +15,41 @@ namespace jasl
 
             // Try int
             {
-                auto d = VarExtractor::trySingleIntExtraction(v, cacheFrom);
-                if(d) {
-                    cacheTo->addToParamStack(Type::Int, *d);
+                int64_t value;
+                if(VarExtractor::trySingleIntExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::Int, value);
                     continue;
                 }
             }
             // Try double
             {
-                auto d = VarExtractor::trySingleDoubleExtraction(v, cacheFrom);
-                if(d) {
-                    cacheTo->addToParamStack(Type::Double, *d);
+                double value;
+                if(VarExtractor::trySingleDoubleExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::Double, value);
                     continue;
                 }
             } 
             // Try bool
             {
-                auto d = VarExtractor::trySingleBoolExtraction(v, cacheFrom);
-                if(d) {
-                    cacheTo->addToParamStack(Type::Bool, *d);
+                bool value;
+                if(VarExtractor::trySingleBoolExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::Bool, value);
                     continue;
                 }
             } 
             // Try string
             {
-                auto d = VarExtractor::trySingleStringExtraction(v, cacheFrom);
-                if(d) {
-                    cacheTo->addToParamStack(Type::String, *d);
+                std::string value;
+                if(VarExtractor::trySingleStringExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::String, value);
                     continue;
                 }
             } 
             // Try List
             {
-                auto d = VarExtractor::trySingleListExtraction(v, cacheFrom);
-                if(d) {
-                    cacheTo->addToParamStack(Type::ValueArray, *d);
+                ValueArray value;
+                if(VarExtractor::trySingleListExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::ValueArray, value);
                     continue;
                 }
             } 

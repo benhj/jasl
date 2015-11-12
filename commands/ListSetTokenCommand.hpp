@@ -21,9 +21,9 @@ namespace jasl
 
         bool execute() override;
     private:
-        OptionalInt getIndex();
-        OptionalString getNewStringToken();
-        OptionalValueArray getNewVAToken();
+        bool getIndex(int64_t&);
+        bool getNewStringToken(std::string&);
+        bool getNewVAToken(ValueArray&);
         bool tryWithRawList(std::string const &varName);
         bool tryWithSymbolList(std::string const &varName);
     };

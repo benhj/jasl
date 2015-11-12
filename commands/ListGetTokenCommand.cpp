@@ -16,7 +16,7 @@ namespace jasl
     ListGetTokenCommand::ListGetTokenCommand(Function &func_,
                                              SharedVarCache const &sharedCache,
                                              OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
     {
     }
 
@@ -35,15 +35,15 @@ namespace jasl
         return false;
     }
 
-    OptionalInt ListGetTokenCommand::getIndex()
+    bool ListGetTokenCommand::getIndex(int64_t &value)
     {
-        return VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
+        return VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache);
     }
 
     bool ListGetTokenCommand::tryWithRawList(std::string const &varName) 
     {
-        auto index(getIndex());
-        if(!index) {
+        int64_t index;
+        if(!getIndex(index)) {
             setLastErrorMessage("get_token: error getting index");
             return false;
         }
@@ -54,7 +54,7 @@ namespace jasl
             try {
                 int i = 0;
                 for(auto & val : v) {
-                    if(i == *index) {
+                    if(i == index) {
                         // First try pulling a string out
                         {
                             std::string tok;
@@ -91,8 +91,8 @@ namespace jasl
 
     bool ListGetTokenCommand::tryWithSymbolList(std::string const &varName)
     {
-        auto index(getIndex());
-        if(!index) {
+        int64_t index;
+        if(!getIndex(index)) {
             setLastErrorMessage("get token: error getting index");
             return false;
         }
@@ -110,7 +110,7 @@ namespace jasl
                 try {
                     int i = 0;
                     for(auto & val : *list) {
-                        if(i == *index) {
+                        if(i == index) {
                         // First try pulling a string out
                         {
                             std::string tok;

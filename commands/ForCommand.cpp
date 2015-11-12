@@ -17,7 +17,7 @@ namespace jasl {
     ForCommand::ForCommand(Function &func_,
                            SharedVarCache const &sharedCache,
                            OptionalOutputStream const &output)
-        : Command(func_, std::move(sharedCache), std::move(output))
+        : Command(func_, sharedCache, output)
     {
 
     }

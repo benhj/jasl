@@ -1,0 +1,8 @@
+start {
+    integer 0 -> i;
+    echo "i: ";
+    echo_nl i;
+    repeat 100 times {
+        echo_nl i;
+   }
+}

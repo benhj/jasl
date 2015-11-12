@@ -19,20 +19,19 @@ namespace jasl {
         RandomIntCommand(Function &func_,
                          SharedVarCache const &sharedCache = SharedVarCache(),
                          OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, std::move(sharedCache), std::move(output))
+        : Command(func_, sharedCache, output)
         {
         }
 
         bool execute() override
         {
-
-            auto a = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
-            if (!a) {
+            int64_t a;
+            if (!VarExtractor::trySingleIntExtraction(m_func.paramA, a, m_sharedCache)) {
                 setLastErrorMessage("random_int: problem determining parameter");
                 return false;
             } 
 
-            auto output = (rand() % (int)(*a + 1));
+            auto output = (rand() % (int)(a + 1));
 
             std::string key;
             if(!VarExtractor::tryAnyCast(key, m_func.paramB)) {

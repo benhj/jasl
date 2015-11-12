@@ -22,7 +22,7 @@ namespace simple_any {
 
         template <typename T>
         any(T const & t)
-        : _held(std::move(std::make_shared<typed_holder<T>>(t)))
+        : _held(std::make_shared<typed_holder<T>>(t))
         {
         }
 

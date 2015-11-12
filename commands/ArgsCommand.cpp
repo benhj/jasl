@@ -18,15 +18,15 @@ namespace jasl
     ArgsCommand::ArgsCommand(Function &func_,
                              SharedVarCache const &sharedCache,
                              OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
     {
     }
 
     bool ArgsCommand::execute() 
     {
 
-        auto arg = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
-        if(!arg) {
+        int64_t value;
+        if(!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
             setLastErrorMessage("repeat: problem extracting integer");
             return false;
         }
@@ -37,8 +37,8 @@ namespace jasl
             return false;
         }
 
-        if(*arg < GlobalCache::args.size()) {
-            auto argument(GlobalCache::args[*arg]);
+        if(value < GlobalCache::args.size()) {
+            auto argument(GlobalCache::args[value]);
             m_sharedCache->setString(argString, argument);
             return true;
         }

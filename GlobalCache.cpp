@@ -76,9 +76,19 @@ namespace jasl {
         return bigCache->getDouble(key);
     }
 
+    bool GlobalCache::getDouble_(std::string const &key, double &val)
+    {
+        return bigCache->getDouble_(key, val);
+    }
+
     OptionalBool GlobalCache::getBool(std::string const &key)
     {
         return bigCache->getBool(key);
+    }
+
+    bool GlobalCache::getBool_(std::string const &key, bool &val)
+    {
+        return bigCache->getBool_(key, val);
     }
 
     OptionalString GlobalCache::getString(std::string const &key)
@@ -86,9 +96,19 @@ namespace jasl {
         return bigCache->getString(key);
     }
 
+    bool GlobalCache::getString_(std::string const &key, std::string &val)
+    {
+        return bigCache->getString_(key, val);
+    }
+
     OptionalValueArray GlobalCache::getList(std::string const &key)
     {
         return bigCache->getList(key);
+    }
+
+    bool GlobalCache::getList_(std::string const &key, ValueArray &val)
+    {
+        return bigCache->getList_(key, val);
     }
 
     Value GlobalCache::getListToken(std::string const &key, size_t const index)

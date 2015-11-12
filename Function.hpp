@@ -16,6 +16,7 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 
 #include <vector>
+#include <memory>
 
 namespace jasl
 {
@@ -79,6 +80,9 @@ namespace jasl
             return VarExtractor::tryExtraction(t, paramG, sharedCache);
         }
     };
+
+    using SharedFunction = std::shared_ptr<Function>;
+
 }
 
 BOOST_FUSION_ADAPT_STRUCT (

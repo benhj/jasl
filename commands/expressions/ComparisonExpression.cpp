@@ -54,16 +54,16 @@ namespace jasl {
 
                 // where the comparison is between two doubles
                 {
-                    auto result = VarExtractor::tryToGetADouble(right, cache);
-                    if (result) {
-                        return doStage2<T, double>(valA, *result, symbolOperator);
+                    double d;
+                    if (VarExtractor::tryToGetADouble(right, d, cache)) {
+                        return doStage2<T, double>(valA, d, symbolOperator);
                     }
                 }
 
                 // where the comparison is between two booleans
-                auto result = VarExtractor::trySingleBoolExtraction(right, cache);
-                if (result) {
-                    return doStage2<T, bool>(valA, *result, symbolOperator);
+                bool b;
+                if (VarExtractor::trySingleBoolExtraction(right, b, cache)) {
+                    return doStage2<T, bool>(valA, b, symbolOperator);
                 }
             } catch (...) {
                 
@@ -80,16 +80,16 @@ namespace jasl {
 
             // tries to get a double for the first operand
             {
-                auto result = VarExtractor::tryToGetADouble(m_left, m_sharedCache);
-                if (result) {
-                    return doStage1<double>(*result, m_right, m_symbolOperator, m_sharedCache);
+                double d;
+                if (VarExtractor::tryToGetADouble(m_left, d, m_sharedCache)) {
+                    return doStage1<double>(d, m_right, m_symbolOperator, m_sharedCache);
                 }
             }
 
             // tries to get a boolean for the left operand
-            auto result = VarExtractor::trySingleBoolExtraction(m_left, m_sharedCache);
-            if (result) {
-                return doStage1<bool>(*result, m_right, m_symbolOperator, m_sharedCache);
+            bool b;
+            if (VarExtractor::trySingleBoolExtraction(m_left, b, m_sharedCache)) {
+                return doStage1<bool>(b, m_right, m_symbolOperator, m_sharedCache);
             }
         } catch (...) {
             
