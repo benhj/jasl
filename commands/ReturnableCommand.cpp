@@ -17,7 +17,7 @@ namespace jasl
     ReturnableCommand::ReturnableCommand(Function &func_,
                                          SharedVarCache const &sharedCache,
                                          OptionalOutputStream const &output)
-    : Command(func_, std::move(std::make_shared<ScopedVarCache>()), std::move(output))
+    : Command(func_, std::make_shared<ScopedVarCache>(), output)
     {
     }
 
@@ -60,13 +60,21 @@ namespace jasl
             (void)m_sharedCache->getInt_(m_returnSymbol, value);
             GlobalCache::setInt(m_returnSymbol, value);
         } else if(m_returnType == Type::Bool) {
-            GlobalCache::setBool(m_returnSymbol, *m_sharedCache->getBool(m_returnSymbol));
+            bool value;
+            (void)m_sharedCache->getBool_(m_returnSymbol, value);
+            GlobalCache::setBool(m_returnSymbol, value);
         } else if(m_returnType == Type::Double) {
-            GlobalCache::setDouble(m_returnSymbol, *m_sharedCache->getDouble(m_returnSymbol));
+            double value;
+            (void)m_sharedCache->getDouble_(m_returnSymbol, value);
+            GlobalCache::setDouble(m_returnSymbol, value);
         } else if(m_returnType == Type::String) {
-            GlobalCache::setString(m_returnSymbol, *m_sharedCache->getString(m_returnSymbol));
+            std::string value;
+            (void)m_sharedCache->getString_(m_returnSymbol, value);
+            GlobalCache::setString(m_returnSymbol, value);
         } else if(m_returnType == Type::ValueArray) {
-            GlobalCache::setList(m_returnSymbol, *m_sharedCache->getList(m_returnSymbol));
+            ValueArray value;
+            (void)m_sharedCache->getList_(m_returnSymbol, value);
+            GlobalCache::setList(m_returnSymbol, value);
         }
 
         return true;

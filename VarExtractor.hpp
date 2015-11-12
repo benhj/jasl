@@ -34,7 +34,7 @@ namespace jasl {
         static bool tryAnyCast(T & t, V && val)
         {
             try {
-                t = std::move(::simple_any::any_cast<T>(val));
+                t = simple_any::any_cast<T>(val);
                 return true;
             } catch (...) {
             }
@@ -78,21 +78,18 @@ namespace jasl {
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
                 if (typeid(T) == typeid(int64_t)) {
-                    auto result = sharedCache->getInt(str);
+                    auto result = sharedCache->getInt_(str, (int64_t&)t);
                     if(result) {
-                        (int64_t&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(bool)) {
-                    auto result = sharedCache->getBool(str);
+                    auto result = sharedCache->getBool_(str, (bool&)t);
                     if(result) {
-                        (bool&)t = *result;
                         return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
-                    auto result = sharedCache->getDouble(str);
+                    auto result = sharedCache->getDouble_(str, (double&)t);
                     if(result) {
-                        (double&)t = *result;
                         return true;
                     }
                 }
@@ -103,56 +100,52 @@ namespace jasl {
         /// Following tries to cast to a double. If that fails, then it casts from an
         /// int and then casts the result as a double. Failing both, it tries to
         /// see if its a math expression which it can then evaluate.
-        static OptionalDouble tryToGetADouble(Value &val, SharedVarCache const &sharedCache)
+        static bool tryToGetADouble(Value &val, double &x, SharedVarCache const &sharedCache)
         {
             {
-                double x;
                 if (tryExtraction<double>(x, val, sharedCache)) {
-                    return OptionalDouble(x);
+                    return true;
                 }
             }
             {
-                int64_t x;
-                if (tryExtraction<int64_t>(x, val, sharedCache)) {
-                    return OptionalDouble(x);
+                int64_t x_i;
+                if (tryExtraction<int64_t>(x_i, val, sharedCache)) {
+                    x = static_cast<int64_t>(x_i);
+                    return true;
                 }
             }
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val, sharedCache)) {
                 me.sharedCache = sharedCache;
-                return OptionalDouble(me.evaluate());
+                x = me.evaluate();
+                return true;
             }
-            return OptionalDouble();
+            return false;
         }
 
         /// Tries to extract an integer. Failing that tries to extract and
         /// evaluate an expression and cast the result to an int
-        static OptionalInt trySingleIntExtraction(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleIntExtraction(Value &val, int64_t &x, SharedVarCache const &sharedCache)
         {
-            int64_t x;
             if (tryExtraction<int64_t>(x, val, sharedCache)) {
-                return OptionalInt(x);
+                return true;
             }
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val, sharedCache)) {
                 me.sharedCache = sharedCache;
-                return OptionalInt(static_cast<int64_t>(me.evaluate()));
+                x = static_cast<int64_t>(me.evaluate());
+                return true;
             }
 
-            return OptionalInt();
+            return false;
         }
 
         /// Tries to extract a single int but doesn't bother with math if that doesn't work
-        static OptionalInt trySingleIntExtractionNoMath(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleIntExtractionNoMath(Value &val, int64_t &x, SharedVarCache const &sharedCache)
         {
-            int64_t x;
-            if (tryExtraction<int64_t>(x, val, sharedCache)) {
-                return OptionalInt(x);
-            }
-
-            return OptionalInt();
+            return tryExtraction<int64_t>(x, val, sharedCache);
         }
 
         /// tries to extract a double from Value storing the result in x
@@ -160,43 +153,43 @@ namespace jasl {
         /// Note if extraction of a doulbe is initially unsuccesful it tries
         /// to extract a math expression storing the result of that in x instead
         /// and returning true.
-        static OptionalDouble trySingleDoubleExtraction(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleDoubleExtraction(Value &val, double &x, SharedVarCache const &sharedCache)
         {
-            double x;
             if (tryExtraction<double>(x, val, sharedCache)) {
-                return OptionalDouble(x);
+                return true;
             }
 
             MathExpression me;
             if (tryExtraction<MathExpression>(me, val, sharedCache)) {
                 me.sharedCache = sharedCache;
-                return OptionalDouble(me.evaluate());
+                x = me.evaluate();
+                return true;
             }
 
-            return OptionalDouble();
+            return false;
         }
 
         /// tries to extract a boolean from Value storing the result in x
         /// and returning true if successful. If not initially successful,
         /// tries to extract out a logical expression instead and storing the 
         /// result of that in x and returning true.
-        static OptionalBool trySingleBoolExtraction(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleBoolExtraction(Value &val, bool &x, SharedVarCache const &sharedCache)
         {
-            bool x;
             if (tryExtraction<bool>(x, val, sharedCache)) {
-                return OptionalBool(x);
+                return true;
             }
 
             ComparisonExpression ce;
             if (tryExtraction<ComparisonExpression>(ce, val, sharedCache)) {
                 ce.m_sharedCache = sharedCache;
                 try {
-                    return OptionalBool(ce.evaluate());
+                    x = ce.evaluate();
+                    return true;
                 } catch (...) {
                     
                 }
             }
-            return OptionalBool();
+            return false;
         }
 
         static 
@@ -219,37 +212,37 @@ namespace jasl {
             return [](){return false;};
         }
 
-        static OptionalString trySingleStringExtraction(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleStringExtraction(Value &val, std::string & x, SharedVarCache const &sharedCache)
         {
-            std::string x;
-            if (tryExtraction<std::string>(x, val, sharedCache)) {
+            std::string y;
+            if (tryExtraction<std::string>(y, val, sharedCache)) {
 
                 // Note, x will actually be the symbol, not the string
                 // that the symbol represents. Therefore, now need to 
                 // pull out the variable associated with the symbol
-                return sharedCache->getString(x);
+                return sharedCache->getString_(y, x);
             }
             LiteralString ls;
             if (tryExtraction<LiteralString>(ls, val, sharedCache)) {
-                return OptionalString(ls.literal);
+                x = ls.literal;
+                return true;
             }
-            return OptionalString();
+            return false;
         }
 
-        static OptionalValueArray trySingleListExtraction(Value &val, SharedVarCache const &sharedCache)
+        static bool trySingleListExtraction(Value &val, ValueArray & x, SharedVarCache const &sharedCache)
         {
-            ValueArray x;
             if (tryExtraction<ValueArray>(x, val, sharedCache)) {
-                return OptionalValueArray(x);
+                return true;
             }
 
             // couldn't extract raw list, see if one is cached 
             std::string varName;
             if (tryExtraction<std::string>(varName, val, sharedCache)) {
-                return sharedCache->getList(varName);
+                return sharedCache->getList_(varName, x);
             }
 
-            return OptionalValueArray();
+            return false;
         }
     };
 }

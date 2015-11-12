@@ -1,5 +1,4 @@
-// Note, seriously limited in the integer type being int. Maybe should make it
-// int64_t instead
+// Note, all integer types are signed 64 bit
 
 block fib () {
     
@@ -19,7 +18,6 @@ block fib () {
 
         // compute new x value
         integer (olderx + oldx) -> x;
- 
     }
 
     echo_nl " ";

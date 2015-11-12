@@ -22,7 +22,7 @@ namespace jasl
 
         bool execute() override;
     private:
-        OptionalInt getIndex();
+        bool getIndex(int64_t&);
         bool tryWithRawList(std::string const &varName);
         bool tryWithSymbolList(std::string const &varName);
     };

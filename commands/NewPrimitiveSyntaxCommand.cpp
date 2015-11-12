@@ -14,28 +14,27 @@ namespace jasl {
     NewPrimitiveSyntaxCommand::NewPrimitiveSyntaxCommand(Function &func_,
                                                          SharedVarCache const &sharedCache,
                                                          OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
+    , m_type(func_.name)
+    , m_varName()
     {
+        (void)m_func.getValueB<std::string>(m_varName, m_sharedCache);
     }
 
     bool NewPrimitiveSyntaxCommand::execute()
     {
 
-        std::string type = m_func.name;
-        std::string varName; 
-        (void)m_func.getValueB<std::string>(varName, m_sharedCache);
+        if (m_type == "integer") {
 
-        if (type == "integer") {
+            return handleInt();
 
-            return handleInt(varName);
+        } else if (m_type == "decimal") {
 
-        } else if (type == "decimal") {
+            return handleDouble();
 
-            return handleDouble(varName);
+        } else if (m_type == "boolean") {
 
-        } else if (type == "boolean") {
-
-            return handleBool(varName);
+            return handleBool();
 
         } 
 
@@ -43,42 +42,38 @@ namespace jasl {
         return false;
     }
 
-    bool NewPrimitiveSyntaxCommand::handleInt(std::string const &varName)
+    bool NewPrimitiveSyntaxCommand::handleInt()
     {
-        auto a = VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
-        if (!a) {
+        int64_t value;
+        if (!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
             // try converting a string to an integer
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
-        m_sharedCache->setInt(varName, *a);
-        
-
+        m_sharedCache->setInt(m_varName, value);
         return true;
     }
 
-    bool NewPrimitiveSyntaxCommand::handleDouble(std::string const &varName)
+    bool NewPrimitiveSyntaxCommand::handleDouble()
     {
-        auto a = VarExtractor::trySingleDoubleExtraction(m_func.paramA, m_sharedCache);
-        if (!a) {
+        double value;
+        if (!VarExtractor::trySingleDoubleExtraction(m_func.paramA, value, m_sharedCache)) {
             // try converting a string to a double
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
 
-        m_sharedCache->setDouble(varName, *a);
+        m_sharedCache->setDouble(m_varName, value);
         
-
         return true;
     }
 
-    bool NewPrimitiveSyntaxCommand::handleBool(std::string const &varName)
+    bool NewPrimitiveSyntaxCommand::handleBool()
     {
-        auto a = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-        if (!a) {
+        bool value;
+        if (!VarExtractor::trySingleBoolExtraction(m_func.paramA, value, m_sharedCache)) {
             return false;
         } 
 
-        m_sharedCache->setBool(varName, *a);
-      
+        m_sharedCache->setBool(m_varName, value);
         return true;
     }
 }

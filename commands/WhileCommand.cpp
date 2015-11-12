@@ -15,42 +15,47 @@ namespace jasl {
     WhileCommand::WhileCommand(Function &func_,
                                SharedVarCache const &sharedCache,
                                OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
+    , m_weHaveFuncs(false)
+    , m_commands()
     {
+        std::vector<Function> innerFuncs;
+        if(VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB)) {
+            m_weHaveFuncs = true;
+        }
+        if(m_weHaveFuncs) {
+            CommandInterpretor ci;
+            for(auto & f : innerFuncs) {
+                m_commands.push_back(ci.funcToCommand(f, sharedCache, output));
+            }
+        }
     }
 
     bool WhileCommand::execute() 
     {
-        return doLoop();
-    }
-
-    bool WhileCommand::doLoop()
-    {
-
-        std::vector<Function> innerFuncs;
-        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
-        if(!success) {
+        if(!m_weHaveFuncs) {
             return false;
         }
-        auto goodtogo = VarExtractor::trySingleBoolExtraction_V2(m_func.paramA, m_sharedCache);
-
+        auto goodtogo(VarExtractor::trySingleBoolExtraction_V2(m_func.paramA, m_sharedCache));
         while(goodtogo()) {
-            if (success) {
-                success = parseCommands(innerFuncs);
-            } else {
+            if (!parseCommands()) {
                 setLastErrorMessage("repeat: Error interpreting while's body");
                 return false;
             }
         }
-
         return true;
     }
 
-    bool WhileCommand::parseCommands(std::vector<Function> &functions) 
+    bool WhileCommand::parseCommands() 
     {
-        CommandInterpretor ci;
-        for(auto & f : functions) {
-            (void)ci.interpretFunc(f, m_sharedCache, m_outputStream);
+        for(auto & c : m_commands) {
+            try {
+                if(c) {
+                    c->execute(); 
+                }
+            } catch (...) {
+
+            }
         }
         return true;
     }

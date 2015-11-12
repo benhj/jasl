@@ -28,33 +28,32 @@ namespace jasl {
         // an integer if integer precision is required
         double vleft;
         double vright;
-        auto valA = VarExtractor::trySingleDoubleExtraction(left, sharedCache);
-
+        double valA;
         // extracting a double didn't work. Maybe an integer
-        if(!valA) {
-            auto valC = VarExtractor::trySingleIntExtraction(left, sharedCache);
-            if(valC) {
-                vleft = *valC;
+        if(!VarExtractor::trySingleDoubleExtraction(left, valA, sharedCache)) {
+            int64_t valC;
+            if(VarExtractor::trySingleIntExtraction(left, valC, sharedCache)) {
+                vleft = valC;
             } else {
                 errorMessage = "Can't parse left of expression";
             }
         } else {
             resultIsInteger = false;
-            vleft = *valA;
+            vleft = valA;
         }
 
-        auto valB = VarExtractor::trySingleDoubleExtraction(right, sharedCache);
+        double valB;
         // extracting a double didn't work. Maybe an integer
-        if(!valB) {
-            auto valD = VarExtractor::trySingleIntExtraction(right, sharedCache);
-            if(valD) {
-                vright = *valD;
+        if(!VarExtractor::trySingleDoubleExtraction(right, valB, sharedCache)) {
+            int64_t valD;
+            if(VarExtractor::trySingleIntExtraction(right, valD, sharedCache)) {
+                vright = valD;
             } else {
                 errorMessage = "Can't parse right of expression";
             }
         } else {
             resultIsInteger = false;
-            vright = *valB;
+            vright = valB;
         }
 
         if (symbolOperator == "+" || symbolOperator == "add") {

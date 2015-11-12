@@ -11,6 +11,7 @@
 #include "Command.hpp"
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace jasl {
 
@@ -22,8 +23,9 @@ namespace jasl {
                      OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
-        bool doLoop();
-        bool parseCommands(std::vector<Function> &functions);
+        bool parseCommands();
+        bool m_weHaveFuncs;
+        std::vector<std::shared_ptr<Command>> m_commands;
     };
 
 }

@@ -21,8 +21,11 @@ namespace jasl {
         bool execute() override;
 
     private:
-        bool handleInt(std::string const &varName);
-        bool handleDouble(std::string const &varName);
-        bool handleBool(std::string const &varName);
+        bool handleInt();
+        bool handleDouble();
+        bool handleBool();
+
+        std::string m_type;
+        std::string m_varName;
     };
 }

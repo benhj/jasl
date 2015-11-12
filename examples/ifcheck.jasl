@@ -6,4 +6,10 @@ start {
         echo_nl "yes";
     }
 
+    if(i != j) {
+        echo_nl "A";
+    } else {
+        echo_nl "B";
+    }
+
 }

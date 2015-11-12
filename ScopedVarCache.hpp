@@ -91,9 +91,13 @@ namespace jasl {
         OptionalInt getInt(std::string const &key);
         bool getInt_(std::string const &key, int64_t &val);
         OptionalDouble getDouble(std::string const &key);
+        bool getDouble_(std::string const &key, double &val);
         OptionalBool getBool(std::string const &key);
+        bool getBool_(std::string const &key, bool &val);
         OptionalString getString(std::string const &key);
+        bool getString_(std::string const &key, std::string &val);
         OptionalValueArray getList(std::string const &key);
+        bool getList_(std::string const &key, ValueArray &val);
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
     };

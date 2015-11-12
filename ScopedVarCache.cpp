@@ -34,11 +34,11 @@ namespace jasl {
             if(found->second.type != Type::Int) {
                 return;
             }
-            found->second.cv = std::move(value);
+            found->second.cv = value;
             return;
         }
 
-        m_bigCache[key] = { Type::Int, std::move(value) };
+        m_bigCache[key] = { Type::Int, value };
         
     }
     void ScopedVarCache::setDouble(std::string const &key,
@@ -52,10 +52,10 @@ namespace jasl {
             if(found->second.type != Type::Double) {
                 return;
             }
-            found->second.cv = std::move(value);
+            found->second.cv = value;
             return;
         }
-        m_bigCache[key] = { Type::Double, std::move(value) };
+        m_bigCache[key] = { Type::Double, value };
     }
     void ScopedVarCache::setBool(std::string const &key,
                                  bool const value)
@@ -68,10 +68,10 @@ namespace jasl {
             if(found->second.type != Type::Bool) {
                 return;
             }
-            found->second.cv = std::move(value);
+            found->second.cv = value;
             return;
         }
-        m_bigCache[key] = { Type::Bool, std::move(value)};
+        m_bigCache[key] = { Type::Bool, value};
     }
     void ScopedVarCache::setString(std::string const &key,
                                    std::string const &value)
@@ -84,10 +84,10 @@ namespace jasl {
             if(found->second.type != Type::String) {
                 return;
             }
-            found->second.cv = std::move(value);
+            found->second.cv = value;
             return;
         }
-        m_bigCache[key] = { Type::String, std::move(value) };
+        m_bigCache[key] = { Type::String, value };
         
     }
     void ScopedVarCache::setList(std::string const &key,
@@ -101,10 +101,10 @@ namespace jasl {
             if(found->second.type != Type::ValueArray) {
                 return;
             }
-            found->second.cv = std::move(value);
+            found->second.cv = value;
             return;
         }
-        m_bigCache[key] = { Type::ValueArray, std::move(value) };
+        m_bigCache[key] = { Type::ValueArray, value };
         
     }
 
@@ -165,6 +165,18 @@ namespace jasl {
         return OptionalDouble();
     }
 
+    bool ScopedVarCache::getDouble_(std::string const &key, double &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::Double) {
+                val = ::boost::get<double>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
     OptionalBool ScopedVarCache::getBool(std::string const &key)
     {
         auto it = m_bigCache.find(key);
@@ -174,6 +186,18 @@ namespace jasl {
             }
         }
         return OptionalBool();
+    }
+
+    bool ScopedVarCache::getBool_(std::string const &key, bool &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::Bool) {
+                val = ::boost::get<bool>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
     }
 
     OptionalString ScopedVarCache::getString(std::string const &key)
@@ -187,6 +211,18 @@ namespace jasl {
         return OptionalString();
     }
 
+    bool ScopedVarCache::getString_(std::string const &key, std::string &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::String) {
+                val = ::boost::get<std::string>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
     OptionalValueArray ScopedVarCache::getList(std::string const &key)
     {
         auto it = m_bigCache.find(key);
@@ -196,6 +232,18 @@ namespace jasl {
             }
         }
         return OptionalValueArray();
+    }
+
+    bool ScopedVarCache::getList_(std::string const &key, ValueArray &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::ValueArray) {
+                val = ::boost::get<ValueArray>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
     }
 
     Value ScopedVarCache::getListToken(std::string const &key, size_t const index)

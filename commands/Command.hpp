@@ -22,14 +22,14 @@ namespace jasl
         /// for capturing any output
         using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
-        Command(Function &func_,
+        Command(Function func_,
                 SharedVarCache const &sharedCache,
                 OptionalOutputStream const &output = OptionalOutputStream());
 
         virtual bool execute() = 0;
 
     protected:
-        Function &m_func;
+        Function m_func;
 
         /// Cache of variables
         SharedVarCache m_sharedCache;

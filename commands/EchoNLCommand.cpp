@@ -16,7 +16,7 @@ namespace jasl
     EchoNLCommand::EchoNLCommand(Function &func_,
                                  SharedVarCache const &sharedCache,
                                  OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
     {
 
     }
@@ -53,31 +53,32 @@ namespace jasl
                 }
             }
             {
-                auto result = m_sharedCache->getDouble(symbol);
-                if(result) {
-                    appendToOutputWithNewLine(*result);
+                double value;
+                if(m_sharedCache->getDouble_(symbol, value)) {
+                    appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getBool(symbol);
-                if(result) {
-                    appendToOutputWithNewLine(*result);
+                bool value;
+                if(m_sharedCache->getBool_(symbol, value)) {
+                    appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getString(symbol);
-                if(result) {
-                    appendToOutputWithNewLine(*result);
+                std::string value;
+                if(m_sharedCache->getString_(symbol, value)) {
+                    appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
-                auto result = m_sharedCache->getList(symbol);
+                ValueArray value;
+                auto result = m_sharedCache->getList_(symbol, value);
                 if(result) {
                     std::string output;
-                    processListElement(*result, output);
+                    processListElement(value, output);
                     ::boost::algorithm::trim_right(output);
                     appendToOutputWithNewLine(output);
                     return true;
@@ -120,17 +121,17 @@ namespace jasl
     bool EchoNLCommand::tryNumericExtraction()
     {
         {
-            auto result = VarExtractor::tryToGetADouble(m_func.paramA, m_sharedCache);
-            if(result) {
-                appendToOutputWithNewLine(*result);
+            double value;
+            if(VarExtractor::tryToGetADouble(m_func.paramA, value, m_sharedCache)) {
+                appendToOutputWithNewLine(value);
                 return true;
             }
         }
 
         {
-            auto result = VarExtractor::trySingleBoolExtraction(m_func.paramA, m_sharedCache);
-            if(result) {
-                appendToOutputWithNewLine(*result);
+            bool value;
+            if(VarExtractor::trySingleBoolExtraction(m_func.paramA, value, m_sharedCache)) {
+                appendToOutputWithNewLine(value);
                 return true;
             }
         }

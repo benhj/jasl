@@ -10,11 +10,13 @@
 
 #include "Function.hpp"
 #include "SharedVarCache.hpp"
+#include "commands/Command.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 namespace jasl {
     
@@ -28,9 +30,15 @@ namespace jasl {
         using CommandFunction = std::function<bool(Function &, 
                                                    SharedVarCache const &, 
                                                    OptionalOutputStream const &)>;
+        using CommandBuilder = std::function<std::shared_ptr<Command>(Function &, 
+                                                   SharedVarCache const &, 
+                                                   OptionalOutputStream const &)>;
+
         using CommandMap = std::map<std::string, CommandFunction>;
+        using CommandBuilders = std::map<std::string, CommandBuilder>;
 
         static CommandMap m_commandMap;
+        static CommandBuilders m_commandBuilders;
 
         CommandInterpretor();
 
@@ -55,6 +63,11 @@ namespace jasl {
 
         std::string
         interpretFunc(Function &func,
+                      SharedVarCache const &varCache = SharedVarCache(),
+                      OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
+
+        std::shared_ptr<Command> 
+        funcToCommand(Function &func,
                       SharedVarCache const &varCache = SharedVarCache(),
                       OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
         

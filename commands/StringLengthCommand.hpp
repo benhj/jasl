@@ -22,7 +22,7 @@ namespace jasl
         StringLengthCommand(Function &func_,
                             SharedVarCache const &sharedCache = SharedVarCache(),
                             OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, std::move(sharedCache), std::move(output))
+        : Command(func_, sharedCache, output)
         {
 
         }

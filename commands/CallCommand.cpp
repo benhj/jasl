@@ -18,7 +18,7 @@ namespace jasl
     CallCommand::CallCommand(Function &func_, 
                              SharedVarCache const &sharedCache,
                              OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
     {
     }
 
@@ -112,17 +112,21 @@ namespace jasl
                 (void)GlobalCache::getInt_(returnName, value);
                 m_sharedCache->setInt(returnSymbol, value);
             } else if(type == "decimal") {
-                auto result = GlobalCache::getDouble(returnName);
-                m_sharedCache->setDouble(returnSymbol, *result);
+                double value;
+                (void)GlobalCache::getDouble_(returnName, value);
+                m_sharedCache->setDouble(returnSymbol, value);
             } else if(type == "string") {
-                auto result = GlobalCache::getString(returnName);
-                m_sharedCache->setString(returnSymbol, *result);
+                std::string value;
+                (void)GlobalCache::getString_(returnName, value);
+                m_sharedCache->setString(returnSymbol, value);
             } else if(type == "boolean") {
-                auto result = GlobalCache::getBool(returnName);
-                m_sharedCache->setBool(returnSymbol, *result);
+                bool value;
+                (void)GlobalCache::getBool_(returnName, value);
+                m_sharedCache->setBool(returnSymbol, value);
             } else if(type == "list") {
-                auto result = GlobalCache::getList(returnName);
-                m_sharedCache->setList(returnSymbol, *result);
+                ValueArray value;
+                (void)GlobalCache::getList_(returnName, value);
+                m_sharedCache->setList(returnSymbol, value);
             } else {
                 setLastErrorMessage("call returnable: unknown return type");
                 return false;

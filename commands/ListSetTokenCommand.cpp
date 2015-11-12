@@ -15,7 +15,7 @@ namespace jasl
     ListSetTokenCommand::ListSetTokenCommand(Function &func_,
                                              SharedVarCache const &sharedCache,
                                              OptionalOutputStream const &output)
-    : Command(func_, std::move(sharedCache), std::move(output))
+    : Command(func_, sharedCache, output)
     {
     }
 
@@ -33,51 +33,49 @@ namespace jasl
         return false;
     }
 
-    OptionalInt ListSetTokenCommand::getIndex()
+    bool ListSetTokenCommand::getIndex(int64_t &index)
     {
-        return VarExtractor::trySingleIntExtraction(m_func.paramA, m_sharedCache);
+        return VarExtractor::trySingleIntExtraction(m_func.paramA, index, m_sharedCache);
     }
 
-    OptionalString ListSetTokenCommand::getNewStringToken()
+    bool ListSetTokenCommand::getNewStringToken(std::string &value)
     {
         std::string token;
         if(!m_func.getValueC<std::string>(token, m_sharedCache)) {
             LiteralString literal;
             if(m_func.getValueC<LiteralString>(literal, m_sharedCache)) {
-                return OptionalString(literal.literal);
+                value = literal.literal;
+                return true;
             }
         } else {
-            auto result = m_sharedCache->getString(token);
-            if(result) {
-                return OptionalString(*result);
+            if(m_sharedCache->getString_(token, value)) {
+                return true;
             }
         }
         setLastErrorMessage("get token: problem getting new token");
-        return OptionalString();
+        return false;
     }
 
-    OptionalValueArray ListSetTokenCommand::getNewVAToken()
+    bool ListSetTokenCommand::getNewVAToken(ValueArray &value)
     {
         std::string token;
         if(!m_func.getValueC<std::string>(token, m_sharedCache)) {
-            ValueArray va;
-            if(m_func.getValueC<ValueArray>(va, m_sharedCache)) {
-                return va;
+            if(m_func.getValueC<ValueArray>(value, m_sharedCache)) {
+                return true;
             }
         } else {
-            auto result = m_sharedCache->getList(token);
-            if(result) {
-                return *result;
+            if(m_sharedCache->getList_(token, value)) {
+                return true;
             }
         }
         setLastErrorMessage("get token: problem getting new token");
-        return OptionalValueArray();
+        return false;
     }
 
     bool ListSetTokenCommand::tryWithRawList(std::string const &varName) 
     {
-        auto index(getIndex());
-        if(!index) {
+        int64_t index;
+        if(!getIndex(index)) {
             setLastErrorMessage("get token: error getting index");
             return false;
         }
@@ -85,24 +83,24 @@ namespace jasl
 
         ValueArray v;
         if(m_func.getValueB<ValueArray>(v, m_sharedCache)) {
-            if(*index >= v.size()) {
+            if(index >= v.size()) {
                 setLastErrorMessage("get token: index bigger than list");
                 return false;
             }
             // string token
             {
-                auto newToken(getNewStringToken());
-                if(newToken) {
-                    v[*index] = Value(*newToken);
+                std::string newToken;
+                if(getNewStringToken(newToken)) {
+                    v[index] = Value(newToken);
                     m_sharedCache->setList(varName, v);
                     return true;
                 }
             }
             // list token
             {
-                auto newToken(getNewVAToken());
-                if(newToken) {
-                    v[*index] = Value(*newToken);
+                ValueArray newToken;
+                if(getNewVAToken(newToken)) {
+                    v[index] = Value(newToken);
                     m_sharedCache->setList(varName, v);
                     return true;
                 }
@@ -115,8 +113,8 @@ namespace jasl
 
     bool ListSetTokenCommand::tryWithSymbolList(std::string const &varName)
     {
-        auto index(getIndex());
-        if(!index) {
+        int64_t index;
+        if(!getIndex(index)) {
             setLastErrorMessage("get token: error getting index");
             return false;
         }
@@ -131,7 +129,7 @@ namespace jasl
             // if found then process list
             if(found) {
 
-                if(*index >= found->size()) {
+                if(index >= found->size()) {
                     setLastErrorMessage("get token: index bigger than list");
                     return false;
                 }
@@ -140,34 +138,34 @@ namespace jasl
                 // then update by reference else update by copy
                 // string token
                 {
-                    auto newToken(getNewStringToken());
-                    if(newToken) {
+                    std::string newToken;
+                    if(getNewStringToken(newToken)) {
                         
                         if(symbol == varName) {
 
-                            m_sharedCache->setTokenInList(varName, *index, Value(*newToken));
+                            m_sharedCache->setTokenInList(varName, index, Value(newToken));
                             return true;
                         }
 
                         auto vals = *found;
-                        vals[*index] = Value(*newToken);
+                        vals[index] = Value(newToken);
                         m_sharedCache->setList(varName, vals);
                         return true;
                     }
                 }
                 // list token
                 {
-                    auto newToken(getNewVAToken());
-                    if(newToken) {
+                    ValueArray newToken;
+                    if(getNewVAToken(newToken)) {
                         
                         if(symbol == varName) {
 
-                            m_sharedCache->setTokenInList(varName, *index, Value(*newToken));
+                            m_sharedCache->setTokenInList(varName, index, Value(newToken));
                             return true;
                         }
 
                         auto vals = *found;
-                        vals[*index] = Value(*newToken);
+                        vals[index] = Value(newToken);
                         m_sharedCache->setList(varName, vals);
                         return true;
                     }

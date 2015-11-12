@@ -63,9 +63,13 @@ namespace jasl {
         static OptionalInt getInt(std::string const &key);
         static bool getInt_(std::string const &key, int64_t &val);
         static OptionalDouble getDouble(std::string const &key);
+        static bool getDouble_(std::string const &key, double &val);
         static OptionalBool getBool(std::string const &key);
+        static bool getBool_(std::string const &key, bool &val);
         static OptionalString getString(std::string const &key);
+        static bool getString_(std::string const &key, std::string &val);
         static OptionalValueArray getList(std::string const &key);
+        static bool getList_(std::string const &key, ValueArray &val);
         static Value getListToken(std::string const &key, size_t const index);
         static OptionalType getType(std::string const &key);
     };
