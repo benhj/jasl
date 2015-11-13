@@ -1,0 +1,15 @@
+block assignment(i) {
+    integer i -> j;
+    integer j -> k;
+}
+
+start {
+    integer 0 -> i;
+    repeat 100 times {
+        repeat 10000 times {
+            call assignment (i);
+        }
+    integer (i + 1) -> i;
+    echo_nl i;
+   }
+}

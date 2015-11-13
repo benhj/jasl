@@ -14,44 +14,44 @@
 
 namespace jasl 
 {
+
+    namespace {
+        Type getReturnType(Function &func, SharedVarCache const &sharedCache)
+        {
+            std::string type;
+            (void)func.getValueA<std::string>(type, sharedCache);
+            if(type == "integer") {
+                return Type::Int;
+            } else if(type == "decimal") {
+                return Type::Double;
+            } else if(type == "string") {
+                return Type::String;
+            } else if(type == "boolean") {
+                return Type::Bool;
+            } else if(type == "list") {
+                return Type::ValueArray;
+            } else {
+                throw std::runtime_error("Bollocks");
+            }
+        }
+    }
+
     ReturnableCommand::ReturnableCommand(Function &func_,
                                          SharedVarCache const &sharedCache,
                                          OptionalOutputStream const &output)
-    : Command(func_, std::make_shared<ScopedVarCache>(), output)
+        : Command(func_, std::make_shared<ScopedVarCache>(), output)
+        , m_functionName()
+        , m_returnSymbol()
+        , m_returnType(getReturnType(func_, sharedCache))
     {
+        (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+        (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
     }
 
     bool ReturnableCommand::execute()
     {
-        std::string type;
-        (void)m_func.getValueA<std::string>(type, m_sharedCache);
-        std::string returnName;
-        (void)m_func.getValueD<std::string>(returnName, m_sharedCache);
-        std::string functionName; 
-        (void)m_func.getValueB<std::string>(functionName, m_sharedCache);
-
+        
         extractAndUpdateParams(m_func.paramC, m_sharedCache);
-
-        if(type == "integer") {
-            m_returnSymbol = returnName;
-            m_returnType = Type::Int;
-        } else if(type == "decimal") {
-            m_returnSymbol = returnName;
-            m_returnType = Type::Double;
-        } else if(type == "string") {
-            m_returnSymbol = returnName;
-            m_returnType = Type::String;
-        } else if(type == "boolean") {
-            m_returnSymbol = returnName;
-            m_returnType = Type::Bool;
-        } else if(type == "list") {
-            m_returnSymbol = returnName;
-            m_returnType = Type::ValueArray;
-        } else {
-            setLastErrorMessage("returnable: unknown return type");
-            return false;
-        }
-
         interpretFunctionBody();
 
         // Now set return param in GlobalCache

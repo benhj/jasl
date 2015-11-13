@@ -19,37 +19,37 @@ namespace jasl
                              SharedVarCache const &sharedCache,
                              OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
+    , m_functionName()
+    , m_returnable(false)
+    , m_returnableType()
+    , m_returnableSymbol()
     {
-    }
-
-    bool CallCommand::execute()
-    {
-
-        std::string functionName; 
-        (void)m_func.getValueA<std::string>(functionName, m_sharedCache);
-
-        // try to extract input arguments, if there are any
-        ValueArray array;
-        if(m_func.getValueB<ValueArray>(array, m_sharedCache)) {
-            extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
-        }
+        // get the name of the function
+        (void)m_func.getValueA<std::string>(m_functionName, m_sharedCache);
 
         // check if call statement expecting a returnable in
         // which case we search for returnable rather than block
         // functions
-        std::string returnSymbol;
-        if(m_func.getValueC<std::string>(returnSymbol, m_sharedCache)) {
-            return searchForFunction(functionName, 
-                                     "returnable",
-                                     returnSymbol);
+        std::string kind("block");
+        if(m_func.getValueC<std::string>(m_returnSymbol, m_sharedCache)) {
+            setFunction("returnable");
+            m_returnable = true;
+        } else {
+            setFunction();
         }
 
-        return searchForFunction(functionName);
+        // set returnable type and symbol
+        if(m_returnable) {
+
+            // what is the return type?
+            (void)m_functionFunc.getValueA<std::string>(m_returnableType, m_sharedCache);
+
+            // what is the name of the returned variable
+            (void)m_functionFunc.getValueD<std::string>(m_returnableSymbol, m_sharedCache);
+        }
     }
 
-    bool CallCommand::searchForFunction(std::string &functionName,
-                                        std::string const &kind,
-                                        std::string const &returnSymbol)
+    void CallCommand::setFunction(std::string const &kind)
     {
         // First get all subroutines
         std::string &scriptString = GlobalCache::script;
@@ -74,59 +74,57 @@ namespace jasl
             } else if(kind == "returnable") {
                 (void)f.getValueB<std::string>(name, m_sharedCache);
             }
-            return name == functionName;
+            return name == m_functionName;
         });
 
-        // function was found so execute it
         if (it != std::end(matched)) {
-
-            return parseCommand(*it, kind, returnSymbol);
-        } 
-        return false;
+            m_functionFunc = *it;
+        }
     }
 
-    bool CallCommand::parseCommand(Function &function, 
-                                   std::string const &kind,
-                                   std::string const &returnSymbol)
+    bool CallCommand::execute()
+    {
+        // try to extract input arguments, if there are any
+        ValueArray array;
+        if(m_func.getValueB<ValueArray>(array, m_sharedCache)) {
+            extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
+        }
+
+        return parseCommand(m_returnable ? "returnable" : "block");
+    }
+
+    bool CallCommand::parseCommand(std::string const &kind)
     {
         CommandInterpretor ci;
-        (void)ci.interpretFunc(function, m_sharedCache, m_outputStream);
+        (void)ci.interpretFunc(m_functionFunc, m_sharedCache, m_outputStream);
 
         // now set result of function if returnable type
         if(kind == "returnable") {
 
-            // what is the return type?
-            std::string type;
-            (void)function.getValueA<std::string>(type, m_sharedCache);
-
-            // what is the name of the returned variable
-            std::string returnName;
-            (void)function.getValueD<std::string>(returnName, m_sharedCache);
-
-            // now set the returned variable in the returnSymbol
+            // now set the returned variable in the m_returnSymbol
             // and erase the original function result
             // Note, values reurned from the function are on
             // the global stack so need to access from GlobalCache
-            if(type == "integer") {
+            if(m_returnableType == "integer") {
                 int64_t value;
-                (void)GlobalCache::getInt_(returnName, value);
-                m_sharedCache->setInt(returnSymbol, value);
-            } else if(type == "decimal") {
+                (void)GlobalCache::getInt_(m_returnableSymbol, value);
+                m_sharedCache->setInt(m_returnSymbol, value);
+            } else if(m_returnableType == "decimal") {
                 double value;
-                (void)GlobalCache::getDouble_(returnName, value);
-                m_sharedCache->setDouble(returnSymbol, value);
-            } else if(type == "string") {
+                (void)GlobalCache::getDouble_(m_returnableSymbol, value);
+                m_sharedCache->setDouble(m_returnSymbol, value);
+            } else if(m_returnableType == "string") {
                 std::string value;
-                (void)GlobalCache::getString_(returnName, value);
-                m_sharedCache->setString(returnSymbol, value);
-            } else if(type == "boolean") {
+                (void)GlobalCache::getString_(m_returnableSymbol, value);
+                m_sharedCache->setString(m_returnSymbol, value);
+            } else if(m_returnableType == "boolean") {
                 bool value;
-                (void)GlobalCache::getBool_(returnName, value);
-                m_sharedCache->setBool(returnSymbol, value);
-            } else if(type == "list") {
+                (void)GlobalCache::getBool_(m_returnableSymbol, value);
+                m_sharedCache->setBool(m_returnSymbol, value);
+            } else if(m_returnableType == "list") {
                 ValueArray value;
-                (void)GlobalCache::getList_(returnName, value);
-                m_sharedCache->setList(returnSymbol, value);
+                (void)GlobalCache::getList_(m_returnableSymbol, value);
+                m_sharedCache->setList(m_returnSymbol, value);
             } else {
                 setLastErrorMessage("call returnable: unknown return type");
                 return false;
@@ -134,7 +132,7 @@ namespace jasl
 
             // to introduce some notion of variable locality,
             // erase the variable generated by the function itself
-            GlobalCache::eraseValue(returnName);
+            GlobalCache::eraseValue(m_returnableSymbol);
 
         }
 
