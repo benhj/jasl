@@ -16,9 +16,9 @@ namespace jasl
     class ReturnableCommand : public Command
     {
 
+        std::string m_functionName;
         std::string m_returnSymbol;
         Type m_returnType;
-
 
     public:
         ReturnableCommand(Function &func_,

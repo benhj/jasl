@@ -20,12 +20,27 @@ namespace jasl
                     OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
-        bool searchForFunction(std::string &functionName, 
-                               std::string const &kind = "block",
-                               std::string const &returnSymbol = "");
 
-        bool parseCommand(Function &function,
-                          std::string const &kind = "block",
-                          std::string const &returnSymbol = "");
+        bool parseCommand(std::string const &kind = "block");
+        void setFunction(std::string const &kind = "block");
+
+        // The name of the block or returnable being called
+        std::string m_functionName;
+
+        // Is the thing being called a returnable or a block
+        bool m_returnable;
+
+        // If returnable, the symbol into which we put the result
+        std::string m_returnSymbol;
+
+        // The actual block statement being called
+        Function m_functionFunc;
+
+        // The type of the returnable if returnable
+        std::string m_returnableType;
+
+        // The symbol of the return statement if returnable
+        std::string m_returnableSymbol;
+
     };
 }
