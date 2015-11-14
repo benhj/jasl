@@ -175,3 +175,64 @@ start {
 }
 </pre>
 
+More on lists
+-------------
+Lists are containers of string elements that may contain nested lists:
+
+<pre>
+list [] -> emptyList;
+list [just a plain list] -> A;
+list [Test a [nested list] list] -> L;
+list [a very [very [even more nested] nested] nested list] -> Q;
+</pre>
+
+A number of operators can be used to add elements to and extract elements from lists.
+
+Setting tokens:
+
+<pre>
+list [hello there] -> t;
+set_token (0, t, "goodbye") -> t;
+// list t is now [goodbye there]
+
+set_token (0, t, [nested bit]) -> t;
+// list t is now [[nested bit] there]
+
+set_token (1, [another list], "test") -> q;
+// q is [another test]
+</pre>
+
+Getting tokens:
+
+<pre>
+// extract token 0, store in string t
+get_token(0, [hello there]) -> t;
+
+// make a new list, q
+list [what the flip] -> q;
+
+// extract token 1 from q and store in string r
+get_token(1, q) -> r;
+</pre>
+
+Adding tokens (similar to `set_token`):
+
+<pre>
+// add a token to the end of a list
+list [a big list] -> L;
+add_token("token", L);
+</pre>
+
+Find the index of first matching token:
+
+<pre>
+index_of ("hello", [hello there]) -> s;
+</pre>
+
+Converting a list to a string:
+
+<pre>
+list_to_string [hello there] -> s
+</pre>
+
+
