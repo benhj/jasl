@@ -141,7 +141,7 @@ Finally a list element iterator:
 
 <pre>
 list [this is a list] -> mylist;
-for element in list {
+for element in mylist {
     echo_nl element;
 }
 </pre>
@@ -233,6 +233,41 @@ Converting a list to a string:
 
 <pre>
 list_to_string [hello there] -> s
+</pre>
+
+Iterating over list elements:
+
+<pre>
+list [this is a list] -> mylist;
+for element in mylist {
+    echo_nl element;
+}
+</pre>
+
+Miscellaneous
+-------------
+Getting the type of a variable:
+
+<pre>
+// suppose we need to figure out the type of a,
+// use the type command and put result in a string.
+integer 1 -> a;
+type a -> theTypeOfA;
+</pre>
+
+Releasing a variable if we no longer need it:
+
+<pre>
+decimal 1.1 -> d;
+// some time later, after we're finished with d:
+release d;
+</pre>
+
+Generating random integers:
+
+<pre>
+// generate an integer in the range [0, 5]:
+random_int(5) -> result;
 </pre>
 
 
