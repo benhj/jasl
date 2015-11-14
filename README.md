@@ -119,8 +119,50 @@ start {
 Loops
 -----
 
-Control-flow
-------------
+Three types of loop are provided. 
+A while loop that has C-style syntax:
+
+<pre>
+integer 0 -> i;
+while (i < 10) {
+    integer (i + 1) -> i;
+}
+</pre>
+
+A repeat loop. I think I saw this in POP-11 and I found it damn handy:
+
+<pre>
+repeat 10 times {
+   echo_nl "hello!";
+}
+</pre>
+
+Finally a list element iterator:
+
+<pre>
+list [this is a list] -> mylist;
+for element in list {
+    echo_nl element;
+}
+</pre>
+
+If-else
+-------
+Conditional branching is c-style with the one exception that `if else` is not currently supported. Examples:
+
+<pre>
+if (1 < 2) {
+    echo_nl "true";
+}
+
+if (2 < 1) {
+    echo_nl "true";
+} else {
+    echo_nl "false";
+}
+</pre>
+
+
 
 Handling input
 --------------
