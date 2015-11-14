@@ -154,7 +154,6 @@ Conditional branching is c-style with the one exception that `if else` is not cu
 if (1 < 2) {
     echo_nl "true";
 }
-
 if (2 < 1) {
     echo_nl "true";
 } else {
@@ -162,10 +161,17 @@ if (2 < 1) {
 }
 </pre>
 
-
-
 Handling input
 --------------
+As with everything else, handling input is easy:
+<pre>
+// start is the main entry point
+start {
+    // query for user input
+    input "What is your name? " -> name;
+    string "Hello, " -> s;
+    append (s, name) -> s;
+    echo_nl s;
+}
+</pre>
 
-More on lists
--------------
