@@ -2,7 +2,7 @@
 //  CommandInterpretor.cpp
 //  jasl
 //
-//  Created by Ben Jones 
+//  Created by Ben Jones
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
@@ -115,8 +115,8 @@ namespace jasl {
             m_commandMap.insert(std::make_pair("type", BUILD_COMMAND_AND_EXECUTE(Type)));
             m_commandMap.insert(std::make_pair("random_int", BUILD_COMMAND_AND_EXECUTE(RandomInt)));
             m_commandMap.insert(std::make_pair("exit", [](Function &,
-                                                          SharedVarCache const &,              
-                                                          OptionalOutputStream const &) {  
+                                                          SharedVarCache const &,
+                                                          OptionalOutputStream const &) {
                                                               exit(0);
                                                               return false;
                                                           }));
@@ -153,13 +153,13 @@ namespace jasl {
             m_commandBuilders.insert(std::make_pair("type", BUILD_COMMAND(Type)));
             m_commandBuilders.insert(std::make_pair("random_int", BUILD_COMMAND(RandomInt)));
             m_commandBuilders.insert(std::make_pair("exit", [](Function &,
-                                                          SharedVarCache const &,              
-                                                          OptionalOutputStream const &) {  
+                                                          SharedVarCache const &,
+                                                          OptionalOutputStream const &) {
                                                               exit(0);
                                                               return nullptr;
                                                           }));
         }
-        
+
     }
 
     std::string
@@ -184,7 +184,7 @@ namespace jasl {
         } catch (...) {}
         return errorMessage;
     }
-    
+
     std::string
     CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs,
                                                        SharedVarCache const &varCache,
@@ -198,7 +198,7 @@ namespace jasl {
         bool successfulParse = boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
         if (successfulParse) {
             return doInterpretFunc(func, varCache, outputStream);
-        } 
+        }
         return std::string("Unsuccessful parse");
     }
 
@@ -220,9 +220,9 @@ namespace jasl {
             line.append("\n");
             script.append(line);
         }
-        
+
         return parseStringCollection(script, varCache);
-        
+
     }
 
     std::vector<Function>
@@ -231,7 +231,7 @@ namespace jasl {
     {
 
 
-        // store the script in global static. Used to do block 
+        // store the script in global static. Used to do block
         // (jasl name for subroutine) lookups
         GlobalCache::script = stringCollection;
 
@@ -255,7 +255,7 @@ namespace jasl {
         return functions;
     }
 
-    std::shared_ptr<Command> 
+    std::shared_ptr<Command>
     CommandInterpretor::funcToCommand(Function &func,
                                       SharedVarCache const &varCache,
                                       OptionalOutputStream const &outputStream) const
