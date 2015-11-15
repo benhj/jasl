@@ -9,8 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include "StringToPrimitiveCommand.hpp"
-#include <cstdlib>
 
 namespace jasl {
     class RandomIntCommand : public Command
@@ -18,30 +16,8 @@ namespace jasl {
     public:
         RandomIntCommand(Function &func_,
                          SharedVarCache const &sharedCache = SharedVarCache(),
-                         OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
-        {
-        }
+                         OptionalOutputStream const &output = OptionalOutputStream());
 
-        bool execute() override
-        {
-            int64_t a;
-            if (!VarExtractor::trySingleIntExtraction(m_func.paramA, a, m_sharedCache)) {
-                setLastErrorMessage("random_int: problem determining parameter");
-                return false;
-            } 
-
-            auto output = (rand() % (int)(a + 1));
-
-            std::string key;
-            if(!VarExtractor::tryAnyCast(key, m_func.paramB)) {
-                setLastErrorMessage("random_int: problem determining var name");
-                return false;
-            }
-
-            m_sharedCache->setInt(key, output);
-            return true;
-        }
+        bool execute() override;
     };
 }
-

@@ -8,7 +8,7 @@ boostIncPath=/usr/local/include
 objects="objects/*.o"
 
 function check_obs_dir {
-    if [ ! -d "$objects" ]; then
+    if [ ! -d "objects" ]; then
         mkdir objects
     fi
 }

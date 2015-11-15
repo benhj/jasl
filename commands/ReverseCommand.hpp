@@ -1,5 +1,5 @@
 //
-//  ReverseCommand.cpp
+//  ReverseCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
@@ -9,9 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include "../VarExtractor.hpp"
-#include <algorithm>
-#include <sstream>
 
 namespace jasl
 {
@@ -20,32 +17,9 @@ namespace jasl
     public:
         ReverseCommand(Function &func_,
                        SharedVarCache const &sharedCache = SharedVarCache(),
-                       OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
-        {
+                       OptionalOutputStream const &output = OptionalOutputStream());
 
-        }
-
-        bool execute() override
-        {
-            std::string stringName;
-            if(!m_func.getValueA<std::string>(stringName, m_sharedCache)) {
-                setLastErrorMessage("string: couldn't parse");
-                return false;
-            }
-
-            // gracefully fail if string with name cannot be found
-            auto found = m_sharedCache->getString(stringName);
-            if(!found) {
-                return false;
-            }
-
-            auto result = *found;
-            std::reverse(std::begin(result), std::end(result));
-            m_sharedCache->setString(stringName, result);
-            return true;
-        }
-        
+        bool execute() override;
     };
 
 }
