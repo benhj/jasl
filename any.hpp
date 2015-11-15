@@ -15,7 +15,7 @@ namespace simple_any {
 
       public:
 
-        any() 
+        any()
         : _held(nullptr)
         {
         }
@@ -45,7 +45,7 @@ namespace simple_any {
             T _data;
             std::type_info const &type() const { return typeid(T); }
         };
-        
+
         // types for which there are no specializations
         std::shared_ptr<holder> _held;
     };

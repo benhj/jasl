@@ -14,7 +14,6 @@
 
 namespace jasl
 {
-    
     namespace qi = boost::spirit::qi;
     namespace ascii = boost::spirit::ascii;
 
