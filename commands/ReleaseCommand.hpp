@@ -1,5 +1,5 @@
 //
-//  ReleaseCommand.cpp
+//  ReleaseCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 01/10/15
@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Command.hpp"
-#include <sstream>
 
 namespace jasl
 {
@@ -18,30 +17,12 @@ namespace jasl
     public:
         ReleaseCommand(Function &func_,
                        SharedVarCache const &sharedCache = SharedVarCache(),
-                       OptionalOutputStream const &output = OptionalOutputStream())
-        : Command(func_, sharedCache, output)
-        {
-        }
+                       OptionalOutputStream const &output = OptionalOutputStream());
 
-        bool execute() override
-        {
-            if(trySymbolExtraction()) { return true; }
-            setLastErrorMessage("exec: couldn't parse");
-            return false;
-        }
+        bool execute() override;
 
     private:
-
-        bool trySymbolExtraction()
-        {
-            // Now try extracting a symbol
-            std::string symbol;
-            if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
-            	m_sharedCache->eraseValue(symbol);
-                return true;
-            }
-            return false;
-        }
+        bool trySymbolExtraction();
     };
 
 }
