@@ -7,7 +7,7 @@ returnable integer canPlaceQueen(r, c, x) -> yes {
         
         get_token(i, x) -> tok;
         integer tok -> itok;     
-        if(((itok == c) || ((i - r) == (itok -c))) || ((i - r) == (c - itok))) {
+        ? (((itok == c) || ((i - r) == (itok -c))) || ((i - r) == (c - itok))) {
             integer 0 -> yes;
             // so that we can break early
             integer r -> i; 
@@ -25,9 +25,9 @@ block printQueens(N, x) {
         while(j < N) {
             get_token(i, x) -> tok;
             integer tok -> itok;
-            if (itok == j) {
+            ? (itok == j) {
                 echo "Q ";
-            } else {
+            } : {
                 echo "* "; 
             }
             integer (j + 1) -> j;
@@ -43,14 +43,13 @@ block placeNQueens(r, n, x) {
     integer 0 -> c;
     while(c < n) {
         call canPlaceQueen(r, c, x) -> yes;
-        if(yes == 1) {
+        ? (yes == 1) {
             string c -> strtok;
             set_token(r, x, strtok) -> x; 
-            if (r == (n - 1)) {
+            ? (r == (n - 1)) {
                 call printQueens(n, x);
                 exit;
-            }
-            else {
+            } : {
                call placeNQueens((r + 1), n, x);
             }
         }

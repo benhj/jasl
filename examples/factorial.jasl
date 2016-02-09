@@ -1,9 +1,9 @@
 returnable integer factorial(n) -> f {
     
-    if (n > 1) {
+    ? (n > 1) {
         call factorial((n - 1)) -> result;
         integer (n * result) -> f;
-    } else {
+    } : {
         integer 1 -> f;
     }
     
