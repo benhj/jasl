@@ -271,6 +271,16 @@ namespace jasl
                    // optional 'else part'
                    >> -(lit("else") >> '{' >> commandCollection >> '}');
 
+            ifRule_B %= string("?")
+                   >> '(' 
+                   >>  comparisonExpression
+                   >> ')'
+                   >> '{'
+                   >>  commandCollection
+                   >> '}'
+                   // optional 'else part'
+                   >> -(lit(":") >> '{' >> commandCollection >> '}');
+
             // calls a function with given name
             call %= string("call")
                  >> genericString // functionName
@@ -464,6 +474,7 @@ namespace jasl
                          | doubleNewSyntax
                          | boolNewSyntax
                          | ifRule 
+                         | ifRule_B
                          | argsRule
                          | commentFunc
                          | vars 
@@ -508,6 +519,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> returnable;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
+        qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
         qi::rule<Iterator, Function(), ascii::space_type> echo;
         qi::rule<Iterator, Function(), ascii::space_type> echo_nl;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
