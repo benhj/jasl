@@ -1,0 +1,19 @@
+// Playing around with some different syntax ideas
+// This one borrows a bit from C, but kind of back-to-front
+// in a way.
+
+start {
+    
+    integer 1 -> i;
+    integer 1 -> j;
+    ? (i == j) {
+        echo_nl "yes";
+    }
+
+    ? (i != j) {
+        echo_nl "A";
+    } : {
+        echo_nl "B";
+    }
+    
+}
