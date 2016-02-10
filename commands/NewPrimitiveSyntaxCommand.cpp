@@ -28,7 +28,7 @@ namespace jasl {
 
             return handleInt();
 
-        } else if (m_type == "decimal") {
+        } else if (m_type == "real") {
 
             return handleDouble();
 

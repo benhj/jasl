@@ -16,7 +16,7 @@ block foo (a, b, c, d, e, f, g) {
 start {
     echo_nl "Going in to function..";
     integer 1 -> a;
-    decimal 5.5 -> b;
+    real 5.5 -> b;
     string "goodbye" -> c;
     list [another [nested] list] -> d;
     call foo (a, b, 10, "hello", c, [a list], d);

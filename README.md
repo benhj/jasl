@@ -35,7 +35,7 @@ Variables
 <pre>
 // This is a comment
 integer 5 -> a;
-decimal 1.1 -> b;
+real 1.1 -> b;
 boolean true -> c;
 string "Hello!" -> d;
 list [This is a list] -> e;
@@ -258,7 +258,7 @@ type a -> theTypeOfA;
 Releasing a variable if we no longer need it:
 
 <pre>
-decimal 1.1 -> d;
+real 1.1 -> d;
 // some time later, after we're finished with d:
 release d;
 </pre>

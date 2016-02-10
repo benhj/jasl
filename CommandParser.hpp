@@ -128,8 +128,8 @@ namespace jasl
                          >> (genericString)
                          >> ';';
 
-            // decimal 5.0 -> d; 
-            doubleNewSyntax %= string("decimal")
+            // real 5.0 -> d; 
+            doubleNewSyntax %= string("real")
                             >> (mathExpression | bracketedMathExpression | doubleRule | genericString | doubleQuotedString)
                             >> lit("->")
                             >> (genericString)
@@ -407,7 +407,7 @@ namespace jasl
                             >> ';';
 
             // will try and convert a string to a double
-            stringToDoubleRule %= string("string_to_decimal")
+            stringToDoubleRule %= string("string_to_real")
                                >> (doubleQuotedString | genericString) 
                                >> lit("->")
                                >> genericString

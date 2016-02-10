@@ -22,7 +22,7 @@ void testTypes()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer 5 -> a;", cache);
-    ci.parseAndInterpretSingleCommand("decimal 1.1 -> b;", cache);
+    ci.parseAndInterpretSingleCommand("real 1.1 -> b;", cache);
     ci.parseAndInterpretSingleCommand("boolean true -> c;", cache);
     ci.parseAndInterpretSingleCommand("string \"hello\" -> d;", cache);
     ci.parseAndInterpretSingleCommand("list [some big list] -> e;", cache);
@@ -32,7 +32,7 @@ void testTypes()
     ci.parseAndInterpretSingleCommand("type(d) -> dtype;", cache);
     ci.parseAndInterpretSingleCommand("type(e) -> etype;", cache);
     ASSERT_EQUAL("integer", *cache->getString("atype"), "testType::a is integer");
-    ASSERT_EQUAL("decimal", *cache->getString("btype"), "testType::b is decimal");
+    ASSERT_EQUAL("real", *cache->getString("btype"), "testType::b is real");
     ASSERT_EQUAL("boolean", *cache->getString("ctype"), "testType::c is boolean");
     ASSERT_EQUAL("string", *cache->getString("dtype"), "testType::d is string");
     ASSERT_EQUAL("list", *cache->getString("etype"), "testType::e is list");
@@ -47,7 +47,7 @@ void testMath()
     ci.parseAndInterpretSingleCommand("integer 2 -> x;", cache);
     ci.parseAndInterpretSingleCommand("integer (result * x) -> result;", cache);
     ASSERT_EQUAL(60, *cache->getInt("result"), "testMath::result is 60");
-    ci.parseAndInterpretSingleCommand("decimal (result - 2.5) -> resultDouble;", cache);
+    ci.parseAndInterpretSingleCommand("real (result - 2.5) -> resultDouble;", cache);
     ASSERT_EQUAL(57.5, *cache->getDouble("resultDouble"), "testMath::resultDouble is 57.5");
 }
 
@@ -56,7 +56,7 @@ void testVarNewSyntax()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer 1->i;", cache);
-    ci.parseAndInterpretSingleCommand("decimal 1.1->j;", cache);
+    ci.parseAndInterpretSingleCommand("real 1.1->j;", cache);
     ci.parseAndInterpretSingleCommand("boolean true->k;", cache);
     ASSERT_EQUAL(1, *cache->getInt("i"), "testVarNewSyntax::i is 1");
     ASSERT_EQUAL(1.1, *cache->getDouble("j"), "testVarNewSyntax::j is 1.1");
@@ -68,11 +68,11 @@ void testVarNewSyntaxFromString()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer \"1\" -> i;", cache);
-    ci.parseAndInterpretSingleCommand("decimal \"1.1\" -> j;", cache);
+    ci.parseAndInterpretSingleCommand("real \"1.1\" -> j;", cache);
     ci.parseAndInterpretSingleCommand("string \"2\" -> sint;", cache);
     ci.parseAndInterpretSingleCommand("string \"2.2\" -> sdouble;", cache);
     ci.parseAndInterpretSingleCommand("integer sint -> k;", cache);
-    ci.parseAndInterpretSingleCommand("decimal sdouble -> l;", cache);
+    ci.parseAndInterpretSingleCommand("real sdouble -> l;", cache);
     ASSERT_EQUAL(1, *cache->getInt("i"), "testVarNewSyntaxFromString A");
     ASSERT_EQUAL(1.1, *cache->getDouble("j"), "testVarNewSyntaxFromString B");
     ASSERT_EQUAL(2, *cache->getInt("k"), "testVarNewSyntaxFromString C");
@@ -103,7 +103,7 @@ void testEchoSymbols()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("integer 10 -> b;", cache);
-    ci.parseAndInterpretSingleCommand("decimal 1.1 -> c;", cache);
+    ci.parseAndInterpretSingleCommand("real 1.1 -> c;", cache);
     ci.parseAndInterpretSingleCommand("boolean true -> d;", cache);
     ci.parseAndInterpretSingleCommand("echo b;", cache, ss);
     ci.parseAndInterpretSingleCommand("echo c;", cache, ss);
@@ -158,7 +158,7 @@ void testStringWithNumbers()
     ci.parseAndInterpretSingleCommand("string 5 -> numberFive;", cache, ss);
     ASSERT_EQUAL("5", *cache->getString("numberFive"), "testStringWithNumbers integer");
     ci.parseAndInterpretSingleCommand("string 5.5 -> numberDecimal;", cache, ss);
-    ASSERT_EQUAL("5.5", *cache->getString("numberDecimal"), "testStringWithNumbers decimal");
+    ASSERT_EQUAL("5.5", *cache->getString("numberDecimal"), "testStringWithNumbers real");
 }
 
 void testStringWithMath()
