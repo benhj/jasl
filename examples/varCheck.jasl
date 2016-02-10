@@ -1,7 +1,7 @@
 start {
 
     // check that variables can only be instantiated once
-    integer 5 -> a;
+    int 5 -> a;
     real 1.1 -> a;
 
     // should print out 5    
@@ -11,16 +11,16 @@ start {
     release a;
     
     real 1.1 -> a;
-    integer 5 -> a;
+    int 5 -> a;
     
     // should print out 1.1
     echo_nl a;
 
     // extract and print out type information
     release a;
-    integer 5 -> a;
+    int 5 -> a;
     real 1.1 -> b;
-    boolean true -> c;
+    bool true -> c;
     string "hello" -> d;
     list [lists of words] -> e;
     type(a) -> atype;

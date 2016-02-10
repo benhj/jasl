@@ -10,12 +10,12 @@ start {
     // append any extra arguments also passed in,
     // remembering to insert spaces between each token.
     // Note that 'argsCount' is implicitly known.
-    integer 1 -> i;
+    int 1 -> i;
     repeat (argsCount - 1) times {
     	append (s, " ") -> s;
     	args i -> extra;
    	    append (s, extra) -> s;
-    	integer (i + 1) -> i;
+    	int (i + 1) -> i;
     }
 
     // execute the command

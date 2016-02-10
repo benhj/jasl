@@ -31,7 +31,7 @@ namespace jasl
     {
         bool success = true;
 
-        // Extract the boolean condition of the if-statement
+        // Extract the bool condition of the if-statement
         ComparisonExpression ce;
         if (!VarExtractor::tryExtraction<ComparisonExpression>(ce, m_func.paramA, m_sharedCache)) {
             return false;

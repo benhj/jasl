@@ -5,8 +5,8 @@ block binary (number) {
     string " " -> binaryString;
 
     while (number > 0 ) {
-        integer (number % 2) -> bit;
-        integer (number / 2) -> number;
+        int (number % 2) -> bit;
+        int (number / 2) -> number;
         append (binaryString, bit) -> binaryString;
     }
 
@@ -27,10 +27,10 @@ start {
     // that will need to be converted to a number
     args 0 -> a;
 
-    // convert a to an integer 
-    integer a -> number;
+    // convert a to an int 
+    int a -> number;
 
-    // convert the above arbitrary integer to 
+    // convert the above arbitrary int to 
     // a binary representation
     echo_nl " ";
     string "Going to convert the number " -> s;

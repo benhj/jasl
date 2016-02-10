@@ -4,8 +4,8 @@
 
 start {
     
-    integer 1 -> i;
-    integer 1 -> j;
+    int 1 -> i;
+    int 1 -> j;
     ? (i == j) {
         echo_nl "yes";
     }

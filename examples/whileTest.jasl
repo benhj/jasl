@@ -1,8 +1,8 @@
 start {
-    integer 1->a;
+    int 1->a;
     while(a<100) {
         echo_nl a;
-        integer (1 + a)->a;
+        int (1 + a)->a;
     }
 
 }

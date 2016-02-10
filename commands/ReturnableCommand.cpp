@@ -20,13 +20,13 @@ namespace jasl
         {
             std::string type;
             (void)func.getValueA<std::string>(type, sharedCache);
-            if(type == "integer") {
+            if(type == "int") {
                 return Type::Int;
             } else if(type == "real") {
                 return Type::Double;
             } else if(type == "string") {
                 return Type::String;
-            } else if(type == "boolean") {
+            } else if(type == "bool") {
                 return Type::Bool;
             } else if(type == "list") {
                 return Type::ValueArray;

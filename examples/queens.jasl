@@ -19,14 +19,14 @@ returnable list initialize (N) -> rep {
 
     // build the representation
     list [] -> rep;
-    integer 0 -> i;
+    int 0 -> i;
     // board initialization with heuristic
     repeat N times {
         string i -> istring;
         add_token(istring, rep);
-        integer (i + 2) -> i;
+        int (i + 2) -> i;
         ? (i == N) {
-            integer 0 -> i;
+            int 0 -> i;
         }
     }
 
@@ -42,20 +42,20 @@ block showBoard (N, representation) {
     }
 
     // create the board representation
-    integer 0 -> i;
+    int 0 -> i;
     repeat N times {
         // make sure correct '-' is set with a 'Q'
         get_token(i, representation) -> token;
 
         // token is a string to needs to be 
-        // converted to an integer
-        integer token -> itoken;
+        // converted to an int
+        int token -> itoken;
 
         // now set the token to a 'Q'
         set_token(itoken, row, "Q") -> theRow;
 
         // iterate to next row
-        integer (i + 1) -> i;
+        int (i + 1) -> i;
 
         // print the row out
         echo_nl theRow;
@@ -64,48 +64,48 @@ block showBoard (N, representation) {
 }
 
 // computes the error of the board
-returnable integer computeError (N, representation) -> theError {
+returnable int computeError (N, representation) -> theError {
 
-    integer 0 -> theError;
+    int 0 -> theError;
 
     // compute the number of queens attacking each queen
-    integer 0 -> i;
+    int 0 -> i;
     repeat N times {
         get_token(i, representation) -> token;
-        integer token -> itoken;
-        integer 0 -> e;
-        integer 0 -> k;
+        int token -> itoken;
+        int 0 -> e;
+        int 0 -> k;
         repeat N times {
             get_token(k, representation) -> token;
-            integer token -> ktoken;
+            int token -> ktoken;
             ? (itoken == ktoken) {
                 ? ( i != k) {
-                    integer (e + 1) -> e;
+                    int (e + 1) -> e;
                 }
             }
             ? (k < i) {
                 ? (ktoken == (itoken - (i - k))) {
-                    integer (e + 1) -> e;
+                    int (e + 1) -> e;
                 } : {
                     ? (ktoken == (itoken - (k - i))) {
-                        integer (e + 1) -> e;
+                        int (e + 1) -> e;
                     }
                 }
             } : {
                 ? (k > i) {
                     ? (ktoken == (itoken + (k - i))) {
-                        integer (e + 1) -> e;
+                        int (e + 1) -> e;
                     } : {
                         if(ktoken == (itoken + (i - k))) {
-                            integer (e + 1) -> e;
+                            int (e + 1) -> e;
                         }
                     }
                 }
             }
-            integer (k + 1) -> k;
+            int (k + 1) -> k;
         }
-        integer (i + 1) -> i;
-        integer (theError + e) -> theError;
+        int (i + 1) -> i;
+        int (theError + e) -> theError;
     }
     return theError;
 }
@@ -113,27 +113,27 @@ returnable integer computeError (N, representation) -> theError {
 start {
 
     args 0 -> nstr;
-    integer nstr -> N;
+    int nstr -> N;
 
     // initialize the representation 
     call initialize (N) -> representation;
 
     // minimize error
     call computeError (N, representation) -> error;
-    integer error -> currentError;
-    integer 1 -> moveBy;
+    int error -> currentError;
+    int 1 -> moveBy;
     while (currentError != 0) {
-        integer 0 -> count;
+        int 0 -> count;
         repeat N times {
             get_token(count, representation) -> tok;
-            integer tok -> itok;
+            int tok -> itok;
             list representation -> oldRep;
             ?((itok + moveBy) >= N) {
-                integer ((itok + moveBy) % (N - 1)) -> amount;
+                int ((itok + moveBy) % (N - 1)) -> amount;
                 string amount -> strtok;
                 set_token(count, representation, strtok) -> representation;
             } : {
-                integer (itok + moveBy) -> itok;
+                int (itok + moveBy) -> itok;
                 string itok -> strtok;
                 set_token(count, representation, strtok) -> representation;
             }
@@ -144,19 +144,19 @@ start {
             // now based on update decide whether to keep or go
             // back to original
             ?(error <= currentError) {
-                integer error -> currentError;
+                int error -> currentError;
             } : {
                 list oldRep -> representation;   
             }
 
-            integer (N - 1) -> value;
+            int (N - 1) -> value;
             random_int(value) -> randomValue;
-            integer (moveBy + randomValue) -> moveBy;
+            int (moveBy + randomValue) -> moveBy;
             ?(moveBy >= (N - 1)) {
-                integer 1 -> moveBy;
+                int 1 -> moveBy;
             }
 
-            integer (count + 1) -> count;
+            int (count + 1) -> count;
         }
         
         echo "Error: ";

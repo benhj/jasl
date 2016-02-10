@@ -53,7 +53,7 @@ namespace jasl
                     continue;
                 }
             } 
-            // TODO: try list, boolean, string
+            // TODO: try list, bool, string
         }
     }
 

@@ -102,9 +102,9 @@ namespace jasl {
             m_commandMap.emplace("string_length", BUILD_COMMAND_AND_EXECUTE(StringLength));
             m_commandMap.emplace("list", BUILD_COMMAND_AND_EXECUTE(List));
             m_commandMap.emplace("args", BUILD_COMMAND_AND_EXECUTE(Args));
-            m_commandMap.emplace("integer", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
+            m_commandMap.emplace("int", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("real", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
-            m_commandMap.emplace("boolean", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
+            m_commandMap.emplace("bool", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("input", BUILD_COMMAND_AND_EXECUTE(Input));
             m_commandMap.emplace("index_of", BUILD_COMMAND_AND_EXECUTE(ListTokenIndex));
             m_commandMap.emplace("get_token", BUILD_COMMAND_AND_EXECUTE(ListGetToken));
@@ -141,9 +141,9 @@ namespace jasl {
             m_commandBuilders.emplace("string_length", BUILD_COMMAND(StringLength));
             m_commandBuilders.emplace("list", BUILD_COMMAND(List));
             m_commandBuilders.emplace("args", BUILD_COMMAND(Args));
-            m_commandBuilders.emplace("integer", BUILD_COMMAND(NewPrimitiveSyntax));
+            m_commandBuilders.emplace("int", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("real", BUILD_COMMAND(NewPrimitiveSyntax));
-            m_commandBuilders.emplace("boolean", BUILD_COMMAND(NewPrimitiveSyntax));
+            m_commandBuilders.emplace("bool", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("input", BUILD_COMMAND(Input));
             m_commandBuilders.emplace("index_of", BUILD_COMMAND(ListTokenIndex));
             m_commandBuilders.emplace("get_token", BUILD_COMMAND(ListGetToken));

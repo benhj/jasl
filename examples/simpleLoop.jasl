@@ -1,5 +1,5 @@
 start {
-    integer 0 -> i;
+    int 0 -> i;
     echo "i: ";
     echo_nl i;
     repeat 100 times {

@@ -72,7 +72,7 @@ namespace jasl {
             } 
 
             // couldn't extract one of the 'basic types'. This means that the value
-            // might be in one of the integer, double or boolean caches so search for 
+            // might be in one of the int, double or bool caches so search for 
             // it therein.
             std::string str;
             extracted = tryAnyCast<std::string>(str, val);
@@ -124,7 +124,7 @@ namespace jasl {
             return false;
         }
 
-        /// Tries to extract an integer. Failing that tries to extract and
+        /// Tries to extract an int. Failing that tries to extract and
         /// evaluate an expression and cast the result to an int
         static bool trySingleIntExtraction(Value &val, int64_t &x, SharedVarCache const &sharedCache)
         {
@@ -169,7 +169,7 @@ namespace jasl {
             return false;
         }
 
-        /// tries to extract a boolean from Value storing the result in x
+        /// tries to extract a bool from Value storing the result in x
         /// and returning true if successful. If not initially successful,
         /// tries to extract out a logical expression instead and storing the 
         /// result of that in x and returning true.

@@ -1,9 +1,9 @@
 // Tests the parsing of a returnable function
 
-returnable integer func (a, somelist) -> returned {
+returnable int func (a, somelist) -> returned {
 	echo_nl "Hello";
     echo_nl somelist;
-	integer 5 + a -> returned;
+	int 5 + a -> returned;
 	return returned;
 }
 

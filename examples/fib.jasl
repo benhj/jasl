@@ -1,11 +1,11 @@
-// Note, all integer types are signed 64 bit
+// Note, all int types are signed 64 bit
 
 block fib () {
     
     // create some variables to store state
-    integer 1 -> x;
-    integer x -> oldx;
-    integer x -> olderx;
+    int 1 -> x;
+    int x -> oldx;
+    int x -> olderx;
 
     // perform the sequence a number of times
     repeat 50 times {
@@ -13,11 +13,11 @@ block fib () {
         echo x;
         echo " ";
 
-        integer oldx -> olderx;
-        integer x -> oldx;
+        int oldx -> olderx;
+        int x -> oldx;
 
         // compute new x value
-        integer (olderx + oldx) -> x;
+        int (olderx + oldx) -> x;
     }
 
     echo_nl " ";

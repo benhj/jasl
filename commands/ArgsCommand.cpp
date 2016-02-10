@@ -27,7 +27,7 @@ namespace jasl
 
         int64_t value;
         if(!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
-            setLastErrorMessage("repeat: problem extracting integer");
+            setLastErrorMessage("repeat: problem extracting int");
             return false;
         }
 
