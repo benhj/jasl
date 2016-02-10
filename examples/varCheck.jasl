@@ -2,7 +2,7 @@ start {
 
     // check that variables can only be instantiated once
     integer 5 -> a;
-    decimal 1.1 -> a;
+    real 1.1 -> a;
 
     // should print out 5    
     echo_nl a;
@@ -10,7 +10,7 @@ start {
     // delete var a
     release a;
     
-    decimal 1.1 -> a;
+    real 1.1 -> a;
     integer 5 -> a;
     
     // should print out 1.1
@@ -19,7 +19,7 @@ start {
     // extract and print out type information
     release a;
     integer 5 -> a;
-    decimal 1.1 -> b;
+    real 1.1 -> b;
     boolean true -> c;
     string "hello" -> d;
     list [lists of words] -> e;

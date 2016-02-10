@@ -22,7 +22,7 @@ namespace jasl
             (void)func.getValueA<std::string>(type, sharedCache);
             if(type == "integer") {
                 return Type::Int;
-            } else if(type == "decimal") {
+            } else if(type == "real") {
                 return Type::Double;
             } else if(type == "string") {
                 return Type::String;

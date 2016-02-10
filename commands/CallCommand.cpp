@@ -109,7 +109,7 @@ namespace jasl
                 int64_t value;
                 (void)GlobalCache::getInt_(m_returnableSymbol, value);
                 m_sharedCache->setInt(m_returnSymbol, value);
-            } else if(m_returnableType == "decimal") {
+            } else if(m_returnableType == "real") {
                 double value;
                 (void)GlobalCache::getDouble_(m_returnableSymbol, value);
                 m_sharedCache->setDouble(m_returnSymbol, value);

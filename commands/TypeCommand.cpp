@@ -50,7 +50,7 @@ namespace jasl
         } else if(*type == Type::Bool) {
             theType = "boolean";
         } else if(*type == Type::Double) {
-            theType = "decimal";
+            theType = "real";
         } else if(*type == Type::ValueArray) {
             theType = "list";
         }  else {
