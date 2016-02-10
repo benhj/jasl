@@ -105,7 +105,7 @@ namespace jasl
             // and erase the original function result
             // Note, values reurned from the function are on
             // the global stack so need to access from GlobalCache
-            if(m_returnableType == "integer") {
+            if(m_returnableType == "int") {
                 int64_t value;
                 (void)GlobalCache::getInt_(m_returnableSymbol, value);
                 m_sharedCache->setInt(m_returnSymbol, value);
@@ -117,7 +117,7 @@ namespace jasl
                 std::string value;
                 (void)GlobalCache::getString_(m_returnableSymbol, value);
                 m_sharedCache->setString(m_returnSymbol, value);
-            } else if(m_returnableType == "boolean") {
+            } else if(m_returnableType == "bool") {
                 bool value;
                 (void)GlobalCache::getBool_(m_returnableSymbol, value);
                 m_sharedCache->setBool(m_returnSymbol, value);

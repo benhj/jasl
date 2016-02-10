@@ -28,7 +28,7 @@ namespace jasl {
         /// will store any generated error that can then be queried
         mutable std::string errorMessage;
 
-        /// is the result an integer or a double (implicitly casts)
+        /// is the result an int or a double (implicitly casts)
         mutable bool resultIsInteger;
 
         /// cache of variables

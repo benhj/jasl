@@ -24,7 +24,7 @@ namespace jasl {
     bool NewPrimitiveSyntaxCommand::execute()
     {
 
-        if (m_type == "integer") {
+        if (m_type == "int") {
 
             return handleInt();
 
@@ -32,7 +32,7 @@ namespace jasl {
 
             return handleDouble();
 
-        } else if (m_type == "boolean") {
+        } else if (m_type == "bool") {
 
             return handleBool();
 
@@ -46,7 +46,7 @@ namespace jasl {
     {
         int64_t value;
         if (!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
-            // try converting a string to an integer
+            // try converting a string to an int
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
         m_sharedCache->setInt(m_varName, value);

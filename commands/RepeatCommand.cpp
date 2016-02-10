@@ -30,7 +30,7 @@ namespace jasl {
                 m_commands.push_back(ci.funcToCommand(f, sharedCache, output));
             }
             if(!VarExtractor::trySingleIntExtraction(m_func.paramA, m_loopCount, m_sharedCache)) {
-                setLastErrorMessage("repeat: problem extracting integer");
+                setLastErrorMessage("repeat: problem extracting int");
                 m_weHaveFuncs = false;
             }
         }

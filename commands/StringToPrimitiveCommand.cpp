@@ -27,7 +27,7 @@ namespace jasl
     {
         std::string varName;
         if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
-            setLastErrorMessage("string_to_: couldn't parse integer name");
+            setLastErrorMessage("string_to_: couldn't parse int name");
             return false;
         }
 
@@ -43,8 +43,8 @@ namespace jasl
         if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
             try {
                 // also handled off directy from NewPrimitiveSyntaxCommand so need
-                // to also check if function name is integer or real in respective branch
-                if(m_func.name == "string_to_integer" || m_func.name == "integer") {
+                // to also check if function name is int or real in respective branch
+                if(m_func.name == "string_to_int" || m_func.name == "int") {
                     m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(literalString.literal));
                     return true;
                 } else if(m_func.name == "string_to_real" || m_func.name == "real") {
@@ -69,8 +69,8 @@ namespace jasl
             if(result) {
                 try {
                     // also handled off directy from NewPrimitiveSyntaxCommand so need
-                    // to also check if function name is integer or real in respective branch
-                    if(m_func.name == "string_to_integer" || m_func.name == "integer") {
+                    // to also check if function name is int or real in respective branch
+                    if(m_func.name == "string_to_int" || m_func.name == "int") {
                         m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(*result));
                         return true;
                     } else if(m_func.name == "string_to_real" || m_func.name == "real") {

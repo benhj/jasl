@@ -1,10 +1,10 @@
-returnable integer factorial(n) -> f {
+returnable int factorial(n) -> f {
     
     ? (n > 1) {
         call factorial((n - 1)) -> result;
-        integer (n * result) -> f;
+        int (n * result) -> f;
     } : {
-        integer 1 -> f;
+        int 1 -> f;
     }
     
     return f;
@@ -14,7 +14,7 @@ returnable integer factorial(n) -> f {
 start {
 
     args 0 -> arg;
-    integer arg -> N;
+    int arg -> N;
 
     call factorial(N) -> result;
     echo_nl result;

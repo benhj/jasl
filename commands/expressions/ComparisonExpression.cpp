@@ -60,7 +60,7 @@ namespace jasl {
                     }
                 }
 
-                // where the comparison is between two booleans
+                // where the comparison is between two bools
                 bool b;
                 if (VarExtractor::trySingleBoolExtraction(right, b, cache)) {
                     return doStage2<T, bool>(valA, b, symbolOperator);
@@ -86,7 +86,7 @@ namespace jasl {
                 }
             }
 
-            // tries to get a boolean for the left operand
+            // tries to get a bool for the left operand
             bool b;
             if (VarExtractor::trySingleBoolExtraction(m_left, b, m_sharedCache)) {
                 return doStage1<bool>(b, m_right, m_symbolOperator, m_sharedCache);

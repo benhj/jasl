@@ -34,15 +34,15 @@ Variables
 
 <pre>
 // This is a comment
-integer 5 -> a;
+int 5 -> a;
 real 1.1 -> b;
-boolean true -> c;
+bool true -> c;
 string "Hello!" -> d;
 list [This is a list] -> e;
 list [This is [a nested list] list] -> f;
 </pre>
 
-Above, I create six variables, an integer, a real, a boolean, a string and two lists the latter of which contains a nested list 
+Above, I create six variables, an int, a real, a bool, a string and two lists the latter of which contains a nested list 
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
 longer true. Variables are now scoped at the level of a given block or returnable function. 
 
@@ -59,7 +59,7 @@ block myBlock () {
 
 }
 
-returnable integer myReturnable() -> toReturn {
+returnable int myReturnable() -> toReturn {
 
     return toReturn;
 }
@@ -70,8 +70,8 @@ Both are called with the keyword `call`:
 
 <pre>
 
-returnable integer funk (a) -> toReturn {
-    integer 10 + a -> toReturn;
+returnable int funk (a) -> toReturn {
+    int 10 + a -> toReturn;
     return toReturn;
 }
 
@@ -92,7 +92,7 @@ block myFunction () {
     echo "Hello ";
     
     // Variables are scoped to the function blockl
-    integer 5 -> a;
+    int 5 -> a;
 
     // A loop that executes statements within
     // the enclosing braces several times.
@@ -100,7 +100,7 @@ block myFunction () {
     // function block, the variable b will be accessible still
     // after the loop
     repeat 5 times {
-        integer 1 -> b;
+        int 1 -> b;
     }
 
     // This is valid. Integer b is still accessible
@@ -123,9 +123,9 @@ Three types of loop are provided.
 A while loop that has C-style syntax:
 
 <pre>
-integer 0 -> i;
+int 0 -> i;
 while (i < 10) {
-    integer (i + 1) -> i;
+    int (i + 1) -> i;
 }
 </pre>
 
@@ -251,7 +251,7 @@ Getting the type of a variable:
 <pre>
 // suppose we need to figure out the type of a,
 // use the type command and put result in a string.
-integer 1 -> a;
+int 1 -> a;
 type a -> theTypeOfA;
 </pre>
 
@@ -263,10 +263,10 @@ real 1.1 -> d;
 release d;
 </pre>
 
-Generating random integers:
+Generating random ints:
 
 <pre>
-// generate an integer in the range [0, 5]:
+// generate an int in the range [0, 5]:
 random_int(5) -> result;
 </pre>
 

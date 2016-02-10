@@ -25,11 +25,11 @@ namespace jasl {
     {
         // Note, for convenience, all math operations are done using doubles
         // The client of this function is responsible for casting to
-        // an integer if integer precision is required
+        // an int if int precision is required
         double vleft;
         double vright;
         double valA;
-        // extracting a double didn't work. Maybe an integer
+        // extracting a double didn't work. Maybe an int
         if(!VarExtractor::trySingleDoubleExtraction(left, valA, sharedCache)) {
             int64_t valC;
             if(VarExtractor::trySingleIntExtraction(left, valC, sharedCache)) {
@@ -43,7 +43,7 @@ namespace jasl {
         }
 
         double valB;
-        // extracting a double didn't work. Maybe an integer
+        // extracting a double didn't work. Maybe an int
         if(!VarExtractor::trySingleDoubleExtraction(right, valB, sharedCache)) {
             int64_t valD;
             if(VarExtractor::trySingleIntExtraction(right, valD, sharedCache)) {

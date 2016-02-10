@@ -30,7 +30,7 @@ int main (int argc , char *argv[])
     }  
 
     // Store how many arguments there are
-    // in special reserved integer, 'argsCount'
+    // in special reserved int, 'argsCount'
     ll::GlobalCache::setInt("argsCount", (argc - 2));
 
     // store any command line arguments that should also be interpreted

@@ -121,8 +121,8 @@ namespace jasl
                                     | bracketedMathExpression
                                     | bracketedComparisonExpression);
 
-            // integer 4 -> i;
-            intNewSyntax %= string("integer")
+            // int 4 -> i;
+            intNewSyntax %= string("int")
                          >> (mathExpression | bracketedMathExpression | intRule | genericString | doubleQuotedString)
                          >> lit("->")
                          >> (genericString)
@@ -135,8 +135,8 @@ namespace jasl
                             >> (genericString)
                             >> ';';
 
-            // boolean true -> b;
-            boolNewSyntax %= string("boolean")
+            // bool true -> b;
+            boolNewSyntax %= string("bool")
                           >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString | doubleQuotedString)
                           >> lit("->")
                           >> (genericString)
@@ -242,8 +242,8 @@ namespace jasl
                   >> '}';
 
             // a returnable function
-            // E.g. a function that returns an integer
-            // returnable integer func -> result {
+            // E.g. a function that returns an int
+            // returnable int func -> result {
             //     return result;
             // }
             returnable %= string("returnable")
@@ -400,7 +400,7 @@ namespace jasl
                         >> ';';
 
             // will try and convert a string to an int
-            stringToIntRule %= string("string_to_integer")
+            stringToIntRule %= string("string_to_int")
                             >> (doubleQuotedString | genericString) 
                             >> lit("->")
                             >> genericString
@@ -451,7 +451,7 @@ namespace jasl
                         >> genericString
                         >> ';';
 
-            // generates an integer in range [0, n]
+            // generates an int in range [0, n]
             // random_int(5) -> int;
             randomIntCommand %= string("random_int") >> '('
                              >> (genericString | intRule) >> ')'

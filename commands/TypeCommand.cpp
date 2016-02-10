@@ -46,9 +46,9 @@ namespace jasl
 
         std::string theType;
         if(*type == Type::Int) {
-            theType = "integer";
+            theType = "int";
         } else if(*type == Type::Bool) {
-            theType = "boolean";
+            theType = "bool";
         } else if(*type == Type::Double) {
             theType = "real";
         } else if(*type == Type::ValueArray) {
