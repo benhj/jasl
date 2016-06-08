@@ -243,9 +243,7 @@ namespace jasl
 
             // a returnable function
             // E.g. a function that returns an int
-            // fn:int func -> result {
-            //     return result;
-            // }
+            // fn:int func -> result {}
             returnable %= string("fn")
                        >> ':'
                        >> genericString // return type
@@ -255,10 +253,6 @@ namespace jasl
                        >> genericString // variable name
                        >> '{'
                        >> commandCollection
-                       // all returnables require a return statement
-                       >> lit("return")
-                       >> genericString
-                       >> ';'
                        >> '}';
 
             // a simple if statement

@@ -14,7 +14,6 @@ fn:int canPlaceQueen(r, c, x) -> yes {
         }
         int (i + 1) -> i;
     }
-    return yes;
 }
 
 block printQueens(N, x) {

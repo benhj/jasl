@@ -4,7 +4,6 @@ fn:int func (a, somelist) -> returned {
 	echo_nl "Hello";
     echo_nl somelist;
 	int 5 + a -> returned;
-	return returned;
 }
 
 start {
