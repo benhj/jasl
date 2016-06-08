@@ -71,7 +71,6 @@ Both are called with the keyword `call`:
 
 fn:int funk (a) -> toReturn {
     int 10 + a -> toReturn;
-    return toReturn;
 }
 
 block otherFunction () {
