@@ -21,8 +21,8 @@ Every program requires a `start` entry point, and can take any number of argumen
 <pre>
 // main entry point
 start {
-    // If script expects input arguments use 'args' keyword. 
-    // This will put the 0th argument in the variable a. 
+    // If script expects input arguments use 'args' keyword.
+    // This will put the 0th argument in the variable a.
     // Note that a is a string.
     args 0 -> a;
 }
@@ -42,9 +42,9 @@ list [This is a list] -> e;
 list [This is [a nested list] list] -> f;
 </pre>
 
-Above, I create six variables, an int, a real, a bool, a string and two lists the latter of which contains a nested list 
+Above, I create six variables, an int, a real, a bool, a string and two lists the latter of which contains a nested list
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
-longer true. Variables are now scoped at the level of a given block or returnable function. 
+longer true. Variables are now scoped at the level of a given block or returnable function.
 
 Functions
 ---------
@@ -65,6 +65,15 @@ fn:int myReturnable() -> toReturn {
 
 </pre>
 
+Update 8/6/16: now also have a void return type, hence the following:
+
+<pre>
+fn:none myBlock () {
+}
+</pre>
+
+is equivalent to the 'block' example from above.
+
 Both are called with the keyword `call`:
 
 <pre>
@@ -76,7 +85,7 @@ fn:int funk (a) -> toReturn {
 block otherFunction () {
     // Call returnable funk, put result into b
     call funk (5) -> b;
-    
+
     // should print out 15
     echo_nl b;
 }
@@ -85,10 +94,10 @@ block myFunction () {
 
     // Print out hello and add newline
     echo_nl "Hello";
-    
+
     // And without a newline:
     echo "Hello ";
-    
+
     // Variables are scoped to the function blockl
     int 5 -> a;
 
@@ -103,7 +112,7 @@ block myFunction () {
 
     // This is valid. Integer b is still accessible
     echo_nl b;
-    
+
     call otherFunction ();
 }
 
@@ -117,7 +126,7 @@ start {
 Loops
 -----
 
-Three types of loop are provided. 
+Three types of loop are provided.
 A while loop that has C-style syntax:
 
 <pre>
@@ -267,5 +276,3 @@ Generating random ints:
 // generate an int in the range [0, 5]:
 random_int(5) -> result;
 </pre>
-
-

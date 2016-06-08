@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -29,7 +29,7 @@ namespace jasl {
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, String, ValueArray
+        Int, Bool, Double, String, ValueArray, None
     };
 
     using OptionalType = ::boost::optional<Type>;

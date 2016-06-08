@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on on 10/10/2015.
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ReturnableCommand.hpp"
@@ -30,6 +30,8 @@ namespace jasl
                 return Type::Bool;
             } else if(type == "list") {
                 return Type::ValueArray;
+            } else if(type == "none") {
+                return Type::None;
             } else {
                 throw std::runtime_error("Bollocks");
             }
@@ -44,7 +46,9 @@ namespace jasl
         , m_returnSymbol()
         , m_returnType(getReturnType(func_, sharedCache))
     {
-        (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+        if(m_returnType != Type::None) {
+            (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+        }
         (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
     }
 
