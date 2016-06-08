@@ -56,12 +56,11 @@ They have this type of syntax:
 
 <pre>
 block myBlock () {
-
 }
 
+// No need for an 'explicit' return statement
+// since this is already implicit in the arrow return
 fn:int myReturnable() -> toReturn {
-
-    return toReturn;
 }
 
 </pre>

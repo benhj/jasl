@@ -1,14 +1,10 @@
 fn:int factorial(n) -> f {
-    
     ? (n > 1) {
         call factorial((n - 1)) -> result;
         int (n * result) -> f;
     } : {
         int 1 -> f;
     }
-    
-    return f;
-
 }
 
 start {

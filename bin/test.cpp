@@ -281,8 +281,8 @@ void testCallReturnableCommand()
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("start { echo \"Starting..\"; int 0 -> x; call foo (x) -> x; call bar (x) -> x; int (x - 5) -> x;}");
-    commands.append("fn:int bar(x) -> x { echo \"..and Goodbye!\"; int (x + 1) -> x; return x;}");
-    commands.append("fn:int foo(x) -> x { echo \"Hello\"; int 20 -> x; return x;}");
+    commands.append("fn:int bar(x) -> x { echo \"..and Goodbye!\"; int (x + 1) -> x; }");
+    commands.append("fn:int foo(x) -> x { echo \"Hello\"; int 20 -> x;}");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
