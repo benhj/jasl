@@ -4,5 +4,4 @@ start {
         echo_nl a;
         int (1 + a)->a;
     }
-
 }

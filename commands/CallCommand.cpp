@@ -32,7 +32,7 @@ namespace jasl
         // functions
         std::string kind("block");
         if(m_func.getValueC<std::string>(m_returnSymbol, m_sharedCache)) {
-            setFunction("returnable");
+            setFunction("fn");
             m_returnable = true;
         } else {
             setFunction();
@@ -71,7 +71,7 @@ namespace jasl
             std::string name;
             if(kind == "block") {
                 (void)f.getValueA<std::string>(name, m_sharedCache);
-            } else if(kind == "returnable") {
+            } else if(kind == "fn") {
                 (void)f.getValueB<std::string>(name, m_sharedCache);
             }
             return name == m_functionName;
@@ -90,7 +90,7 @@ namespace jasl
             extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
         }
 
-        return parseCommand(m_returnable ? "returnable" : "block");
+        return parseCommand(m_returnable ? "fn" : "block");
     }
 
     bool CallCommand::parseCommand(std::string const &kind)
@@ -99,7 +99,7 @@ namespace jasl
         (void)ci.interpretFunc(m_functionFunc, m_sharedCache, m_outputStream);
 
         // now set result of function if returnable type
-        if(kind == "returnable") {
+        if(kind == "fn") {
 
             // now set the returned variable in the m_returnSymbol
             // and erase the original function result

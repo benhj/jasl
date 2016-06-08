@@ -1,6 +1,6 @@
 // Tests the parsing of a returnable function
 
-returnable int func (a, somelist) -> returned {
+fn:int func (a, somelist) -> returned {
 	echo_nl "Hello";
     echo_nl somelist;
 	int 5 + a -> returned;

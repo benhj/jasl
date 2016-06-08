@@ -15,7 +15,7 @@
 // [- - - - Q - - -]
 // ----------------------------------------------
 
-returnable list initialize (N) -> rep {
+fn:list initialize (N) -> rep {
 
     // build the representation
     list [] -> rep;
@@ -64,7 +64,7 @@ block showBoard (N, representation) {
 }
 
 // computes the error of the board
-returnable int computeError (N, representation) -> theError {
+fn:int computeError (N, representation) -> theError {
 
     int 0 -> theError;
 

@@ -92,7 +92,7 @@ namespace jasl {
             m_commandMap.emplace("while", BUILD_COMMAND_AND_EXECUTE(While));
             m_commandMap.emplace("for", BUILD_COMMAND_AND_EXECUTE(For));
             m_commandMap.emplace("block", BUILD_COMMAND_AND_EXECUTE(Block));
-            m_commandMap.emplace("returnable", BUILD_COMMAND_AND_EXECUTE(Returnable));
+            m_commandMap.emplace("fn", BUILD_COMMAND_AND_EXECUTE(Returnable));
             m_commandMap.emplace("start", BUILD_COMMAND_AND_EXECUTE(Start));
             m_commandMap.emplace("string", BUILD_COMMAND_AND_EXECUTE(String));
             m_commandMap.emplace("call", BUILD_COMMAND_AND_EXECUTE(Call));
@@ -131,7 +131,7 @@ namespace jasl {
             m_commandBuilders.emplace("while", BUILD_COMMAND(While));
             m_commandBuilders.emplace("for", BUILD_COMMAND(For));
             m_commandBuilders.emplace("block", BUILD_COMMAND(Block));
-            m_commandBuilders.emplace("returnable", BUILD_COMMAND(Returnable));
+            m_commandBuilders.emplace("fn", BUILD_COMMAND(Returnable));
             m_commandBuilders.emplace("start", BUILD_COMMAND(Start));
             m_commandBuilders.emplace("string", BUILD_COMMAND(String));
             m_commandBuilders.emplace("call", BUILD_COMMAND(Call));
