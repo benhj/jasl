@@ -1,4 +1,4 @@
-returnable int factorial(n) -> f {
+fn:int factorial(n) -> f {
     
     ? (n > 1) {
         call factorial((n - 1)) -> result;

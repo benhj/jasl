@@ -59,7 +59,7 @@ block myBlock () {
 
 }
 
-returnable int myReturnable() -> toReturn {
+fn:int myReturnable() -> toReturn {
 
     return toReturn;
 }
@@ -70,7 +70,7 @@ Both are called with the keyword `call`:
 
 <pre>
 
-returnable int funk (a) -> toReturn {
+fn:int funk (a) -> toReturn {
     int 10 + a -> toReturn;
     return toReturn;
 }

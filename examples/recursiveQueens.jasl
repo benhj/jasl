@@ -1,4 +1,4 @@
-returnable int canPlaceQueen(r, c, x) -> yes {
+fn:int canPlaceQueen(r, c, x) -> yes {
 
     int 1 -> yes;
     

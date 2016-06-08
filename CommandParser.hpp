@@ -243,10 +243,11 @@ namespace jasl
 
             // a returnable function
             // E.g. a function that returns an int
-            // returnable int func -> result {
+            // fn:int func -> result {
             //     return result;
             // }
-            returnable %= string("returnable")
+            returnable %= string("fn")
+                       >> ':'
                        >> genericString // return type
                        >> genericString // functionName
                        >> parameterList // list of parameters
