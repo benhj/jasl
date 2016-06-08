@@ -312,6 +312,24 @@ void testCallBlockCommand()
     ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallBlockCommand::print-outs");
 }
 
+void testCallFunctionNone()
+{
+    auto cache = std::make_shared<ll::ScopedVarCache>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    std::string commands("start { echo \"Starting..\"; call foo (); call bar ();}");
+    commands.append("fn:none bar() { echo \"..and Goodbye!\"; }");
+    commands.append("fn:none foo() { echo \"Hello\"; }");
+    auto functions = ci.parseStringCollection(commands);
+    for(auto &f : functions) {
+        if(f.name == "start") {
+            (void)ci.interpretFunc(f, cache, ss);
+            break;
+        }
+    }
+    ASSERT_EQUAL("Starting..Hello..and Goodbye!", ss.str(), "testCallFunctionNone::print-outs");
+}
+
 void testArgsCommand()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
@@ -467,6 +485,7 @@ int main()
     testStartCommand();
     testCallReturnableCommand();
     testCallBlockCommand();
+    testCallFunctionNone();
     testArgsCommand();
     testList();
     testListTokenIndex();

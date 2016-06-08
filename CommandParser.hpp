@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -249,8 +249,7 @@ namespace jasl
                        >> genericString // return type
                        >> genericString // functionName
                        >> parameterList // list of parameters
-                       >> lit("->")
-                       >> genericString // variable name
+                       >> -(lit("->") >> genericString)
                        >> '{'
                        >> commandCollection
                        >> '}';

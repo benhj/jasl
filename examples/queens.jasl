@@ -45,7 +45,7 @@ block showBoard (N, representation) {
         // make sure correct '-' is set with a 'Q'
         get_token(i, representation) -> token;
 
-        // token is a string to needs to be 
+        // token is a string to needs to be
         // converted to an int
         int token -> itoken;
 
@@ -112,7 +112,7 @@ start {
     args 0 -> nstr;
     int nstr -> N;
 
-    // initialize the representation 
+    // initialize the representation
     call initialize (N) -> representation;
 
     // minimize error
@@ -134,7 +134,7 @@ start {
                 string itok -> strtok;
                 set_token(count, representation, strtok) -> representation;
             }
-            
+
             // now compute new error based on update
             call computeError (N, representation) -> error;
 
@@ -143,7 +143,7 @@ start {
             ?(error <= currentError) {
                 int error -> currentError;
             } : {
-                list oldRep -> representation;   
+                list oldRep -> representation;
             }
 
             int (N - 1) -> value;
@@ -155,7 +155,7 @@ start {
 
             int (count + 1) -> count;
         }
-        
+
         echo "Error: ";
         echo_nl currentError;
     }

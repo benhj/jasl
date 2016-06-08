@@ -10,24 +10,23 @@
 
 #include "Command.hpp"
 
-namespace jasl 
+namespace jasl
 {
     class CallCommand : public Command
     {
     public:
-        CallCommand(Function &func_, 
+        CallCommand(Function &func_,
                     SharedVarCache const &sharedCache = SharedVarCache(),
                     OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:
 
         bool parseCommand(std::string const &kind = "block");
-        void setFunction(std::string const &kind = "block");
+        void setFunction();
 
         // The name of the block or returnable being called
         std::string m_functionName;
 
-        // Is the thing being called a returnable or a block
         bool m_returnable;
 
         // If returnable, the symbol into which we put the result
