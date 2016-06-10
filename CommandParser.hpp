@@ -431,8 +431,8 @@ namespace jasl
             vars %= string("vars") >> brackets >> ';';
 
             // loads a jasl script
-            loadScript %= string("script") >> '('
-                       >> quotedString >> ')' >> ';';
+            loadScript %= string("script") 
+                       >> doubleQuotedString >> ';';
 
             // erases a variable from the cache
             releaseCommand %= string("release")

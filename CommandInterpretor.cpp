@@ -214,6 +214,9 @@ namespace jasl {
                                       OptionalOutputStream const &outputStream) const
     {
         // hack to convert fn:none to block
+        if(func.name == "script") {
+            return "";
+        }
         return doInterpretFunc(func, varCache, outputStream);
     }
 
@@ -222,7 +225,9 @@ namespace jasl {
                                         SharedVarCache const &varCache,
                                         OptionalOutputStream const &outputStream) const
     {
-
+        if(func.name == "script") {
+            return "";
+        }
         std::string errorMessage;
         try {
             m_commandMap[func.name](func, varCache, outputStream);
@@ -259,8 +264,8 @@ namespace jasl {
 
     void
     CommandInterpretor::parseCommandFileAddToExisting(std::string const &path,
-                                                      SharedVarCache const &varCache,
-                                                      std::vector<Function> &functions) const
+                                                      std::vector<Function> &functions,
+                                                      SharedVarCache const &varCache) const
     {
         auto script = loadScriptFromFile(path);
 
