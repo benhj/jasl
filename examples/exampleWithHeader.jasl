@@ -1,0 +1,10 @@
+// the script command is like a c include
+script "examples/headerExample.jasl";
+
+start {
+    
+    // func might be declared in a header
+    call func(1) -> result;    
+    echo_nl "here";
+    echo_nl result;
+}

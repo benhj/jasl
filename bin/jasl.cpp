@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Ben Jones. All rights reserved.
 //
 
+#include "../any.hpp"
 #include "../CommandInterpretor.hpp"
+#include "../LiteralString.hpp"
 #include "../SharedVarCache.hpp"
 #include "../GlobalCache.hpp"
 #include <boost/progress.hpp>
@@ -43,6 +45,20 @@ int main (int argc , char *argv[])
     // parse input file
     auto sharedCache = std::make_shared<ll::ScopedVarCache>();
     auto functions = ci.parseCommandFile(argv[1]);
+
+    // Now find all instances of 'script' and load extra script 'headers'
+    // Note: can't use iterators due to modification while iterating.
+    auto upper = functions.size();
+    for (size_t n = 0; n < upper; ++n) {
+        if(functions[n].name == "script") {
+            auto const path = simple_any::any_cast<ll::LiteralString>(functions[n].paramA);
+            ci.parseCommandFileAddToExisting(path.literal, functions);
+            upper = functions.size();
+        }
+    }
+
+
+    // Find start function
     ::boost::progress_timer t;
     for(auto &f : functions) {
         if(f.name == "start") {
