@@ -56,6 +56,10 @@ namespace jasl {
         std::vector<Function>
         parseCommandFile(std::string const &path, 
                          SharedVarCache const &varCache = SharedVarCache()) const;
+
+        void parseCommandFileAddToExisting(std::string const &path,
+                                           SharedVarCache const &varCache,
+                                           std::vector<Function> &functions) const;
         
         std::vector<Function>
         parseStringCollection(std::string const &stringCollection, 

@@ -60,17 +60,61 @@
         return std::make_shared<X##Command>(func, varCache, outputStream); \
     }
 
+namespace {
+    /// Make the parser static as an optimization. We will
+    /// only ever have one ot these so this is ok, I think.
+    using iterator_type = std::string::const_iterator;
+    using Parser = jasl::CommandParser<iterator_type>;
+    static Parser functionGrammar;
+
+    
+    void parseStringCollectionHelper(std::string const &stringCollection,
+                                     jasl::SharedVarCache const &varCache,
+                                     std::vector<jasl::Function> &functions)
+    {
+
+        using boost::spirit::ascii::space;
+        auto iter = std::begin(stringCollection);
+        auto end = std::end(stringCollection);
+        bool result;
+        while (iter != end) {
+            result = boost::spirit::qi::phrase_parse(iter,
+                                                     end,
+                                                     functionGrammar,
+                                                     space,
+                                                     functions);
+            if (!result) {
+                break;
+            }
+        }
+    }
+
+    std::string loadScriptFromFile(std::string const &path) 
+    {
+        using boost::spirit::ascii::space;
+
+        // open file, disable skipping of whitespace
+        std::ifstream in(path.c_str());
+        in.unsetf(std::ios::skipws);
+
+        std::string script("");
+
+        std::string line;
+        while (std::getline(in, line)) {
+            line.append("\n");
+            script.append(line);
+        }
+        return script;
+    }
+}
+
 namespace jasl {
 
     /// Build the default set of commands
     CommandInterpretor::CommandMap CommandInterpretor::m_commandMap;
     CommandInterpretor::CommandBuilders CommandInterpretor::m_commandBuilders;
 
-    /// Make the parser static as an optimization. We will
-    /// only ever have one ot these so this is ok, I think.
-    typedef std::string::const_iterator iterator_type;
-    typedef CommandParser<iterator_type> Parser;
-    static Parser functionGrammar;
+
 
     namespace {
         bool searchString(Function &func, std::string const &name)
@@ -209,52 +253,31 @@ namespace jasl {
     CommandInterpretor::parseCommandFile(std::string const &path,
                                          SharedVarCache const &varCache) const
     {
-        using boost::spirit::ascii::space;
-        std::vector<Function> functions;
-
-        // open file, disable skipping of whitespace
-        std::ifstream in(path.c_str());
-        in.unsetf(std::ios::skipws);
-
-        std::string script("");
-
-        std::string line;
-        while (std::getline(in, line)) {
-            line.append("\n");
-            script.append(line);
-        }
-
+        auto script = loadScriptFromFile(path);
         return parseStringCollection(script, varCache);
+    }
 
+    void
+    CommandInterpretor::parseCommandFileAddToExisting(std::string const &path,
+                                                      SharedVarCache const &varCache,
+                                                      std::vector<Function> &functions) const
+    {
+        auto script = loadScriptFromFile(path);
+
+        // append to the script in global static. 
+        jasl::GlobalCache::script += script;
+
+        parseStringCollectionHelper(script, varCache, functions);
     }
 
     std::vector<Function>
     CommandInterpretor::parseStringCollection(std::string const &stringCollection,
                                               SharedVarCache const &varCache) const
     {
-
-
-        // store the script in global static. Used to do block
-        // (jasl name for subroutine) lookups
-        GlobalCache::script = stringCollection;
-
-        using boost::spirit::ascii::space;
-        auto iter = std::begin(stringCollection);
-        auto end = std::end(stringCollection);
+        // store the script in global static. 
+        jasl::GlobalCache::script = stringCollection;
         std::vector<Function> functions;
-
-        bool result;
-        while (iter != end) {
-            result = boost::spirit::qi::phrase_parse(iter,
-                                                     end,
-                                                     functionGrammar,
-                                                     space,
-                                                     functions);
-            if (!result) {
-                break;
-            }
-        }
-
+        parseStringCollectionHelper(stringCollection, varCache, functions);
         return functions;
     }
 

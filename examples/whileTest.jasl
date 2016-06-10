@@ -1,6 +1,6 @@
 start {
     int 1->a;
-    while(a<100) {
+    while(a<10000) {
         echo_nl a;
         int (1 + a)->a;
     }
