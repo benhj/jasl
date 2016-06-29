@@ -30,7 +30,7 @@ namespace jasl
                 return Type::Bool;
             } else if(type == "list") {
                 return Type::ValueArray;
-            } else if(type == "none") {
+            } else if(type == "nil") {
                 return Type::None;
             } else {
                 throw std::runtime_error("Bollocks");

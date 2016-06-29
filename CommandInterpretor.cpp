@@ -213,7 +213,6 @@ namespace jasl {
                                       SharedVarCache const &varCache,
                                       OptionalOutputStream const &outputStream) const
     {
-        // hack to convert fn:none to block
         if(func.name == "script") {
             return "";
         }
