@@ -414,14 +414,14 @@ namespace jasl
                      >> ';';
 
             // for printing out a string to screen
-            echo %= string("echo")
+            pr %= string("pr")
                  >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                      mathExpression | bracketedMathExpression | 
                      comparisonExpression | bracketedComparisonExpression)
                  >> ';';
 
             // for printing out a string to screen with newline
-            echo_nl %= string("echo_nl")
+            prn %= string("prn")
                    >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                        mathExpression | bracketedMathExpression | 
                        comparisonExpression | bracketedComparisonExpression)
@@ -473,8 +473,8 @@ namespace jasl
                          | commentFunc
                          | vars 
                          | loadScript
-                         | echo_nl
-                         | echo
+                         | prn
+                         | pr
                          | repeatLoop
                          | whileLoop
                          | appendRule
@@ -514,8 +514,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> returnable;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
-        qi::rule<Iterator, Function(), ascii::space_type> echo;
-        qi::rule<Iterator, Function(), ascii::space_type> echo_nl;
+        qi::rule<Iterator, Function(), ascii::space_type> pr;
+        qi::rule<Iterator, Function(), ascii::space_type> prn;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringLengthRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;

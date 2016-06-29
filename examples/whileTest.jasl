@@ -1,7 +1,7 @@
 start {
     int 1->a;
     while(a<10000) {
-        echo_nl a;
+        prn a;
         int (1 + a)->a;
     }
 }

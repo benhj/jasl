@@ -128,8 +128,8 @@ namespace jasl {
         // Populate the command map with  basic command.
         // TODO: ability to dynamically register new commands at runtime
         if(m_commandMap.empty()) {
-            m_commandMap.emplace("echo", BUILD_COMMAND_AND_EXECUTE(Echo));
-            m_commandMap.emplace("echo_nl", BUILD_COMMAND_AND_EXECUTE(EchoNL));
+            m_commandMap.emplace("pr", BUILD_COMMAND_AND_EXECUTE(Echo));
+            m_commandMap.emplace("prn", BUILD_COMMAND_AND_EXECUTE(EchoNL));
             m_commandMap.emplace("if", BUILD_COMMAND_AND_EXECUTE(If));
             m_commandMap.emplace("?", BUILD_COMMAND_AND_EXECUTE(If));
             m_commandMap.emplace("repeat", BUILD_COMMAND_AND_EXECUTE(Repeat));
@@ -167,8 +167,8 @@ namespace jasl {
                                             });
         }
         if(m_commandBuilders.empty()) {
-            m_commandBuilders.emplace("echo", BUILD_COMMAND(Echo));
-            m_commandBuilders.emplace("echo_nl", BUILD_COMMAND(EchoNL));
+            m_commandBuilders.emplace("pr", BUILD_COMMAND(Echo));
+            m_commandBuilders.emplace("prn", BUILD_COMMAND(EchoNL));
             m_commandBuilders.emplace("if", BUILD_COMMAND(If));
             m_commandBuilders.emplace("?", BUILD_COMMAND(If));
             m_commandBuilders.emplace("repeat", BUILD_COMMAND(Repeat));

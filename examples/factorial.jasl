@@ -13,6 +13,6 @@ start {
     int arg -> N;
 
     call factorial(N) -> result;
-    echo_nl result;
+    prn result;
 
 }

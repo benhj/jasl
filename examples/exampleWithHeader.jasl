@@ -5,6 +5,6 @@ start {
     
     // func might be declared in a header
     call func(1) -> result;    
-    echo_nl "here";
-    echo_nl result;
+    prn "here";
+    prn result;
 }

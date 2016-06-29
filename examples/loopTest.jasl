@@ -6,6 +6,6 @@ start {
             int j -> k;
         }
     int (i + 1) -> i;
-    echo_nl i;
+    prn i;
    }
 }

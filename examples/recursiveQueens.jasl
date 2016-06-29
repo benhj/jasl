@@ -25,13 +25,13 @@ block printQueens(N, x) {
             get_token(i, x) -> tok;
             int tok -> itok;
             ? (itok == j) {
-                echo "Q ";
+                pr "Q ";
             } : {
-                echo "* "; 
+                pr "* "; 
             }
             int (j + 1) -> j;
         }
-        echo_nl " ";
+        prn " ";
         int (i + 1) -> i;
     }
 

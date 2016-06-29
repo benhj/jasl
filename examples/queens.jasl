@@ -56,7 +56,7 @@ block showBoard (N, representation) {
         int (i + 1) -> i;
 
         // print the row out
-        echo_nl theRow;
+        prn theRow;
     }
 
 }
@@ -156,8 +156,8 @@ start {
             int (count + 1) -> count;
         }
 
-        echo "Error: ";
-        echo_nl currentError;
+        pr "Error: ";
+        prn currentError;
     }
 
     // print out the board representation

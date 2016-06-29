@@ -15,7 +15,7 @@ block binary (number) {
     string_reverse binaryString;
 
     // now finally display
-    echo_nl binaryString;
+    prn binaryString;
 
 }
 
@@ -32,12 +32,12 @@ start {
 
     // convert the above arbitrary int to 
     // a binary representation
-    echo_nl " ";
+    prn " ";
     string "Going to convert the number " -> s;
     append (s, number) -> s;
     append (s, " to binary:") -> s;
-    echo_nl s;
-    echo_nl " ";
+    prn s;
+    prn " ";
     call binary(number);
-    echo_nl " ";
+    prn " ";
 }

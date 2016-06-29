@@ -26,7 +26,7 @@ namespace jasl
         if(tryLiteralExtraction()) { return true; }
         if(trySymbolExtraction()) { return true; }
         if(tryNumericExtraction()) { return true; }
-        setLastErrorMessage("echo_nl: couldn't parse");
+        setLastErrorMessage("prn: couldn't parse");
         return false;
     }
 

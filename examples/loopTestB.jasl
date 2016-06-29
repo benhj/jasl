@@ -10,6 +10,6 @@ start {
             call assignment (i);
         }
     int (i + 1) -> i;
-    echo_nl i;
+    prn i;
    }
 }
