@@ -45,6 +45,26 @@ namespace jasl {
                                    Value const &value);
         static void pushBackTokenInList(std::string const &key,
                                         Value const &value);
+
+        /// int array support
+        static void setIntArray(std::string const & key,
+                                IntArray const & array);
+        static void setValueInIntArray(std::string const & key,
+                                       int const index,
+                                       int64_t const value);
+        static void pushBackValueInIntArray(std::string const & key,
+                                            int64_t const value);
+
+        // double array support
+        static void setDoubleArray(std::string const & key,
+                                   DoubleArray const & array);
+        static void setValueInDoubleArray(std::string const & key,
+                                          int const index,
+                                          double const value);
+        static void pushBackValueInDoubleArray(std::string const & key,
+                                               double const value);
+
+
         static void eraseValue(std::string const &key);
 
         static void resetParamStack();
