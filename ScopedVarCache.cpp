@@ -125,6 +125,76 @@ namespace jasl {
         array.push_back(value);
     }
 
+    void ScopedVarCache::setIntArray(std::string const &key,
+                                     IntArray const &value)
+    {
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != Type::IntArray) {
+                return;
+            }
+            found->second.cv = value;
+            return;
+        }
+        m_bigCache[key] = { Type::IntArray, value };
+        
+    }
+
+    void ScopedVarCache::setValueInIntArray(std::string const &key,
+                                            int const index,
+                                            int64_t const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<IntArray>(keyed.cv);
+        array[index] = value;
+    }
+
+    void ScopedVarCache::pushBackValueInIntArray(std::string const &key,
+                                                 int64_t const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<IntArray>(keyed.cv);
+        array.push_back(value);
+    }
+
+    void ScopedVarCache::setDoubleArray(std::string const &key,
+                                        DoubleArray const &value)
+    {
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != Type::DoubleArray) {
+                return;
+            }
+            found->second.cv = value;
+            return;
+        }
+        m_bigCache[key] = { Type::DoubleArray, value };
+        
+    }
+
+    void ScopedVarCache::setValueInDoubleArray(std::string const &key,
+                                               int const index,
+                                               double const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<DoubleArray>(keyed.cv);
+        array[index] = value;
+    }
+
+    void ScopedVarCache::pushBackValueInDoubleArray(std::string const &key,
+                                                    double const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<DoubleArray>(keyed.cv);
+        array.push_back(value);
+    }
+
     void ScopedVarCache::eraseValue(std::string const &key)
     {
         auto it = m_bigCache.find(key);
@@ -258,6 +328,80 @@ namespace jasl {
             }
         }
         return Value();
+    }
+
+    OptionalIntArray ScopedVarCache::getIntArray(std::string const &key)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::IntArray) {
+                return ::boost::get<IntArray>(it->second.cv);  
+            }
+        }
+        return OptionalIntArray();
+    }
+
+    bool ScopedVarCache::getIntArray_(std::string const &key, IntArray &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::IntArray) {
+                val = ::boost::get<IntArray>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
+    OptionalInt ScopedVarCache::getIntArrayValue(std::string const &key, size_t const index)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::IntArray) {
+                auto array = ::boost::get<IntArray>(it->second.cv);  
+                if(index < array.size()) {
+                    return OptionalInt(array[index]);
+                }
+            }
+        }
+        return OptionalInt();
+    }
+
+    OptionalDoubleArray ScopedVarCache::getDoubleArray(std::string const &key)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::DoubleArray) {
+                return ::boost::get<DoubleArray>(it->second.cv);  
+            }
+        }
+        return OptionalDoubleArray();
+    }
+
+    bool ScopedVarCache::getDoubleArray_(std::string const &key, DoubleArray &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::DoubleArray) {
+                val = ::boost::get<DoubleArray>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
+    OptionalDouble ScopedVarCache::getDoubleArrayValue(std::string const &key, size_t const index)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::DoubleArray) {
+                auto array = ::boost::get<DoubleArray>(it->second.cv);  
+                if(index < array.size()) {
+                    return OptionalDouble(array[index]);
+                }
+            }
+        }
+        return OptionalDouble();
     }
 
     OptionalType ScopedVarCache::getType(std::string const &key)

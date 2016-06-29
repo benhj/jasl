@@ -20,16 +20,27 @@
 
 namespace jasl {
 
+    using IntArray = std::vector<int64_t>;
+    using DoubleArray = std::vector<double>;
     using OptionalInt = ::boost::optional<int64_t>;
     using OptionalBool = ::boost::optional<bool>;
     using OptionalDouble = ::boost::optional<double>;
     using OptionalString = ::boost::optional<std::string>;
     using OptionalValueArray = ::boost::optional<ValueArray>;
-    using CacheVariant = ::boost::variant<int64_t, bool, double, std::string, ValueArray>;
+    using OptionalIntArray = ::boost::optional<IntArray>;
+    using OptionalDoubleArray = ::boost::optional<DoubleArray>;
+    using CacheVariant = ::boost::variant<int64_t, 
+                                          bool, 
+                                          double, 
+                                          std::string, 
+                                          ValueArray,
+                                          IntArray,
+                                          DoubleArray >;
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, String, ValueArray, None
+        Int, Bool, Double, String, ValueArray, None,
+        IntArray, DoubleArray
     };
 
     using OptionalType = ::boost::optional<Type>;
@@ -64,12 +75,31 @@ namespace jasl {
         void setString(std::string const &key,
                        std::string const &value);
         void setList(std::string const &key,
-                            ValueArray const &value);
+                     ValueArray const &value);
         void setTokenInList(std::string const &key,
                             int const index,
-                             Value const &value);
+                            Value const &value);
         void pushBackTokenInList(std::string const &key,
                                  Value const &value);
+
+        /// int array support
+        void setIntArray(std::string const & key,
+                         IntArray const & array);
+        void setValueInIntArray(std::string const & key,
+                                int const index,
+                                int64_t const value);
+        void pushBackValueInIntArray(std::string const & key,
+                                     int64_t const value);
+
+        // double array support
+        void setDoubleArray(std::string const & key,
+                            DoubleArray const & array);
+        void setValueInDoubleArray(std::string const & key,
+                                   int const index,
+                                   double const value);
+        void pushBackValueInDoubleArray(std::string const & key,
+                                        double const value);
+
         void eraseValue(std::string const &key);
 
         void resetParamStack();
@@ -100,6 +130,16 @@ namespace jasl {
         bool getList_(std::string const &key, ValueArray &val);
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
+
+        OptionalIntArray getIntArray(std::string const &key);
+        bool getIntArray_(std::string const &key, IntArray &val);
+        OptionalInt getIntArrayValue(std::string const &key, size_t const index);
+
+        OptionalDoubleArray getDoubleArray(std::string const &key);
+        bool getDoubleArray_(std::string const &key, DoubleArray &val);
+        OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
+
+
     };
 
 }
