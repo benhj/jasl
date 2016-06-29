@@ -65,10 +65,10 @@ fn:int myReturnable() -> toReturn {
 
 </pre>
 
-Update 8/6/16: now also have a void return type, hence the following:
+Update 8/6/16: now also have a void return type, hence the `nil` type:
 
 <pre>
-fn:none myBlock () {
+fn:nil myBlock () {
 }
 </pre>
 
@@ -170,7 +170,7 @@ if (2 < 1) {
 
 Handling input
 --------------
-As with everything else, handling input is easy:
+Handling input is easy:
 <pre>
 // start is the main entry point
 start {
