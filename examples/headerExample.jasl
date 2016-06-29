@@ -1,6 +1,6 @@
 // an example header of sorts included by exampleWithHeader
 
 fn:int func(value) -> result {
-    echo_nl "In header script!";
+    prn "In header script!";
     int (value + 1) -> result;
 }

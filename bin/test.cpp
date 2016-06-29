@@ -79,25 +79,25 @@ void testVarNewSyntaxFromString()
     ASSERT_EQUAL(2.2, *cache->getDouble("l"), "testVarNewSyntaxFromString D");
 }
 
-void testEchoLiterals()
+void testprLiterals()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo \"Hello, world!\";", cache, ss);
-    ASSERT_EQUAL("Hello, world!", ss.str(), "testEcho: Hello, world!");
+    ci.parseAndInterpretSingleCommand("pr \"Hello, world!\";", cache, ss);
+    ASSERT_EQUAL("Hello, world!", ss.str(), "testpr: Hello, world!");
 }
 
-void testEchoNLLiterals()
+void testprNLLiterals()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl \"Hello, world!\";", cache, ss);
-    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoNL: Hello, world!");
+    ci.parseAndInterpretSingleCommand("prn \"Hello, world!\";", cache, ss);
+    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testprNL: Hello, world!");
 }
 
-void testEchoSymbols()
+void testprSymbols()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
@@ -105,40 +105,40 @@ void testEchoSymbols()
     ci.parseAndInterpretSingleCommand("int 10 -> b;", cache);
     ci.parseAndInterpretSingleCommand("real 1.1 -> c;", cache);
     ci.parseAndInterpretSingleCommand("bool true -> d;", cache);
-    ci.parseAndInterpretSingleCommand("echo b;", cache, ss);
-    ci.parseAndInterpretSingleCommand("echo c;", cache, ss);
-    ci.parseAndInterpretSingleCommand("echo_nl d;", cache, ss);
-    ASSERT_EQUAL("101.11\n", ss.str(), "testEchoSymbols");
+    ci.parseAndInterpretSingleCommand("pr b;", cache, ss);
+    ci.parseAndInterpretSingleCommand("pr c;", cache, ss);
+    ci.parseAndInterpretSingleCommand("prn d;", cache, ss);
+    ASSERT_EQUAL("101.11\n", ss.str(), "testprSymbols");
 }
 
-void testEchoPrimitives()
+void testprPrimitives()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl 2;", cache, ss);
-    ci.parseAndInterpretSingleCommand("echo_nl 5.67;", cache, ss);
-    ci.parseAndInterpretSingleCommand("echo_nl 3.14;", cache, ss);
-    ASSERT_EQUAL("2\n5.67\n3.14\n", ss.str(), "testEchoPrimitives");
+    ci.parseAndInterpretSingleCommand("prn 2;", cache, ss);
+    ci.parseAndInterpretSingleCommand("prn 5.67;", cache, ss);
+    ci.parseAndInterpretSingleCommand("prn 3.14;", cache, ss);
+    ASSERT_EQUAL("2\n5.67\n3.14\n", ss.str(), "testprPrimitives");
 }
 
-void testEchoMath()
+void testprMath()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("echo_nl (5 + 2) * 5.6;", cache, ss);
-    ASSERT_EQUAL("39.2\n", ss.str(), "testEchoMath");
+    ci.parseAndInterpretSingleCommand("prn (5 + 2) * 5.6;", cache, ss);
+    ASSERT_EQUAL("39.2\n", ss.str(), "testprMath");
 }
 
-void testEchoString()
+void testprString()
 {
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", cache, ss);
-    ci.parseAndInterpretSingleCommand("echo_nl hello;", cache, ss);
-    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testEchoString");
+    ci.parseAndInterpretSingleCommand("prn hello;", cache, ss);
+    ASSERT_EQUAL("Hello, world!\n", ss.str(), "testprString");
 }
 
 void testStringWithLiteral()
@@ -232,7 +232,7 @@ void testIfCommand()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("if(1 < 2) { echo \"Hello, world!\"; int 5 -> x; }", cache, ss);
+    ci.parseAndInterpretSingleCommand("if(1 < 2) { pr \"Hello, world!\"; int 5 -> x; }", cache, ss);
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
     ASSERT_EQUAL(5, *cache->getInt("x"), "testIfCommand: x is 5");
 }
@@ -242,7 +242,7 @@ void testRepeatCommand()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string const commands("int 0 -> x; repeat 5 times { echo \"Hello\"; int (x + 1) -> x; }");
+    std::string const commands("int 0 -> x; repeat 5 times { pr \"Hello\"; int (x + 1) -> x; }");
     auto functions = ci.parseStringCollection(commands, cache);
     for(auto &f : functions) {
         (void)ci.interpretFunc(f, cache, ss);
@@ -269,7 +269,7 @@ void testStartCommand()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string const command("start { echo \"Hello\"; int 21 -> x; }");
+    std::string const command("start { pr \"Hello\"; int 21 -> x; }");
     ci.parseAndInterpretSingleCommand(command, cache, ss);
     ASSERT_EQUAL("Hello", ss.str(), "testStartCommand::print hello");
     ASSERT_EQUAL(21, *cache->getInt("x"), "testStartCommand::x is 21");
@@ -280,9 +280,9 @@ void testCallReturnableCommand()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; int 0 -> x; call foo (x) -> x; call bar (x) -> x; int (x - 5) -> x;}");
-    commands.append("fn:int bar(x) -> x { echo \"..and Goodbye!\"; int (x + 1) -> x; }");
-    commands.append("fn:int foo(x) -> x { echo \"Hello\"; int 20 -> x;}");
+    std::string commands("start { pr \"Starting..\"; int 0 -> x; call foo (x) -> x; call bar (x) -> x; int (x - 5) -> x;}");
+    commands.append("fn:int bar(x) -> x { pr \"..and Goodbye!\"; int (x + 1) -> x; }");
+    commands.append("fn:int foo(x) -> x { pr \"Hello\"; int 20 -> x;}");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
@@ -299,9 +299,9 @@ void testCallBlockCommand()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; call foo (); call bar ();}");
-    commands.append("block bar() { echo \"..and Goodbye!\"; }");
-    commands.append("block foo() { echo \"Hello\"; }");
+    std::string commands("start { pr \"Starting..\"; call foo (); call bar ();}");
+    commands.append("block bar() { pr \"..and Goodbye!\"; }");
+    commands.append("block foo() { pr \"Hello\"; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
@@ -317,9 +317,9 @@ void testCallFunctionNil()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    std::string commands("start { echo \"Starting..\"; call foo (); call bar ();}");
-    commands.append("fn:nil bar() { echo \"..and Goodbye!\"; }");
-    commands.append("fn:nil foo() { echo \"Hello\"; }");
+    std::string commands("start { pr \"Starting..\"; call foo (); call bar ();}");
+    commands.append("fn:nil bar() { pr \"..and Goodbye!\"; }");
+    commands.append("fn:nil foo() { pr \"Hello\"; }");
     auto functions = ci.parseStringCollection(commands);
     for(auto &f : functions) {
         if(f.name == "start") {
@@ -438,7 +438,7 @@ void testListAddToken()
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache);
     ci.parseAndInterpretSingleCommand("add_token(\"again\", la);", cache);
-    ci.parseAndInterpretSingleCommand("echo la;", cache, ss);
+    ci.parseAndInterpretSingleCommand("pr la;", cache, ss);
     ASSERT_EQUAL("[hello there again]", ss.str(), "testListAddToken");
 }
 
@@ -465,12 +465,12 @@ int main()
     testMath();
     testVarNewSyntax();
     testVarNewSyntaxFromString();
-    testEchoLiterals();
-    testEchoNLLiterals();
-    testEchoSymbols();
-    testEchoPrimitives(); 
-    testEchoMath();   
-    testEchoString();  
+    testprLiterals();
+    testprNLLiterals();
+    testprSymbols();
+    testprPrimitives(); 
+    testprMath();   
+    testprString();  
     testStringWithLiteral();
     testStringWithNumbers();
     testStringWithMath();

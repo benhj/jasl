@@ -1,8 +1,8 @@
 start {
     int 0 -> i;
-    echo "i: ";
-    echo_nl i;
+    pr "i: ";
+    prn i;
     repeat 100 times {
-        echo_nl i;
+        prn i;
    }
 }

@@ -4,5 +4,5 @@ start {
     input "What is your name? " -> name;
     string "Hello, " -> s;
     append (s, name) -> s;
-    echo_nl s;
+    prn s;
 }

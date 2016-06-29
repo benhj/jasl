@@ -32,7 +32,7 @@ namespace jasl
         if(trySymbolExtraction(stringName)) { return true; }
         if(tryNumericExtraction(stringName)) { return true; }
         if(tryListExtraction()) { return true; }
-        setLastErrorMessage("echo: couldn't parse");
+        setLastErrorMessage("pr: couldn't parse");
         return false;
     }
 

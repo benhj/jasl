@@ -87,16 +87,16 @@ block otherFunction () {
     call funk (5) -> b;
 
     // should print out 15
-    echo_nl b;
+    prn b;
 }
 
 block myFunction () {
 
     // Print out hello and add newline
-    echo_nl "Hello";
+    prn "Hello";
 
     // And without a newline:
-    echo "Hello ";
+    pr "Hello ";
 
     // Variables are scoped to the function blockl
     int 5 -> a;
@@ -111,7 +111,7 @@ block myFunction () {
     }
 
     // This is valid. Integer b is still accessible
-    echo_nl b;
+    prn b;
 
     call otherFunction ();
 }
@@ -140,7 +140,7 @@ A repeat loop. I think I saw this in POP-11 and I found it damn handy:
 
 <pre>
 repeat 10 times {
-   echo_nl "hello!";
+   prn "hello!";
 }
 </pre>
 
@@ -149,7 +149,7 @@ Finally a list element iterator:
 <pre>
 list [this is a list] -> mylist;
 for element in mylist {
-    echo_nl element;
+    prn element;
 }
 </pre>
 
@@ -159,12 +159,12 @@ Conditional branching is c-style with the one exception that `if else` is not cu
 
 <pre>
 if (1 < 2) {
-    echo_nl "true";
+    prn "true";
 }
 if (2 < 1) {
-    echo_nl "true";
+    prn "true";
 } else {
-    echo_nl "false";
+    prn "false";
 }
 </pre>
 
@@ -178,7 +178,7 @@ start {
     input "What is your name? " -> name;
     string "Hello, " -> s;
     append (s, name) -> s;
-    echo_nl s;
+    prn s;
 }
 </pre>
 
@@ -247,7 +247,7 @@ Iterating over list elements:
 <pre>
 list [this is a list] -> mylist;
 for element in mylist {
-    echo_nl element;
+    prn element;
 }
 </pre>
 

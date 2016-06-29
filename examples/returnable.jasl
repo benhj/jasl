@@ -1,14 +1,14 @@
 // Tests the parsing of a returnable function
 
 fn:int func (a, somelist) -> returned {
-	echo_nl "Hello";
-    echo_nl somelist;
+	prn "Hello";
+    prn somelist;
 	int 5 + a -> returned;
 }
 
 start {
     list [some list] -> somelist;
 	call func (1, somelist) -> result;
-	echo "called: ";
-	echo_nl result;
+	pr "called: ";
+	prn result;
 }

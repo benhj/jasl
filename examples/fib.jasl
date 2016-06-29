@@ -10,8 +10,8 @@ block fib () {
     // perform the sequence a number of times
     repeat 50 times {
 
-        echo x;
-        echo " ";
+        pr x;
+        pr " ";
 
         int oldx -> olderx;
         int x -> oldx;
@@ -20,13 +20,13 @@ block fib () {
         int (olderx + oldx) -> x;
     }
 
-    echo_nl " ";
+    prn " ";
 
 }
 
 start {
     
-    echo_nl "Calling block fib";
+    prn "Calling block fib";
     call fib ();
 
 }
