@@ -56,6 +56,44 @@ namespace jasl {
         bigCache->pushBackTokenInList(key, value);
     }
 
+    void GlobalCache::setIntArray(std::string const & key,
+                                  IntArray const & array)
+    {
+        bigCache->setIntArray(key, array);
+    }
+
+    void GlobalCache::setValueInIntArray(std::string const & key,
+                                         int const index,
+                                         int64_t const value)
+    {
+        bigCache->setValueInIntArray(key, index, value);
+    }
+
+    void GlobalCache::pushBackValueInIntArray(std::string const & key,
+                                              int64_t const value)
+    {
+        bigCache->pushBackValueInIntArray(key, value);
+    }
+
+    void GlobalCache::setDoubleArray(std::string const & key,
+                                     DoubleArray const & array)
+    {
+        bigCache->setDoubleArray(key, array);
+    }
+
+    void GlobalCache::setValueInDoubleArray(std::string const & key,
+                                            int const index,
+                                            double const value)
+    {
+        bigCache->setValueInDoubleArray(key, index, value);
+    }
+
+    void GlobalCache::pushBackValueInDoubleArray(std::string const & key,
+                                                 double const value)
+    {
+        bigCache->pushBackValueInDoubleArray(key, value);
+    }
+
     void GlobalCache::eraseValue(std::string const &key)
     {
         bigCache->eraseValue(key);
