@@ -320,6 +320,28 @@ namespace jasl
                            comparisonExpression | bracketedComparisonExpression | bracketedWords) >> lit("->")
                        >> genericString 
                        >> ';';
+       
+            //  for setting a value in an array
+            //  put 5 -> a(0);             
+            put  %= string("put")
+                 >> (genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
+                 >> lit("->")
+                 >> genericString 
+                 >> '('
+                 >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                 >> ')'
+                 >> ';';
+
+            // for getting a value in an array
+            // get a(0) -> val;
+            get  %= string("get")
+                 >> (genericString)
+                 >> '('
+                 >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                 >> ')'
+                 >> lit("->")
+                 >> (genericString)
+                 >> ';';
 
             // a list of words
             // e.g. list [hello there] -> L;
@@ -387,16 +409,6 @@ namespace jasl
                           >> lit("->")
                           >> genericString 
                           >> ';';
-
-            //  for setting a value in an array
-            put  %= string("put")
-                 >> (genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
-                 >> lit("->")
-                 >> genericString 
-                 >> '('
-                 >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                 >> ')'
-                 >> ';';
 
             // appends to end of a string, s  
             // append (s, "hello") --> result;
@@ -520,7 +532,8 @@ namespace jasl
                          | randomIntCommand
                          | exitCommand
                          | array
-                         | put;
+                         | put
+                         | get;
                          
             start %= allCommands;
         }
@@ -536,6 +549,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> query;
         qi::rule<Iterator, Function(), ascii::space_type> array;
         qi::rule<Iterator, Function(), ascii::space_type> put;
+        qi::rule<Iterator, Function(), ascii::space_type> get;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
         qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;
