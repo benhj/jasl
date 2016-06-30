@@ -142,6 +142,20 @@ namespace jasl
                           >> (genericString)
                           >> ';';
 
+
+            // for building arrays. For example:
+            // array:int(5) -> a;
+            // array:real(10) -> d;              
+            array %= string("array")
+                  >> ':'
+                  >> genericString
+                  >> '('
+                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                  >> ')'
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
             //
             // with thanks to sehe and llonesmix @
             // http://stackoverflow.com/questions/15212671/
@@ -494,7 +508,8 @@ namespace jasl
                          | releaseCommand
                          | typeCommand
                          | randomIntCommand
-                         | exitCommand;
+                         | exitCommand
+                         | array;
                          
             start %= allCommands;
         }
@@ -508,6 +523,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
+        qi::rule<Iterator, Function(), ascii::space_type> array;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
         qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;
