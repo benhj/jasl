@@ -15,4 +15,11 @@ start {
 
     prn "values in arrays set.";
 
+    // try getting values
+    get a(1) -> ares;
+    get d(2) -> dres;
+
+    pr "ares reads: "; prn ares;
+    pr "dres reads: "; prn dres;
+
 }

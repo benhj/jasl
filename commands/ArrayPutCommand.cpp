@@ -25,9 +25,9 @@ namespace jasl
         auto type = sharedCache->getType(m_varName);
         if(!type) {
             setLastErrorMessage("put: couldn't determine type");
-        } else if(*type == Type::Int) {
+        } else if(*type == Type::IntArray) {
             m_type = "int";
-        } else if(*type == Type::Double) {
+        } else if(*type == Type::DoubleArray) {
             m_type = "real";
         } else {
             setLastErrorMessage("put: couldn't determine type");
@@ -49,7 +49,7 @@ namespace jasl
         // see if int or double array
         if (m_type == "int") {
             int64_t value;
-            if (!VarExtractor::trySingleIntExtraction(m_func.paramB, value, m_sharedCache)) {
+            if (!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
                 // try converting a string to an int
                 setLastErrorMessage("put: problem setting int");
                 return false;
@@ -59,7 +59,7 @@ namespace jasl
 
         } else if (m_type == "real") {
             double value;
-            if (!VarExtractor::trySingleDoubleExtraction(m_func.paramB, value, m_sharedCache)) {
+            if (!VarExtractor::trySingleDoubleExtraction(m_func.paramA, value, m_sharedCache)) {
                 // try converting a string to an int
                 setLastErrorMessage("put: problem setting real");
                 return false;
@@ -67,7 +67,6 @@ namespace jasl
 
             m_sharedCache->setValueInDoubleArray(m_varName, index, value);
         }
-
         return true;
     }
 

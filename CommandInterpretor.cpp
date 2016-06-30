@@ -13,6 +13,7 @@
 #include "commands/ArgsCommand.hpp"
 #include "commands/ArrayCommand.hpp"
 #include "commands/ArrayPutCommand.hpp"
+#include "commands/ArrayGetCommand.hpp"
 #include "commands/BlockCommand.hpp"
 #include "commands/ReturnableCommand.hpp"
 #include "commands/CallCommand.hpp"
@@ -150,6 +151,7 @@ namespace jasl {
             m_commandMap.emplace("args", BUILD_COMMAND_AND_EXECUTE(Args));
             m_commandMap.emplace("array", BUILD_COMMAND_AND_EXECUTE(Array));
             m_commandMap.emplace("put", BUILD_COMMAND_AND_EXECUTE(ArrayPut));
+            m_commandMap.emplace("get", BUILD_COMMAND_AND_EXECUTE(ArrayGet));
             m_commandMap.emplace("int", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("real", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("bool", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
@@ -191,6 +193,7 @@ namespace jasl {
             m_commandBuilders.emplace("args", BUILD_COMMAND(Args));
             m_commandBuilders.emplace("array", BUILD_COMMAND(Array));
             m_commandBuilders.emplace("put", BUILD_COMMAND(ArrayPut));
+            m_commandBuilders.emplace("get", BUILD_COMMAND(ArrayGet));
             m_commandBuilders.emplace("int", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("real", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("bool", BUILD_COMMAND(NewPrimitiveSyntax));
