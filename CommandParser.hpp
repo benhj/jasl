@@ -388,6 +388,16 @@ namespace jasl
                           >> genericString 
                           >> ';';
 
+            //  for setting a value in an array
+            put  %= string("put")
+                 >> (genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
+                 >> lit("->")
+                 >> genericString 
+                 >> '('
+                 >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                 >> ')'
+                 >> ';';
+
             // appends to end of a string, s  
             // append (s, "hello") --> result;
             appendRule %= string("append")
@@ -509,7 +519,8 @@ namespace jasl
                          | typeCommand
                          | randomIntCommand
                          | exitCommand
-                         | array;
+                         | array
+                         | put;
                          
             start %= allCommands;
         }
@@ -524,6 +535,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
         qi::rule<Iterator, Function(), ascii::space_type> array;
+        qi::rule<Iterator, Function(), ascii::space_type> put;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
         qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;

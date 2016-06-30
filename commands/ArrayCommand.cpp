@@ -37,13 +37,13 @@ namespace jasl
 
         if (m_type == "int") {
 
-            IntArray array(value);
+            IntArray array(value, 0);
             m_sharedCache->setIntArray(m_varName, array);
             return true;
             
         } else if (m_type == "real") {
 
-            DoubleArray array(value);
+            DoubleArray array(value, 0.0);
             m_sharedCache->setDoubleArray(m_varName, array);
             return true;
 
