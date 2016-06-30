@@ -1,11 +1,18 @@
 // How to use arrays. Note incomplete. 
-// Only the ability to make them currently.
 
 start {
     
     prn "Creating some arrays";
+
     array:int(5) -> a;
     array:real(10) -> d;
+
     prn "Arrays created";
+
+    // set some values
+    put 2 -> a(1);
+    put 3.14 -> d(2);
+
+    prn "values in arrays set.";
 
 }
