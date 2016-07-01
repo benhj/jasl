@@ -22,4 +22,18 @@ start {
     pr "ares reads: "; prn ares;
     pr "dres reads: "; prn dres;
 
+    //
+    // Range-based for loops.
+    //
+
+    // try printing out elements using for loop
+    prn "Array a: ";
+    for i in a {
+        prn i;
+    }
+
+    prn "Array d: ";
+    for i in d {
+        prn i;
+    }
 }

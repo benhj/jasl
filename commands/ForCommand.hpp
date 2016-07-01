@@ -24,6 +24,9 @@ namespace jasl {
     private:
         bool parseCommands(std::vector<Function> &functions);
         bool processList(ValueArray const &va, std::string const &listSymbol);
+
+        template<typename T>
+        bool processArray(T const &array, std::string const & listSymbol);
     };
 
 }
