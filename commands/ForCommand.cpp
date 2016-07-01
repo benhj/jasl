@@ -7,6 +7,7 @@
 //
 
 #include "ForCommand.hpp"
+#include "ArrayGetCommand.hpp"
 #include "ListGetTokenCommand.hpp"
 #include "ReleaseCommand.hpp"
 #include "../CommandInterpretor.hpp"
@@ -29,9 +30,29 @@ namespace jasl {
         {
             std::string listSymbol;
             if(VarExtractor::tryAnyCast(listSymbol, m_func.paramB)) {
-                auto list = m_sharedCache->getList(listSymbol);
-                if(list) {
-                    return processList(*list, listSymbol);
+
+                // try list
+                {
+                    auto list = m_sharedCache->getList(listSymbol);
+                    if(list) {
+                        return processList(*list, listSymbol);
+                    }
+                }
+
+                // try int array
+                {
+                    auto array = m_sharedCache->getIntArray(listSymbol);
+                    if(array) {
+                        processArray(*array, listSymbol);
+                    }
+                }
+
+                // try real array
+                {
+                    auto array = m_sharedCache->getDoubleArray(listSymbol);
+                    if(array) {
+                        processArray(*array, listSymbol);
+                    }
                 }
             }
         }
@@ -44,7 +65,53 @@ namespace jasl {
         // }
 
         // some failure occured
-        setLastErrorMessage("for: problem processing list");
+        setLastErrorMessage("for: problem processing elements");
+        return false;
+    }
+
+    template <typename T>
+    bool ForCommand::processArray(T const &array, std::string const & listSymbol)
+    {
+        std::string indexSymbol;
+        if(VarExtractor::tryAnyCast(indexSymbol, m_func.paramA)) {
+
+            std::vector<Function> innerFuncs;
+            bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+            if(!success) {
+                return false;
+            }
+
+            // Process tokens one by one using get_token command
+            CommandInterpretor ci;
+            for(int i = 0; i < array.size(); ++i) {
+                Function f;
+                f.name = "get";
+                f.paramA = listSymbol;
+                f.paramB = (int64_t)i;
+                f.paramC = indexSymbol;
+                ArrayGetCommand tc(f, m_sharedCache, m_outputStream);                
+                if(tc.execute()) {
+
+                    // do other commands
+                    // parse inner functions
+                    if (success) {
+                        success = parseCommands(innerFuncs);
+                    } else {
+                        setLastErrorMessage("repeat: Error interpreting for's body");
+                        return false;
+                    }
+                }
+
+                // make sure variable storing token is released before iterating
+                Function relFunc;
+                relFunc.name = "release";
+                relFunc.paramA = indexSymbol;
+                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
+                (void)rc.execute();
+            }
+
+        }
+        setLastErrorMessage("for: problem getting index symbol");
         return false;
     }
 
