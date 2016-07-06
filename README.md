@@ -113,7 +113,7 @@ fn:int myReturnable() -> toReturn {
 
 </pre>
 
-Update 8/6/16: now also have a void return type, hence the `nil` type:
+Update 8/6/16: now also have a `nil` return type, which is like `void` in other languages:
 
 <pre>
 fn:nil myBlock () {
@@ -221,6 +221,15 @@ if (1 < 2) {
 if (2 < 1) {
     prn "true";
 } else {
+    prn "false";
+}
+</pre>
+
+I also later introduced some other syntax (either can be used) whereby `?` can be used in place of `if` and `:` can be used in place of `else`.
+<pre>
+? (2 < 1) {
+    prn "true";
+} : {
     prn "false";
 }
 </pre>
