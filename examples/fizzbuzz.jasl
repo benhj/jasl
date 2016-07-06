@@ -1,0 +1,31 @@
+start {
+
+    args 0 -> nstr;
+    int nstr -> N;
+    int 1 -> c;
+    int 0 -> printed;
+    repeat N times {
+    
+        put 0 -> printed;
+    
+        if ((c % 3) == 0) {
+            pr "fizz, ";
+            put 1 -> printed;
+        }
+        
+        if ((c % 5) == 0) {
+            pr "buzz, ";
+            put 1 -> printed;
+        }
+        
+        if (printed == 0) {
+            pr c;
+            pr ", ";
+        }
+        
+        put (c + 1) -> c;
+    }
+    
+    prn " ";
+    
+}
