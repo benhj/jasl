@@ -9,7 +9,7 @@ start {
         repeat 10000 times {
             call assignment (i);
         }
-    int (i + 1) -> i;
+    put (i + 1) -> i;
     prn i;
    }
 }

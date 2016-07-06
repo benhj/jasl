@@ -24,9 +24,9 @@ fn:list initialize (N) -> rep {
     repeat N times {
         string i -> istring;
         add_token(istring, rep);
-        int (i + 2) -> i;
+        put (i + 2) -> i;
         ? (i == N) {
-            int 0 -> i;
+            put 0 -> i;
         }
     }
 }
@@ -53,7 +53,7 @@ block showBoard (N, representation) {
         set_token(itoken, row, "Q") -> theRow;
 
         // iterate to next row
-        int (i + 1) -> i;
+        put (i + 1) -> i;
 
         // print the row out
         prn theRow;
@@ -78,32 +78,32 @@ fn:int computeError (N, representation) -> theError {
             int token -> ktoken;
             ? (itoken == ktoken) {
                 ? ( i != k) {
-                    int (e + 1) -> e;
+                    put (e + 1) -> e;
                 }
             }
             ? (k < i) {
                 ? (ktoken == (itoken - (i - k))) {
-                    int (e + 1) -> e;
+                    put (e + 1) -> e;
                 } : {
                     ? (ktoken == (itoken - (k - i))) {
-                        int (e + 1) -> e;
+                        put (e + 1) -> e;
                     }
                 }
             } : {
                 ? (k > i) {
                     ? (ktoken == (itoken + (k - i))) {
-                        int (e + 1) -> e;
+                        put (e + 1) -> e;
                     } : {
                         if(ktoken == (itoken + (i - k))) {
-                            int (e + 1) -> e;
+                            put (e + 1) -> e;
                         }
                     }
                 }
             }
             int (k + 1) -> k;
         }
-        int (i + 1) -> i;
-        int (theError + e) -> theError;
+        put (i + 1) -> i;
+        put (theError + e) -> theError;
     }
 }
 
@@ -119,8 +119,10 @@ start {
     call computeError (N, representation) -> error;
     int error -> currentError;
     int 1 -> moveBy;
+    int 0 -> count;
+
     while (currentError != 0) {
-        int 0 -> count;
+        put 0 -> count;
         repeat N times {
             get_token(count, representation) -> tok;
             int tok -> itok;
@@ -141,19 +143,19 @@ start {
             // now based on update decide whether to keep or go
             // back to original
             ?(error <= currentError) {
-                int error -> currentError;
+                put error -> currentError;
             } : {
-                list oldRep -> representation;
+                put oldRep -> representation;
             }
 
             int (N - 1) -> value;
             random_int(value) -> randomValue;
-            int (moveBy + randomValue) -> moveBy;
+            put (moveBy + randomValue) -> moveBy;
             ?(moveBy >= (N - 1)) {
-                int 1 -> moveBy;
+                put 1 -> moveBy;
             }
 
-            int (count + 1) -> count;
+            put (count + 1) -> count;
         }
 
         pr "Error: ";
