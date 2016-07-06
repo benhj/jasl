@@ -327,9 +327,10 @@ namespace jasl
                  >> (genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
                  >> lit("->")
                  >> genericString 
-                 >> '('
+                 // optional indexing
+                 >> -('('
                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                 >> ')'
+                 >> ')')
                  >> ';';
 
             // for getting a value in an array

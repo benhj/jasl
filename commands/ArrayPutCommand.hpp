@@ -25,5 +25,4 @@ namespace jasl
         std::string m_type;
         std::string m_varName;
     };
-
 }
