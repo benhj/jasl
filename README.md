@@ -192,14 +192,23 @@ repeat 10 times {
 }
 </pre>
 
-Finally a list element iterator:
+Finally a list or array element iterator:
 
 <pre>
+// list example
 list [this is a list] -> mylist;
 for element in mylist {
     prn element;
 }
+
+// array example
+array:real(10) -> myarray;
+for element in myarray {
+    prn element;
+}
 </pre>
+
+
 
 If-else
 -------
