@@ -13,11 +13,11 @@ block fib () {
         pr x;
         pr " ";
 
-        int oldx -> olderx;
-        int x -> oldx;
+        put oldx -> olderx;
+        put x -> oldx;
 
         // compute new x value
-        int (olderx + oldx) -> x;
+        put (olderx + oldx) -> x;
     }
 
     prn " ";

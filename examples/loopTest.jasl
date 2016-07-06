@@ -5,7 +5,7 @@ start {
             int i -> j;
             int j -> k;
         }
-    int (i + 1) -> i;
-    prn i;
-   }
+        put (i + 1) -> i;
+        prn i;
+    }
 }

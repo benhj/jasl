@@ -1,26 +1,29 @@
 fn:int canPlaceQueen(r, c, x) -> yes {
 
     int 1 -> yes;
-    
     int 0 -> i;
+
     while(i < r) {
         
         get_token(i, x) -> tok;
         int tok -> itok;     
         ? (((itok == c) || ((i - r) == (itok -c))) || ((i - r) == (c - itok))) {
-            int 0 -> yes;
+            put 0 -> yes;
             // so that we can break early
-            int r -> i; 
+            put r -> i; 
         }
-        int (i + 1) -> i;
+        put (i + 1) -> i;
+        
     }
 }
 
 block printQueens(N, x) {
 
     int 0 -> i;
+    int 0 -> j;
+
     while(i < N) {
-        int 0 -> j;
+        put 0 -> j;
         while(j < N) {
             get_token(i, x) -> tok;
             int tok -> itok;
@@ -29,12 +32,11 @@ block printQueens(N, x) {
             } : {
                 pr "* "; 
             }
-            int (j + 1) -> j;
+            put (j + 1) -> j;
         }
         prn " ";
-        int (i + 1) -> i;
+        put (i + 1) -> i;
     }
-
 }
 
 block placeNQueens(r, n, x) {
@@ -52,7 +54,7 @@ block placeNQueens(r, n, x) {
                call placeNQueens((r + 1), n, x);
             }
         }
-        int (c + 1) -> c;
+        put (c + 1) -> c;
     }
 }
 
@@ -65,7 +67,7 @@ start {
     repeat N times {
         string i -> strtok;
         add_token(strtok, x);
-        int (i + 1) -> i;    
+        put (i + 1) -> i;    
     }
     call placeNQueens(0, N, x);
 }
