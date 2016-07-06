@@ -45,7 +45,8 @@ list [This is [a nested list] list] -> f;
 Above, I create six variables, an int, a real, a bool, a string and two lists the latter of which contains a nested list
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
 longer true. Variables are now scoped at the level of a given block or returnable function.
-To update them one can use the `put` command, e.g.:
+
+To update them, one can use the `put` command, e.g.:
 
 <pre>
 put (a + 1) -> a;
@@ -59,7 +60,9 @@ Arrays
 ------
 
 Arrays are a fairly new and experimental feature and aren't yet fully supported. Only integer and real types are currently 
-supported. To create some arrays, you do
+available. 
+
+To create some arrays, you do something like:
 
 <pre>
 
@@ -71,17 +74,21 @@ array:real(10) -> d;
 
 </pre>
 
-Note all arrays are implcitly zeroed out. To set a value at a given index, use `put`:
+Note all arrays are implcitly zeroed out. 
+
+To set a value at a given index, use `put`:
 
 <pre>
 // put value 1 in to index location 2
 put 1 -> a(2);
 </pre>
 
-As with many languages, array indexing starts at zero. To retrieve a value from the array, use `get`:
+As with many languages, array indexing starts at zero. 
+
+To retrieve a value from the array, use `get`:
 
 <pre>
-// retrieve the value at index 2 from a and put in to b
+// retrieve the value at index 2 from a and put into b
 get a(2) -> b;
 </pre>
 
