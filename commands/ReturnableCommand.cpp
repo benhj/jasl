@@ -2,7 +2,7 @@
 //  ReturnableCommand.hpp
 //  jasl
 //
-//  Created by Ben Jones on on 10/10/2015.
+//  Created by Ben Jones on 10/10/2015.
 //  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
@@ -32,8 +32,18 @@ namespace jasl
                 return Type::ValueArray;
             } else if(type == "nil") {
                 return Type::None;
+            } else if(type == "array") {
+                std::string subType;
+                (void)func.getValueB<std::string>(subType, sharedCache);
+                if(subType == "int") {
+                    return Type::IntArray;
+                } else if(subType == "real") {
+                    return Type::DoubleArray;
+                } else {
+                    throw std::runtime_error("fn: can't derive sub type");
+                }
             } else {
-                throw std::runtime_error("Bollocks");
+                throw std::runtime_error("fn: can't derive type");
             }
         }
     }
@@ -47,15 +57,28 @@ namespace jasl
         , m_returnType(getReturnType(func_, sharedCache))
     {
         if(m_returnType != Type::None) {
-            (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+            if(!(m_returnType == Type::IntArray || m_returnType == Type::DoubleArray)) {
+                (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+            } else {
+                (void)m_func.getValueE<std::string>(m_returnSymbol, m_sharedCache);
+            }
         }
-        (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
+        if(!(m_returnType == Type::IntArray || m_returnType == Type::DoubleArray)) {
+            (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
+        } else {
+            (void)m_func.getValueC<std::string>(m_functionName, m_sharedCache);
+        }
     }
 
     bool ReturnableCommand::execute()
     {
         
-        extractAndUpdateParams(m_func.paramC, m_sharedCache);
+        if(!(m_returnType == Type::IntArray || m_returnType == Type::DoubleArray)) {
+            extractAndUpdateParams(m_func.paramC, m_sharedCache);
+        } else {
+            extractAndUpdateParams(m_func.paramD, m_sharedCache);
+        }
+
         interpretFunctionBody();
 
         // Now set return param in GlobalCache
@@ -79,6 +102,14 @@ namespace jasl
             ValueArray value;
             (void)m_sharedCache->getList_(m_returnSymbol, value);
             GlobalCache::setList(m_returnSymbol, value);
+        } else if(m_returnType == Type::IntArray) {
+            IntArray value;
+            (void)m_sharedCache->getIntArray_(m_returnSymbol, value);
+            GlobalCache::setIntArray(m_returnSymbol, value);
+        } else if(m_returnType == Type::DoubleArray) {
+            DoubleArray value;
+            (void)m_sharedCache->getDoubleArray_(m_returnSymbol, value);
+            GlobalCache::setDoubleArray(m_returnSymbol, value);
         }
 
         return true;
@@ -87,7 +118,11 @@ namespace jasl
     bool ReturnableCommand::interpretFunctionBody()
     {
         std::vector<Function> innerFuncs;
-        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramE);
+        bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, 
+                                                                       (!(m_returnType == Type::IntArray || 
+                                                                          m_returnType == Type::DoubleArray)) ?
+                                                                       m_func.paramE :
+                                                                       m_func.paramF);
         if (success) {
             success = parseCommands(innerFuncs);
         } else {
