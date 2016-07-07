@@ -336,9 +336,12 @@ real 1.1 -> d;
 release d;
 </pre>
 
-Generating random ints:
+Generating random numbers:
 
 <pre>
 // generate an int in the range [0, 5]:
-random_int(5) -> result;
+random:int 5 -> resultA;
+
+// generate a real in the rande [0, 3.14]
+random:real 3.14 -> resultB;
 </pre>
