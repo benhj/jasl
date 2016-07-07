@@ -257,10 +257,13 @@ namespace jasl
 
             // a returnable function
             // E.g. a function that returns an int
-            // fn:int func -> result {}
+            // fn:int func() -> result {}
+            // or an array:
+            // fn:array:real func() -> result {}
             returnable %= string("fn")
                        >> ':'
                        >> genericString // return type
+                       >> -(lit(":"))// >> lexeme[("int") | ("real")]) // optional sub-type
                        >> genericString // functionName
                        >> parameterList // list of parameters
                        >> -(lit("->") >> genericString)
