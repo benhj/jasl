@@ -40,7 +40,7 @@
 #include "commands/StringToPrimitiveCommand.hpp"
 #include "commands/ReleaseCommand.hpp"
 #include "commands/TypeCommand.hpp"
-#include "commands/RandomIntCommand.hpp"
+#include "commands/RandomCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -165,7 +165,7 @@ namespace jasl {
             m_commandMap.emplace("exec", BUILD_COMMAND_AND_EXECUTE(Exec));
             m_commandMap.emplace("release", BUILD_COMMAND_AND_EXECUTE(Release));
             m_commandMap.emplace("type", BUILD_COMMAND_AND_EXECUTE(Type));
-            m_commandMap.emplace("random_int", BUILD_COMMAND_AND_EXECUTE(RandomInt));
+            m_commandMap.emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
             m_commandMap.emplace("exit", [](Function &,
                                             SharedVarCache const &,
                                             OptionalOutputStream const &) {
@@ -207,7 +207,7 @@ namespace jasl {
             m_commandBuilders.emplace("exec", BUILD_COMMAND(Exec));
             m_commandBuilders.emplace("release", BUILD_COMMAND(Release));
             m_commandBuilders.emplace("type", BUILD_COMMAND(Type));
-            m_commandBuilders.emplace("random_int", BUILD_COMMAND(RandomInt));
+            m_commandBuilders.emplace("random", BUILD_COMMAND(Random));
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedVarCache const &,
                                                  OptionalOutputStream const &) {

@@ -148,9 +148,14 @@ start {
                 put oldRep -> representation;
             }
 
+            // generate a random integer in the range [0, value]
             int (N - 1) -> value;
-            random_int(value) -> randomValue;
+            random:int value -> randomValue;
+
+            // update amount to move by, by randomValue amount
             put (moveBy + randomValue) -> moveBy;
+
+            // bounds check
             ?(moveBy >= (N - 1)) {
                 put 1 -> moveBy;
             }
