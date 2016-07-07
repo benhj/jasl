@@ -482,13 +482,16 @@ namespace jasl
                         >> genericString
                         >> ';';
 
-            // generates an int in range [0, n]
-            // random_int(5) -> int;
-            randomIntCommand %= string("random_int") >> '('
-                             >> (genericString | intRule) >> ')'
-                             >> lit("->") 
-                             >> genericString
-                             >> ';';
+            // generates an int or real in somce range [0, n]
+            // random:int n -> value;
+            // random:real n -> value;
+            randomCommand %= string("random") >> ':'
+                          >> genericString
+                          >> (genericString | doubleRule | intRule | 
+                               mathExpression | bracketedMathExpression)
+                          >> lit("->") 
+                          >> genericString
+                          >> ';';
 
             // for exiting a program
             exitCommand %= string("exit") >> -(genericString) >> ';';
@@ -530,7 +533,7 @@ namespace jasl
                          | execCommand
                          | releaseCommand
                          | typeCommand
-                         | randomIntCommand
+                         | randomCommand
                          | exitCommand
                          | array
                          | put
@@ -576,7 +579,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
-        qi::rule<Iterator, Function(), ascii::space_type> randomIntCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
         qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
         qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;

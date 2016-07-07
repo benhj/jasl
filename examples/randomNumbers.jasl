@@ -1,0 +1,15 @@
+start {
+    
+    repeat 100 times {
+        random:int 100 -> value;
+        prn value;
+    }
+
+    repeat 100 times {
+        random:real 2.2 -> d;
+        prn d;
+    }
+
+    prn "Done!";
+
+}
