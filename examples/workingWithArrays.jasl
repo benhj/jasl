@@ -1,5 +1,11 @@
 // How to use arrays. Note incomplete. 
 
+// returning an int array from a function
+fn:array:int testReturnArray(size, index) -> A {
+    array:int(size) -> A;
+    put 3 -> A(index);
+}
+
 start {
     
     prn "Creating some arrays";
