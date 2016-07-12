@@ -241,7 +241,7 @@ namespace jasl
                                comparisonExpression | bracketedComparisonExpression | bracketedWords);
             commaParameter %= ',' >> parameter;
             parameters     %= -(parameter >> *commaParameter); // comma-separated
-             // a colle ction of parameters
+             // a collection of parameters
             // to be used by a function. This coule be empty as in
             // () or have arguments, as in (a b c);
             parameterList %= '(' >> parameters >> ')';
@@ -262,8 +262,7 @@ namespace jasl
             // fn:array:real func() -> result {}
             returnable %= string("fn")
                        >> ':'
-                       >> genericString // return type
-                       >> -(lit(":"))// >> lexeme[("int") | ("real")]) // optional sub-type
+                       >> ((genericString >> ':' >> genericString) | genericString) // return type
                        >> genericString // functionName
                        >> parameterList // list of parameters
                        >> -(lit("->") >> genericString)
