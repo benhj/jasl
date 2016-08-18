@@ -130,6 +130,12 @@ fn:int funk (a) -> toReturn {
     int 10 + a -> toReturn;
 }
 
+// A function whereby the return type is an array
+fn:array:real arrayFunc() -> result {
+    array:real(10) -> result;
+    put 3.14 -> result(0);
+}
+
 block otherFunction () {
     // Call returnable funk, put result into b
     call funk (5) -> b;
