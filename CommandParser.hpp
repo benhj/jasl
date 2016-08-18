@@ -243,7 +243,7 @@ namespace jasl
             parameters     %= -(parameter >> *commaParameter); // comma-separated
              // a collection of parameters
             // to be used by a function. This coule be empty as in
-            // () or have arguments, as in (a b c);
+            // () or have arguments, as in (a, b, c);
             parameterList %= '(' >> parameters >> ')';
 
             // a callable execution point
@@ -255,6 +255,16 @@ namespace jasl
                   >>  commandCollection
                   >> '}';
 
+            returnableArray %= string("fn")
+                            >> ':'
+                            >> genericString >> ':' >> genericString// return type
+                            >> genericString // functionName
+                            >> parameterList // list of parameters
+                            >> -(lit("->") >> genericString)
+                            >> '{'
+                            >> commandCollection
+                            >> '}';
+
             // a returnable function
             // E.g. a function that returns an int
             // fn:int func() -> result {}
@@ -262,13 +272,15 @@ namespace jasl
             // fn:array:real func() -> result {}
             returnable %= string("fn")
                        >> ':'
-                       >> ((genericString >> ':' >> genericString) | genericString) // return type
+                       >> genericString // return type
                        >> genericString // functionName
                        >> parameterList // list of parameters
                        >> -(lit("->") >> genericString)
                        >> '{'
                        >> commandCollection
                        >> '}';
+
+            
 
             // a simple if statement
             ifRule %= string("if")
@@ -506,6 +518,7 @@ namespace jasl
                          | block
                          | call 
                          | returnable
+                         | returnableArray
                          | intNewSyntax
                          | doubleNewSyntax
                          | boolNewSyntax
@@ -560,6 +573,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> block;
         qi::rule<Iterator, Function(), ascii::space_type> call;
         qi::rule<Iterator, Function(), ascii::space_type> returnable;
+        qi::rule<Iterator, Function(), ascii::space_type> returnableArray;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
         qi::rule<Iterator, Function(), ascii::space_type> pr;

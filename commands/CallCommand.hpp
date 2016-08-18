@@ -38,7 +38,7 @@ namespace jasl
         // The type of the returnable if returnable
         std::string m_returnableType;
 
-        // The symbol of the return statement if returnable
+        // The symbol of the return statement of the actual function called
         std::string m_returnableSymbol;
 
     };
