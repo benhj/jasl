@@ -142,13 +142,14 @@ namespace jasl
                           >> (genericString)
                           >> ';';
 
+            arrayTypes %= lexeme[string("int") | string("real")];
 
             // for building arrays. For example:
             // array:int(5) -> a;
             // array:real(10) -> d;              
             array %= string("array")
                   >> ':'
-                  >> genericString
+                  >> arrayTypes
                   >> '('
                   >> (mathExpression | bracketedMathExpression | intRule | genericString)
                   >> ')'
@@ -255,9 +256,12 @@ namespace jasl
                   >>  commandCollection
                   >> '}';
 
+            arrayLexeme     %= lexeme[string("array")];
             returnableArray %= string("fn")
                             >> ':'
-                            >> genericString >> ':' >> genericString// return type
+                            >> arrayLexeme
+                            >> ':' 
+                            >> arrayTypes// return type
                             >> genericString // functionName
                             >> parameterList // list of parameters
                             >> -(lit("->") >> genericString)
@@ -622,6 +626,8 @@ namespace jasl
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;
         qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
         qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
+        qi::rule<Iterator, std::string(), ascii::space_type> arrayLexeme;
+        qi::rule<Iterator, std::string(), ascii::space_type> arrayTypes;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
