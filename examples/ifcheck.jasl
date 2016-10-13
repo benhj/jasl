@@ -2,11 +2,11 @@ start {
     
     int 1 -> i;
     int 1 -> j;
-    if(i == j) {
+    if(i = j) {
         prn "yes";
     }
 
-    if(i != j) {
+    if(i /= j) {
         prn "A";
     } else {
         prn "B";

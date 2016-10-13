@@ -43,7 +43,11 @@ namespace jasl
 
         // Try and get the name of the return variable if we have one
         if(m_returnableType != "nil" && m_returnableType != "") {
-            (void)m_functionFunc.getValueD<std::string>(m_returnableSymbol, m_sharedCache);
+            if(m_returnableType != "array") {
+                (void)m_functionFunc.getValueD<std::string>(m_returnableSymbol, m_sharedCache);
+            } else {
+                (void)m_functionFunc.getValueE<std::string>(m_returnableSymbol, m_sharedCache);
+            }
         }
     }
 
@@ -74,10 +78,17 @@ namespace jasl
         auto it = std::find_if(std::begin(matched), std::end(matched), [&](Function &f) {
 
             std::string functionName;
-            if(f.name == "block") {
+            if(f.name.find("block") != std::string::npos) {
                 (void)f.getValueA<std::string>(functionName, m_sharedCache);
-            } else if(f.name == "fn") {
-                (void)f.getValueB<std::string>(functionName, m_sharedCache);
+            } else if(f.name.find("fn") != std::string::npos) {
+
+                std::string type;
+                (void)f.getValueA<std::string>(type, m_sharedCache);
+                if(type != "array") {
+                    (void)f.getValueB<std::string>(functionName, m_sharedCache);
+                } else {
+                    (void)f.getValueC<std::string>(functionName, m_sharedCache);
+                }
             }
             return functionName == m_functionName;
         });
@@ -132,6 +143,19 @@ namespace jasl
                 m_sharedCache->setList(m_returnSymbol, value);
             } else if(m_returnableType == "nil") {
                 // don't do anything for return type 'nil'
+            } else if (m_returnableType == "array") {
+
+                std::string subType;
+                (void)m_functionFunc.getValueB<std::string>(subType, m_sharedCache);
+                if(subType == "int") {
+                    IntArray value;
+                    (void)GlobalCache::getIntArray_(m_returnableSymbol, value);
+                    m_sharedCache->setIntArray(m_returnSymbol, value);
+                } else if(subType == "real") {
+                    DoubleArray value;
+                    (void)GlobalCache::getDoubleArray_(m_returnableSymbol, value);
+                    m_sharedCache->setDoubleArray(m_returnSymbol, value);
+                }
             } else {
                 setLastErrorMessage("call returnable: unknown return type");
                 return false;

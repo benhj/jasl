@@ -7,7 +7,7 @@ fn:int canPlaceQueen(r, c, x) -> yes {
         
         get_token(i, x) -> tok;
         int tok -> itok;     
-        ? (((itok == c) || ((i - r) == (itok -c))) || ((i - r) == (c - itok))) {
+        ? (((itok = c) || ((i - r) = (itok -c))) || ((i - r) = (c - itok))) {
             put 0 -> yes;
             // so that we can break early
             put r -> i; 
@@ -27,7 +27,7 @@ block printQueens(N, x) {
         while(j < N) {
             get_token(i, x) -> tok;
             int tok -> itok;
-            ? (itok == j) {
+            ? (itok = j) {
                 pr "Q ";
             } : {
                 pr "* "; 
@@ -44,10 +44,10 @@ block placeNQueens(r, n, x) {
     int 0 -> c;
     while(c < n) {
         call canPlaceQueen(r, c, x) -> yes;
-        ? (yes == 1) {
+        ? (yes = 1) {
             string c -> strtok;
             set_token(r, x, strtok) -> x; 
-            ? (r == (n - 1)) {
+            ? (r = (n - 1)) {
                 call printQueens(n, x);
                 exit;
             } : {
