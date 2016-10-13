@@ -8,17 +8,17 @@ start {
     
         put 0 -> printed;
     
-        if ((c % 3) == 0) {
+        if ((c % 3) = 0) {
             pr "fizz, ";
             put 1 -> printed;
         }
         
-        if ((c % 5) == 0) {
+        if ((c % 5) = 0) {
             pr "buzz, ";
             put 1 -> printed;
         }
         
-        if (printed == 0) {
+        if (printed = 0) {
             pr c;
             pr ", ";
         }

@@ -6,11 +6,11 @@ start {
     
     int 1 -> i;
     int 1 -> j;
-    ? (i == j) {
+    ? (i = j) {
         prn "yes";
     }
 
-    ? (i != j) {
+    ? (i /= j) {
         prn "A";
     } : {
         prn "B";
