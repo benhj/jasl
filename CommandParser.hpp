@@ -74,7 +74,9 @@ namespace jasl
                                        | string("<")
                                        | string("&&")
                                        | string("||")
-                                       | string("!=")];
+                                       | string("!=")
+                                       | string("=")
+                                       | string("/=")];
 
             // a math expression enclose by brackets to aid compound expressions
             // e.g. (5.0 + 5.0)

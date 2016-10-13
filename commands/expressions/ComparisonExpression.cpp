@@ -32,11 +32,15 @@ namespace jasl {
                 return valA <= valB;
             } else if (symbolOperator == "==") {
                 return valA == valB;
-            } else if (symbolOperator == "&&") {
+            } else if (symbolOperator == "=") {
+                return valA == valB;
+            }  else if (symbolOperator == "&&") {
                 return valA && valB;
             } else if (symbolOperator == "||") {
                 return valA || valB;
             } else if (symbolOperator == "!=") {
+                return valA != valB;
+            } else if (symbolOperator == "/=") {
                 return valA != valB;
             } else {
                 throw;
