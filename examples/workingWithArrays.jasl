@@ -42,4 +42,12 @@ start {
     for i in d {
         prn i;
     }
+
+    // test calling function that returns an array
+    call testReturnArray(5, 3) -> res;
+    prn "Test function";
+    for i in res {
+        prn i;
+    }
+
 }

@@ -25,7 +25,7 @@ fn:list initialize (N) -> rep {
         string i -> istring;
         add_token(istring, rep);
         put (i + 2) -> i;
-        ? (i == N) {
+        ? (i = N) {
             put 0 -> i;
         }
     }
@@ -76,25 +76,25 @@ fn:int computeError (N, representation) -> theError {
         repeat N times {
             get_token(k, representation) -> token;
             int token -> ktoken;
-            ? (itoken == ktoken) {
-                ? ( i != k) {
+            ? (itoken = ktoken) {
+                ? ( i /= k) {
                     put (e + 1) -> e;
                 }
             }
             ? (k < i) {
-                ? (ktoken == (itoken - (i - k))) {
+                ? (ktoken = (itoken - (i - k))) {
                     put (e + 1) -> e;
                 } : {
-                    ? (ktoken == (itoken - (k - i))) {
+                    ? (ktoken = (itoken - (k - i))) {
                         put (e + 1) -> e;
                     }
                 }
             } : {
                 ? (k > i) {
-                    ? (ktoken == (itoken + (k - i))) {
+                    ? (ktoken = (itoken + (k - i))) {
                         put (e + 1) -> e;
                     } : {
-                        if(ktoken == (itoken + (i - k))) {
+                        if(ktoken = (itoken + (i - k))) {
                             put (e + 1) -> e;
                         }
                     }
@@ -121,7 +121,7 @@ start {
     int 1 -> moveBy;
     int 0 -> count;
 
-    while (currentError != 0) {
+    while (currentError /= 0) {
         put 0 -> count;
         repeat N times {
             get_token(count, representation) -> tok;

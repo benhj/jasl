@@ -154,6 +154,36 @@ namespace jasl {
         return bigCache->getListToken(key, index);
     }
 
+    OptionalIntArray GlobalCache::getIntArray(std::string const &key)
+    {
+        return bigCache->getIntArray(key);
+    }
+
+    bool GlobalCache::getIntArray_(std::string const &key, IntArray &val)
+    {
+        return bigCache->getIntArray_(key, val);
+    }
+
+    OptionalInt GlobalCache::getIntArrayValue(std::string const &key, size_t const index)
+    {
+        return bigCache->getIntArrayValue(key, index);
+    }
+
+    OptionalDoubleArray GlobalCache::getDoubleArray(std::string const &key)
+    {
+        return bigCache->getDoubleArray(key);
+    }
+
+    bool GlobalCache::getDoubleArray_(std::string const &key, DoubleArray &val)
+    {
+        return bigCache->getDoubleArray_(key, val);
+    }
+
+    OptionalDouble GlobalCache::getDoubleArrayValue(std::string const &key, size_t const index)
+    {
+        return bigCache->getDoubleArrayValue(key, index);
+    }
+
     OptionalType GlobalCache::getType(std::string const &key)
     {
         return bigCache->getType(key);
