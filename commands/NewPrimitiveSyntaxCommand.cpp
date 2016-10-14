@@ -9,6 +9,8 @@
 #include "NewPrimitiveSyntaxCommand.hpp"
 #include "StringToPrimitiveCommand.hpp"
 
+#include <iostream>
+
 namespace jasl {
 
     NewPrimitiveSyntaxCommand::NewPrimitiveSyntaxCommand(Function &func_,
@@ -25,17 +27,13 @@ namespace jasl {
     {
 
         if (m_type == "int") {
-
             return handleInt();
-
         } else if (m_type == "real") {
-
             return handleDouble();
-
         } else if (m_type == "bool") {
-
             return handleBool();
-
+        } else if (m_type == "byte") {
+            return handleByte();
         } 
 
         setLastErrorMessage("cvar: type not supported");
@@ -50,6 +48,18 @@ namespace jasl {
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
         m_sharedCache->setInt(m_varName, value);
+        return true;
+    }
+
+    bool NewPrimitiveSyntaxCommand::handleByte()
+    {
+        uint8_t value;
+        if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
+            // try converting a string to an int
+            return false;
+        } 
+
+        m_sharedCache->setByte(m_varName, value);
         return true;
     }
 

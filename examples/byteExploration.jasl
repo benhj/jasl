@@ -1,0 +1,14 @@
+start {
+
+    prn "starting..";
+
+    // ascii code for the letter P
+    byte 80 -> b;
+    type b -> typeOfB;
+    pr "Type of b: "; prn typeOfB;
+
+    // should print out the character 'P'
+    pr "Value of b: "; prn b;
+    prn "finished!";
+
+}

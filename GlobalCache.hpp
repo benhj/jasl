@@ -32,6 +32,8 @@ namespace jasl {
         /// functions for setting different types
         static void setInt(std::string const &key,
                            int64_t const value);
+        static void setByte(std::string const &key,
+                           uint8_t const value);
         static void setDouble(std::string const &key,
                               double const value);
         static void setBool(std::string const &key,
@@ -82,6 +84,8 @@ namespace jasl {
         /// shouldn't be used unless it is know values exist.
         static OptionalInt getInt(std::string const &key);
         static bool getInt_(std::string const &key, int64_t &val);
+        static OptionalByte getByte(std::string const &key);
+        static bool getByte_(std::string const &key, uint8_t &val);
         static OptionalDouble getDouble(std::string const &key);
         static bool getDouble_(std::string const &key, double &val);
         static OptionalBool getBool(std::string const &key);

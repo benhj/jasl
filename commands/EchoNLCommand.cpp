@@ -53,6 +53,13 @@ namespace jasl
                 }
             }
             {
+                uint8_t value;
+                if(m_sharedCache->getByte_(symbol, value)) {
+                    appendToOutputWithNewLine(value);
+                    return true;
+                }
+            }
+            {
                 double value;
                 if(m_sharedCache->getDouble_(symbol, value)) {
                     appendToOutputWithNewLine(value);

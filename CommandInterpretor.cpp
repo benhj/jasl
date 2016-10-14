@@ -158,6 +158,7 @@ namespace jasl {
             m_commandMap.emplace("put", BUILD_COMMAND_AND_EXECUTE(Put));
             m_commandMap.emplace("get", BUILD_COMMAND_AND_EXECUTE(ArrayGet));
             m_commandMap.emplace("int", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
+            m_commandMap.emplace("byte", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("real", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("bool", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
             m_commandMap.emplace("input", BUILD_COMMAND_AND_EXECUTE(Input));
@@ -204,6 +205,7 @@ namespace jasl {
             m_commandBuilders.emplace("put", BUILD_COMMAND(Put));
             m_commandBuilders.emplace("get", BUILD_COMMAND(ArrayGet));
             m_commandBuilders.emplace("int", BUILD_COMMAND(NewPrimitiveSyntax));
+            m_commandBuilders.emplace("byte", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("real", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("bool", BUILD_COMMAND(NewPrimitiveSyntax));
             m_commandBuilders.emplace("input", BUILD_COMMAND(Input));

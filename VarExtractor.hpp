@@ -50,7 +50,11 @@ namespace jasl {
             bool extracted = false;
             if (typeid(T) == typeid(int64_t)) {
                 extracted = tryAnyCast<int64_t>((int64_t&)t, val);
-            } else if (typeid(T) == typeid(bool)) {
+            } else if (typeid(T) == typeid(uint8_t)) {
+                extracted = tryAnyCast<uint8_t>((uint8_t&)t, val);
+            } else if (typeid(T) == typeid(char)) {
+                extracted = tryAnyCast<char>((char&)t, val);
+            }  else if (typeid(T) == typeid(bool)) {
                 extracted = tryAnyCast<bool>((bool&)t, val);
             } else if (typeid(T) == typeid(double)) {
                 extracted = tryAnyCast<double>((double&)t, val);
@@ -82,7 +86,17 @@ namespace jasl {
                     if(result) {
                         return true;
                     }
-                } else if (typeid(T) == typeid(bool)) {
+                } else if (typeid(T) == typeid(uint8_t)) {
+                    auto result = sharedCache->getByte_(str, (uint8_t&)t);
+                    if(result) {
+                        return true;
+                    }
+                } else if (typeid(T) == typeid(char)) {
+                    auto result = sharedCache->getByte_(str, (uint8_t&)t);
+                    if(result) {
+                        return true;
+                    }
+                }  else if (typeid(T) == typeid(bool)) {
                     auto result = sharedCache->getBool_(str, (bool&)t);
                     if(result) {
                         return true;
@@ -138,7 +152,23 @@ namespace jasl {
                 x = static_cast<int64_t>(me.evaluate());
                 return true;
             }
+            return false;
+        }
 
+        static bool trySingleByteExtraction(Value &val, uint8_t &x, SharedVarCache const &sharedCache)
+        {
+            int64_t temp;
+            if (tryExtraction<int64_t>(temp, val, sharedCache)) {
+                x = (uint8_t)temp;
+                return true;
+            }
+
+            MathExpression me;
+            if (tryExtraction<MathExpression>(me, val, sharedCache)) {
+                me.sharedCache = sharedCache;
+                x = static_cast<uint8_t>(me.evaluate());
+                return true;
+            }
             return false;
         }
 
