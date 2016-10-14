@@ -30,7 +30,17 @@ namespace jasl
         // Find out how big the array should be
         int64_t value;
         if (!VarExtractor::trySingleIntExtraction(m_func.paramB, value, m_sharedCache)) {
-            // try converting a string to an int
+            // might be that we have array:byte str -> bytes; type syntax.
+            // this is for when we implicitly convert a string to a byte array
+            std::string str;
+            if (VarExtractor::trySingleStringExtraction(m_func.paramB, str, m_sharedCache)) {
+                ByteArray array;
+                for (auto const & c : str) {
+                    array.push_back(c);
+                }
+                m_sharedCache->setByteArray(m_varName, array);
+                return true;
+            }
             setLastErrorMessage("array: couldn't get index");
             return false;
         } 
@@ -52,7 +62,7 @@ namespace jasl
             ByteArray array(value, 0.0);
             m_sharedCache->setByteArray(m_varName, array);
             return true;
-            
+
         }
 
         setLastErrorMessage("array: type not supported");

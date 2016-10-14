@@ -36,4 +36,12 @@ start {
     string bytes -> str;
     pr "in string: "; prn str;
 
+    // create a string and convert to an array of bytes
+    string "hello, world!" -> mystring;
+    array:byte mystring -> zebytes;
+    for z in zebytes {
+        pr z;
+    }
+    prn " ";
+
 }
