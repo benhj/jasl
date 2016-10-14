@@ -496,8 +496,8 @@ namespace jasl
                            >> genericString >> ';';
 
             // determines the type of a variable and stores in a string
-            typeCommand %= string("type") >> '('
-                        >> genericString >> ')'
+            typeCommand %= string("type") 
+                        >> genericString
                         >> lit("->") 
                         >> genericString
                         >> ';';

@@ -50,4 +50,12 @@ start {
         prn i;
     }
 
+    // check that types printed correctly
+    type a -> typeOfA;
+    type d -> typeOfD;
+    type res -> typeOfRes;
+    prn typeOfA;
+    prn typeOfD;
+    prn typeOfRes;
+
 }

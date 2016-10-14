@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ComparisonExpression.hpp"
@@ -12,38 +12,58 @@
 namespace jasl {
 
     namespace {
+
+        enum logic_code {
+            equal,
+            notEqual,
+            lessThan,
+            lessThanEqual,
+            greaterThan,
+            greaterThanEqual,
+            logicOr,
+            logicAnd
+        };
+
+        logic_code convert(std::string const & symbolOperator) 
+        {
+            if (symbolOperator == "=" || symbolOperator == "==") {
+                return equal;
+            } else if(symbolOperator == "!=" || symbolOperator == "/=") {
+                return notEqual;
+            } else if (symbolOperator == ">") {
+                return greaterThan;
+            } else if (symbolOperator == ">="){
+                return greaterThanEqual;
+            } else if (symbolOperator == "<") {
+                return lessThan;
+            } else if (symbolOperator == "<=") {
+                return lessThanEqual;
+            } else if (symbolOperator == "&&") {
+                return logicAnd;
+            } else if (symbolOperator == "||") {
+                return logicOr;
+            } 
+            throw;
+        }
+
         template <typename T1, typename T2>
         bool doStage2(T1 const valA, 
                       T2 const valB, 
                       std::string const &symbolOperator)
         {
-
             if (typeid(T1) != typeid(T2)) {
                 throw;
             }
-
-            if (symbolOperator == ">") {
-                return valA > valB;
-            } else if (symbolOperator == ">=") {
-                return valA >= valB;
-            } else if (symbolOperator == "<") {
-                return valA < valB;
-            } else if (symbolOperator == "<=") {
-                return valA <= valB;
-            } else if (symbolOperator == "==") {
-                return valA == valB;
-            } else if (symbolOperator == "=") {
-                return valA == valB;
-            }  else if (symbolOperator == "&&") {
-                return valA && valB;
-            } else if (symbolOperator == "||") {
-                return valA || valB;
-            } else if (symbolOperator == "!=") {
-                return valA != valB;
-            } else if (symbolOperator == "/=") {
-                return valA != valB;
-            } else {
-                throw;
+            switch (convert(symbolOperator)) {
+                case equal: return valA == valB;
+                case notEqual: return valA != valB;
+                case lessThan:  return valA < valB;
+                case lessThanEqual:  return valA <= valB;
+                case greaterThan:  return valA > valB;
+                case greaterThanEqual: return valA >= valB;
+                case logicOr:  return valA || valB;
+                case logicAnd:  return valA && valB;
+                default: throw;
             }
         }
 
