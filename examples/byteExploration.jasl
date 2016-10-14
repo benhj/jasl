@@ -44,4 +44,13 @@ start {
     }
     prn " ";
 
+    // checking that updating and xoring works
+    byte (80 ^ 5) -> xored;
+    int 2 -> index;
+    put xored -> zebytes(index);
+    for z in zebytes {
+        pr z;
+    }
+    prn " ";
+
 }

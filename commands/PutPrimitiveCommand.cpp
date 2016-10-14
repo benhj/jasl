@@ -33,6 +33,8 @@ namespace jasl
             m_type = "bool";
         } else if (*type == Type::String) {
             m_type = "string";
+        } else if (*type == Type::Byte) {
+            m_type = "byte";
         } else if (*type == Type::ValueArray) {
             m_type = "list";
         }

@@ -13,6 +13,7 @@
 #include "LiteralString.hpp"
 #include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
+#include "commands/expressions/MathByteExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 
 #include <boost/function.hpp>
@@ -64,7 +65,9 @@ namespace jasl {
                 extracted = tryAnyCast<ValueArray>((ValueArray&)t, val);
             } else if (typeid(T) == typeid(MathExpression)) {
                 extracted = tryAnyCast<MathExpression>((MathExpression&)t, val);
-            } else if (typeid(T) == typeid(ComparisonExpression)) {
+            } else if (typeid(T) == typeid(MathByteExpression)) {
+                extracted = tryAnyCast<MathByteExpression>((MathByteExpression&)t, val);
+            }  else if (typeid(T) == typeid(ComparisonExpression)) {
                 extracted = tryAnyCast<ComparisonExpression>((ComparisonExpression&)t, val);
             } else if (typeid(T) == typeid(LiteralString)) {
                 extracted = tryAnyCast<LiteralString>((LiteralString&)t, val);
@@ -157,17 +160,39 @@ namespace jasl {
 
         static bool trySingleByteExtraction(Value &val, uint8_t &x, SharedVarCache const &sharedCache)
         {
-            int64_t temp;
-            if (tryExtraction<int64_t>(temp, val, sharedCache)) {
-                x = (uint8_t)temp;
+            if (tryExtraction<uint8_t>(x, val, sharedCache)) {
                 return true;
             }
-
-            MathExpression me;
-            if (tryExtraction<MathExpression>(me, val, sharedCache)) {
-                me.sharedCache = sharedCache;
-                x = static_cast<uint8_t>(me.evaluate());
-                return true;
+            {
+                int64_t temp;
+                // Can be difficult at the parsing level to distinguish between int and uint
+                // therefore pull out int and cast to uint
+                if (tryExtraction<int64_t>(temp, val, sharedCache)) {
+                    x = (uint8_t)temp;
+                    return true;
+                }
+            }
+            {
+                // Parsing issue -- detected as a math expression, but
+                // we actually need it to be a math byte expression
+                MathExpression me;
+                if (tryExtraction<MathExpression>(me, val, sharedCache)) {
+                    MathByteExpression mbe;
+                    mbe.left = me.left;
+                    mbe.right = me.right;
+                    mbe.symbolOperator = me.symbolOperator;
+                    mbe.sharedCache = sharedCache;
+                    x = mbe.evaluate();
+                    return true;
+                }
+            }
+            {
+                MathByteExpression me;
+                if (tryExtraction<MathByteExpression>(me, val, sharedCache)) {
+                    me.sharedCache = sharedCache;
+                    x = me.evaluate();
+                    return true;
+                }
             }
             return false;
         }

@@ -65,7 +65,8 @@ namespace jasl
                                  | string("+")
                                  | string("-")
                                  | string("/")
-                                 | string("*")];
+                                 | string("*")
+                                 | string("^")];
 
             // logical symbols
             comparisonSymbols %= lexeme[ string("==")
@@ -132,7 +133,7 @@ namespace jasl
                          >> ';';
 
             byteNewSyntax %= string("byte")
-                          >> (intRule | ('\'' >> char_ >> '\'') | genericString)
+                          >> (mathExpression | bracketedMathExpression | intRule | genericString)
                           >> lit("->")
                           >> (genericString)
                           >> ';';

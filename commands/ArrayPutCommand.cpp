@@ -38,6 +38,7 @@ namespace jasl
 
     bool ArrayPutCommand::execute() 
     {
+
         if(m_type.empty()) {
             return false;
         }
@@ -52,7 +53,6 @@ namespace jasl
         if (m_type == "int") {
             int64_t value;
             if (!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
-                // try converting a string to an int
                 setLastErrorMessage("put: problem setting int");
                 return false;
             } 
@@ -62,7 +62,6 @@ namespace jasl
         } else if (m_type == "real") {
             double value;
             if (!VarExtractor::trySingleDoubleExtraction(m_func.paramA, value, m_sharedCache)) {
-                // try converting a string to an int
                 setLastErrorMessage("put: problem setting real");
                 return false;
             } 
@@ -71,8 +70,7 @@ namespace jasl
         } else if (m_type == "byte") {
             uint8_t value;
             if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
-                // try converting a string to an int
-                setLastErrorMessage("put: problem setting real");
+                setLastErrorMessage("put: problem setting byte");
                 return false;
             } 
 
