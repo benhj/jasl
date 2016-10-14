@@ -11,4 +11,25 @@ start {
     pr "Value of b: "; prn b;
     prn "finished!";
 
+    // Try creating a byte array
+    array:byte(10) -> bytes;
+
+    // check the type
+    type bytes -> bytesType;
+    prn bytesType;
+
+    // assign some ascii
+    int 0 -> counter;
+    while (counter < 10) {
+        int (counter + 70) -> value;
+        put value -> bytes(counter);
+        put (counter + 1) -> counter;
+    }
+
+    // print out bytes (ascii in this example)
+    for ch in bytes {
+        pr ch;
+    }
+    prn " ";
+
 }

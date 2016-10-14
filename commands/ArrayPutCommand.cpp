@@ -29,7 +29,9 @@ namespace jasl
             m_type = "int";
         } else if(*type == Type::DoubleArray) {
             m_type = "real";
-        } else {
+        } else if(*type == Type::ByteArray) {
+            m_type = "byte";
+        }  else {
             setLastErrorMessage("put: couldn't determine type");
         }
     }
@@ -66,6 +68,15 @@ namespace jasl
             } 
 
             m_sharedCache->setValueInDoubleArray(m_varName, index, value);
+        } else if (m_type == "byte") {
+            uint8_t value;
+            if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
+                // try converting a string to an int
+                setLastErrorMessage("put: problem setting real");
+                return false;
+            } 
+
+            m_sharedCache->setValueInByteArray(m_varName, index, value);
         }
         return true;
     }

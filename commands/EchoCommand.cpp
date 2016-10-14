@@ -14,8 +14,8 @@
 namespace jasl
 {
     EchoCommand::EchoCommand(Function &func_,
-                                 SharedVarCache const &sharedCache,
-                                 OptionalOutputStream const &output)
+                             SharedVarCache const &sharedCache,
+                             OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
 

@@ -54,6 +54,14 @@ namespace jasl {
                         processArray(*array, listSymbol);
                     }
                 }
+
+                // try byte array
+                {
+                    auto array = m_sharedCache->getByteArray(listSymbol);
+                    if(array) {
+                        processArray(*array, listSymbol);
+                    }
+                }
             }
         }
         // try and pull out raw list
