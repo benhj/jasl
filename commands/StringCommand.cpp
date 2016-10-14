@@ -54,36 +54,40 @@ namespace jasl
             {
                 int64_t value;
                 if( m_sharedCache->getInt_(symbol, value)) {
-
                     m_sharedCache->setString(key, std::to_string(value));
-
                     return true;
                 }
             }
             {
                 double value;
                 if(m_sharedCache->getDouble_(symbol, value)) {
-
                     m_sharedCache->setString(key, std::to_string(value));
-
                     return true;
                 }
             }
             {
                 bool value;
                 if(m_sharedCache->getBool_(symbol, value)) {
-
                     m_sharedCache->setString(key, std::to_string(value));
-
                     return true;
                 }
             }
             {
                 std::string value;
                 if(m_sharedCache->getString_(symbol, value)) {
-
                     m_sharedCache->setString(key, value);
+                    return true;
+                }
+            }
+            {
+                ByteArray value;
+                if(m_sharedCache->getByteArray_(symbol, value)) {
 
+                    std::string str;
+                    for (auto const & b : value) {
+                        str += b;
+                    }
+                    m_sharedCache->setString(key, str);
                     return true;
                 }
             }

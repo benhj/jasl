@@ -32,4 +32,8 @@ start {
     }
     prn " ";
 
+    // put into a string
+    string bytes -> str;
+    pr "in string: "; prn str;
+
 }
