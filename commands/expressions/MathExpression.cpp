@@ -58,32 +58,42 @@ namespace jasl {
         // an int if int precision is required
         double vleft;
         double vright;
-        double valA;
+        double leftDouble;
         // extracting a double didn't work. Maybe an int
-        if(!VarExtractor::trySingleDoubleExtraction(left, valA, sharedCache)) {
-            int64_t valC;
-            if(VarExtractor::trySingleIntExtraction(left, valC, sharedCache)) {
-                vleft = valC;
+        if(!VarExtractor::trySingleDoubleExtraction(left, leftDouble, sharedCache)) {
+            int64_t leftInt;
+            if(!VarExtractor::trySingleIntExtraction(left, leftInt, sharedCache)) {
+                uint8_t leftChar;
+                if(VarExtractor::trySingleByteExtraction(left, leftChar, sharedCache)) {
+                    vleft = leftChar;
+                } else {
+                    errorMessage = "Can't parse left of expression";
+                }
             } else {
-                errorMessage = "Can't parse left of expression";
+                vleft = leftInt;
             }
         } else {
             resultIsInteger = false;
-            vleft = valA;
+            vleft = leftDouble;
         }
 
-        double valB;
+        double rightDouble;
         // extracting a double didn't work. Maybe an int
-        if(!VarExtractor::trySingleDoubleExtraction(right, valB, sharedCache)) {
-            int64_t valD;
-            if(VarExtractor::trySingleIntExtraction(right, valD, sharedCache)) {
-                vright = valD;
+        if(!VarExtractor::trySingleDoubleExtraction(right, rightDouble, sharedCache)) {
+            int64_t rightInt;
+            if(!VarExtractor::trySingleIntExtraction(right, rightInt, sharedCache)) {
+                uint8_t rightChar;
+                if(VarExtractor::trySingleByteExtraction(right, rightChar, sharedCache)) {
+                    vright = rightChar;
+                } else {
+                    errorMessage = "Can't parse left of expression";
+                }
             } else {
-                errorMessage = "Can't parse right of expression";
+                vright = rightInt;
             }
         } else {
             resultIsInteger = false;
-            vright = valB;
+            vright = rightDouble;
         }
 
         switch (getMathOp(symbolOperator)) {

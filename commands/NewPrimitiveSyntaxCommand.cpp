@@ -55,8 +55,7 @@ namespace jasl {
     {
         uint8_t value;
         if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
-            // try converting a string to an int
-            return false;
+            return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
 
         m_sharedCache->setByte(m_varName, value);
