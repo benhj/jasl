@@ -24,6 +24,7 @@ namespace jasl {
         bool handleInt();
         bool handleDouble();
         bool handleBool();
+        bool handleByte();
 
         std::string m_type;
         std::string m_varName;

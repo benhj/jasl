@@ -22,6 +22,12 @@ namespace jasl {
         bigCache->setInt(key, value);
     }
 
+    void GlobalCache::setByte(std::string const &key,
+                              uint8_t const value)
+    {
+        bigCache->setByte(key, value);
+    }
+
     void GlobalCache::setDouble(std::string const &key,
                                 double const value)
     {
@@ -107,6 +113,16 @@ namespace jasl {
     bool GlobalCache::getInt_(std::string const &key, int64_t &val)
     {
         return bigCache->getInt_(key, val);
+    }
+
+    OptionalByte GlobalCache::getByte(std::string const &key)
+    {
+        return bigCache->getByte(key);
+    }
+
+    bool GlobalCache::getByte_(std::string const &key, uint8_t &val)
+    {
+        return bigCache->getByte_(key, val);
     }
 
     OptionalDouble GlobalCache::getDouble(std::string const &key)

@@ -29,9 +29,11 @@ namespace jasl {
     using OptionalValueArray = ::boost::optional<ValueArray>;
     using OptionalIntArray = ::boost::optional<IntArray>;
     using OptionalDoubleArray = ::boost::optional<DoubleArray>;
+    using OptionalByte = ::boost::optional<uint8_t>;
     using CacheVariant = ::boost::variant<int64_t, 
                                           bool, 
-                                          double, 
+                                          double,
+                                          uint8_t, 
                                           std::string, 
                                           ValueArray,
                                           IntArray,
@@ -39,7 +41,7 @@ namespace jasl {
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, String, ValueArray,
+        Int, Bool, Double, Byte, String, ValueArray,
         IntArray, DoubleArray, None
     };
 
@@ -68,6 +70,8 @@ namespace jasl {
         /// functions for setting different types
         void setInt(std::string const &key,
                     int64_t const value);
+        void setByte(std::string const &key,
+                     uint8_t const value);
         void setDouble(std::string const &key,
                        double const value);
         void setBool(std::string const &key,
@@ -120,6 +124,8 @@ namespace jasl {
         /// shouldn't be used unless it is know values exist.
         OptionalInt getInt(std::string const &key);
         bool getInt_(std::string const &key, int64_t &val);
+        OptionalByte getByte(std::string const &key);
+        bool getByte_(std::string const &key, uint8_t &val);
         OptionalDouble getDouble(std::string const &key);
         bool getDouble_(std::string const &key, double &val);
         OptionalBool getBool(std::string const &key);

@@ -24,6 +24,7 @@ namespace jasl {
         std::map<std::string, double> doubleCache;
         std::map<std::string, std::string> stringCache;
         std::map<std::string, ValueArray> listCache;
+        std::map<std::string, uint8_t> byteCache;
     };
 
 }

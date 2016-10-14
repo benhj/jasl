@@ -38,9 +38,28 @@ namespace jasl {
             return;
         }
 
-        m_bigCache[key] = { Type::Int, value };
-        
+        m_bigCache[key] = { Type::Int, value }; 
     }
+
+    void ScopedVarCache::setByte(std::string const &key,
+                                 uint8_t const value)
+    {
+        
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != Type::Byte) {
+                return;
+            }
+            found->second.cv = value;
+            return;
+        }
+
+        m_bigCache[key] = { Type::Byte, value }; 
+    }
+
     void ScopedVarCache::setDouble(std::string const &key,
                                    double const value)
     {
@@ -218,6 +237,29 @@ namespace jasl {
         if(it != std::end(m_bigCache)) { 
             if(it->second.type == Type::Int) {
                 val = ::boost::get<int64_t>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
+    OptionalByte ScopedVarCache::getByte(std::string const &key)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::Byte) {
+                return ::boost::get<uint8_t>(it->second.cv); 
+            }
+        }
+        return OptionalByte();
+    }
+
+    bool ScopedVarCache::getByte_(std::string const &key, uint8_t &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::Byte) {
+                val = ::boost::get<uint8_t>(it->second.cv);  
                 return true;
             }
         }

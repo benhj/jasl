@@ -48,6 +48,7 @@ namespace jasl
             using ascii::char_;
             using ascii::string;
             using ascii::blank;
+            using qi::uint_;
 
             // convenience rules
             quotedString        %= lexeme['\'' >> +(char_ - '\'') >> '\''];
@@ -129,6 +130,12 @@ namespace jasl
                          >> lit("->")
                          >> (genericString)
                          >> ';';
+
+            byteNewSyntax %= string("byte")
+                          >> (intRule | ('\'' >> char_ >> '\'') | genericString)
+                          >> lit("->")
+                          >> (genericString)
+                          >> ';';
 
             // real 5.0 -> d; 
             doubleNewSyntax %= string("real")
@@ -526,6 +533,7 @@ namespace jasl
                          | returnable
                          | returnableArray
                          | intNewSyntax
+                         | byteNewSyntax
                          | doubleNewSyntax
                          | boolNewSyntax
                          | ifRule 
@@ -609,6 +617,7 @@ namespace jasl
         qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
         qi::rule<Iterator, bool(), ascii::space_type> boolRule;
         qi::rule<Iterator, Function(), ascii::space_type> intNewSyntax;
+        qi::rule<Iterator, Function(), ascii::space_type> byteNewSyntax;
         qi::rule<Iterator, Function(), ascii::space_type> doubleNewSyntax;
         qi::rule<Iterator, Function(), ascii::space_type> boolNewSyntax;
         qi::rule<Iterator, MathExpression(), ascii::space_type> mathExpression;
