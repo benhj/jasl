@@ -47,6 +47,12 @@ namespace jasl
             m_sharedCache->setDoubleArray(m_varName, array);
             return true;
 
+        } else if (m_type == "byte") {
+
+            ByteArray array(value, 0.0);
+            m_sharedCache->setByteArray(m_varName, array);
+            return true;
+            
         }
 
         setLastErrorMessage("array: type not supported");

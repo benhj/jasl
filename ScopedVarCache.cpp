@@ -214,6 +214,41 @@ namespace jasl {
         array.push_back(value);
     }
 
+    void ScopedVarCache::setByteArray(std::string const &key,
+                                    ByteArray const &value)
+    {
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != Type::ByteArray) {
+                return;
+            }
+            found->second.cv = value;
+            return;
+        }
+        m_bigCache[key] = { Type::ByteArray, value };
+        
+    }
+
+    void ScopedVarCache::setValueInByteArray(std::string const &key,
+                                             int const index,
+                                             uint8_t const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<ByteArray>(keyed.cv);
+        array[index] = value;
+    }
+
+    void ScopedVarCache::pushBackValueInByteArray(std::string const &key,
+                                                  uint8_t const value)
+    {
+        auto &keyed = m_bigCache[key];
+        auto &array = ::boost::get<ByteArray>(keyed.cv);
+        array.push_back(value);
+    }
+
     void ScopedVarCache::eraseValue(std::string const &key)
     {
         auto it = m_bigCache.find(key);
@@ -444,6 +479,43 @@ namespace jasl {
             }
         }
         return OptionalDouble();
+    }
+
+    OptionalByteArray ScopedVarCache::getByteArray(std::string const &key)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::ByteArray) {
+                return ::boost::get<ByteArray>(it->second.cv);  
+            }
+        }
+        return OptionalByteArray();
+    }
+
+    bool ScopedVarCache::getByteArray_(std::string const &key, ByteArray &val)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::ByteArray) {
+                val = ::boost::get<ByteArray>(it->second.cv);  
+                return true;
+            }
+        }
+        return false;
+    }
+
+    OptionalByte ScopedVarCache::getByteArrayValue(std::string const &key, size_t const index)
+    {
+        auto it = m_bigCache.find(key);
+        if(it != std::end(m_bigCache)) { 
+            if(it->second.type == Type::ByteArray) {
+                auto array = ::boost::get<ByteArray>(it->second.cv);  
+                if(index < array.size()) {
+                    return OptionalByte(array[index]);
+                }
+            }
+        }
+        return OptionalByte();
     }
 
     OptionalType ScopedVarCache::getType(std::string const &key)
