@@ -37,6 +37,12 @@ function build_other {
     done
 }
 
+function build_single () {
+    echo "Building $1"
+    $compiler $cflags -I$boostIncPath -c $1 -o ${f%%.*}.o
+    mv ${f%%.*}.o objects/
+}
+
 function build_tests {
     echo "Building tests..."
     $compiler $cflags -I$boostIncPath $objects bin/test.cpp -o test
@@ -66,4 +72,6 @@ function build_all {
 # control which parts we need to be built.
 # For example "./sh buildIt.sh all" will build everything
 # while "./sh buildIt.sh tests" will attempt to build the tests
-build_$1
+# Or, to build a single object file:
+# ./sh build.sh single commands/ArrayCommand.cpp 
+build_$1 $2

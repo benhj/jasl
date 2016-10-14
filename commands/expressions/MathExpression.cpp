@@ -11,6 +11,36 @@
 #include <stdexcept>
 #include <cstdint>
 
+namespace {
+
+    enum math_op {
+        opadd,
+        opsub,
+        opdiv,
+        opmult,
+        opmod,
+        opxor
+    };
+
+    math_op getMathOp(std::string const & symbolOperator) 
+    {
+        if (symbolOperator == "+" || symbolOperator == "add") {
+            return opadd;
+        } else if (symbolOperator == "-" || symbolOperator == "sub") {
+            return opsub;
+        } else if (symbolOperator == "/" || symbolOperator == "div") {
+            return opdiv;
+        } else if (symbolOperator == "*" || symbolOperator == "mult") {
+            return opmult;
+        } else if (symbolOperator == "%" || symbolOperator == "mod") {
+            return opmod;
+        } else if (symbolOperator == "^" || symbolOperator == "xor") {
+            return opxor;
+        }    
+        throw std::runtime_error("Unknown binary operand");
+    }
+}
+
 namespace jasl {
 
     MathExpression::MathExpression()
@@ -56,18 +86,14 @@ namespace jasl {
             vright = valB;
         }
 
-        if (symbolOperator == "+" || symbolOperator == "add") {
-            return vleft + vright;
-        } else if (symbolOperator == "-" || symbolOperator == "sub") {
-            return vleft - vright;
-        } else if (symbolOperator == "/" || symbolOperator == "div") {
-            return vleft / vright;
-        } else if (symbolOperator == "*" || symbolOperator == "mult") {
-            return vleft * vright;
-        } else if (symbolOperator == "%" || symbolOperator == "mod") {
-            return (int64_t)vleft % (int64_t)vright;
-        }  else {
-            throw std::runtime_error("Unknown binary operand");
+        switch (getMathOp(symbolOperator)) {
+            case opadd:  return vleft + vright;
+            case opsub:  return vleft - vright;
+            case opdiv:  return vleft / vright;
+            case opmult: return vleft * vright;
+            case opmod:  return (int64_t)vleft % (int64_t)vright;
+            case opxor:  return (uint8_t)vleft ^ (uint8_t)vright;
+            default:     throw std::runtime_error("Unknown binary operand");
         }
     }
 }
