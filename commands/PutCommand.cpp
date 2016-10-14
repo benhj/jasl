@@ -27,7 +27,9 @@ namespace jasl
         auto type = sharedCache->getType(varName);
         if(!type) {
             setLastErrorMessage("put: couldn't determine type");
-        } else if(!((*type == Type::IntArray) || (*type == Type::DoubleArray)))  {
+        } else if(!((*type == Type::IntArray) || 
+                    (*type == Type::DoubleArray) || 
+                    (*type == Type::ByteArray)))  {
             m_primitive = true;
         }
     }

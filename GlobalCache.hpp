@@ -66,6 +66,15 @@ namespace jasl {
         static void pushBackValueInDoubleArray(std::string const & key,
                                                double const value);
 
+        // byte array support
+        static void setByteArray(std::string const & key,
+                                 ByteArray const & array);
+        static void setValueInByteArray(std::string const & key,
+                                        int const index,
+                                        uint8_t const value);
+        static void pushBackValueInByteArray(std::string const & key,
+                                             uint8_t const value);                                       
+
 
         static void eraseValue(std::string const &key);
 
@@ -103,6 +112,10 @@ namespace jasl {
         static OptionalDoubleArray getDoubleArray(std::string const &key);
         static bool getDoubleArray_(std::string const &key, DoubleArray &val);
         static OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
+
+        static OptionalByteArray getByteArray(std::string const &key);
+        static bool getByteArray_(std::string const &key, ByteArray &val);
+        static OptionalByte getByteArrayValue(std::string const &key, size_t const index);
 
         static OptionalType getType(std::string const &key);
     };

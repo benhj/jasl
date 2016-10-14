@@ -22,6 +22,7 @@ namespace jasl {
 
     using IntArray = std::vector<int64_t>;
     using DoubleArray = std::vector<double>;
+    using ByteArray = std::vector<uint8_t>;
     using OptionalInt = ::boost::optional<int64_t>;
     using OptionalBool = ::boost::optional<bool>;
     using OptionalDouble = ::boost::optional<double>;
@@ -29,6 +30,7 @@ namespace jasl {
     using OptionalValueArray = ::boost::optional<ValueArray>;
     using OptionalIntArray = ::boost::optional<IntArray>;
     using OptionalDoubleArray = ::boost::optional<DoubleArray>;
+    using OptionalByteArray = ::boost::optional<ByteArray>;
     using OptionalByte = ::boost::optional<uint8_t>;
     using CacheVariant = ::boost::variant<int64_t, 
                                           bool, 
@@ -37,12 +39,13 @@ namespace jasl {
                                           std::string, 
                                           ValueArray,
                                           IntArray,
-                                          DoubleArray >;
+                                          DoubleArray,
+                                          ByteArray >;
 
     /// Represents the type of a cached variable entry
     enum class Type {
         Int, Bool, Double, Byte, String, ValueArray,
-        IntArray, DoubleArray, None
+        IntArray, DoubleArray, ByteArray, None
     };
 
     using OptionalType = ::boost::optional<Type>;
@@ -104,6 +107,15 @@ namespace jasl {
         void pushBackValueInDoubleArray(std::string const & key,
                                         double const value);
 
+        // byte array support
+        void setByteArray(std::string const & key,
+                          ByteArray const & array);
+        void setValueInByteArray(std::string const & key,
+                                 int const index,
+                                 uint8_t const value);
+        void pushBackValueInByteArray(std::string const & key,
+                                      uint8_t const value);
+
         void eraseValue(std::string const &key);
 
         void resetParamStack();
@@ -144,6 +156,10 @@ namespace jasl {
         OptionalDoubleArray getDoubleArray(std::string const &key);
         bool getDoubleArray_(std::string const &key, DoubleArray &val);
         OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
+
+        OptionalByteArray getByteArray(std::string const &key);
+        bool getByteArray_(std::string const &key, ByteArray &val);
+        OptionalByte getByteArrayValue(std::string const &key, size_t const index);
 
 
     };

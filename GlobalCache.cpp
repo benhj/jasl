@@ -100,6 +100,24 @@ namespace jasl {
         bigCache->pushBackValueInDoubleArray(key, value);
     }
 
+    void GlobalCache::setByteArray(std::string const & key,
+                                   ByteArray const & array)
+    {
+        bigCache->setByteArray(key, array);
+    }
+
+    void GlobalCache::setValueInByteArray(std::string const & key,
+                                          int const index,
+                                          uint8_t const value)
+    {
+        bigCache->setValueInByteArray(key, index, value);
+    }
+
+    void GlobalCache::pushBackValueInByteArray(std::string const & key,
+                                               uint8_t const value)
+    {
+        bigCache->pushBackValueInByteArray(key, value);
+    }
     void GlobalCache::eraseValue(std::string const &key)
     {
         bigCache->eraseValue(key);
@@ -198,6 +216,21 @@ namespace jasl {
     OptionalDouble GlobalCache::getDoubleArrayValue(std::string const &key, size_t const index)
     {
         return bigCache->getDoubleArrayValue(key, index);
+    }
+
+    OptionalByteArray GlobalCache::getByteArray(std::string const &key)
+    {
+        return bigCache->getByteArray(key);
+    }
+
+    bool GlobalCache::getByteArray_(std::string const &key, ByteArray &val)
+    {
+        return bigCache->getByteArray_(key, val);
+    }
+
+    OptionalByte GlobalCache::getByteArrayValue(std::string const &key, size_t const index)
+    {
+        return bigCache->getByteArrayValue(key, index);
     }
 
     OptionalType GlobalCache::getType(std::string const &key)
