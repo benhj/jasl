@@ -155,13 +155,15 @@ namespace jasl
 
             // for building arrays. For example:
             // array:int(5) -> a;
-            // array:real(10) -> d;              
+            // array:real(10) -> d;     
+            // convert a string to a byte array:         
+            // array:byte str -> bytes; 
             array %= string("array")
                   >> ':'
                   >> arrayTypes
-                  >> '('
+                  >> (('('
                   >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                  >> ')'
+                  >> ')') | genericString)
                   >> lit("->")
                   >> (genericString)
                   >> ';';
