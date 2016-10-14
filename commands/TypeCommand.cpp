@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 15/11/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "TypeCommand.hpp"
@@ -11,6 +11,22 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
+
+namespace {
+    /// Convert a type enum value to a string representation
+    std::string getType(jasl::Type const type) 
+    {
+        switch(type) {
+            case jasl::Type::Int: return "int";
+            case jasl::Type::Bool: return "bool";
+            case jasl::Type::Double: return "real";
+            case jasl::Type::ValueArray: return "list";
+            case jasl::Type::IntArray: return "array:int";
+            case jasl::Type::DoubleArray: return "array:real";
+            default: return "string";
+        }
+    }
+}
 
 namespace jasl
 {
@@ -44,20 +60,7 @@ namespace jasl
             return false;
         }
 
-        std::string theType;
-        if(*type == Type::Int) {
-            theType = "int";
-        } else if(*type == Type::Bool) {
-            theType = "bool";
-        } else if(*type == Type::Double) {
-            theType = "real";
-        } else if(*type == Type::ValueArray) {
-            theType = "list";
-        }  else {
-            theType = "string";
-        }
-
-        m_sharedCache->setString(key, theType);
+        m_sharedCache->setString(key, getType(*type));
         return true;
     }
 }

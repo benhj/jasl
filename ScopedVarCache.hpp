@@ -39,8 +39,8 @@ namespace jasl {
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, String, ValueArray, None,
-        IntArray, DoubleArray
+        Int, Bool, Double, String, ValueArray,
+        IntArray, DoubleArray, None
     };
 
     using OptionalType = ::boost::optional<Type>;

@@ -26,16 +26,22 @@ void testTypes()
     ci.parseAndInterpretSingleCommand("bool true -> c;", cache);
     ci.parseAndInterpretSingleCommand("string \"hello\" -> d;", cache);
     ci.parseAndInterpretSingleCommand("list [some big list] -> e;", cache);
-    ci.parseAndInterpretSingleCommand("type(a) -> atype;", cache);
-    ci.parseAndInterpretSingleCommand("type(b) -> btype;", cache);
-    ci.parseAndInterpretSingleCommand("type(c) -> ctype;", cache);
-    ci.parseAndInterpretSingleCommand("type(d) -> dtype;", cache);
-    ci.parseAndInterpretSingleCommand("type(e) -> etype;", cache);
+    ci.parseAndInterpretSingleCommand("array:int(5) -> f;", cache);
+    ci.parseAndInterpretSingleCommand("array:real(5) -> g;", cache);
+    ci.parseAndInterpretSingleCommand("type a -> atype;", cache);
+    ci.parseAndInterpretSingleCommand("type b -> btype;", cache);
+    ci.parseAndInterpretSingleCommand("type c -> ctype;", cache);
+    ci.parseAndInterpretSingleCommand("type d -> dtype;", cache);
+    ci.parseAndInterpretSingleCommand("type e -> etype;", cache);
+    ci.parseAndInterpretSingleCommand("type f -> ftype;", cache);
+    ci.parseAndInterpretSingleCommand("type g -> gtype;", cache);
     ASSERT_EQUAL("int", *cache->getString("atype"), "testType::a is int");
     ASSERT_EQUAL("real", *cache->getString("btype"), "testType::b is real");
     ASSERT_EQUAL("bool", *cache->getString("ctype"), "testType::c is bool");
     ASSERT_EQUAL("string", *cache->getString("dtype"), "testType::d is string");
     ASSERT_EQUAL("list", *cache->getString("etype"), "testType::e is list");
+    ASSERT_EQUAL("array:int", *cache->getString("ftype"), "testType::f is array:int");
+    ASSERT_EQUAL("array:real", *cache->getString("gtype"), "testType::g is array:real");
 }
 
 void testMath()
