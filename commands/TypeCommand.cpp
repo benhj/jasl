@@ -20,10 +20,11 @@ namespace {
             case jasl::Type::Int: return "int";
             case jasl::Type::Bool: return "bool";
             case jasl::Type::Double: return "real";
+            case jasl::Type::Byte: return "byte";
             case jasl::Type::ValueArray: return "list";
             case jasl::Type::IntArray: return "array:int";
             case jasl::Type::DoubleArray: return "array:real";
-            case jasl::Type::Byte: return "byte";
+            case jasl::Type::ByteArray: return "array:byte";
             default: return "string";
         }
     }

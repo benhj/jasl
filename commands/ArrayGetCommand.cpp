@@ -47,6 +47,13 @@ namespace jasl
                 return true;
             }
         }
+        {
+            auto value = m_sharedCache->getByteArrayValue(m_arrayName, index);
+            if(value) {
+                m_sharedCache->setByte(m_varName, *value);
+                return true;
+            }
+        }
 
         setLastErrorMessage("get: problem getting array value");
         return false;
