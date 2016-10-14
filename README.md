@@ -38,11 +38,12 @@ int 5 -> a;
 real 1.1 -> b;
 bool true -> c;
 string "Hello!" -> d;
-list [This is a list] -> e;
-list [This is [a nested list] list] -> f;
+byte 80 -> e;
+list [This is a list] -> f;
+list [This is [a nested list] list] -> g;
 ```
 
-Above, I create six variables, an int, a real, a bool, a string and two lists the latter of which contains a nested list
+Above, I create seven variables, an int, a real, a bool, a string, a byte, and two lists the latter of which contains a nested list
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
 longer true. Variables are now scoped at the level of a given block or returnable function.
 
@@ -69,7 +70,10 @@ To create some arrays, you do something like:
 array:int(5) -> a;
 
 // double array
-array:real(10) -> d;
+array:real(10) -> d
+
+// byte array
+array:byte(10) -> bytes;
 ```
 
 Note all arrays are implcitly zeroed out. 
