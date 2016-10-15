@@ -23,11 +23,11 @@ start {
     bool true -> c;
     string "hello" -> d;
     list [lists of words] -> e;
-    type(a) -> atype;
-    type(b) -> btype;
-    type(c) -> ctype;
-    type(d) -> dtype;
-    type(e) -> etype;
+    type a -> atype;
+    type b -> btype;
+    type c -> ctype;
+    type d -> dtype;
+    type e -> etype;
     prn atype;
     prn btype;
     prn ctype;
@@ -38,7 +38,7 @@ start {
     list [list [with nested] list] -> f;
     prn f;
     for i in f {
-        type(i) -> elementType;
+        type i -> elementType;
         pr "type: ";
         prn elementType;
     }
