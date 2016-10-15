@@ -36,7 +36,7 @@
 #include "commands/ForCommand.hpp"
 #include "commands/ReverseCommand.hpp"
 #include "commands/StringCommand.hpp"
-#include "commands/StringLengthCommand.hpp"
+#include "commands/LengthCommand.hpp"
 #include "commands/StringToPrimitiveCommand.hpp"
 #include "commands/ReleaseCommand.hpp"
 #include "commands/TypeCommand.hpp"
@@ -151,7 +151,7 @@ namespace jasl {
             m_commandMap.emplace("append", BUILD_COMMAND_AND_EXECUTE(Append));
 
             m_commandMap.emplace("string_reverse", BUILD_COMMAND_AND_EXECUTE(Reverse));
-            m_commandMap.emplace("string_length", BUILD_COMMAND_AND_EXECUTE(StringLength));
+            m_commandMap.emplace("length", BUILD_COMMAND_AND_EXECUTE(Length));
             m_commandMap.emplace("list", BUILD_COMMAND_AND_EXECUTE(List));
             m_commandMap.emplace("args", BUILD_COMMAND_AND_EXECUTE(Args));
             m_commandMap.emplace("array", BUILD_COMMAND_AND_EXECUTE(Array));
@@ -198,7 +198,7 @@ namespace jasl {
             m_commandBuilders.emplace("append", BUILD_COMMAND(Append));
 
             m_commandBuilders.emplace("string_reverse", BUILD_COMMAND(Reverse));
-            m_commandBuilders.emplace("string_length", BUILD_COMMAND(StringLength));
+            m_commandBuilders.emplace("length", BUILD_COMMAND(Length));
             m_commandBuilders.emplace("list", BUILD_COMMAND(List));
             m_commandBuilders.emplace("args", BUILD_COMMAND(Args));
             m_commandBuilders.emplace("array", BUILD_COMMAND(Array));

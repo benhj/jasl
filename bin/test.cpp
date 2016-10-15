@@ -226,9 +226,9 @@ void testStringLength()
     auto cache = std::make_shared<ll::ScopedVarCache>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("string_length \"Hello\" -> s;", cache, ss);
+    ci.parseAndInterpretSingleCommand("length \"Hello\" -> s;", cache, ss);
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> sb;", cache, ss);
-    ci.parseAndInterpretSingleCommand("string_length sb -> sc;", cache, ss);
+    ci.parseAndInterpretSingleCommand("length sb -> sc;", cache, ss);
     ASSERT_EQUAL(5, *cache->getInt("s"), "testStringLength A");
     ASSERT_EQUAL(13, *cache->getInt("sc"), "testStringLength B");
 }

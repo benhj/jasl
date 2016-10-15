@@ -328,9 +328,9 @@ namespace jasl
                  >> -(lit("->") >> genericString)
                  >> ';';
 
-            // string length
-            // string_length "hello" -> len;
-            stringLengthRule %= string("string_length")
+            // string or array length
+            // length "hello" -> len;
+            stringLengthRule %= string("length")
                              >> (doubleQuotedString | genericString) 
                              >> lit("->")
                              >> genericString
