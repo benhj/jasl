@@ -1,4 +1,4 @@
-// an example header of sorts included by exampleWithHeader
+;;; an example header of sorts included by exampleWithHeader
 
 fn:int func(value) -> result {
     prn "In header script!";

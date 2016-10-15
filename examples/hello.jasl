@@ -1,4 +1,4 @@
-// start is the main entry point
+;;; start is the main entry point
 start {
     prn "Hello, world!";
 }

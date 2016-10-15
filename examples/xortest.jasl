@@ -1,23 +1,23 @@
-// simple xor cryptor
+;;; simple xor cryptor
 
 start {
 
-    // read clear text and key
+    ;;; read clear text and key
     args 0 -> input;
     args 1 -> key;
 
-    // convert to byte arrays
+    ;;; convert to byte arrays
     array:byte input -> inbytes;
     array:byte key -> keybytes;
 
-    // require lengths of clear text and key
+    ;;; require lengths of clear text and key
     string_length input -> inlength;
     string_length key -> keylength;
 
-    // create array to store cipher bytes
+    ;;; create array to store cipher bytes
     array:byte(inlength) -> outbytes;
 
-    // encrypt 
+    ;;; encrypt 
     prn "Cipher text: ";
     int 0 -> k;
     for i in inbytes {
@@ -30,7 +30,7 @@ start {
     }
     prn " ";
     prn "Clear text as decrypted: ";
-    // decrypt
+    ;;; decrypt
     put 0 -> k;
     for i in outbytes {
         int (k % keylength) -> keyval;

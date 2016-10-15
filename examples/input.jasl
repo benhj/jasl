@@ -1,6 +1,6 @@
-// start is the main entry point
+;;; start is the main entry point
 start {
-    // query for user input
+    ;;; query for user input
     input "What is your name? " -> name;
     string "Hello, " -> s;
     append (s, name) -> s;

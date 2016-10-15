@@ -1,7 +1,7 @@
 block binary (number) {
     
-    // make a string to store the binary string.
-    // starts out empty
+    ;;; make a string to store the binary string.
+    ;;; starts out empty
     string " " -> binaryString;
 
     while (number > 0 ) {
@@ -10,28 +10,28 @@ block binary (number) {
         append (binaryString, bit) -> binaryString;
     }
 
-    // reverse the string now since was constructed 
-    // in reverse order
+    ;;; reverse the string now since was constructed 
+    ;;; in reverse order
     string_reverse binaryString;
 
-    // now finally display
+    ;;; now finally display
     prn binaryString;
 
 }
 
-// requires an input program argument. For example run as:
-// ./jasl examples/binary.jasl 542354326
+;;; requires an input program argument. For example run as:
+;;; ./jasl examples/binary.jasl 542354326
 start {
     
-    // get first program argument which is a string
-    // that will need to be converted to a number
+    ;;; get first program argument which is a string
+    ;;; that will need to be converted to a number
     args 0 -> a;
 
-    // convert a to an int 
+    ;;; convert a to an int 
     int a -> number;
 
-    // convert the above arbitrary int to 
-    // a binary representation
+    ;;; convert the above arbitrary int to 
+    ;;; a binary representation
     prn " ";
     string "Going to convert the number " -> s;
     append (s, number) -> s;
