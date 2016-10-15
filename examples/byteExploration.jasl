@@ -2,23 +2,23 @@ start {
 
     prn "starting..";
 
-    // ascii code for the letter P
+    ;;; ascii code for the letter P
     byte 80 -> b;
     type b -> typeOfB;
     pr "Type of b: "; prn typeOfB;
 
-    // should print out the character 'P'
+    ;;; should print out the character 'P'
     pr "Value of b: "; prn b;
     prn "finished!";
 
-    // Try creating a byte array
+    ;;; Try creating a byte array
     array:byte(10) -> bytes;
 
-    // check the type
+    ;;; check the type
     type bytes -> bytesType;
     prn bytesType;
 
-    // assign some ascii
+    ;;; assign some ascii
     int 0 -> counter;
     while (counter < 10) {
         int (counter + 70) -> value;
@@ -26,17 +26,17 @@ start {
         put (counter + 1) -> counter;
     }
 
-    // print out bytes (ascii in this example)
+    ;;; print out bytes (ascii in this example)
     for ch in bytes {
         pr ch;
     }
     prn " ";
 
-    // put into a string
+    ;;; put into a string
     string bytes -> str;
     pr "in string: "; prn str;
 
-    // create a string and convert to an array of bytes
+    ;;; create a string and convert to an array of bytes
     string "hello, world!" -> mystring;
     array:byte mystring -> zebytes;
     for z in zebytes {
@@ -44,7 +44,7 @@ start {
     }
     prn " ";
 
-    // checking that updating and xoring works
+    ;;; checking that updating and xoring works
     byte (80 ^ 5) -> xored;
     int 2 -> index;
     put xored -> zebytes(index);

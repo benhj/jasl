@@ -1,13 +1,13 @@
-// Note, all int types are signed 64 bit
+;;; Note, all int types are signed 64 bit
 
 block fib () {
     
-    // create some variables to store state
+    ;;; create some variables to store state
     int 1 -> x;
     int x -> oldx;
     int x -> olderx;
 
-    // perform the sequence a number of times
+    ;;; perform the sequence a number of times
     repeat 50 times {
 
         pr x;
@@ -16,7 +16,7 @@ block fib () {
         put oldx -> olderx;
         put x -> oldx;
 
-        // compute new x value
+        ;;; compute new x value
         put (olderx + oldx) -> x;
     }
 

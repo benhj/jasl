@@ -1,5 +1,5 @@
-// test a function called foo.
-// Note, takes an empty list of parameters.
+;;; test a function called foo.
+;;; Note, takes an empty list of parameters.
 block foo (a, b, c, d, e, f, g) {
     pr "a: "; prn a;
     pr "b: "; prn b;
@@ -12,7 +12,7 @@ block foo (a, b, c, d, e, f, g) {
 
 }
 
-// entry point
+;;; entry point
 start {
     prn "Going in to function..";
     int 1 -> a;

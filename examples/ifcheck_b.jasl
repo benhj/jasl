@@ -1,6 +1,6 @@
-// Playing around with some different syntax ideas
-// This one borrows a bit from C, but kind of back-to-front
-// in a way.
+;;; Playing around with some different syntax ideas
+;;; This one borrows a bit from C, but kind of back-to-front
+;;; in a way.
 
 start {
     

@@ -1,9 +1,9 @@
-// the script command is like a c include
+;;; the script command is like a c include
 script "examples/headerExample.jasl";
 
 start {
     
-    // func might be declared in a header
+    ;;; func might be declared in a header
     call func(1) -> result;    
     prn "here";
     prn result;

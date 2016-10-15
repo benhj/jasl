@@ -56,7 +56,8 @@ namespace jasl
             genericString       %= lexeme[+(char_("a-zA-Z_"))];
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
-            commentFunc         %= commentSlash >> -allChars;
+            commentColons       %= string(";;;");
+            commentFunc         %= (commentColons | commentSlash) >> -allChars;
             word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')')];
             carrotWord          %= lexeme['^' >> +(char_ - '^')];
 
@@ -644,6 +645,7 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> arrayTypes;
         qi::rule<Iterator, std::string(), ascii::space_type> allChars;
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
+        qi::rule<Iterator, std::string(), ascii::space_type> commentColons;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
         qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
         qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;

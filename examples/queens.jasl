@@ -1,26 +1,26 @@
-// ----------------------------------------------
-// A script to solve the N-Queens problem,
-// a problem whereby no queen should be attacked
-// by another queen.
-// For example, for 8-queens, the solution might
-// eventually be:
-//
-// [- - - - - - Q -]
-// [- - - Q - - - -]
-// [- Q - - - - - -]
-// [- - - - - - - Q]
-// [- - - - - Q - -]
-// [Q - - - - - - -]
-// [- - Q - - - - -]
-// [- - - - Q - - -]
-// ----------------------------------------------
+;;; ----------------------------------------------
+;;; A script to solve the N-Queens problem,
+;;; a problem whereby no queen should be attacked
+;;; by another queen.
+;;; For example, for 8-queens, the solution might
+;;; eventually be:
+;;;
+;;; [- - - - - - Q -]
+;;; [- - - Q - - - -]
+;;; [- Q - - - - - -]
+;;; [- - - - - - - Q]
+;;; [- - - - - Q - -]
+;;; [Q - - - - - - -]
+;;; [- - Q - - - - -]
+;;; [- - - - Q - - -]
+;;; ----------------------------------------------
 
 fn:list initialize (N) -> rep {
 
-    // build the representation
+    ;;; build the representation
     list [] -> rep;
     int 0 -> i;
-    // board initialization with heuristic
+    ;;; board initialization with heuristic
     repeat N times {
         string i -> istring;
         add_token(istring, rep);
@@ -33,40 +33,40 @@ fn:list initialize (N) -> rep {
 
 block showBoard (N, representation) {
 
-    // create one of the rows of the board
+    ;;; create one of the rows of the board
     list [] -> row;
     repeat N times {
         add_token ("-", row);
     }
 
-    // create the board representation
+    ;;; create the board representation
     int 0 -> i;
     repeat N times {
-        // make sure correct '-' is set with a 'Q'
+        ;;; make sure correct '-' is set with a 'Q'
         get_token(i, representation) -> token;
 
-        // token is a string to needs to be
-        // converted to an int
+        ;;; token is a string to needs to be
+        ;;; converted to an int
         int token -> itoken;
 
-        // now set the token to a 'Q'
+        ;;; now set the token to a 'Q'
         set_token(itoken, row, "Q") -> theRow;
 
-        // iterate to next row
+        ;;; iterate to next row
         put (i + 1) -> i;
 
-        // print the row out
+        ;;; print the row out
         prn theRow;
     }
 
 }
 
-// computes the error of the board
+;;; computes the error of the board
 fn:int computeError (N, representation) -> theError {
 
     int 0 -> theError;
 
-    // compute the number of queens attacking each queen
+    ;;; compute the number of queens attacking each queen
     int 0 -> i;
     repeat N times {
         get_token(i, representation) -> token;
@@ -112,10 +112,10 @@ start {
     args 0 -> nstr;
     int nstr -> N;
 
-    // initialize the representation
+    ;;; initialize the representation
     call initialize (N) -> representation;
 
-    // minimize error
+    ;;; minimize error
     call computeError (N, representation) -> error;
     int error -> currentError;
     int 1 -> moveBy;
@@ -137,25 +137,25 @@ start {
                 set_token(count, representation, strtok) -> representation;
             }
 
-            // now compute new error based on update
+            ;;; now compute new error based on update
             call computeError (N, representation) -> error;
 
-            // now based on update decide whether to keep or go
-            // back to original
+            ;;; now based on update decide whether to keep or go
+            ;;; back to original
             ?(error <= currentError) {
                 put error -> currentError;
             } : {
                 put oldRep -> representation;
             }
 
-            // generate a random integer in the range [0, value]
+            ;;; generate a random integer in the range [0, value]
             int (N - 1) -> value;
             random:int value -> randomValue;
 
-            // update amount to move by, by randomValue amount
+            ;;; update amount to move by, by randomValue amount
             put (moveBy + randomValue) -> moveBy;
 
-            // bounds check
+            ;;; bounds check
             ?(moveBy >= (N - 1)) {
                 put 1 -> moveBy;
             }
@@ -167,7 +167,7 @@ start {
         prn currentError;
     }
 
-    // print out the board representation
+    ;;; print out the board representation
     call showBoard (N, representation);
 
 }
