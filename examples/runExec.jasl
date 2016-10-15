@@ -1,15 +1,15 @@
-// A simple program that allows running
-// a system executable
-// E.g. ./jasl runExec /path/to/exec arg1 arg2 argN
+;;; A simple program that allows running
+;;; a system executable
+;;; E.g. ./jasl runExec /path/to/exec arg1 arg2 argN
 start {
 
-	// extract 0th argument from command line, 
-	// which corresponds to the executable
+	;;; extract 0th argument from command line, 
+	;;; which corresponds to the executable
     args 0 -> s;
 
-    // append any extra arguments also passed in,
-    // remembering to insert spaces between each token.
-    // Note that 'argsCount' is implicitly known.
+    ;;; append any extra arguments also passed in,
+    ;;; remembering to insert spaces between each token.
+    ;;; Note that 'argsCount' is implicitly known.
     int 1 -> i;
     repeat (argsCount - 1) times {
     	append (s, " ") -> s;
@@ -18,7 +18,7 @@ start {
     	int (i + 1) -> i;
     }
 
-    // execute the command
+    ;;; execute the command
     exec(s);
 
 }
