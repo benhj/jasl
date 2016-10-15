@@ -19,11 +19,11 @@ A program
 
 Every program requires a `start` entry point, and can take any number of arguments that can be extracted using the `args` keyword:
 ```
-// main entry point
+;;; main entry point
 start {
-    // If script expects input arguments use 'args' keyword.
-    // This will put the 0th argument in the variable a.
-    // Note that a is a string.
+    ;;; If script expects input arguments use 'args' keyword.
+    ;;; This will put the 0th argument in the variable a.
+    ;;; Note that a is a string.
     args 0 -> a;
 }
 ```
@@ -33,7 +33,7 @@ Variables
 ---------
 
 ```
-// This is a comment
+;;; This is a comment
 int 5 -> a;
 real 1.1 -> b;
 bool true -> c;
@@ -54,7 +54,7 @@ put (a + 1) -> a;
 put 2.2 -> b;
 put false -> c;
 put "goodbye" -> d;
-// etc.
+;;; etc.
 ```
 
 Arrays
@@ -66,13 +66,13 @@ available.
 To create some arrays, you do something like:
 
 ```
-// integer array
+;;; integer array
 array:int(5) -> a;
 
-// double array
+;;; double array
 array:real(10) -> d
 
-// byte array
+;;; byte array
 array:byte(10) -> bytes;
 ```
 
@@ -81,7 +81,7 @@ Note all arrays are implcitly zeroed out.
 To set a value at a given index, use `put`:
 
 ```
-// put value 1 in to index location 2
+;;; put value 1 in to index location 2
 put 1 -> a(2);
 ```
 
@@ -90,7 +90,7 @@ As with many languages, array indexing starts at zero.
 To retrieve a value from the array, use `get`:
 
 ```
-// retrieve the value at index 2 from a and put into b
+;;; retrieve the value at index 2 from a and put into b
 get a(2) -> b;
 ```
 
@@ -108,8 +108,8 @@ They have this type of syntax:
 block myBlock () {
 }
 
-// No need for an 'explicit' return statement
-// since this is already implicit in the arrow return
+;;; No need for an 'explicit' return statement
+;;; since this is already implicit in the arrow return
 fn:int myReturnable() -> toReturn {
 }
 ```
@@ -130,49 +130,49 @@ fn:int funk (a) -> toReturn {
     int 10 + a -> toReturn;
 }
 
-// A function whereby the return type is an array
+;;; A function whereby the return type is an array
 fn:array:real arrayFunc() -> result {
     array:real(10) -> result;
     put 3.14 -> result(0);
 }
 
 block otherFunction () {
-    // Call returnable funk, put result into b
+    ;;; Call returnable funk, put result into b
     call funk (5) -> b;
 
-    // should print out 15
+    ;;; should print out 15
     prn b;
 }
 
 block myFunction () {
 
-    // Print out hello and add newline
+    ;;; Print out hello and add newline
     prn "Hello";
 
-    // And without a newline:
+    ;;; And without a newline:
     pr "Hello ";
 
-    // Variables are scoped to the function blockl
+    ;;; Variables are scoped to the function blockl
     int 5 -> a;
 
-    // A loop that executes statements within
-    // the enclosing braces several times.
-    // Note that since variables are scoped to the enclosing
-    // function block, the variable b will be accessible still
-    // after the loop
+    ;;; A loop that executes statements within
+    ;;; the enclosing braces several times.
+    ;;; Note that since variables are scoped to the enclosing
+    ;;; function block, the variable b will be accessible still
+    ;;; after the loop
     repeat 5 times {
         int 1 -> b;
     }
 
-    // This is valid. Integer b is still accessible
+    ;;; This is valid. Integer b is still accessible
     prn b;
 
     call otherFunction ();
 }
 
-// main entry point
+;;; main entry point
 start {
-    // Run sub-routine myFunction
+    ;;; Run sub-routine myFunction
     call myFunction ();
 }
 ```
@@ -201,13 +201,13 @@ repeat 10 times {
 Finally a list or array element iterator:
 
 ```
-// list example
+;;; list example
 list [this is a list] -> mylist;
 for element in mylist {
     prn element;
 }
 
-// array example
+;;; array example
 array:real(10) -> myarray;
 for element in myarray {
     prn element;
@@ -244,9 +244,9 @@ Handling input
 --------------
 Handling input is easy:
 ```
-// start is the main entry point
+;;; start is the main entry point
 start {
-    // query for user input
+    ;;; query for user input
     input "What is your name? " -> name;
     string "Hello, " -> s;
     append (s, name) -> s;
@@ -272,32 +272,32 @@ Setting tokens:
 ```
 list [hello there] -> t;
 set_token (0, t, "goodbye") -> t;
-// list t is now [goodbye there]
+;;; list t is now [goodbye there]
 
 set_token (0, t, [nested bit]) -> t;
-// list t is now [[nested bit] there]
+;;; list t is now [[nested bit] there]
 
 set_token (1, [another list], "test") -> q;
-// q is [another test]
+;;; q is [another test]
 ```
 
 Getting tokens:
 
 ```
-// extract token 0, store in string t
+;;; extract token 0, store in string t
 get_token(0, [hello there]) -> t;
 
-// make a new list, q
+;;; make a new list, q
 list [what the flip] -> q;
 
-// extract token 1 from q and store in string r
+;;; extract token 1 from q and store in string r
 get_token(1, q) -> r;
 ```
 
 Adding tokens (similar to `set_token`):
 
 ```
-// add a token to the end of a list
+;;; add a token to the end of a list
 list [a big list] -> L;
 add_token("token", L);
 ```
@@ -328,8 +328,8 @@ Miscellaneous
 Getting the type of a variable:
 
 ```
-// suppose we need to figure out the type of a,
-// use the type command and put result in a string.
+;;; suppose we need to figure out the type of a,
+;;; use the type command and put result in a string.
 int 1 -> a;
 type a -> theTypeOfA;
 ```
@@ -338,16 +338,16 @@ Releasing a variable if we no longer need it:
 
 ```
 real 1.1 -> d;
-// some time later, after we're finished with d:
+;;; some time later, after we're finished with d:
 release d;
 ```
 
 Generating random numbers:
 
 ```
-// generate an int in the range [0, 5]:
+;;; generate an int in the range [0, 5]:
 random:int 5 -> resultA;
 
-// generate a real in the rande [0, 3.14]
+;;; generate a real in the rande [0, 3.14]
 random:real 3.14 -> resultB;
 ```

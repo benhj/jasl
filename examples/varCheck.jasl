@@ -1,22 +1,22 @@
 start {
 
-    // check that variables can only be instantiated once
+    ;;; check that variables can only be instantiated once
     int 5 -> a;
     real 1.1 -> a;
 
-    // should print out 5    
+    ;;; should print out 5    
     prn a;
     
-    // delete var a
+    ;;; delete var a
     release a;
     
     real 1.1 -> a;
     int 5 -> a;
     
-    // should print out 1.1
+    ;;; should print out 1.1
     prn a;
 
-    // extract and print out type information
+    ;;; extract and print out type information
     release a;
     int 5 -> a;
     real 1.1 -> b;
@@ -34,7 +34,7 @@ start {
     prn dtype;
     prn etype;
 
-    // print out types of elements in a list
+    ;;; print out types of elements in a list
     list [list [with nested] list] -> f;
     prn f;
     for i in f {

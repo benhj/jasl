@@ -1,4 +1,4 @@
-// Tests the parsing of a returnable function
+;;; Tests the parsing of a returnable function
 
 fn:int func (a, somelist) -> returned {
 	prn "Hello";
