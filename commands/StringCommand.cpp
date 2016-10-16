@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 15/11/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "StringCommand.hpp"
@@ -28,11 +28,13 @@ namespace jasl
             return false;
         }
 
+        if(tryConcatExtraction(stringName)) { return true; }
         if(tryLiteralExtraction(stringName)) { return true; }
         if(trySymbolExtraction(stringName)) { return true; }
         if(tryNumericExtraction(stringName)) { return true; }
         if(tryListExtraction()) { return true; }
-        setLastErrorMessage("pr: couldn't parse");
+        
+        setLastErrorMessage("string: couldn't parse");
         return false;
     }
 
@@ -127,6 +129,33 @@ namespace jasl
 
         return false;
 
+    }
+
+    /// Note, currently, this only works with concatenating strings
+    /// from string variables, i.e.
+    /// string (a|b|c) -> str;
+    /// and a,b,c all have to be strings
+    bool StringCommand::tryConcatExtraction(std::string const & key)
+    {
+
+        StringArray array;
+        if(m_func.getValueA<StringArray>(array, m_sharedCache)) {
+            std::string result("");
+            for (auto & v : array) {
+                // try extracting symbols representing
+                // strings and then concatenate them
+                {
+                    std::cout<<"v: "<<v<<std::endl;
+                    std::string value;
+                    if(m_sharedCache->getString_(v, value)) {
+                        result.append(value);
+                    }
+                }
+            }
+            m_sharedCache->setString(key, result);
+            return true;
+        }
+        return false;
     }
 
     bool StringCommand::tryListExtraction()
