@@ -9,7 +9,7 @@ fn:int canPlaceQueen(r, c, x) -> yes {
         int tok -> itok;     
         ? (((itok = c) || ((i - r) = (itok -c))) || ((i - r) = (c - itok))) {
             put 0 -> yes;
-            // so that we can break early
+            ;;; so that we can break early
             put r -> i; 
         }
         put (i + 1) -> i;

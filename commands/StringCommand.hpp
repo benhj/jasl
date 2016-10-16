@@ -26,7 +26,6 @@ namespace jasl
         bool trySymbolExtraction(std::string const &key);
         bool tryNumericExtraction(std::string const &key);
         bool tryListExtraction();
-        bool tryConcatExtraction(std::string const & key);
     };
 
 }

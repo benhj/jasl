@@ -28,7 +28,6 @@ namespace jasl
             return false;
         }
 
-        if(tryConcatExtraction(stringName)) { return true; }
         if(tryLiteralExtraction(stringName)) { return true; }
         if(trySymbolExtraction(stringName)) { return true; }
         if(tryNumericExtraction(stringName)) { return true; }
@@ -129,33 +128,6 @@ namespace jasl
 
         return false;
 
-    }
-
-    /// Note, currently, this only works with concatenating strings
-    /// from string variables, i.e.
-    /// string (a|b|c) -> str;
-    /// and a,b,c all have to be strings
-    bool StringCommand::tryConcatExtraction(std::string const & key)
-    {
-
-        StringArray array;
-        if(m_func.getValueA<StringArray>(array, m_sharedCache)) {
-            std::string result("");
-            for (auto & v : array) {
-                // try extracting symbols representing
-                // strings and then concatenate them
-                {
-                    std::cout<<"v: "<<v<<std::endl;
-                    std::string value;
-                    if(m_sharedCache->getString_(v, value)) {
-                        result.append(value);
-                    }
-                }
-            }
-            m_sharedCache->setString(key, result);
-            return true;
-        }
-        return false;
     }
 
     bool StringCommand::tryListExtraction()

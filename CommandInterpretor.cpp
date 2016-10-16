@@ -17,6 +17,7 @@
 #include "commands/BlockCommand.hpp"
 #include "commands/ReturnableCommand.hpp"
 #include "commands/CallCommand.hpp"
+#include "commands/ConcatCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
 #include "commands/ExecCommand.hpp"
@@ -147,6 +148,7 @@ namespace jasl {
             m_commandMap.emplace("fnfn", BUILD_COMMAND_AND_EXECUTE(Returnable));
             m_commandMap.emplace("start", BUILD_COMMAND_AND_EXECUTE(Start));
             m_commandMap.emplace("string", BUILD_COMMAND_AND_EXECUTE(String));
+            m_commandMap.emplace("concat", BUILD_COMMAND_AND_EXECUTE(Concat));
             m_commandMap.emplace("call", BUILD_COMMAND_AND_EXECUTE(Call));
             m_commandMap.emplace("append", BUILD_COMMAND_AND_EXECUTE(Append));
 
@@ -194,6 +196,7 @@ namespace jasl {
             m_commandBuilders.emplace("fnfn", BUILD_COMMAND(Returnable));
             m_commandBuilders.emplace("start", BUILD_COMMAND(Start));
             m_commandBuilders.emplace("string", BUILD_COMMAND(String));
+            m_commandBuilders.emplace("concat", BUILD_COMMAND(Concat));
             m_commandBuilders.emplace("call", BUILD_COMMAND(Call));
             m_commandBuilders.emplace("append", BUILD_COMMAND(Append));
 

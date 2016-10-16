@@ -1,0 +1,22 @@
+;;; for testing string ideas
+
+start {
+
+	;;; test strings
+	string "hello " -> a;
+	string "world " -> b;
+	prn a;
+
+	;;; test concatenation of two strings
+	concat a,b -> c;
+	prn c;
+
+	;;; test concatenation of three strings
+	string "there" -> d;
+	concat a,b,d -> e;
+	prn e;
+
+	;;; test with concatenation of a literal
+	concat e,"literal bit" -> f;
+	prn f;
+}
