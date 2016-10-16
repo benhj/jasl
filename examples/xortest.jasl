@@ -7,11 +7,10 @@ start {
     args 1 -> key;
 
     ;;; convert to byte arrays
-    array:byte input -> inbytes;
     array:byte key -> keybytes;
 
     ;;; require lengths of clear text and key
-    length inbytes -> inlength;
+    length input -> inlength;
     length keybytes -> keylength;
 
     ;;; create array to store cipher bytes
@@ -20,7 +19,7 @@ start {
     ;;; encrypt 
     prn "Cipher text: ";
     int 0 -> k;
-    for i in inbytes {
+    for i in input {
         int (k % keylength) -> keyval;
         get keybytes(keyval) -> kc;
         byte (i ^ kc) -> xored;

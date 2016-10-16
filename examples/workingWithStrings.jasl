@@ -19,4 +19,10 @@ start {
 	;;; test with concatenation of a literal
 	concat e,"literal bit" -> f;
 	prn f;
+
+	;;; test loop over string characters
+	for i in f {
+		pr i;
+	}
+	prn " ";
 }
