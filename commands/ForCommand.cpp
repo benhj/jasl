@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 03/10/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ForCommand.hpp"
@@ -62,6 +62,15 @@ namespace jasl {
                         processArray(*array, listSymbol);
                     }
                 }
+
+                // try string
+                {
+                    auto str = m_sharedCache->getString(listSymbol);
+                    if(str) {
+                        processString(*str, listSymbol);
+                    }
+                }
+
             }
         }
         // try and pull out raw list
@@ -157,6 +166,36 @@ namespace jasl {
 
                 }
 
+                // make sure variable storing token is released before iterating
+                Function relFunc;
+                relFunc.name = "release";
+                relFunc.paramA = indexSymbol;
+                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
+                (void)rc.execute();
+            }
+
+        }
+        setLastErrorMessage("for: problem getting index symbol");
+        return false;
+    }
+
+    bool ForCommand::processString(std::string const &str, 
+                                   std::string const & listSymbol)
+    {
+        std::string indexSymbol;
+        if(VarExtractor::tryAnyCast(indexSymbol, m_func.paramA)) {
+
+            std::vector<Function> innerFuncs;
+            bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+            if(!success) {
+                return false;
+            }
+
+            // Process tokens one by one using get_token command
+            CommandInterpretor ci;
+            for(auto & v : str) {
+                m_sharedCache->setByte(indexSymbol, v);
+                success = parseCommands(innerFuncs);
                 // make sure variable storing token is released before iterating
                 Function relFunc;
                 relFunc.name = "release";
