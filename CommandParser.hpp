@@ -254,11 +254,16 @@ namespace jasl
                                mathExpression | bracketedMathExpression | 
                                comparisonExpression | bracketedComparisonExpression | bracketedWords);
             commaParameter %= ',' >> parameter;
+            barString      %= '|' >> genericString;
             parameters     %= -(parameter >> *commaParameter); // comma-separated
-             // a collection of parameters
-            // to be used by a function. This coule be empty as in
+            concats        %= -(genericString >> *barString); // bar-separated
+            // a collection of parameters
+            // to be used by a function. This could be empty as in
             // () or have arguments, as in (a, b, c);
             parameterList %= '(' >> parameters >> ')';
+
+            // for string concatenation, use bar. As in (a|b|c)
+            concatList    %= '(' >> concats >> ')';
 
             // a callable execution point
             block %= string("block")
@@ -348,7 +353,8 @@ namespace jasl
             stringRule %= string("string")
                        >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
-                           comparisonExpression | bracketedComparisonExpression | bracketedWords) >> lit("->")
+                           comparisonExpression | bracketedComparisonExpression | bracketedWords
+                           | concatList) >> lit("->")
                        >> genericString 
                        >> ';';
        
@@ -640,6 +646,9 @@ namespace jasl
         qi::rule<Iterator, Value(), ascii::space_type> parameterList;
         qi::rule<Iterator, ValueArray(), ascii::space_type> words;
         qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
+        qi::rule<Iterator, std::string(), ascii::space_type> barString;
+        qi::rule<Iterator, StringArray(), ascii::space_type> concats;
+        qi::rule<Iterator, Value(), ascii::space_type> concatList;
         qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> arrayLexeme;
         qi::rule<Iterator, std::string(), ascii::space_type> arrayTypes;

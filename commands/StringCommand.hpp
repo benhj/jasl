@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -26,6 +26,7 @@ namespace jasl
         bool trySymbolExtraction(std::string const &key);
         bool tryNumericExtraction(std::string const &key);
         bool tryListExtraction();
+        bool tryConcatExtraction(std::string const & key);
     };
 
 }
