@@ -50,10 +50,41 @@ namespace jasl
         // Now try extracting a symbol
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
-            auto result = m_sharedCache->getString(symbol);
-            if(result) {
-                m_sharedCache->setInt(varName, result->length());
-                return true;
+
+            // try string
+            {
+                auto result = m_sharedCache->getString(symbol);
+                if(result) {
+                    m_sharedCache->setInt(varName, result->length());
+                    return true;
+                }
+            }
+
+            // try int array
+            {
+                auto array = m_sharedCache->getIntArray(symbol);
+                if(array) {
+                    m_sharedCache->setInt(varName, array->size());
+                    return true;
+                }
+            }
+
+            // try real array
+            {
+                auto array = m_sharedCache->getDoubleArray(symbol);
+                if(array) {
+                    m_sharedCache->setInt(varName, array->size());
+                    return true;
+                }
+            }
+
+            // try byte array
+            {
+                auto array = m_sharedCache->getByteArray(symbol);
+                if(array) {
+                    m_sharedCache->setInt(varName, array->size());
+                    return true;
+                }
             }
         }
         return false;

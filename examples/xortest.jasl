@@ -11,8 +11,8 @@ start {
     array:byte key -> keybytes;
 
     ;;; require lengths of clear text and key
-    length input -> inlength;
-    length key -> keylength;
+    length inbytes -> inlength;
+    length keybytes -> keylength;
 
     ;;; create array to store cipher bytes
     array:byte(inlength) -> outbytes;
