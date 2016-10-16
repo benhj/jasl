@@ -256,11 +256,11 @@ namespace jasl
             commaParameter %= ',' >> parameter;
             barString      %= '|' >> genericString;
             parameters     %= -(parameter >> *commaParameter); // comma-separated
-            concats        %= -(genericString >> *barString); // bar-separated
+            concats        %= (genericString >> *barString); // bar-separated
             // a collection of parameters
             // to be used by a function. This could be empty as in
             // () or have arguments, as in (a, b, c);
-            parameterList %= '(' >> parameters >> ')';
+            parameterList %= parameters;
 
             // for string concatenation, use bar. As in (a|b|c)
             concatList    %= '(' >> concats >> ')';
@@ -269,7 +269,7 @@ namespace jasl
             block %= string("block")
                   >> genericString // functionName
                   // take an optional list of arguments
-                  >> parameterList
+                  >> '(' >> parameterList >> ')'
                   >> '{'
                   >>  commandCollection
                   >> '}';
@@ -281,7 +281,7 @@ namespace jasl
                             >> ':' 
                             >> arrayTypes// return type
                             >> genericString // functionName
-                            >> parameterList // list of parameters
+                            >> '(' >> parameterList >> ')' // list of parameters
                             >> -(lit("->") >> genericString)
                             >> '{'
                             >> commandCollection
@@ -296,7 +296,7 @@ namespace jasl
                        >> ':'
                        >> genericString // return type
                        >> genericString // functionName
-                       >> parameterList // list of parameters
+                       >> '(' >> parameterList >> ')' // list of parameters
                        >> -(lit("->") >> genericString)
                        >> '{'
                        >> commandCollection
@@ -328,7 +328,7 @@ namespace jasl
             // calls a function with given name
             call %= string("call")
                  >> genericString // functionName
-                 >> parameterList // optional parameters
+                 >> '(' >> parameterList >> ')' // optional parameters
                  // optional return part
                  >> -(lit("->") >> genericString)
                  >> ';';
@@ -358,6 +358,12 @@ namespace jasl
                        >> genericString 
                        >> ';';
        
+            // concatenate strings
+            concatRule %= string("concat")
+                       >> (parameterList) >> lit("->")
+                       >> genericString 
+                       >> ';';
+
             //  for setting a value in an array
             //  put 5 -> a(0);             
             put  %= string("put")
@@ -562,6 +568,7 @@ namespace jasl
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
+                         | concatRule
                          | listGetToken
                          | listSetToken
                          | listAddToken
@@ -603,6 +610,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> pr;
         qi::rule<Iterator, Function(), ascii::space_type> prn;
         qi::rule<Iterator, Function(), ascii::space_type> stringRule;
+        qi::rule<Iterator, Function(), ascii::space_type> concatRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringLengthRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
