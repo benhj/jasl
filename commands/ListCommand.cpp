@@ -27,7 +27,7 @@ namespace jasl
         if(!m_func.getValueA<decltype(list)>(list, m_sharedCache)) {
             std::string varName;
             if(m_func.getValueA<decltype(varName)>(varName, m_sharedCache)) {
-                auto theList = m_sharedCache->getList(varName);
+                auto theList = m_sharedCache->getVar<ValueArray>(varName, Type::ValueArray);
                 if(theList) {
                     list = *theList;
                 }

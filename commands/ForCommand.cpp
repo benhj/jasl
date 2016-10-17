@@ -33,7 +33,7 @@ namespace jasl {
 
                 // try list
                 {
-                    auto list = m_sharedCache->getList(listSymbol);
+                    auto list = m_sharedCache->getVar<ValueArray>(listSymbol, Type::ValueArray);
                     if(list) {
                         return processList(*list, listSymbol);
                     }
@@ -41,7 +41,7 @@ namespace jasl {
 
                 // try int array
                 {
-                    auto array = m_sharedCache->getIntArray(listSymbol);
+                    auto array = m_sharedCache->getVar<IntArray>(listSymbol, Type::IntArray);
                     if(array) {
                         processArray(*array, listSymbol);
                     }
@@ -49,7 +49,7 @@ namespace jasl {
 
                 // try real array
                 {
-                    auto array = m_sharedCache->getDoubleArray(listSymbol);
+                    auto array = m_sharedCache->getVar<DoubleArray>(listSymbol, Type::DoubleArray);
                     if(array) {
                         processArray(*array, listSymbol);
                     }
@@ -57,7 +57,7 @@ namespace jasl {
 
                 // try byte array
                 {
-                    auto array = m_sharedCache->getByteArray(listSymbol);
+                    auto array = m_sharedCache->getVar<ByteArray>(listSymbol, Type::ByteArray);
                     if(array) {
                         processArray(*array, listSymbol);
                     }
@@ -65,7 +65,7 @@ namespace jasl {
 
                 // try string
                 {
-                    auto str = m_sharedCache->getString(listSymbol);
+                    auto str = m_sharedCache->getVar<std::string>(listSymbol, Type::String);
                     if(str) {
                         processString(*str, listSymbol);
                     }

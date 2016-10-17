@@ -46,7 +46,7 @@ namespace jasl
             }
             return OptionalString(literal.literal);
         }
-        return m_sharedCache->getString(stringBeingAppendedTo);
+        return m_sharedCache->getVar<std::string>(stringBeingAppendedTo, Type::String);
     }
 
     bool AppendCommand::tryLiteralExtraction(std::string const &key) 

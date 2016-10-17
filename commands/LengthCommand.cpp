@@ -53,7 +53,7 @@ namespace jasl
 
             // try string
             {
-                auto result = m_sharedCache->getString(symbol);
+                auto result = m_sharedCache->getVar<std::string>(symbol, Type::String);
                 if(result) {
                     m_sharedCache->setVar(varName, (int64_t)result->length(), Type::Int);
                     return true;
@@ -62,7 +62,7 @@ namespace jasl
 
             // try int array
             {
-                auto array = m_sharedCache->getIntArray(symbol);
+                auto array = m_sharedCache->getVar<IntArray>(symbol, Type::IntArray);
                 if(array) {
                     m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
@@ -71,7 +71,7 @@ namespace jasl
 
             // try real array
             {
-                auto array = m_sharedCache->getDoubleArray(symbol);
+                auto array = m_sharedCache->getVar<DoubleArray>(symbol, Type::DoubleArray);
                 if(array) {
                     m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
@@ -80,7 +80,7 @@ namespace jasl
 
             // try byte array
             {
-                auto array = m_sharedCache->getByteArray(symbol);
+                auto array = m_sharedCache->getVar<ByteArray>(symbol, Type::ByteArray);
                 if(array) {
                     m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
