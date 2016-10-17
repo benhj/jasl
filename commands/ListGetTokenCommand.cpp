@@ -59,7 +59,7 @@ namespace jasl
                         {
                             std::string tok;
                             if(VarExtractor::tryAnyCast(tok, val)) {
-                                m_sharedCache->setString(varName, tok);
+                                m_sharedCache->setVar(varName, tok, Type::String);
                                 return true;
                             }
                         }
@@ -67,7 +67,7 @@ namespace jasl
                         {
                             ValueArray tok;
                             if(VarExtractor::tryAnyCast(tok, val)) {
-                                m_sharedCache->setList(varName, tok);
+                                m_sharedCache->setVar(varName, tok, Type::ValueArray);
                                 return true;
                             }
                         }
@@ -115,7 +115,7 @@ namespace jasl
                         {
                             std::string tok;
                             if(VarExtractor::tryAnyCast(tok, val)) {
-                                m_sharedCache->setString(varName, tok);
+                                m_sharedCache->setVar(varName, tok, Type::String);
                                 return true;
                             }
                         }
@@ -123,7 +123,7 @@ namespace jasl
                         {
                             ValueArray tok;
                             if(VarExtractor::tryAnyCast(tok, val)) {
-                                m_sharedCache->setList(varName, tok);
+                                m_sharedCache->setVar(varName, tok, Type::ValueArray);
                                 return true;
                             }
                         }

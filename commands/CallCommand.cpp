@@ -124,24 +124,28 @@ namespace jasl
             if(m_returnableType == "int") {
                 int64_t value;
                 (void)GlobalCache::getInt_(m_returnableSymbol, value);
-                m_sharedCache->setInt(m_returnSymbol, value);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::Int);
             } else if(m_returnableType == "real") {
                 double value;
                 (void)GlobalCache::getDouble_(m_returnableSymbol, value);
-                m_sharedCache->setDouble(m_returnSymbol, value);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::Double);
             } else if(m_returnableType == "string") {
                 std::string value;
                 (void)GlobalCache::getString_(m_returnableSymbol, value);
-                m_sharedCache->setString(m_returnSymbol, value);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::String);
             } else if(m_returnableType == "bool") {
                 bool value;
                 (void)GlobalCache::getBool_(m_returnableSymbol, value);
-                m_sharedCache->setBool(m_returnSymbol, value);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::Bool);
             } else if(m_returnableType == "list") {
                 ValueArray value;
                 (void)GlobalCache::getList_(m_returnableSymbol, value);
-                m_sharedCache->setList(m_returnSymbol, value);
-            } else if(m_returnableType == "nil") {
+                m_sharedCache->setVar(m_returnSymbol, value, Type::ValueArray);
+            } else if(m_returnableType == "byte") {
+                uint8_t value;
+                (void)GlobalCache::getByte_(m_returnableSymbol, value);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::Byte);
+            }  else if(m_returnableType == "nil") {
                 // don't do anything for return type 'nil'
             } else if (m_returnableType == "array") {
 
@@ -150,11 +154,15 @@ namespace jasl
                 if(subType == "int") {
                     IntArray value;
                     (void)GlobalCache::getIntArray_(m_returnableSymbol, value);
-                    m_sharedCache->setIntArray(m_returnSymbol, value);
+                    m_sharedCache->setVar(m_returnSymbol, value, Type::IntArray);
                 } else if(subType == "real") {
                     DoubleArray value;
                     (void)GlobalCache::getDoubleArray_(m_returnableSymbol, value);
-                    m_sharedCache->setDoubleArray(m_returnSymbol, value);
+                    m_sharedCache->setVar(m_returnSymbol, value, Type::DoubleArray);
+                } else if(subType == "byte") {
+                    ByteArray value;
+                    (void)GlobalCache::getByteArray_(m_returnableSymbol, value);
+                    m_sharedCache->setVar(m_returnSymbol, value, Type::ByteArray);
                 }
             } else {
                 setLastErrorMessage("call returnable: unknown return type");

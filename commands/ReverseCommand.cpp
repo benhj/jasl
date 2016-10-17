@@ -36,7 +36,7 @@ namespace jasl
 
         auto result = *found;
         std::reverse(std::begin(result), std::end(result));
-        m_sharedCache->setString(stringName, result);
+        m_sharedCache->setVar(stringName, result, Type::String);
         return true;
     }
 }

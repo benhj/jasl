@@ -38,7 +38,7 @@ namespace jasl
                 for (auto const & c : str) {
                     array.push_back(c);
                 }
-                m_sharedCache->setByteArray(m_varName, array);
+                m_sharedCache->setVar(m_varName, array, Type::ByteArray);
                 return true;
             }
             setLastErrorMessage("array: couldn't get index");
@@ -48,19 +48,19 @@ namespace jasl
         if (m_type == "int") {
 
             IntArray array(value, 0);
-            m_sharedCache->setIntArray(m_varName, array);
+            m_sharedCache->setVar(m_varName, array, Type::IntArray);
             return true;
             
         } else if (m_type == "real") {
 
             DoubleArray array(value, 0.0);
-            m_sharedCache->setDoubleArray(m_varName, array);
+            m_sharedCache->setVar(m_varName, array, Type::DoubleArray);
             return true;
 
         } else if (m_type == "byte") {
 
             ByteArray array(value, 0.0);
-            m_sharedCache->setByteArray(m_varName, array);
+            m_sharedCache->setVar(m_varName, array, Type::ByteArray);
             return true;
 
         }

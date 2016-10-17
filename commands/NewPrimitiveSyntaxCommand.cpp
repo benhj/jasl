@@ -47,7 +47,7 @@ namespace jasl {
             // try converting a string to an int
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
-        m_sharedCache->setInt(m_varName, value);
+        m_sharedCache->setVar(m_varName, value, Type::Int);
         return true;
     }
 
@@ -58,7 +58,7 @@ namespace jasl {
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
 
-        m_sharedCache->setByte(m_varName, value);
+        m_sharedCache->setVar(m_varName, value, Type::Byte);
         return true;
     }
 
@@ -70,7 +70,7 @@ namespace jasl {
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
 
-        m_sharedCache->setDouble(m_varName, value);
+        m_sharedCache->setVar(m_varName, value, Type::Double);
         
         return true;
     }
@@ -82,7 +82,7 @@ namespace jasl {
             return false;
         } 
 
-        m_sharedCache->setBool(m_varName, value);
+        m_sharedCache->setVar(m_varName, value, Type::Bool);
         return true;
     }
 }

@@ -43,7 +43,7 @@ namespace jasl
             return false;
         }
 
-        m_sharedCache->setList(listName, list);
+        m_sharedCache->setVar(listName, list, Type::ValueArray);
         return true;
     }
 }

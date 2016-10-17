@@ -55,7 +55,8 @@ namespace jasl
         if(!stringBeingAppendedTo) { return false; }
         LiteralString literalString;
         if(m_func.getValueB<LiteralString>(literalString, m_sharedCache)) {
-            m_sharedCache->setString(key, (*stringBeingAppendedTo).append(literalString.literal));
+            m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(literalString.literal),
+            Type::String);
             return true;
         }
         return false;
@@ -73,28 +74,32 @@ namespace jasl
                 int64_t value;
                 
                 if(m_sharedCache->getInt_(symbol, value)){
-                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
+                    m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                    Type::String);
                     return true;
                 }
             }
             {
                 double value;
                 if(m_sharedCache->getDouble_(symbol, value)) {
-                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
+                    m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                    Type::String);
                     return true;
                 }
             }
             {
                 bool value;
                 if(m_sharedCache->getBool_(symbol, value)) {
-                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
+                    m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                    Type::String);
                     return true;
                 }
             }
             {
                 std::string value;
                 if(m_sharedCache->getString_(symbol, value)) {
-                    m_sharedCache->setString(key, (*stringBeingAppendedTo).append(value));
+                    m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(value),
+                    Type::String);
                     return true;
                 }
             }
@@ -112,7 +117,8 @@ namespace jasl
         {
             int64_t value;
             if(VarExtractor::trySingleIntExtractionNoMath(m_func.paramB, value, m_sharedCache)) {
-                m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
+                m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                Type::String);
                 return true;
             }
         }
@@ -122,7 +128,8 @@ namespace jasl
             if(VarExtractor::tryToGetADouble(m_func.paramB, value, m_sharedCache)) {
                 std::ostringstream ss;
                 ss << value;
-                m_sharedCache->setString(key, (*stringBeingAppendedTo).append(ss.str()));
+                m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                Type::String);
                 return true;
             }
         }
@@ -130,7 +137,8 @@ namespace jasl
         {
             bool value;
             if(VarExtractor::trySingleBoolExtraction(m_func.paramB, value, m_sharedCache)) {
-                m_sharedCache->setString(key, (*stringBeingAppendedTo).append(std::to_string(value)));
+                m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
+                Type::String);
                 return true;
             }
         }

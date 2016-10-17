@@ -36,21 +36,21 @@ namespace jasl
         {
             auto value = m_sharedCache->getIntArrayValue(m_arrayName, index);
             if(value) {
-                m_sharedCache->setInt(m_varName, *value);
+                m_sharedCache->setVar(m_varName, *value, Type::Int);
                 return true;
             }
         }
         {
             auto value = m_sharedCache->getDoubleArrayValue(m_arrayName, index);
             if(value) {
-                m_sharedCache->setDouble(m_varName, *value);
+                m_sharedCache->setVar(m_varName, *value, Type::Double);
                 return true;
             }
         }
         {
             auto value = m_sharedCache->getByteArrayValue(m_arrayName, index);
             if(value) {
-                m_sharedCache->setByte(m_varName, *value);
+                m_sharedCache->setVar(m_varName, *value, Type::Byte);
                 return true;
             }
         }

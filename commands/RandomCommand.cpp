@@ -47,7 +47,7 @@ namespace jasl {
                 using Dist = std::uniform_int_distribution<int64_t>;
                 static Dist uid {};
                 auto output = uid(re, Dist::param_type{0, a});
-                m_sharedCache->setInt(m_varName, output);
+                m_sharedCache->setVar(m_varName, output, Type::Int);
                 return true;
             }
         } else if (m_type == "real") {
@@ -56,7 +56,7 @@ namespace jasl {
                 using Dist = std::uniform_real_distribution<double>;
                 static Dist udd {};
                 auto output = udd(re, Dist::param_type{0, d});
-                m_sharedCache->setDouble(m_varName, output);
+                m_sharedCache->setVar(m_varName, output, Type::Double);
                 return true;
             }
         }

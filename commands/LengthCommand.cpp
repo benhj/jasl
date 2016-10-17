@@ -39,7 +39,7 @@ namespace jasl
     {
         LiteralString literalString;
         if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
-            m_sharedCache->setInt(varName, literalString.literal.length());
+            m_sharedCache->setVar(varName, (int64_t)literalString.literal.length(), Type::Int);
             return true;
         }
         return false;
@@ -55,7 +55,7 @@ namespace jasl
             {
                 auto result = m_sharedCache->getString(symbol);
                 if(result) {
-                    m_sharedCache->setInt(varName, result->length());
+                    m_sharedCache->setVar(varName, (int64_t)result->length(), Type::Int);
                     return true;
                 }
             }
@@ -64,7 +64,7 @@ namespace jasl
             {
                 auto array = m_sharedCache->getIntArray(symbol);
                 if(array) {
-                    m_sharedCache->setInt(varName, array->size());
+                    m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
                 }
             }
@@ -73,7 +73,7 @@ namespace jasl
             {
                 auto array = m_sharedCache->getDoubleArray(symbol);
                 if(array) {
-                    m_sharedCache->setInt(varName, array->size());
+                    m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
                 }
             }
@@ -82,7 +82,7 @@ namespace jasl
             {
                 auto array = m_sharedCache->getByteArray(symbol);
                 if(array) {
-                    m_sharedCache->setInt(varName, array->size());
+                    m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;
                 }
             }
