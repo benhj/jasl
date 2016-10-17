@@ -70,110 +70,46 @@ namespace jasl {
         array.push_back(value);
     }
 
-    void ScopedVarCache::setIntArray(std::string const &key,
-                                     IntArray const &value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::IntArray) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::IntArray, value };
-        
-    }
-
-    void ScopedVarCache::setValueInIntArray(std::string const &key,
-                                            int const index,
-                                            int64_t const value)
+    template <typename V, typename T>
+    void ScopedVarCache::setValueInArray(std::string const & key,
+                                         int const index,
+                                         V const value)
     {
         auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<IntArray>(keyed.cv);
+        auto &array = ::boost::get<T>(keyed.cv);
         array[index] = value;
     }
 
-    void ScopedVarCache::pushBackValueInIntArray(std::string const &key,
-                                                 int64_t const value)
+    /// Explicit instantiations
+    template void 
+    ScopedVarCache::setValueInArray<int64_t, IntArray>
+    (std::string const & key, int const index, int64_t value);
+    template void 
+    ScopedVarCache::setValueInArray<double, DoubleArray>
+    (std::string const & key, int const index, double value);
+    template void 
+    ScopedVarCache::setValueInArray<uint8_t, ByteArray>
+    (std::string const & key, int const index, uint8_t value);
+
+    template <typename V, typename T>
+    void ScopedVarCache::pushBackValueInArray(std::string const & key,
+                                              V const value)
     {
         auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<IntArray>(keyed.cv);
+        auto &array = ::boost::get<T>(keyed.cv);
         array.push_back(value);
     }
 
-    void ScopedVarCache::setDoubleArray(std::string const &key,
-                                        DoubleArray const &value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::DoubleArray) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::DoubleArray, value };
-        
-    }
-
-    void ScopedVarCache::setValueInDoubleArray(std::string const &key,
-                                               int const index,
-                                               double const value)
-    {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<DoubleArray>(keyed.cv);
-        array[index] = value;
-    }
-
-    void ScopedVarCache::pushBackValueInDoubleArray(std::string const &key,
-                                                    double const value)
-    {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<DoubleArray>(keyed.cv);
-        array.push_back(value);
-    }
-
-    void ScopedVarCache::setByteArray(std::string const &key,
-                                    ByteArray const &value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::ByteArray) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::ByteArray, value };
-        
-    }
-
-    void ScopedVarCache::setValueInByteArray(std::string const &key,
-                                             int const index,
-                                             uint8_t const value)
-    {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<ByteArray>(keyed.cv);
-        array[index] = value;
-    }
-
-    void ScopedVarCache::pushBackValueInByteArray(std::string const &key,
-                                                  uint8_t const value)
-    {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<ByteArray>(keyed.cv);
-        array.push_back(value);
-    }
+    /// Explicit instantiations
+    template void 
+    ScopedVarCache::pushBackValueInArray<int64_t, IntArray>
+    (std::string const & key, int64_t value);
+    template void 
+    ScopedVarCache::pushBackValueInArray<double, DoubleArray>
+    (std::string const & key, double value);
+    template void 
+    ScopedVarCache::pushBackValueInArray<uint8_t, ByteArray>
+    (std::string const & key, uint8_t value);
 
     void ScopedVarCache::eraseValue(std::string const &key)
     {
@@ -181,16 +117,38 @@ namespace jasl {
         if(it != std::end(m_bigCache)) { m_bigCache.erase(it); }
     }
 
-    OptionalInt ScopedVarCache::getInt(std::string const &key)
+    template <typename T>
+    ::boost::optional<T> ScopedVarCache::getVar(std::string const & key,
+                                                Type const type)
     {
         auto it = m_bigCache.find(key);
         if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::Int) {
-                return ::boost::get<int64_t>(it->second.cv); 
+            if(it->second.type == type) {
+                return ::boost::get<T>(it->second.cv); 
             }
         }
-        return OptionalInt();
+        return ::boost::optional<T>();
     }
+
+    /// Explicit instantiations
+    template ::boost::optional<int64_t> 
+    ScopedVarCache::getVar<int64_t>(std::string const&, Type const);
+    template ::boost::optional<double> 
+    ScopedVarCache::getVar<double>(std::string const&, Type const);
+    template ::boost::optional<bool> 
+    ScopedVarCache::getVar<bool>(std::string const&, Type const);
+    template ::boost::optional<uint8_t> 
+    ScopedVarCache::getVar<uint8_t>(std::string const&, Type const);
+    template ::boost::optional<ValueArray> 
+    ScopedVarCache::getVar<ValueArray>(std::string const&, Type const);
+    template ::boost::optional<IntArray> 
+    ScopedVarCache::getVar<IntArray>(std::string const&, Type const);
+    template ::boost::optional<DoubleArray> 
+    ScopedVarCache::getVar<DoubleArray>(std::string const&, Type const);
+    template ::boost::optional<ByteArray> 
+    ScopedVarCache::getVar<ByteArray>(std::string const&, Type const);
+    template ::boost::optional<std::string> 
+    ScopedVarCache::getVar<std::string>(std::string const&, Type const);
 
     bool ScopedVarCache::getInt_(std::string const &key, int64_t &val)
     {
@@ -202,17 +160,6 @@ namespace jasl {
             }
         }
         return false;
-    }
-
-    OptionalByte ScopedVarCache::getByte(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::Byte) {
-                return ::boost::get<uint8_t>(it->second.cv); 
-            }
-        }
-        return OptionalByte();
     }
 
     bool ScopedVarCache::getByte_(std::string const &key, uint8_t &val)
@@ -227,17 +174,6 @@ namespace jasl {
         return false;
     }
 
-    OptionalDouble ScopedVarCache::getDouble(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::Double) {
-                return ::boost::get<double>(it->second.cv);  
-            }
-        }
-        return OptionalDouble();
-    }
-
     bool ScopedVarCache::getDouble_(std::string const &key, double &val)
     {
         auto it = m_bigCache.find(key);
@@ -248,17 +184,6 @@ namespace jasl {
             }
         }
         return false;
-    }
-
-    OptionalBool ScopedVarCache::getBool(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::Bool) {
-                return ::boost::get<bool>(it->second.cv);  
-            }
-        }
-        return OptionalBool();
     }
 
     bool ScopedVarCache::getBool_(std::string const &key, bool &val)
@@ -273,17 +198,6 @@ namespace jasl {
         return false;
     }
 
-    OptionalString ScopedVarCache::getString(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::String) {
-                return ::boost::get<std::string>(it->second.cv);  
-            }
-        }
-        return OptionalString();
-    }
-
     bool ScopedVarCache::getString_(std::string const &key, std::string &val)
     {
         auto it = m_bigCache.find(key);
@@ -294,17 +208,6 @@ namespace jasl {
             }
         }
         return false;
-    }
-
-    OptionalValueArray ScopedVarCache::getList(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::ValueArray) {
-                return ::boost::get<ValueArray>(it->second.cv);  
-            }
-        }
-        return OptionalValueArray();
     }
 
     bool ScopedVarCache::getList_(std::string const &key, ValueArray &val)
@@ -333,17 +236,6 @@ namespace jasl {
         return Value();
     }
 
-    OptionalIntArray ScopedVarCache::getIntArray(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::IntArray) {
-                return ::boost::get<IntArray>(it->second.cv);  
-            }
-        }
-        return OptionalIntArray();
-    }
-
     bool ScopedVarCache::getIntArray_(std::string const &key, IntArray &val)
     {
         auto it = m_bigCache.find(key);
@@ -370,17 +262,6 @@ namespace jasl {
         return OptionalInt();
     }
 
-    OptionalDoubleArray ScopedVarCache::getDoubleArray(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::DoubleArray) {
-                return ::boost::get<DoubleArray>(it->second.cv);  
-            }
-        }
-        return OptionalDoubleArray();
-    }
-
     bool ScopedVarCache::getDoubleArray_(std::string const &key, DoubleArray &val)
     {
         auto it = m_bigCache.find(key);
@@ -405,17 +286,6 @@ namespace jasl {
             }
         }
         return OptionalDouble();
-    }
-
-    OptionalByteArray ScopedVarCache::getByteArray(std::string const &key)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::ByteArray) {
-                return ::boost::get<ByteArray>(it->second.cv);  
-            }
-        }
-        return OptionalByteArray();
     }
 
     bool ScopedVarCache::getByteArray_(std::string const &key, ByteArray &val)

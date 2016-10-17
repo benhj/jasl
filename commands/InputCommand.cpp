@@ -53,7 +53,7 @@ namespace jasl
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
             {
-                auto result = m_sharedCache->getString(symbol);
+                auto result = m_sharedCache->getVar<std::string>(symbol, Type::String);
                 if(result) {
                     appendToOutput(*result);
                     return true;

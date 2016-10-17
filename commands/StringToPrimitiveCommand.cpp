@@ -65,7 +65,7 @@ namespace jasl
         // Now try extracting a symbol
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
-            auto result = m_sharedCache->getString(symbol);
+            auto result = m_sharedCache->getVar<std::string>(symbol, Type::String);
             if(result) {
                 try {
                     // also handled off directy from NewPrimitiveSyntaxCommand so need

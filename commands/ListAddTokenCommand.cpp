@@ -44,7 +44,7 @@ namespace jasl
                 return OptionalString(literal.literal);
             }
         } else {
-            auto result = m_sharedCache->getString(token);
+            auto result = m_sharedCache->getVar<std::string>(token, Type::String);
             if(result) {
                 return OptionalString(*result);
             }
@@ -62,7 +62,7 @@ namespace jasl
                 return va;
             }
         } else {
-            auto result = m_sharedCache->getList(token);
+            auto result = m_sharedCache->getVar<ValueArray>(token, Type::ValueArray);
             if(result) {
                 return *result;
             }
@@ -74,7 +74,7 @@ namespace jasl
     bool ListAddTokenCommand::tryWithSymbolList(std::string const &varName)
     {
         // find the ValueArray in the list cache having symbol symbol
-        auto found = m_sharedCache->getList(varName);
+        auto found = m_sharedCache->getVar<ValueArray>(varName, Type::ValueArray);
 
         // if found then process list
         if(found) {

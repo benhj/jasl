@@ -29,7 +29,7 @@ namespace jasl
         }
 
         // gracefully fail if string with name cannot be found
-        auto found = m_sharedCache->getString(stringName);
+        auto found = m_sharedCache->getVar<std::string>(stringName, Type::String);
         if(!found) {
             return false;
         }

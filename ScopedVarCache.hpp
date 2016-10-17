@@ -82,32 +82,15 @@ namespace jasl {
         void pushBackTokenInList(std::string const &key,
                                  Value const &value);
 
-        /// int array support
-        void setIntArray(std::string const & key,
-                         IntArray const & array);
-        void setValueInIntArray(std::string const & key,
-                                int const index,
-                                int64_t const value);
-        void pushBackValueInIntArray(std::string const & key,
-                                     int64_t const value);
+        /// array support
+        template <typename V, typename T>
+        void setValueInArray(std::string const & key,
+                             int const index,
+                             V const value);
 
-        // double array support
-        void setDoubleArray(std::string const & key,
-                            DoubleArray const & array);
-        void setValueInDoubleArray(std::string const & key,
-                                   int const index,
-                                   double const value);
-        void pushBackValueInDoubleArray(std::string const & key,
-                                        double const value);
-
-        // byte array support
-        void setByteArray(std::string const & key,
-                          ByteArray const & array);
-        void setValueInByteArray(std::string const & key,
-                                 int const index,
-                                 uint8_t const value);
-        void pushBackValueInByteArray(std::string const & key,
-                                      uint8_t const value);
+        template <typename V, typename T>
+        void pushBackValueInArray(std::string const & key,
+                                  V const value);
 
         void eraseValue(std::string const &key);
 
@@ -126,31 +109,24 @@ namespace jasl {
 
         /// functions for getting different types.
         /// These are convenience functions and
-        /// shouldn't be used unless it is know values exist.
-        OptionalInt getInt(std::string const &key);
+        /// shouldn't be used unless it is known values exist.
+        template <typename T>
+        ::boost::optional<T> getVar(std::string const & key,
+                                    Type const type);
+
         bool getInt_(std::string const &key, int64_t &val);
-        OptionalByte getByte(std::string const &key);
         bool getByte_(std::string const &key, uint8_t &val);
-        OptionalDouble getDouble(std::string const &key);
         bool getDouble_(std::string const &key, double &val);
-        OptionalBool getBool(std::string const &key);
         bool getBool_(std::string const &key, bool &val);
-        OptionalString getString(std::string const &key);
         bool getString_(std::string const &key, std::string &val);
-        OptionalValueArray getList(std::string const &key);
         bool getList_(std::string const &key, ValueArray &val);
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
 
-        OptionalIntArray getIntArray(std::string const &key);
         bool getIntArray_(std::string const &key, IntArray &val);
         OptionalInt getIntArrayValue(std::string const &key, size_t const index);
-
-        OptionalDoubleArray getDoubleArray(std::string const &key);
         bool getDoubleArray_(std::string const &key, DoubleArray &val);
         OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
-
-        OptionalByteArray getByteArray(std::string const &key);
         bool getByteArray_(std::string const &key, ByteArray &val);
         OptionalByte getByteArrayValue(std::string const &key, size_t const index);
         

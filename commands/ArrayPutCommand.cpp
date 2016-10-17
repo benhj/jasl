@@ -57,7 +57,7 @@ namespace jasl
                 return false;
             } 
 
-            m_sharedCache->setValueInIntArray(m_varName, index, value);
+            m_sharedCache->setValueInArray<int64_t, IntArray>(m_varName, index, value);
 
         } else if (m_type == "real") {
             double value;
@@ -66,7 +66,7 @@ namespace jasl
                 return false;
             } 
 
-            m_sharedCache->setValueInDoubleArray(m_varName, index, value);
+            m_sharedCache->setValueInArray<double, DoubleArray>(m_varName, index, value);
         } else if (m_type == "byte") {
             uint8_t value;
             if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
@@ -74,7 +74,7 @@ namespace jasl
                 return false;
             } 
 
-            m_sharedCache->setValueInByteArray(m_varName, index, value);
+            m_sharedCache->setValueInArray<uint8_t, ByteArray>(m_varName, index, value);
         }
         return true;
     }
