@@ -111,15 +111,10 @@ namespace jasl {
         /// These are convenience functions and
         /// shouldn't be used unless it is known values exist.
         template <typename T>
-        ::boost::optional<T> getVar(std::string const & key,
-                                    Type const type);
+        ::boost::optional<T> getVar(std::string const & key, Type const type);
+        template <typename T>
+        bool getVar_(std::string const & key, T & value, Type const type);
 
-        bool getInt_(std::string const &key, int64_t &val);
-        bool getByte_(std::string const &key, uint8_t &val);
-        bool getDouble_(std::string const &key, double &val);
-        bool getBool_(std::string const &key, bool &val);
-        bool getString_(std::string const &key, std::string &val);
-        bool getList_(std::string const &key, ValueArray &val);
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
 

@@ -54,35 +54,35 @@ namespace jasl
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
             {
                 int64_t value;
-                if( m_sharedCache->getInt_(symbol, value)) {
+                if( m_sharedCache->getVar_(symbol, value, Type::Int)) {
                     m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 double value;
-                if(m_sharedCache->getDouble_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
                     m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 bool value;
-                if(m_sharedCache->getBool_(symbol, value)) {
+                if( m_sharedCache->getVar_(symbol, value, Type::Bool)) {
                     m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 std::string value;
-                if(m_sharedCache->getString_(symbol, value)) {
+                if( m_sharedCache->getVar_(symbol, value, Type::String)) {
                     m_sharedCache->setVar(key, value, Type::String);
                     return true;
                 }
             }
             {
                 ByteArray value;
-                if(m_sharedCache->getByteArray_(symbol, value)) {
+                if( m_sharedCache->getVar_(symbol, value, Type::ByteArray)) {
 
                     std::string str;
                     for (auto const & b : value) {

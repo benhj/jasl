@@ -73,7 +73,7 @@ namespace jasl
             {
                 int64_t value;
                 
-                if(m_sharedCache->getInt_(symbol, value)){
+                if(m_sharedCache->getVar_(symbol, value, Type::Int)){
                     m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
                     Type::String);
                     return true;
@@ -81,7 +81,7 @@ namespace jasl
             }
             {
                 double value;
-                if(m_sharedCache->getDouble_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
                     m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
                     Type::String);
                     return true;
@@ -89,7 +89,7 @@ namespace jasl
             }
             {
                 bool value;
-                if(m_sharedCache->getBool_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Bool)) {
                     m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
                     Type::String);
                     return true;
@@ -97,7 +97,7 @@ namespace jasl
             }
             {
                 std::string value;
-                if(m_sharedCache->getString_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::String)) {
                     m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(value),
                     Type::String);
                     return true;

@@ -47,42 +47,42 @@ namespace jasl
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
             {
                 int64_t value;
-                if(m_sharedCache->getInt_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Int)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
                 uint8_t value;
-                if(m_sharedCache->getByte_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Byte)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
                 double value;
-                if(m_sharedCache->getDouble_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
                 bool value;
-                if(m_sharedCache->getBool_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Bool)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
                 std::string value;
-                if(m_sharedCache->getString_(symbol, value)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::String)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
             }
             {
                 ValueArray value;
-                auto result = m_sharedCache->getList_(symbol, value);
+                auto result = m_sharedCache->getVar_(symbol, value, Type::ValueArray);
                 if(result) {
                     std::string output;
                     processListElement(value, output);
