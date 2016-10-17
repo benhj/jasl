@@ -118,11 +118,8 @@ namespace jasl {
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
 
-        bool getIntArray_(std::string const &key, IntArray &val);
         OptionalInt getIntArrayValue(std::string const &key, size_t const index);
-        bool getDoubleArray_(std::string const &key, DoubleArray &val);
         OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
-        bool getByteArray_(std::string const &key, ByteArray &val);
         OptionalByte getByteArrayValue(std::string const &key, size_t const index);
         
     };

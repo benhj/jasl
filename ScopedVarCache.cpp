@@ -9,6 +9,17 @@
 #include "ScopedVarCache.hpp"
 #include <iostream>
 
+#define SET_VAR(X) \
+template void ScopedVarCache::setVar(std::string const & key, X const & value, Type const type);
+#define SET_VALUE_IN_ARRAY(V, T) \
+template void ScopedVarCache::setValueInArray<V, T>(std::string const & key, int const index, V value);
+#define PUSH_BACK_VALUE_IN_ARRAY(V, T) \
+template void ScopedVarCache::pushBackValueInArray<V,T>(std::string const & key, V value);
+#define GET_VAR(T) \
+template ::boost::optional<T> ScopedVarCache::getVar<T>(std::string const&, Type const);
+#define GET_VAR_(T) \
+template bool ScopedVarCache::getVar_(std::string const & key, T & value, Type const type);
+
 namespace jasl {
 
     template <typename T>
@@ -43,15 +54,15 @@ namespace jasl {
     }
 
     /// Explicit template instantiations (--linkage issues).
-    template void ScopedVarCache::setVar(std::string const & key, int64_t const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, uint8_t const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, std::string const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, ValueArray const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, IntArray const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, DoubleArray const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, ByteArray const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, bool const & value, Type const type);
-    template void ScopedVarCache::setVar(std::string const & key, double const & value, Type const type);
+    SET_VAR(int64_t);
+    SET_VAR(uint8_t);
+    SET_VAR(std::string);
+    SET_VAR(ValueArray);
+    SET_VAR(IntArray);
+    SET_VAR(DoubleArray);
+    SET_VAR(ByteArray);
+    SET_VAR(bool);
+    SET_VAR(double);
  
     void ScopedVarCache::setTokenInList(std::string const &key,
                                         int const index,
@@ -81,15 +92,9 @@ namespace jasl {
     }
 
     /// Explicit instantiations
-    template void 
-    ScopedVarCache::setValueInArray<int64_t, IntArray>
-    (std::string const & key, int const index, int64_t value);
-    template void 
-    ScopedVarCache::setValueInArray<double, DoubleArray>
-    (std::string const & key, int const index, double value);
-    template void 
-    ScopedVarCache::setValueInArray<uint8_t, ByteArray>
-    (std::string const & key, int const index, uint8_t value);
+    SET_VALUE_IN_ARRAY(int64_t, IntArray);
+    SET_VALUE_IN_ARRAY(double, DoubleArray);
+    SET_VALUE_IN_ARRAY(uint8_t, ByteArray);
 
     template <typename V, typename T>
     void ScopedVarCache::pushBackValueInArray(std::string const & key,
@@ -101,15 +106,9 @@ namespace jasl {
     }
 
     /// Explicit instantiations
-    template void 
-    ScopedVarCache::pushBackValueInArray<int64_t, IntArray>
-    (std::string const & key, int64_t value);
-    template void 
-    ScopedVarCache::pushBackValueInArray<double, DoubleArray>
-    (std::string const & key, double value);
-    template void 
-    ScopedVarCache::pushBackValueInArray<uint8_t, ByteArray>
-    (std::string const & key, uint8_t value);
+    PUSH_BACK_VALUE_IN_ARRAY(int64_t, IntArray);
+    PUSH_BACK_VALUE_IN_ARRAY(double, DoubleArray);
+    PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
 
     void ScopedVarCache::eraseValue(std::string const &key)
     {
@@ -131,24 +130,15 @@ namespace jasl {
     }
 
     /// Explicit instantiations
-    template ::boost::optional<int64_t> 
-    ScopedVarCache::getVar<int64_t>(std::string const&, Type const);
-    template ::boost::optional<double> 
-    ScopedVarCache::getVar<double>(std::string const&, Type const);
-    template ::boost::optional<bool> 
-    ScopedVarCache::getVar<bool>(std::string const&, Type const);
-    template ::boost::optional<uint8_t> 
-    ScopedVarCache::getVar<uint8_t>(std::string const&, Type const);
-    template ::boost::optional<ValueArray> 
-    ScopedVarCache::getVar<ValueArray>(std::string const&, Type const);
-    template ::boost::optional<IntArray> 
-    ScopedVarCache::getVar<IntArray>(std::string const&, Type const);
-    template ::boost::optional<DoubleArray> 
-    ScopedVarCache::getVar<DoubleArray>(std::string const&, Type const);
-    template ::boost::optional<ByteArray> 
-    ScopedVarCache::getVar<ByteArray>(std::string const&, Type const);
-    template ::boost::optional<std::string> 
-    ScopedVarCache::getVar<std::string>(std::string const&, Type const);
+    GET_VAR(int64_t);
+    GET_VAR(double);
+    GET_VAR(bool);
+    GET_VAR(uint8_t);
+    GET_VAR(ValueArray);
+    GET_VAR(IntArray);
+    GET_VAR(DoubleArray);
+    GET_VAR(ByteArray);
+    GET_VAR(std::string);
 
     template <typename T>
     bool ScopedVarCache::getVar_(std::string const & key,
@@ -166,15 +156,15 @@ namespace jasl {
     }
 
     /// Explicit template instantiations (--linkage issues).
-    template bool ScopedVarCache::getVar_(std::string const & key, int64_t & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, uint8_t & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, std::string & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, ValueArray & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, IntArray & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, DoubleArray & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, ByteArray & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, bool & value, Type const type);
-    template bool ScopedVarCache::getVar_(std::string const & key, double & value, Type const type);
+    GET_VAR_(int64_t);
+    GET_VAR_(uint8_t);
+    GET_VAR_(std::string);
+    GET_VAR_(ValueArray);
+    GET_VAR_(IntArray);
+    GET_VAR_(DoubleArray);
+    GET_VAR_(ByteArray);
+    GET_VAR_(bool);
+    GET_VAR_(double);
 
     Value ScopedVarCache::getListToken(std::string const &key, size_t const index)
     {
