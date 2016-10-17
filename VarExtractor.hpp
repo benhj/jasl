@@ -85,27 +85,27 @@ namespace jasl {
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
                 if (typeid(T) == typeid(int64_t)) {
-                    auto result = sharedCache->getInt_(str, (int64_t&)t);
+                    auto result = sharedCache->getVar_(str, (int64_t&)t, Type::Int);
                     if(result) {
                         return true;
                     }
                 } else if (typeid(T) == typeid(uint8_t)) {
-                    auto result = sharedCache->getByte_(str, (uint8_t&)t);
+                    auto result = sharedCache->getVar_(str, (uint8_t&)t, Type::Byte);
                     if(result) {
                         return true;
                     }
                 } else if (typeid(T) == typeid(char)) {
-                    auto result = sharedCache->getByte_(str, (uint8_t&)t);
+                    auto result = sharedCache->getVar_(str, (uint8_t&)t, Type::Byte);
                     if(result) {
                         return true;
                     }
                 }  else if (typeid(T) == typeid(bool)) {
-                    auto result = sharedCache->getBool_(str, (bool&)t);
+                    auto result = sharedCache->getVar_(str, (bool&)t, Type::Bool);
                     if(result) {
                         return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
-                    auto result = sharedCache->getDouble_(str, (double&)t);
+                    auto result = sharedCache->getVar_(str, (double&)t, Type::Double);
                     if(result) {
                         return true;
                     }
@@ -275,7 +275,7 @@ namespace jasl {
                 // Note, x will actually be the symbol, not the string
                 // that the symbol represents. Therefore, now need to 
                 // pull out the variable associated with the symbol
-                return sharedCache->getString_(y, x);
+                return sharedCache->getVar_(y, x, Type::String);
             }
             LiteralString ls;
             if (tryExtraction<LiteralString>(ls, val, sharedCache)) {
@@ -294,7 +294,7 @@ namespace jasl {
             // couldn't extract raw list, see if one is cached 
             std::string varName;
             if (tryExtraction<std::string>(varName, val, sharedCache)) {
-                return sharedCache->getList_(varName, x);
+                return sharedCache->getVar_(varName, x, Type::ValueArray);
             }
 
             return false;

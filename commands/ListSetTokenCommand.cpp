@@ -48,7 +48,7 @@ namespace jasl
                 return true;
             }
         } else {
-            if(m_sharedCache->getString_(token, value)) {
+            if(m_sharedCache->getVar_(token, value, Type::String)) {
                 return true;
             }
         }
@@ -64,7 +64,7 @@ namespace jasl
                 return true;
             }
         } else {
-            if(m_sharedCache->getList_(token, value)) {
+            if(m_sharedCache->getVar_(token, value, Type::ValueArray)) {
                 return true;
             }
         }
