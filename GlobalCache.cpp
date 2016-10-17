@@ -19,34 +19,34 @@ namespace jasl {
     void GlobalCache::setInt(std::string const &key,
                              int64_t const value)
     {
-        bigCache->setInt(key, value);
+        bigCache->setVar(key, value, Type::Int);
     }
 
     void GlobalCache::setByte(std::string const &key,
                               uint8_t const value)
     {
-        bigCache->setByte(key, value);
+        bigCache->setVar(key, value, Type::Byte);
     }
 
     void GlobalCache::setDouble(std::string const &key,
                                 double const value)
     {
-        bigCache->setDouble(key, value);
+        bigCache->setVar(key, value, Type::Double);
     }
     void GlobalCache::setBool(std::string const &key,
                               bool const value)
     {
-        bigCache->setBool(key, value);
+        bigCache->setVar(key, value, Type::Bool);
     }
     void GlobalCache::setString(std::string const &key,
                                 std::string const &value)
     {
-        bigCache->setString(key, value);
+        bigCache->setVar(key, value, Type::String);
     }
     void GlobalCache::setList(std::string const &key,
                               ValueArray const &value)
     {
-        bigCache->setList(key, value);
+        bigCache->setVar(key, value, Type::ValueArray);
     }
 
     void GlobalCache::setTokenInList(std::string const &key,

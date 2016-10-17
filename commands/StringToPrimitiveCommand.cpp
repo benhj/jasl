@@ -45,10 +45,10 @@ namespace jasl
                 // also handled off directy from NewPrimitiveSyntaxCommand so need
                 // to also check if function name is int or real in respective branch
                 if(m_func.name == "string_to_int" || m_func.name == "int") {
-                    m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(literalString.literal));
+                    m_sharedCache->setVar(varName, boost::lexical_cast<int64_t>(literalString.literal), Type::Int);
                     return true;
                 } else if(m_func.name == "string_to_real" || m_func.name == "real") {
-                    m_sharedCache->setDouble(varName, boost::lexical_cast<double>(literalString.literal));
+                    m_sharedCache->setVar(varName, boost::lexical_cast<double>(literalString.literal), Type::Double);
                     return true;
                 }
                 return false;
@@ -71,10 +71,10 @@ namespace jasl
                     // also handled off directy from NewPrimitiveSyntaxCommand so need
                     // to also check if function name is int or real in respective branch
                     if(m_func.name == "string_to_int" || m_func.name == "int") {
-                        m_sharedCache->setInt(varName, boost::lexical_cast<int64_t>(*result));
+                        m_sharedCache->setVar(varName, boost::lexical_cast<int64_t>(*result), Type::Int);
                         return true;
                     } else if(m_func.name == "string_to_real" || m_func.name == "real") {
-                        m_sharedCache->setDouble(varName, boost::lexical_cast<double>(*result));
+                        m_sharedCache->setVar(varName, boost::lexical_cast<double>(*result), Type::Double);
                         return true;
                     }
                     return false;

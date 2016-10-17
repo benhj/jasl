@@ -62,7 +62,7 @@ namespace jasl
             return false;
         }
 
-        m_sharedCache->setString(key, getType(*type));
+        m_sharedCache->setVar(key, getType(*type), Type::String);
         return true;
     }
 }

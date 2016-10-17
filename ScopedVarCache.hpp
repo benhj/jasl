@@ -71,18 +71,11 @@ namespace jasl {
         ScopedVarCache();
 
         /// functions for setting different types
-        void setInt(std::string const &key,
-                    int64_t const value);
-        void setByte(std::string const &key,
-                     uint8_t const value);
-        void setDouble(std::string const &key,
-                       double const value);
-        void setBool(std::string const &key,
-                     bool const value);
-        void setString(std::string const &key,
-                       std::string const &value);
-        void setList(std::string const &key,
-                     ValueArray const &value);
+        template <typename T> 
+        void setVar(std::string const & key,
+                    T const & value,
+                    Type const type);
+
         void setTokenInList(std::string const &key,
                             int const index,
                             Value const &value);
@@ -160,8 +153,7 @@ namespace jasl {
         OptionalByteArray getByteArray(std::string const &key);
         bool getByteArray_(std::string const &key, ByteArray &val);
         OptionalByte getByteArrayValue(std::string const &key, size_t const index);
-
-
+        
     };
 
 }

@@ -92,7 +92,7 @@ namespace jasl
                 std::string newToken;
                 if(getNewStringToken(newToken)) {
                     v[index] = Value(newToken);
-                    m_sharedCache->setList(varName, v);
+                    m_sharedCache->setVar(varName, v, Type::ValueArray);
                     return true;
                 }
             }
@@ -101,7 +101,7 @@ namespace jasl
                 ValueArray newToken;
                 if(getNewVAToken(newToken)) {
                     v[index] = Value(newToken);
-                    m_sharedCache->setList(varName, v);
+                    m_sharedCache->setVar(varName, v, Type::ValueArray);
                     return true;
                 }
             }
@@ -149,7 +149,7 @@ namespace jasl
 
                         auto vals = *found;
                         vals[index] = Value(newToken);
-                        m_sharedCache->setList(varName, vals);
+                        m_sharedCache->setVar(varName, vals, Type::ValueArray);
                         return true;
                     }
                 }
@@ -166,7 +166,7 @@ namespace jasl
 
                         auto vals = *found;
                         vals[index] = Value(newToken);
-                        m_sharedCache->setList(varName, vals);
+                        m_sharedCache->setVar(varName, vals, Type::ValueArray);
                         return true;
                     }
                 }

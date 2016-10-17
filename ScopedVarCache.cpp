@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ScopedVarCache.hpp"
@@ -21,112 +21,38 @@ namespace jasl {
     , m_paramStack()
     {
     }
+
+    template <typename T> 
+    void ScopedVarCache::setVar(std::string const & key,
+                                T const & value,
+                                Type const type)
+    {
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != type) {
+                return;
+            }
+            found->second.cv = value;
+            return;
+        }
+
+        m_bigCache[key] = { type, value }; 
+    }
+
+    /// Explicit template instantiations (--linkage issues).
+    template void ScopedVarCache::setVar(std::string const & key, int64_t const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, uint8_t const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, std::string const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, ValueArray const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, IntArray const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, DoubleArray const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, ByteArray const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, bool const & value, Type const type);
+    template void ScopedVarCache::setVar(std::string const & key, double const & value, Type const type);
  
-    void ScopedVarCache::setInt(std::string const &key,
-                                int64_t const value)
-    {
-        
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::Int) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-
-        m_bigCache[key] = { Type::Int, value }; 
-    }
-
-    void ScopedVarCache::setByte(std::string const &key,
-                                 uint8_t const value)
-    {
-        
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::Byte) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-
-        m_bigCache[key] = { Type::Byte, value }; 
-    }
-
-    void ScopedVarCache::setDouble(std::string const &key,
-                                   double const value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::Double) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::Double, value };
-    }
-    void ScopedVarCache::setBool(std::string const &key,
-                                 bool const value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::Bool) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::Bool, value};
-    }
-    void ScopedVarCache::setString(std::string const &key,
-                                   std::string const &value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::String) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::String, value };
-        
-    }
-    void ScopedVarCache::setList(std::string const &key,
-                                 ValueArray const &value)
-    {
-        auto found = m_bigCache.find(key);
-
-        // If the variable already exists, then only
-        // proceed in updating it, if the type is correct
-        if(found != std::end(m_bigCache)) {
-            if(found->second.type != Type::ValueArray) {
-                return;
-            }
-            found->second.cv = value;
-            return;
-        }
-        m_bigCache[key] = { Type::ValueArray, value };
-        
-    }
-
     void ScopedVarCache::setTokenInList(std::string const &key,
                                         int const index,
                                         Value const &value)
@@ -536,4 +462,5 @@ namespace jasl {
     {
         return m_paramStack[i];
     }
+
 }

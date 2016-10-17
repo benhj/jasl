@@ -39,7 +39,7 @@ namespace jasl
 
         if(value < GlobalCache::args.size()) {
             auto argument(GlobalCache::args[value]);
-            m_sharedCache->setString(argString, argument);
+            m_sharedCache->setVar(argString, argument, Type::String);
             return true;
         }
 

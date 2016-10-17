@@ -64,7 +64,7 @@ namespace jasl
 
                 }
             }
-            m_sharedCache->setString(key, result);
+            m_sharedCache->setVar(key, result, Type::String);
             return true;
         }
         return false;

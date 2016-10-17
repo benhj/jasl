@@ -194,7 +194,7 @@ namespace jasl {
             // Process tokens one by one using get_token command
             CommandInterpretor ci;
             for(auto & v : str) {
-                m_sharedCache->setByte(indexSymbol, v);
+                m_sharedCache->setVar(indexSymbol, (uint8_t)v, Type::Byte);
                 success = parseCommands(innerFuncs);
                 // make sure variable storing token is released before iterating
                 Function relFunc;

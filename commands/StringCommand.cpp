@@ -41,7 +41,7 @@ namespace jasl
     {
         LiteralString literalString;
         if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
-            m_sharedCache->setString(key, literalString.literal);
+            m_sharedCache->setVar(key, literalString.literal, Type::String);
             return true;
         }
         return false;
@@ -55,28 +55,28 @@ namespace jasl
             {
                 int64_t value;
                 if( m_sharedCache->getInt_(symbol, value)) {
-                    m_sharedCache->setString(key, std::to_string(value));
+                    m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 double value;
                 if(m_sharedCache->getDouble_(symbol, value)) {
-                    m_sharedCache->setString(key, std::to_string(value));
+                    m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 bool value;
                 if(m_sharedCache->getBool_(symbol, value)) {
-                    m_sharedCache->setString(key, std::to_string(value));
+                    m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
             }
             {
                 std::string value;
                 if(m_sharedCache->getString_(symbol, value)) {
-                    m_sharedCache->setString(key, value);
+                    m_sharedCache->setVar(key, value, Type::String);
                     return true;
                 }
             }
@@ -88,7 +88,7 @@ namespace jasl
                     for (auto const & b : value) {
                         str += b;
                     }
-                    m_sharedCache->setString(key, str);
+                    m_sharedCache->setVar(key, str, Type::String);
                     return true;
                 }
             }
@@ -103,7 +103,7 @@ namespace jasl
         {
             int64_t result;
             if(VarExtractor::trySingleIntExtractionNoMath(m_func.paramA, result, m_sharedCache)) {
-                m_sharedCache->setString(key, std::to_string(result));
+                m_sharedCache->setVar(key, std::to_string(result), Type::String);
                 return true;
             }
         }
@@ -113,7 +113,7 @@ namespace jasl
             if(VarExtractor::tryToGetADouble(m_func.paramA, result, m_sharedCache)) {
                 std::ostringstream ss;
                 ss << result;
-                m_sharedCache->setString(key, ss.str());
+                m_sharedCache->setVar(key, ss.str(), Type::String);
                 return true;
             }
         }
@@ -121,7 +121,7 @@ namespace jasl
         {
             bool result;
             if(VarExtractor::trySingleBoolExtraction(m_func.paramA, result, m_sharedCache)) {
-                m_sharedCache->setString(key, std::to_string(result));
+                m_sharedCache->setVar(key, std::to_string(result), Type::String);
                 return true;
             }
         }

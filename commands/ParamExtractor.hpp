@@ -70,15 +70,17 @@ namespace jasl
                 VarExtractor::tryAnyCast(symbol, v);  
                 auto entry = GlobalCache::getParamFromStack(i);
                 if(entry.type == Type::Int) {
-                    cacheTo->setInt(symbol, ::boost::get<int64_t>(entry.cv));
+                    cacheTo->setVar(symbol, ::boost::get<int64_t>(entry.cv), Type::Int);
                 } else if(entry.type == Type::Double) {
-                    cacheTo->setDouble(symbol, ::boost::get<double>(entry.cv));
+                    cacheTo->setVar(symbol, ::boost::get<double>(entry.cv), Type::Double);
                 } else if(entry.type == Type::Bool) {
-                    cacheTo->setBool(symbol, ::boost::get<bool>(entry.cv));
+                    cacheTo->setVar(symbol, ::boost::get<bool>(entry.cv), Type::Bool);
                 } else if(entry.type == Type::ValueArray) {
-                    cacheTo->setList(symbol, ::boost::get<ValueArray>(entry.cv));
+                    cacheTo->setVar(symbol, ::boost::get<ValueArray>(entry.cv), Type::ValueArray);
                 } else if(entry.type == Type::String) {
-                    cacheTo->setString(symbol, ::boost::get<std::string>(entry.cv));
+                    cacheTo->setVar(symbol, ::boost::get<std::string>(entry.cv), Type::String);
+                } else if(entry.type == Type::Byte) {
+                    cacheTo->setVar(symbol, ::boost::get<uint8_t>(entry.cv), Type::Byte);
                 }
                 ++i;
             }

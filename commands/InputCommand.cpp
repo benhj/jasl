@@ -33,7 +33,7 @@ namespace jasl
 
         std::string result;
         std::getline(std::cin, result);
-        m_sharedCache->setString(answer, result);
+        m_sharedCache->setVar(answer, result, Type::String);
         return false;
     }
 

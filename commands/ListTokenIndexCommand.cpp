@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 08/11/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ListTokenIndexCommand.hpp"
@@ -70,7 +70,7 @@ namespace jasl
                         return false;
                     }
                     if(tok == testToken) {
-                        m_sharedCache->setInt(varName, i);
+                        m_sharedCache->setVar(varName, (int64_t)i, Type::Int);
                         return true;
                     }
                     ++i;
@@ -109,7 +109,7 @@ namespace jasl
                             return false;
                         }
                         if(tok == testToken) {
-                            m_sharedCache->setInt(varName, i);
+                            m_sharedCache->setVar(varName, (int64_t)i, Type::Int);
                             return true;
                         }
                         ++i;
