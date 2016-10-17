@@ -118,9 +118,10 @@ namespace jasl {
         Value getListToken(std::string const &key, size_t const index);
         OptionalType getType(std::string const &key);
 
-        OptionalInt getIntArrayValue(std::string const &key, size_t const index);
-        OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
-        OptionalByte getByteArrayValue(std::string const &key, size_t const index);
+        template <typename V>
+        ::boost::optional<typename V::value_type> getArrayValue(std::string const & key, 
+                                                                size_t const index,
+                                                                Type const type);
         
     };
 

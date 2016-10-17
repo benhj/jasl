@@ -19,6 +19,10 @@ template void ScopedVarCache::pushBackValueInArray<V,T>(std::string const & key,
 template ::boost::optional<T> ScopedVarCache::getVar<T>(std::string const&, Type const);
 #define GET_VAR_(T) \
 template bool ScopedVarCache::getVar_(std::string const & key, T & value, Type const type);
+#define GET_ARRAY_VALUE(T) \
+template ::boost::optional<typename T::value_type>  ScopedVarCache::getArrayValue<T>(std::string const & key, \
+                                                                                     size_t const index, \
+                                                                                     Type const type);
 
 namespace jasl {
 
@@ -180,47 +184,28 @@ namespace jasl {
         return Value();
     }
 
-    OptionalInt ScopedVarCache::getIntArrayValue(std::string const &key, size_t const index)
+    template <typename T>
+    ::boost::optional<typename T::value_type> 
+    ScopedVarCache::getArrayValue(std::string const & key, 
+                                  size_t const index,
+                                  Type const type)
     {
         auto it = m_bigCache.find(key);
         if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::IntArray) {
-                auto array = ::boost::get<IntArray>(it->second.cv);  
+            if(it->second.type == type) {
+                auto array = ::boost::get<T>(it->second.cv);  
                 if(index < array.size()) {
-                    return OptionalInt(array[index]);
+                    return ::boost::optional<typename T::value_type>(array[index]);
                 }
             }
         }
-        return OptionalInt();
+        return ::boost::optional<typename T::value_type>();
     }
 
-    OptionalDouble ScopedVarCache::getDoubleArrayValue(std::string const &key, size_t const index)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::DoubleArray) {
-                auto array = ::boost::get<DoubleArray>(it->second.cv);  
-                if(index < array.size()) {
-                    return OptionalDouble(array[index]);
-                }
-            }
-        }
-        return OptionalDouble();
-    }
-
-    OptionalByte ScopedVarCache::getByteArrayValue(std::string const &key, size_t const index)
-    {
-        auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::ByteArray) {
-                auto array = ::boost::get<ByteArray>(it->second.cv);  
-                if(index < array.size()) {
-                    return OptionalByte(array[index]);
-                }
-            }
-        }
-        return OptionalByte();
-    }
+    /// Explicit instantiations
+    GET_ARRAY_VALUE(IntArray);
+    GET_ARRAY_VALUE(DoubleArray);
+    GET_ARRAY_VALUE(ByteArray);
 
     OptionalType ScopedVarCache::getType(std::string const &key)
     {

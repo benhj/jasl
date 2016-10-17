@@ -34,21 +34,21 @@ namespace jasl
 
         // try int and then double
         {
-            auto value = m_sharedCache->getIntArrayValue(m_arrayName, index);
+            auto value = m_sharedCache->getArrayValue<IntArray>(m_arrayName, index, Type::IntArray);
             if(value) {
                 m_sharedCache->setVar(m_varName, *value, Type::Int);
                 return true;
             }
         }
         {
-            auto value = m_sharedCache->getDoubleArrayValue(m_arrayName, index);
+            auto value = m_sharedCache->getArrayValue<DoubleArray>(m_arrayName, index, Type::DoubleArray);
             if(value) {
                 m_sharedCache->setVar(m_varName, *value, Type::Double);
                 return true;
             }
         }
         {
-            auto value = m_sharedCache->getByteArrayValue(m_arrayName, index);
+            auto value = m_sharedCache->getArrayValue<ByteArray>(m_arrayName, index, Type::ByteArray);
             if(value) {
                 m_sharedCache->setVar(m_varName, *value, Type::Byte);
                 return true;
