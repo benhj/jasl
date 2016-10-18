@@ -20,7 +20,7 @@ start {
 
     ;;; read clear text and key
     args 0 -> input;
-    args 1 -> key;
+    input "Key? " -> key;
 
     ;;; convert to byte arrays
     array:byte key -> keybytes;
