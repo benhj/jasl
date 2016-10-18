@@ -23,7 +23,6 @@ template bool ScopedVarCache::getVar_(std::string const & key, T & value, Type c
 template ::boost::optional<typename T::value_type>  ScopedVarCache::getArrayValue<T>(std::string const & key, \
                                                                                      size_t const index, \
                                                                                      Type const type);
-
 namespace jasl {
 
     template <typename T>

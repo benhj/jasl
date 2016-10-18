@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -30,51 +30,26 @@ namespace jasl {
         static std::string lastKnownError;
 
         /// functions for setting different types
-        static void setInt(std::string const &key,
-                           int64_t const value);
-        static void setByte(std::string const &key,
-                           uint8_t const value);
-        static void setDouble(std::string const &key,
-                              double const value);
-        static void setBool(std::string const &key,
-                            bool const value);
-        static void setString(std::string const &key,
-                              std::string const &value);
-        static void setList(std::string const &key,
-                            ValueArray const &value);
+        template <typename T> 
+        static void setVar(std::string const & key,
+                           T const & value,
+                           Type const type);
+
+        /// array support
+        template <typename V, typename T>
+        static void setValueInArray(std::string const & key,
+                                    int const index,
+                                    V const value);
+
+        template <typename V, typename T>
+        static void pushBackValueInArray(std::string const & key,
+                                         V const value);
+        
         static void setTokenInList(std::string const &key,
                                    int const index,
                                    Value const &value);
         static void pushBackTokenInList(std::string const &key,
                                         Value const &value);
-
-        /// int array support
-        static void setIntArray(std::string const & key,
-                                IntArray const & array);
-        static void setValueInIntArray(std::string const & key,
-                                       int const index,
-                                       int64_t const value);
-        static void pushBackValueInIntArray(std::string const & key,
-                                            int64_t const value);
-
-        // double array support
-        static void setDoubleArray(std::string const & key,
-                                   DoubleArray const & array);
-        static void setValueInDoubleArray(std::string const & key,
-                                          int const index,
-                                          double const value);
-        static void pushBackValueInDoubleArray(std::string const & key,
-                                               double const value);
-
-        // byte array support
-        static void setByteArray(std::string const & key,
-                                 ByteArray const & array);
-        static void setValueInByteArray(std::string const & key,
-                                        int const index,
-                                        uint8_t const value);
-        static void pushBackValueInByteArray(std::string const & key,
-                                             uint8_t const value);                                       
-
 
         static void eraseValue(std::string const &key);
 
@@ -90,33 +65,16 @@ namespace jasl {
 
         /// functions for getting different types.
         /// These are convenience functions and
-        /// shouldn't be used unless it is know values exist.
-        static OptionalInt getInt(std::string const &key);
-        static bool getInt_(std::string const &key, int64_t &val);
-        static OptionalByte getByte(std::string const &key);
-        static bool getByte_(std::string const &key, uint8_t &val);
-        static OptionalDouble getDouble(std::string const &key);
-        static bool getDouble_(std::string const &key, double &val);
-        static OptionalBool getBool(std::string const &key);
-        static bool getBool_(std::string const &key, bool &val);
-        static OptionalString getString(std::string const &key);
-        static bool getString_(std::string const &key, std::string &val);
-        static OptionalValueArray getList(std::string const &key);
-        static bool getList_(std::string const &key, ValueArray &val);
+        /// shouldn't be used unless it is known values exist.
+        template <typename T>
+        static ::boost::optional<T> getVar(std::string const & key, Type const type);
+        template <typename T>
+        static bool getVar_(std::string const & key, T & value, Type const type);
+        template <typename T>
+        static ::boost::optional<typename T::value_type> 
+        getArrayValue(std::string const & key, size_t const index, Type const type);
+
         static Value getListToken(std::string const &key, size_t const index);
-
-        static OptionalIntArray getIntArray(std::string const &key);
-        static bool getIntArray_(std::string const &key, IntArray &val);
-        static OptionalInt getIntArrayValue(std::string const &key, size_t const index);
-
-        static OptionalDoubleArray getDoubleArray(std::string const &key);
-        static bool getDoubleArray_(std::string const &key, DoubleArray &val);
-        static OptionalDouble getDoubleArrayValue(std::string const &key, size_t const index);
-
-        static OptionalByteArray getByteArray(std::string const &key);
-        static bool getByteArray_(std::string const &key, ByteArray &val);
-        static OptionalByte getByteArrayValue(std::string const &key, size_t const index);
-
         static OptionalType getType(std::string const &key);
     };
 

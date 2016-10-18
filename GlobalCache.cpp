@@ -3,12 +3,26 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "GlobalCache.hpp"
 #include <iostream>
 
+#define SET_VAR(X) \
+template void GlobalCache::setVar(std::string const & key, X const & value, Type const type);
+#define SET_VALUE_IN_ARRAY(V, T) \
+template void GlobalCache::setValueInArray<V, T>(std::string const & key, int const index, V value);
+#define PUSH_BACK_VALUE_IN_ARRAY(V, T) \
+template void GlobalCache::pushBackValueInArray<V,T>(std::string const & key, V value);
+#define GET_VAR(T) \
+template ::boost::optional<T> GlobalCache::getVar<T>(std::string const&, Type const);
+#define GET_VAR_(T) \
+template bool GlobalCache::getVar_(std::string const & key, T & value, Type const type);
+#define GET_ARRAY_VALUE(T) \
+template ::boost::optional<typename T::value_type> GlobalCache::getArrayValue<T>(std::string const & key, \
+                                                                                 size_t const index, \
+                                                                                 Type const type);
 namespace jasl {
 
     SharedVarCache GlobalCache::bigCache = std::make_shared<ScopedVarCache>();
@@ -16,38 +30,24 @@ namespace jasl {
     std::string GlobalCache::script;
     std::string GlobalCache::lastKnownError;
  
-    void GlobalCache::setInt(std::string const &key,
-                             int64_t const value)
+    template <typename T> 
+    void GlobalCache::setVar(std::string const & key,
+                                T const & value,
+                                Type const type)
     {
-        bigCache->setVar(key, value, Type::Int);
+        bigCache->setVar(key, value, type);
     }
 
-    void GlobalCache::setByte(std::string const &key,
-                              uint8_t const value)
-    {
-        bigCache->setVar(key, value, Type::Byte);
-    }
-
-    void GlobalCache::setDouble(std::string const &key,
-                                double const value)
-    {
-        bigCache->setVar(key, value, Type::Double);
-    }
-    void GlobalCache::setBool(std::string const &key,
-                              bool const value)
-    {
-        bigCache->setVar(key, value, Type::Bool);
-    }
-    void GlobalCache::setString(std::string const &key,
-                                std::string const &value)
-    {
-        bigCache->setVar(key, value, Type::String);
-    }
-    void GlobalCache::setList(std::string const &key,
-                              ValueArray const &value)
-    {
-        bigCache->setVar(key, value, Type::ValueArray);
-    }
+    /// Explicit instantiations
+    SET_VAR(int64_t);
+    SET_VAR(uint8_t);
+    SET_VAR(std::string);
+    SET_VAR(ValueArray);
+    SET_VAR(IntArray);
+    SET_VAR(DoubleArray);
+    SET_VAR(ByteArray);
+    SET_VAR(bool);
+    SET_VAR(double);
 
     void GlobalCache::setTokenInList(std::string const &key,
                                      int const index,
@@ -62,175 +62,87 @@ namespace jasl {
         bigCache->pushBackTokenInList(key, value);
     }
 
-    void GlobalCache::setIntArray(std::string const & key,
-                                  IntArray const & array)
+    template <typename V, typename T>
+    void GlobalCache::setValueInArray(std::string const & key,
+                                        int const index,
+                                        V const value)
     {
-        bigCache->setVar(key, array, Type::IntArray);
+        bigCache->setValueInArray<V, T>(key, index, value);
     }
 
-    void GlobalCache::setValueInIntArray(std::string const & key,
-                                         int const index,
-                                         int64_t const value)
+    /// Explicit instantiations
+    SET_VALUE_IN_ARRAY(int64_t, IntArray);
+    SET_VALUE_IN_ARRAY(double, DoubleArray);
+    SET_VALUE_IN_ARRAY(uint8_t, ByteArray);
+
+    template <typename V, typename T>
+    void GlobalCache::pushBackValueInArray(std::string const & key,
+                                            V const value)
     {
-        bigCache->setValueInArray<int64_t, IntArray>(key, index, value);
+        bigCache->pushBackValueInArray<V, T>(key, value);
     }
 
-    void GlobalCache::pushBackValueInIntArray(std::string const & key,
-                                              int64_t const value)
-    {
-        bigCache->pushBackValueInArray<int64_t, IntArray>(key, value);
-    }
+    /// Explicit instantiations
+    PUSH_BACK_VALUE_IN_ARRAY(int64_t, IntArray);
+    PUSH_BACK_VALUE_IN_ARRAY(double, DoubleArray);
+    PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
 
-    void GlobalCache::setDoubleArray(std::string const & key,
-                                     DoubleArray const & array)
-    {
-        bigCache->setVar(key, array, Type::DoubleArray);
-    }
-
-    void GlobalCache::setValueInDoubleArray(std::string const & key,
-                                            int const index,
-                                            double const value)
-    {
-        bigCache->setValueInArray<double, DoubleArray>(key, index, value);
-    }
-
-    void GlobalCache::pushBackValueInDoubleArray(std::string const & key,
-                                                 double const value)
-    {
-        bigCache->pushBackValueInArray<double, DoubleArray>(key, value);
-    }
-
-    void GlobalCache::setByteArray(std::string const & key,
-                                   ByteArray const & array)
-    {
-        bigCache->setVar(key, array, Type::ByteArray);
-    }
-
-    void GlobalCache::setValueInByteArray(std::string const & key,
-                                          int const index,
-                                          uint8_t const value)
-    {
-        bigCache->setValueInArray<uint8_t, ByteArray>(key, index, value);
-    }
-
-    void GlobalCache::pushBackValueInByteArray(std::string const & key,
-                                               uint8_t const value)
-    {
-        bigCache->pushBackValueInArray<uint8_t, ByteArray>(key, value);
-    }
     void GlobalCache::eraseValue(std::string const &key)
     {
         bigCache->eraseValue(key);
     }
 
-    OptionalInt GlobalCache::getInt(std::string const &key)
+    template <typename T>
+    ::boost::optional<T> GlobalCache::getVar(std::string const & key, Type const type)
     {
-        return bigCache->getVar<int64_t>(key, Type::Int);
+        return bigCache->getVar<T>(key, type);
     }
 
-    bool GlobalCache::getInt_(std::string const &key, int64_t &val)
+    /// Explicit instantiations
+    GET_VAR(int64_t);
+    GET_VAR(double);
+    GET_VAR(bool);
+    GET_VAR(uint8_t);
+    GET_VAR(ValueArray);
+    GET_VAR(IntArray);
+    GET_VAR(DoubleArray);
+    GET_VAR(ByteArray);
+    GET_VAR(std::string);
+
+    template <typename T>
+    bool GlobalCache::getVar_(std::string const & key, T & value, Type const type)
     {
-        return bigCache->getVar_(key, val, Type::Int);
+        return bigCache->getVar_(key, value, type);
     }
 
-    OptionalByte GlobalCache::getByte(std::string const &key)
+    /// Explicit template instantiations (--linkage issues).
+    GET_VAR_(int64_t);
+    GET_VAR_(uint8_t);
+    GET_VAR_(std::string);
+    GET_VAR_(ValueArray);
+    GET_VAR_(IntArray);
+    GET_VAR_(DoubleArray);
+    GET_VAR_(ByteArray);
+    GET_VAR_(bool);
+    GET_VAR_(double);
+
+    template <typename T>
+    ::boost::optional<typename T::value_type> 
+    GlobalCache::getArrayValue(std::string const & key, 
+                               size_t const index,
+                               Type const type)
     {
-        return bigCache->getVar<uint8_t>(key, Type::Byte);
+        return bigCache->getArrayValue<T>(key, index, type);
     }
 
-    bool GlobalCache::getByte_(std::string const &key, uint8_t &val)
-    {
-        return bigCache->getVar_(key, val, Type::Byte);
-    }
-
-    OptionalDouble GlobalCache::getDouble(std::string const &key)
-    {
-        return bigCache->getVar<double>(key, Type::Double);
-    }
-
-    bool GlobalCache::getDouble_(std::string const &key, double &val)
-    {
-        return bigCache->getVar_(key, val, Type::Double);
-    }
-
-    OptionalBool GlobalCache::getBool(std::string const &key)
-    {
-        return bigCache->getVar<bool>(key, Type::Bool);
-    }
-
-    bool GlobalCache::getBool_(std::string const &key, bool &val)
-    {
-        return bigCache->getVar_(key, val, Type::Bool);
-    }
-
-    OptionalString GlobalCache::getString(std::string const &key)
-    {
-        return bigCache->getVar<std::string>(key, Type::String);
-    }
-
-    bool GlobalCache::getString_(std::string const &key, std::string &val)
-    {
-        return bigCache->getVar_(key, val, Type::String);
-    }
-
-    OptionalValueArray GlobalCache::getList(std::string const &key)
-    {
-        return bigCache->getVar<ValueArray>(key, Type::ValueArray);
-    }
-
-    bool GlobalCache::getList_(std::string const &key, ValueArray &val)
-    {
-        return bigCache->getVar_(key, val, Type::ValueArray);
-    }
+    /// Explicit instantiations
+    GET_ARRAY_VALUE(IntArray);
+    GET_ARRAY_VALUE(DoubleArray);
+    GET_ARRAY_VALUE(ByteArray);
 
     Value GlobalCache::getListToken(std::string const &key, size_t const index)
     {
         return bigCache->getListToken(key, index);
-    }
-
-    OptionalIntArray GlobalCache::getIntArray(std::string const &key)
-    {
-        return bigCache->getVar<IntArray>(key, Type::IntArray);
-    }
-
-    bool GlobalCache::getIntArray_(std::string const &key, IntArray &val)
-    {
-        return bigCache->getVar_(key, val, Type::IntArray);
-    }
-
-    OptionalInt GlobalCache::getIntArrayValue(std::string const &key, size_t const index)
-    {
-        return bigCache->getArrayValue<IntArray>(key, index, Type::IntArray);
-    }
-
-    OptionalDoubleArray GlobalCache::getDoubleArray(std::string const &key)
-    {
-        return bigCache->getVar<DoubleArray>(key, Type::DoubleArray);
-    }
-
-    bool GlobalCache::getDoubleArray_(std::string const &key, DoubleArray &val)
-    {
-        return bigCache->getVar_(key, val, Type::DoubleArray);
-    }
-
-    OptionalDouble GlobalCache::getDoubleArrayValue(std::string const &key, size_t const index)
-    {
-        return bigCache->getArrayValue<DoubleArray>(key, index, Type::DoubleArray);
-    }
-
-    OptionalByteArray GlobalCache::getByteArray(std::string const &key)
-    {
-        return bigCache->getVar<ByteArray>(key, Type::ByteArray);
-    }
-
-    bool GlobalCache::getByteArray_(std::string const &key, ByteArray &val)
-    {
-        return bigCache->getVar_(key, val, Type::ByteArray);
-    }
-
-    OptionalByte GlobalCache::getByteArrayValue(std::string const &key, size_t const index)
-    {
-        return bigCache->getArrayValue<ByteArray>(key, index, Type::ByteArray);
     }
 
     OptionalType GlobalCache::getType(std::string const &key)
