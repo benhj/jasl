@@ -299,5 +299,24 @@ namespace jasl {
 
             return false;
         }
+
+        template <typename A>
+        static bool trySingleArrayExtraction(Value &val, 
+                                             A & x, 
+                                             SharedVarCache const &sharedCache,
+                                             Type const type)
+        {
+            if (tryExtraction<A>(x, val, sharedCache)) {
+                return true;
+            }
+
+            // couldn't extract raw list, see if one is cached 
+            std::string varName;
+            if (tryExtraction<std::string>(varName, val, sharedCache)) {
+                return sharedCache->getVar_(varName, x, type);
+            }
+
+            return false;
+        }
     };
 }

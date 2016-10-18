@@ -48,8 +48,32 @@ namespace jasl
             // Try List
             {
                 ValueArray value;
-                if(VarExtractor::trySingleListExtraction(v, value, cacheFrom)) {
+                if(VarExtractor::trySingleArrayExtraction<ValueArray>(v, value, cacheFrom, Type::ValueArray)) {
                     cacheTo->addToParamStack(Type::ValueArray, value);
+                    continue;
+                }
+            } 
+            // Try IntArray
+            {
+                IntArray value;
+                if(VarExtractor::trySingleArrayExtraction<IntArray>(v, value, cacheFrom, Type::IntArray)) {
+                    cacheTo->addToParamStack(Type::IntArray, value);
+                    continue;
+                }
+            } 
+            // Try DoubleArray
+            {
+                DoubleArray value;
+                if(VarExtractor::trySingleArrayExtraction<DoubleArray>(v, value, cacheFrom, Type::DoubleArray)) {
+                    cacheTo->addToParamStack(Type::DoubleArray, value);
+                    continue;
+                }
+            } 
+            // Try ByteArray
+            {
+                ByteArray value;
+                if(VarExtractor::trySingleArrayExtraction(v, value, cacheFrom, Type::ByteArray)) {
+                    cacheTo->addToParamStack(Type::ByteArray, value);
                     continue;
                 }
             } 
@@ -77,7 +101,13 @@ namespace jasl
                     cacheTo->setVar(symbol, ::boost::get<bool>(entry.cv), Type::Bool);
                 } else if(entry.type == Type::ValueArray) {
                     cacheTo->setVar(symbol, ::boost::get<ValueArray>(entry.cv), Type::ValueArray);
-                } else if(entry.type == Type::String) {
+                } else if(entry.type == Type::IntArray) {
+                    cacheTo->setVar(symbol, ::boost::get<IntArray>(entry.cv), Type::IntArray);
+                }  else if(entry.type == Type::DoubleArray) {
+                    cacheTo->setVar(symbol, ::boost::get<DoubleArray>(entry.cv), Type::DoubleArray);
+                }  else if(entry.type == Type::ByteArray) {
+                    cacheTo->setVar(symbol, ::boost::get<ByteArray>(entry.cv), Type::ByteArray);
+                }  else if(entry.type == Type::String) {
                     cacheTo->setVar(symbol, ::boost::get<std::string>(entry.cv), Type::String);
                 } else if(entry.type == Type::Byte) {
                     cacheTo->setVar(symbol, ::boost::get<uint8_t>(entry.cv), Type::Byte);
