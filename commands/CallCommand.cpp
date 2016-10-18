@@ -123,27 +123,27 @@ namespace jasl
             // the global stack so need to access from GlobalCache
             if(m_returnableType == "int") {
                 int64_t value;
-                (void)GlobalCache::getInt_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Int);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Int);
             } else if(m_returnableType == "real") {
                 double value;
-                (void)GlobalCache::getDouble_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Double);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Double);
             } else if(m_returnableType == "string") {
                 std::string value;
-                (void)GlobalCache::getString_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::String);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::String);
             } else if(m_returnableType == "bool") {
                 bool value;
-                (void)GlobalCache::getBool_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Bool);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Bool);
             } else if(m_returnableType == "list") {
                 ValueArray value;
-                (void)GlobalCache::getList_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::ValueArray);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::ValueArray);
             } else if(m_returnableType == "byte") {
                 uint8_t value;
-                (void)GlobalCache::getByte_(m_returnableSymbol, value);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Byte);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Byte);
             }  else if(m_returnableType == "nil") {
                 // don't do anything for return type 'nil'
@@ -153,15 +153,15 @@ namespace jasl
                 (void)m_functionFunc.getValueB<std::string>(subType, m_sharedCache);
                 if(subType == "int") {
                     IntArray value;
-                    (void)GlobalCache::getIntArray_(m_returnableSymbol, value);
+                    (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::IntArray);
                     m_sharedCache->setVar(m_returnSymbol, value, Type::IntArray);
                 } else if(subType == "real") {
                     DoubleArray value;
-                    (void)GlobalCache::getDoubleArray_(m_returnableSymbol, value);
+                    (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::DoubleArray);
                     m_sharedCache->setVar(m_returnSymbol, value, Type::DoubleArray);
                 } else if(subType == "byte") {
                     ByteArray value;
-                    (void)GlobalCache::getByteArray_(m_returnableSymbol, value);
+                    (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::ByteArray);
                     m_sharedCache->setVar(m_returnSymbol, value, Type::ByteArray);
                 }
             } else {

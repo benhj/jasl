@@ -84,36 +84,36 @@ namespace jasl
         // Now set return param in GlobalCache
         if(m_returnType == Type::Int) {
             int64_t value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::Int);
-            GlobalCache::setInt(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::Bool) {
             bool value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::Bool);
-            GlobalCache::setBool(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::Double) {
             double value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::Double);
-            GlobalCache::setDouble(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::String) {
             std::string value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::String);
-            GlobalCache::setString(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::ValueArray) {
             ValueArray value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::ValueArray);
-            GlobalCache::setList(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::IntArray) {
             IntArray value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::IntArray);
-            GlobalCache::setIntArray(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::DoubleArray) {
             DoubleArray value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::DoubleArray);
-            GlobalCache::setDoubleArray(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::ByteArray) {
             ByteArray value;
-            (void)m_sharedCache->getVar_(m_returnSymbol, value, Type::ByteArray);
-            GlobalCache::setByteArray(m_returnSymbol, value);
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         }
 
         return true;
