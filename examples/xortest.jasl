@@ -1,7 +1,6 @@
 ;;; simple xor cryptor
 
 fn:array:byte encrypt(input, key) -> crypted {
-    prn "here";
     length input -> inlength;
     length key -> keylength;
     array:byte(inlength) -> crypted;
@@ -14,6 +13,7 @@ fn:array:byte encrypt(input, key) -> crypted {
         put xored -> crypted(k);
         put (k + 1) -> k;
     }
+    prn " ";
 }
 
 start {
@@ -24,25 +24,15 @@ start {
 
     ;;; convert to byte arrays
     array:byte key -> keybytes;
+    array:byte input -> inbytes;
 
     ;;; require lengths of clear text and key
     length input -> inlength;
     length keybytes -> keylength;
 
     ;;; create array to store cipher bytes
-    call encrypt(input, keybytes) -> outbytes;
+    call encrypt(inbytes, keybytes) -> outbytes;
 
-    prn " ";
-    prn "Clear text as decrypted: ";
     ;;; decrypt
-    int 0 -> k;
-    for i in outbytes {
-        int (k % keylength) -> keyval;
-        get keybytes(keyval) -> kc;
-        byte (i ^ kc) -> xored;
-        pr xored;
-        put (k + 1) -> k;
-    }
-    prn " ";
-
+    call encrypt(outbytes, keybytes) -> result;
 }
