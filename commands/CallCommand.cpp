@@ -101,8 +101,8 @@ namespace jasl
     bool CallCommand::execute()
     {
         // try to extract input arguments, if there are any
-        ValueArray array;
-        if(m_func.getValueB<ValueArray>(array, m_sharedCache)) {
+        List array;
+        if(m_func.getValueB<List>(array, m_sharedCache)) {
             extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
         }
 
@@ -138,9 +138,9 @@ namespace jasl
                 (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Bool);
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Bool);
             } else if(m_returnableType == "list") {
-                ValueArray value;
-                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::ValueArray);
-                m_sharedCache->setVar(m_returnSymbol, value, Type::ValueArray);
+                List value;
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::List);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::List);
             } else if(m_returnableType == "byte") {
                 uint8_t value;
                 (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Byte);

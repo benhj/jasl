@@ -35,7 +35,7 @@ namespace jasl
             m_type = "string";
         } else if (*type == Type::Byte) {
             m_type = "byte";
-        } else if (*type == Type::ValueArray) {
+        } else if (*type == Type::List) {
             m_type = "list";
         }
 

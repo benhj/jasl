@@ -53,28 +53,28 @@ namespace jasl
         return OptionalString();
     }
 
-    OptionalValueArray ListAddTokenCommand::getNewVAToken()
+    OptionalList ListAddTokenCommand::getNewVAToken()
     {
         std::string token;
         if(!m_func.getValueA<std::string>(token, m_sharedCache)) {
-            ValueArray va;
-            if(m_func.getValueA<ValueArray>(va, m_sharedCache)) {
+            List va;
+            if(m_func.getValueA<List>(va, m_sharedCache)) {
                 return va;
             }
         } else {
-            auto result = m_sharedCache->getVar<ValueArray>(token, Type::ValueArray);
+            auto result = m_sharedCache->getVar<List>(token, Type::List);
             if(result) {
                 return *result;
             }
         }
         setLastErrorMessage("add token: problem getting new token");
-        return OptionalValueArray();
+        return OptionalList();
     }
 
     bool ListAddTokenCommand::tryWithSymbolList(std::string const &varName)
     {
-        // find the ValueArray in the list cache having symbol symbol
-        auto found = m_sharedCache->getVar<ValueArray>(varName, Type::ValueArray);
+        // find the List in the list cache having symbol symbol
+        auto found = m_sharedCache->getVar<List>(varName, Type::List);
 
         // if found then process list
         if(found) {

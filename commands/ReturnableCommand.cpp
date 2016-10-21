@@ -29,7 +29,7 @@ namespace jasl
             } else if(type == "bool") {
                 return Type::Bool;
             } else if(type == "list") {
-                return Type::ValueArray;
+                return Type::List;
             } else if(type == "nil") {
                 return Type::None;
             } else if(type == "array") {
@@ -106,8 +106,8 @@ namespace jasl
             std::string value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);
-        } else if(m_returnType == Type::ValueArray) {
-            ValueArray value;
+        } else if(m_returnType == Type::List) {
+            List value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::IntArray) {

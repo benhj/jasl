@@ -23,7 +23,7 @@ namespace jasl
         bool execute() override;
     private:
         OptionalString getNewStringToken();
-        OptionalValueArray getNewVAToken();
+        OptionalList getNewVAToken();
         bool tryWithSymbolList(std::string const &varName);
     };
 

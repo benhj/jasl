@@ -24,7 +24,7 @@ namespace jasl
     private:
         bool tryLiteralExtraction();
         bool trySymbolExtraction();
-        void processListElement(ValueArray const &valueArray,
+        void processListElement(List const &valueArray,
                                 std::string &output);
         bool tryNumericExtraction();
     };

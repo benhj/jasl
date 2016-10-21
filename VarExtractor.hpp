@@ -61,8 +61,8 @@ namespace jasl {
                 extracted = tryAnyCast<double>((double&)t, val);
             } else if (typeid(T) == typeid(std::string)) {
                 extracted = tryAnyCast<std::string>((std::string&)t, val);
-            } else if (typeid(T) == typeid(ValueArray)) {
-                extracted = tryAnyCast<ValueArray>((ValueArray&)t, val);
+            } else if (typeid(T) == typeid(List)) {
+                extracted = tryAnyCast<List>((List&)t, val);
             } else if (typeid(T) == typeid(MathExpression)) {
                 extracted = tryAnyCast<MathExpression>((MathExpression&)t, val);
             } else if (typeid(T) == typeid(MathByteExpression)) {
@@ -285,16 +285,16 @@ namespace jasl {
             return false;
         }
 
-        static bool trySingleListExtraction(Value &val, ValueArray & x, SharedVarCache const &sharedCache)
+        static bool trySingleListExtraction(Value &val, List & x, SharedVarCache const &sharedCache)
         {
-            if (tryExtraction<ValueArray>(x, val, sharedCache)) {
+            if (tryExtraction<List>(x, val, sharedCache)) {
                 return true;
             }
 
             // couldn't extract raw list, see if one is cached 
             std::string varName;
             if (tryExtraction<std::string>(varName, val, sharedCache)) {
-                return sharedCache->getVar_(varName, x, Type::ValueArray);
+                return sharedCache->getVar_(varName, x, Type::List);
             }
 
             return false;
