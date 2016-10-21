@@ -7,7 +7,7 @@
 namespace jasl 
 {
 
-    inline void extractAndUpdateParams(ValueArray & array,
+    inline void extractAndUpdateParams(List & array,
                                        SharedVarCache const &cacheFrom,
                                        SharedVarCache const &cacheTo)
     {
@@ -47,9 +47,9 @@ namespace jasl
             } 
             // Try List
             {
-                ValueArray value;
-                if(VarExtractor::trySingleArrayExtraction<ValueArray>(v, value, cacheFrom, Type::ValueArray)) {
-                    cacheTo->addToParamStack(Type::ValueArray, value);
+                List value;
+                if(VarExtractor::trySingleArrayExtraction<List>(v, value, cacheFrom, Type::List)) {
+                    cacheTo->addToParamStack(Type::List, value);
                     continue;
                 }
             } 
@@ -85,7 +85,7 @@ namespace jasl
                                        SharedVarCache const &cacheTo)
     {
 
-        ValueArray array;
+        List array;
         if(VarExtractor::tryAnyCast(array, val)) {
 
             auto i = 0;
@@ -99,8 +99,8 @@ namespace jasl
                     cacheTo->setVar(symbol, ::boost::get<double>(entry.cv), Type::Double);
                 } else if(entry.type == Type::Bool) {
                     cacheTo->setVar(symbol, ::boost::get<bool>(entry.cv), Type::Bool);
-                } else if(entry.type == Type::ValueArray) {
-                    cacheTo->setVar(symbol, ::boost::get<ValueArray>(entry.cv), Type::ValueArray);
+                } else if(entry.type == Type::List) {
+                    cacheTo->setVar(symbol, ::boost::get<List>(entry.cv), Type::List);
                 } else if(entry.type == Type::IntArray) {
                     cacheTo->setVar(symbol, ::boost::get<IntArray>(entry.cv), Type::IntArray);
                 }  else if(entry.type == Type::DoubleArray) {

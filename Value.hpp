@@ -13,5 +13,5 @@
 #include <string>
 
 using Value = simple_any::any;
-using ValueArray = std::vector<Value>;
+using List = std::vector<Value>;
 using StringArray = std::vector<std::string>;

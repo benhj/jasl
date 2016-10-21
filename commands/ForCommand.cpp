@@ -33,7 +33,7 @@ namespace jasl {
 
                 // try list
                 {
-                    auto list = m_sharedCache->getVar<ValueArray>(listSymbol, Type::ValueArray);
+                    auto list = m_sharedCache->getVar<List>(listSymbol, Type::List);
                     if(list) {
                         return processList(*list, listSymbol);
                     }
@@ -75,7 +75,7 @@ namespace jasl {
         }
         // try and pull out raw list
         // {
-        //     ValueArray list;
+        //     List list;
         //     if(VarExtractor::tryAnyCast(list, m_func.paramB)) {
         //         return processList(list);
         //     }
@@ -132,7 +132,7 @@ namespace jasl {
         return false;
     }
 
-    bool ForCommand::processList(ValueArray const &va, 
+    bool ForCommand::processList(List const &va, 
                                  std::string const & listSymbol)
     {
         std::string indexSymbol;

@@ -81,8 +81,8 @@ namespace jasl
                 }
             }
             {
-                ValueArray value;
-                auto result = m_sharedCache->getVar_(symbol, value, Type::ValueArray);
+                List value;
+                auto result = m_sharedCache->getVar_(symbol, value, Type::List);
                 if(result) {
                     std::string output;
                     processListElement(value, output);
@@ -97,7 +97,7 @@ namespace jasl
         return false;
     }
 
-    void EchoCommand::processListElement(ValueArray const &valueArray, std::string &output)
+    void EchoCommand::processListElement(List const &valueArray, std::string &output)
     {
         output.append("[");
         // Print out tokens, one after another
@@ -113,9 +113,9 @@ namespace jasl
                     }
                 }
             }
-            // Second, try pulling ValueArray out (nb, a nested list)
+            // Second, try pulling List out (nb, a nested list)
             {
-                ValueArray tok;
+                List tok;
                 if(VarExtractor::tryAnyCast(tok, it)) {
                     processListElement(tok, output);
                 }

@@ -60,7 +60,7 @@ namespace jasl {
     SET_VAR(int64_t);
     SET_VAR(uint8_t);
     SET_VAR(std::string);
-    SET_VAR(ValueArray);
+    SET_VAR(List);
     SET_VAR(IntArray);
     SET_VAR(DoubleArray);
     SET_VAR(ByteArray);
@@ -72,7 +72,7 @@ namespace jasl {
                                         Value const &value)
     {
         auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<ValueArray>(keyed.cv);
+        auto &array = ::boost::get<List>(keyed.cv);
         array[index] = value;
     }
 
@@ -80,7 +80,7 @@ namespace jasl {
                                              Value const &value)
     {
         auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<ValueArray>(keyed.cv);
+        auto &array = ::boost::get<List>(keyed.cv);
         array.push_back(value);
     }
 
@@ -137,7 +137,7 @@ namespace jasl {
     GET_VAR(double);
     GET_VAR(bool);
     GET_VAR(uint8_t);
-    GET_VAR(ValueArray);
+    GET_VAR(List);
     GET_VAR(IntArray);
     GET_VAR(DoubleArray);
     GET_VAR(ByteArray);
@@ -162,7 +162,7 @@ namespace jasl {
     GET_VAR_(int64_t);
     GET_VAR_(uint8_t);
     GET_VAR_(std::string);
-    GET_VAR_(ValueArray);
+    GET_VAR_(List);
     GET_VAR_(IntArray);
     GET_VAR_(DoubleArray);
     GET_VAR_(ByteArray);
@@ -173,8 +173,8 @@ namespace jasl {
     {
         auto it = m_bigCache.find(key);
         if(it != std::end(m_bigCache)) { 
-            if(it->second.type == Type::ValueArray) {
-                auto array = ::boost::get<ValueArray>(it->second.cv);  
+            if(it->second.type == Type::List) {
+                auto array = ::boost::get<List>(it->second.cv);  
                 if(index < array.size()) {
                     return Value(array[index]); 
                 }

@@ -23,11 +23,11 @@ namespace jasl
     bool ListCommand::execute() 
     {
         // now try and extract the actual words
-        ValueArray list;
+        List list;
         if(!m_func.getValueA<decltype(list)>(list, m_sharedCache)) {
             std::string varName;
             if(m_func.getValueA<decltype(varName)>(varName, m_sharedCache)) {
-                auto theList = m_sharedCache->getVar<ValueArray>(varName, Type::ValueArray);
+                auto theList = m_sharedCache->getVar<List>(varName, Type::List);
                 if(theList) {
                     list = *theList;
                 }
@@ -43,7 +43,7 @@ namespace jasl
             return false;
         }
 
-        m_sharedCache->setVar(listName, list, Type::ValueArray);
+        m_sharedCache->setVar(listName, list, Type::List);
         return true;
     }
 }

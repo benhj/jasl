@@ -36,8 +36,8 @@ namespace jasl
 
     bool ListToStringCommand::tryRawListExtraction(std::string const &varName) 
     {
-        ValueArray v;
-        if(m_func.getValueA<ValueArray>(v, m_sharedCache)) {
+        List v;
+        if(m_func.getValueA<List>(v, m_sharedCache)) {
             std::string s;
             try {
                 for(auto & val : v) {
@@ -69,8 +69,8 @@ namespace jasl
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
 
-            // find the ValueArray in the list cache having symbol symbol
-            auto found = m_sharedCache->getVar<ValueArray>(symbol, Type::ValueArray);
+            // find the List in the list cache having symbol symbol
+            auto found = m_sharedCache->getVar<List>(symbol, Type::List);
 
             // if found then process list
             if(found) {

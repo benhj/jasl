@@ -27,7 +27,7 @@ namespace jasl {
     using OptionalBool = ::boost::optional<bool>;
     using OptionalDouble = ::boost::optional<double>;
     using OptionalString = ::boost::optional<std::string>;
-    using OptionalValueArray = ::boost::optional<ValueArray>;
+    using OptionalList = ::boost::optional<List>;
     using OptionalIntArray = ::boost::optional<IntArray>;
     using OptionalDoubleArray = ::boost::optional<DoubleArray>;
     using OptionalByteArray = ::boost::optional<ByteArray>;
@@ -37,14 +37,14 @@ namespace jasl {
                                           double,
                                           uint8_t, 
                                           std::string, 
-                                          ValueArray,
+                                          List,
                                           IntArray,
                                           DoubleArray,
                                           ByteArray >;
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, Byte, String, ValueArray,
+        Int, Bool, Double, Byte, String, List,
         IntArray, DoubleArray, ByteArray, None
     };
 

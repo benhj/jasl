@@ -23,7 +23,7 @@ namespace jasl
     private:
         bool getIndex(int64_t&);
         bool getNewStringToken(std::string&);
-        bool getNewVAToken(ValueArray&);
+        bool getNewVAToken(List&);
         bool tryWithRawList(std::string const &varName);
         bool tryWithSymbolList(std::string const &varName);
     };

@@ -56,15 +56,15 @@ namespace jasl
         return false;
     }
 
-    bool ListSetTokenCommand::getNewVAToken(ValueArray &value)
+    bool ListSetTokenCommand::getNewVAToken(List &value)
     {
         std::string token;
         if(!m_func.getValueC<std::string>(token, m_sharedCache)) {
-            if(m_func.getValueC<ValueArray>(value, m_sharedCache)) {
+            if(m_func.getValueC<List>(value, m_sharedCache)) {
                 return true;
             }
         } else {
-            if(m_sharedCache->getVar_(token, value, Type::ValueArray)) {
+            if(m_sharedCache->getVar_(token, value, Type::List)) {
                 return true;
             }
         }
@@ -81,8 +81,8 @@ namespace jasl
         }
 
 
-        ValueArray v;
-        if(m_func.getValueB<ValueArray>(v, m_sharedCache)) {
+        List v;
+        if(m_func.getValueB<List>(v, m_sharedCache)) {
             if(index >= v.size()) {
                 setLastErrorMessage("get token: index bigger than list");
                 return false;
@@ -92,16 +92,16 @@ namespace jasl
                 std::string newToken;
                 if(getNewStringToken(newToken)) {
                     v[index] = Value(newToken);
-                    m_sharedCache->setVar(varName, v, Type::ValueArray);
+                    m_sharedCache->setVar(varName, v, Type::List);
                     return true;
                 }
             }
             // list token
             {
-                ValueArray newToken;
+                List newToken;
                 if(getNewVAToken(newToken)) {
                     v[index] = Value(newToken);
-                    m_sharedCache->setVar(varName, v, Type::ValueArray);
+                    m_sharedCache->setVar(varName, v, Type::List);
                     return true;
                 }
             }
@@ -123,8 +123,8 @@ namespace jasl
         std::string symbol;
         if(m_func.getValueB<std::string>(symbol, m_sharedCache)) {
 
-            // find the ValueArray in the list cache having symbol symbol
-            auto found = m_sharedCache->getVar<ValueArray>(symbol, Type::ValueArray);
+            // find the List in the list cache having symbol symbol
+            auto found = m_sharedCache->getVar<List>(symbol, Type::List);
 
             // if found then process list
             if(found) {
@@ -149,13 +149,13 @@ namespace jasl
 
                         auto vals = *found;
                         vals[index] = Value(newToken);
-                        m_sharedCache->setVar(varName, vals, Type::ValueArray);
+                        m_sharedCache->setVar(varName, vals, Type::List);
                         return true;
                     }
                 }
                 // list token
                 {
-                    ValueArray newToken;
+                    List newToken;
                     if(getNewVAToken(newToken)) {
                         
                         if(symbol == varName) {
@@ -166,7 +166,7 @@ namespace jasl
 
                         auto vals = *found;
                         vals[index] = Value(newToken);
-                        m_sharedCache->setVar(varName, vals, Type::ValueArray);
+                        m_sharedCache->setVar(varName, vals, Type::List);
                         return true;
                     }
                 }

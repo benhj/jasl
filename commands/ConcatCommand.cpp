@@ -39,8 +39,8 @@ namespace jasl
     /// etc.
     bool ConcatCommand::tryConcatExtraction(std::string const & key)
     {
-        ValueArray array;
-        if(m_func.getValueA<ValueArray>(array, m_sharedCache)) {
+        List array;
+        if(m_func.getValueA<List>(array, m_sharedCache)) {
             std::string result("");
             for (auto & v : array) {
                 // try extracting symbols representing
