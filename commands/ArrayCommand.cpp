@@ -53,8 +53,8 @@ namespace jasl
             
         } else if (m_type == "real") {
 
-            DoubleArray array(value, 0.0);
-            m_sharedCache->setVar(m_varName, array, Type::DoubleArray);
+            RealArray array(value, 0.0);
+            m_sharedCache->setVar(m_varName, array, Type::RealArray);
             return true;
 
         } else if (m_type == "byte") {

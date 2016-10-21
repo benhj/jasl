@@ -23,7 +23,7 @@ namespace {
             case jasl::Type::Byte: return "byte";
             case jasl::Type::List: return "list";
             case jasl::Type::IntArray: return "array:int";
-            case jasl::Type::DoubleArray: return "array:real";
+            case jasl::Type::RealArray: return "array:real";
             case jasl::Type::ByteArray: return "array:byte";
             default: return "string";
         }

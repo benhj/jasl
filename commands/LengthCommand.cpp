@@ -71,7 +71,7 @@ namespace jasl
 
             // try real array
             {
-                auto array = m_sharedCache->getVar<DoubleArray>(symbol, Type::DoubleArray);
+                auto array = m_sharedCache->getVar<RealArray>(symbol, Type::RealArray);
                 if(array) {
                     m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
                     return true;

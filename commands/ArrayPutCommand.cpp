@@ -27,7 +27,7 @@ namespace jasl
             setLastErrorMessage("put: couldn't determine type");
         } else if(*type == Type::IntArray) {
             m_type = "int";
-        } else if(*type == Type::DoubleArray) {
+        } else if(*type == Type::RealArray) {
             m_type = "real";
         } else if(*type == Type::ByteArray) {
             m_type = "byte";
@@ -66,7 +66,7 @@ namespace jasl
                 return false;
             } 
 
-            m_sharedCache->setValueInArray<double, DoubleArray>(m_varName, index, value);
+            m_sharedCache->setValueInArray<double, RealArray>(m_varName, index, value);
         } else if (m_type == "byte") {
             uint8_t value;
             if (!VarExtractor::trySingleByteExtraction(m_func.paramA, value, m_sharedCache)) {
