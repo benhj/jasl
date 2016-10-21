@@ -49,7 +49,7 @@ namespace jasl {
 
                 // try real array
                 {
-                    auto array = m_sharedCache->getVar<DoubleArray>(listSymbol, Type::DoubleArray);
+                    auto array = m_sharedCache->getVar<RealArray>(listSymbol, Type::RealArray);
                     if(array) {
                         processArray(*array, listSymbol);
                     }

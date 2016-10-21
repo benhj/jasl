@@ -61,11 +61,11 @@ namespace jasl
                     continue;
                 }
             } 
-            // Try DoubleArray
+            // Try RealArray
             {
-                DoubleArray value;
-                if(VarExtractor::trySingleArrayExtraction<DoubleArray>(v, value, cacheFrom, Type::DoubleArray)) {
-                    cacheTo->addToParamStack(Type::DoubleArray, value);
+                RealArray value;
+                if(VarExtractor::trySingleArrayExtraction<RealArray>(v, value, cacheFrom, Type::RealArray)) {
+                    cacheTo->addToParamStack(Type::RealArray, value);
                     continue;
                 }
             } 
@@ -103,8 +103,8 @@ namespace jasl
                     cacheTo->setVar(symbol, ::boost::get<List>(entry.cv), Type::List);
                 } else if(entry.type == Type::IntArray) {
                     cacheTo->setVar(symbol, ::boost::get<IntArray>(entry.cv), Type::IntArray);
-                }  else if(entry.type == Type::DoubleArray) {
-                    cacheTo->setVar(symbol, ::boost::get<DoubleArray>(entry.cv), Type::DoubleArray);
+                }  else if(entry.type == Type::RealArray) {
+                    cacheTo->setVar(symbol, ::boost::get<RealArray>(entry.cv), Type::RealArray);
                 }  else if(entry.type == Type::ByteArray) {
                     cacheTo->setVar(symbol, ::boost::get<ByteArray>(entry.cv), Type::ByteArray);
                 }  else if(entry.type == Type::String) {

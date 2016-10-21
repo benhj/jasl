@@ -62,7 +62,7 @@ namespace jasl {
     SET_VAR(std::string);
     SET_VAR(List);
     SET_VAR(IntArray);
-    SET_VAR(DoubleArray);
+    SET_VAR(RealArray);
     SET_VAR(ByteArray);
     SET_VAR(bool);
     SET_VAR(double);
@@ -96,7 +96,7 @@ namespace jasl {
 
     /// Explicit instantiations
     SET_VALUE_IN_ARRAY(int64_t, IntArray);
-    SET_VALUE_IN_ARRAY(double, DoubleArray);
+    SET_VALUE_IN_ARRAY(double, RealArray);
     SET_VALUE_IN_ARRAY(uint8_t, ByteArray);
 
     template <typename V, typename T>
@@ -110,7 +110,7 @@ namespace jasl {
 
     /// Explicit instantiations
     PUSH_BACK_VALUE_IN_ARRAY(int64_t, IntArray);
-    PUSH_BACK_VALUE_IN_ARRAY(double, DoubleArray);
+    PUSH_BACK_VALUE_IN_ARRAY(double, RealArray);
     PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
 
     void ScopedVarCache::eraseValue(std::string const &key)
@@ -139,7 +139,7 @@ namespace jasl {
     GET_VAR(uint8_t);
     GET_VAR(List);
     GET_VAR(IntArray);
-    GET_VAR(DoubleArray);
+    GET_VAR(RealArray);
     GET_VAR(ByteArray);
     GET_VAR(std::string);
 
@@ -164,7 +164,7 @@ namespace jasl {
     GET_VAR_(std::string);
     GET_VAR_(List);
     GET_VAR_(IntArray);
-    GET_VAR_(DoubleArray);
+    GET_VAR_(RealArray);
     GET_VAR_(ByteArray);
     GET_VAR_(bool);
     GET_VAR_(double);
@@ -203,7 +203,7 @@ namespace jasl {
 
     /// Explicit instantiations
     GET_ARRAY_VALUE(IntArray);
-    GET_ARRAY_VALUE(DoubleArray);
+    GET_ARRAY_VALUE(RealArray);
     GET_ARRAY_VALUE(ByteArray);
 
     OptionalType ScopedVarCache::getType(std::string const &key)

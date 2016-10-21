@@ -28,7 +28,7 @@ namespace jasl
         if(!type) {
             setLastErrorMessage("put: couldn't determine type");
         } else if(!((*type == Type::IntArray) || 
-                    (*type == Type::DoubleArray) || 
+                    (*type == Type::RealArray) || 
                     (*type == Type::ByteArray)))  {
             m_primitive = true;
         }

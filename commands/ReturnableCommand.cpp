@@ -38,7 +38,7 @@ namespace jasl
                 if(subType == "int") {
                     return Type::IntArray;
                 } else if(subType == "real") {
-                    return Type::DoubleArray;
+                    return Type::RealArray;
                 } else if(subType == "byte") {
                     return Type::ByteArray;
                 } else {
@@ -60,7 +60,7 @@ namespace jasl
     {
         if(m_returnType != Type::None) {
             if(!(m_returnType == Type::IntArray || 
-                 m_returnType == Type::DoubleArray ||
+                 m_returnType == Type::RealArray ||
                  m_returnType == Type::ByteArray)) {
                 (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
             } else {
@@ -68,7 +68,7 @@ namespace jasl
             }
         }
         if(!(m_returnType == Type::IntArray || 
-             m_returnType == Type::DoubleArray ||
+             m_returnType == Type::RealArray ||
              m_returnType == Type::ByteArray)) {
             (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
         } else {
@@ -80,7 +80,7 @@ namespace jasl
     {
         
         if(!(m_returnType == Type::IntArray || 
-             m_returnType == Type::DoubleArray ||
+             m_returnType == Type::RealArray ||
              m_returnType == Type::ByteArray)) {
             extractAndUpdateParams(m_func.paramC, m_sharedCache);
         } else {
@@ -114,8 +114,8 @@ namespace jasl
             IntArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);
-        } else if(m_returnType == Type::DoubleArray) {
-            DoubleArray value;
+        } else if(m_returnType == Type::RealArray) {
+            RealArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);
         } else if(m_returnType == Type::ByteArray) {
@@ -132,7 +132,7 @@ namespace jasl
         std::vector<Function> innerFuncs;
         bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, 
                                                                        (!(m_returnType == Type::IntArray || 
-                                                                          m_returnType == Type::DoubleArray ||
+                                                                          m_returnType == Type::RealArray ||
                                                                           m_returnType == Type::ByteArray)) ?
                                                                        m_func.paramE :
                                                                        m_func.paramF);

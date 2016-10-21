@@ -41,7 +41,7 @@ namespace jasl
             }
         }
         {
-            auto value = m_sharedCache->getArrayValue<DoubleArray>(m_arrayName, index, Type::DoubleArray);
+            auto value = m_sharedCache->getArrayValue<RealArray>(m_arrayName, index, Type::RealArray);
             if(value) {
                 m_sharedCache->setVar(m_varName, *value, Type::Double);
                 return true;

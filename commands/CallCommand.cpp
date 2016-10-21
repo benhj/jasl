@@ -156,9 +156,9 @@ namespace jasl
                     (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::IntArray);
                     m_sharedCache->setVar(m_returnSymbol, value, Type::IntArray);
                 } else if(subType == "real") {
-                    DoubleArray value;
-                    (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::DoubleArray);
-                    m_sharedCache->setVar(m_returnSymbol, value, Type::DoubleArray);
+                    RealArray value;
+                    (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::RealArray);
+                    m_sharedCache->setVar(m_returnSymbol, value, Type::RealArray);
                 } else if(subType == "byte") {
                     ByteArray value;
                     (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::ByteArray);
