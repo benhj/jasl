@@ -22,7 +22,7 @@ namespace jasl {
 
     private:
         bool handleInt();
-        bool handleDouble();
+        bool handleReal();
         bool handleBool();
         bool handleByte();
 

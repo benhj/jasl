@@ -27,7 +27,7 @@ namespace jasl
         auto type = sharedCache->getType(m_varName);
         if (*type == Type::Int) {
             m_type = "int";
-        } else if (*type == Type::Double) {
+        } else if (*type == Type::Real) {
             m_type = "real";
         } else if (*type == Type::Bool) {
             m_type = "bool";

@@ -19,7 +19,7 @@ namespace {
         switch(type) {
             case jasl::Type::Int: return "int";
             case jasl::Type::Bool: return "bool";
-            case jasl::Type::Double: return "real";
+            case jasl::Type::Real: return "real";
             case jasl::Type::Byte: return "byte";
             case jasl::Type::List: return "list";
             case jasl::Type::IntArray: return "array:int";

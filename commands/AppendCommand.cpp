@@ -81,7 +81,7 @@ namespace jasl
             }
             {
                 double value;
-                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Real)) {
                     m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),
                     Type::String);
                     return true;
@@ -125,7 +125,7 @@ namespace jasl
 
         {
             double value;
-            if(VarExtractor::tryToGetADouble(m_func.paramB, value, m_sharedCache)) {
+            if(VarExtractor::tryToGetAReal(m_func.paramB, value, m_sharedCache)) {
                 std::ostringstream ss;
                 ss << value;
                 m_sharedCache->setVar(key, (*stringBeingAppendedTo).append(std::to_string(value)),

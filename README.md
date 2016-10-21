@@ -348,6 +348,6 @@ Generating random numbers:
 ;;; generate an int in the range [0, 5]:
 random:int 5 -> resultA;
 
-;;; generate a real in the rande [0, 3.14]
+;;; generate a real in the range [0, 3.14]
 random:real 3.14 -> resultB;
 ```

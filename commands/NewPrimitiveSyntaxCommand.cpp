@@ -29,7 +29,7 @@ namespace jasl {
         if (m_type == "int") {
             return handleInt();
         } else if (m_type == "real") {
-            return handleDouble();
+            return handleReal();
         } else if (m_type == "bool") {
             return handleBool();
         } else if (m_type == "byte") {
@@ -62,15 +62,15 @@ namespace jasl {
         return true;
     }
 
-    bool NewPrimitiveSyntaxCommand::handleDouble()
+    bool NewPrimitiveSyntaxCommand::handleReal()
     {
         double value;
-        if (!VarExtractor::trySingleDoubleExtraction(m_func.paramA, value, m_sharedCache)) {
+        if (!VarExtractor::trySingleRealExtraction(m_func.paramA, value, m_sharedCache)) {
             // try converting a string to a double
             return StringToPrimitiveCommand(m_func, m_sharedCache, m_outputStream).execute();
         } 
 
-        m_sharedCache->setVar(m_varName, value, Type::Double);
+        m_sharedCache->setVar(m_varName, value, Type::Real);
         
         return true;
     }

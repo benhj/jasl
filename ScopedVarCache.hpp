@@ -25,7 +25,7 @@ namespace jasl {
     using ByteArray = std::vector<uint8_t>;
     using OptionalInt = ::boost::optional<int64_t>;
     using OptionalBool = ::boost::optional<bool>;
-    using OptionalDouble = ::boost::optional<double>;
+    using OptionalReal = ::boost::optional<double>;
     using OptionalString = ::boost::optional<std::string>;
     using OptionalList = ::boost::optional<List>;
     using OptionalIntArray = ::boost::optional<IntArray>;
@@ -44,7 +44,7 @@ namespace jasl {
 
     /// Represents the type of a cached variable entry
     enum class Type {
-        Int, Bool, Double, Byte, String, List,
+        Int, Bool, Real, Byte, String, List,
         IntArray, RealArray, ByteArray, None
     };
 
