@@ -105,7 +105,7 @@ namespace jasl {
                         return true;
                     }
                 } else if (typeid(T) == typeid(double)) {
-                    auto result = sharedCache->getVar_(str, (double&)t, Type::Double);
+                    auto result = sharedCache->getVar_(str, (double&)t, Type::Real);
                     if(result) {
                         return true;
                     }
@@ -117,7 +117,7 @@ namespace jasl {
         /// Following tries to cast to a double. If that fails, then it casts from an
         /// int and then casts the result as a double. Failing both, it tries to
         /// see if its a math expression which it can then evaluate.
-        static bool tryToGetADouble(Value &val, double &x, SharedVarCache const &sharedCache)
+        static bool tryToGetAReal(Value &val, double &x, SharedVarCache const &sharedCache)
         {
             {
                 if (tryExtraction<double>(x, val, sharedCache)) {
@@ -208,7 +208,7 @@ namespace jasl {
         /// Note if extraction of a doulbe is initially unsuccesful it tries
         /// to extract a math expression storing the result of that in x instead
         /// and returning true.
-        static bool trySingleDoubleExtraction(Value &val, double &x, SharedVarCache const &sharedCache)
+        static bool trySingleRealExtraction(Value &val, double &x, SharedVarCache const &sharedCache)
         {
             if (tryExtraction<double>(x, val, sharedCache)) {
                 return true;

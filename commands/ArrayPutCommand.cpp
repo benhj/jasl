@@ -61,7 +61,7 @@ namespace jasl
 
         } else if (m_type == "real") {
             double value;
-            if (!VarExtractor::trySingleDoubleExtraction(m_func.paramA, value, m_sharedCache)) {
+            if (!VarExtractor::trySingleRealExtraction(m_func.paramA, value, m_sharedCache)) {
                 setLastErrorMessage("put: problem setting real");
                 return false;
             } 

@@ -79,7 +79,7 @@ namespace jasl {
                 // where the comparison is between two doubles
                 {
                     double d;
-                    if (VarExtractor::tryToGetADouble(right, d, cache)) {
+                    if (VarExtractor::tryToGetAReal(right, d, cache)) {
                         return doStage2<T, double>(valA, d, symbolOperator);
                     }
                 }
@@ -105,7 +105,7 @@ namespace jasl {
             // tries to get a double for the first operand
             {
                 double d;
-                if (VarExtractor::tryToGetADouble(m_left, d, m_sharedCache)) {
+                if (VarExtractor::tryToGetAReal(m_left, d, m_sharedCache)) {
                     return doStage1<double>(d, m_right, m_symbolOperator, m_sharedCache);
                 }
             }

@@ -61,7 +61,7 @@ namespace jasl
             }
             {
                 double value;
-                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Real)) {
                     m_sharedCache->setVar(key, std::to_string(value), Type::String);
                     return true;
                 }
@@ -110,7 +110,7 @@ namespace jasl
 
         {
             double result;
-            if(VarExtractor::tryToGetADouble(m_func.paramA, result, m_sharedCache)) {
+            if(VarExtractor::tryToGetAReal(m_func.paramA, result, m_sharedCache)) {
                 std::ostringstream ss;
                 ss << result;
                 m_sharedCache->setVar(key, ss.str(), Type::String);

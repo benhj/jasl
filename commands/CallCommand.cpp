@@ -127,8 +127,8 @@ namespace jasl
                 m_sharedCache->setVar(m_returnSymbol, value, Type::Int);
             } else if(m_returnableType == "real") {
                 double value;
-                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Double);
-                m_sharedCache->setVar(m_returnSymbol, value, Type::Double);
+                (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::Real);
+                m_sharedCache->setVar(m_returnSymbol, value, Type::Real);
             } else if(m_returnableType == "string") {
                 std::string value;
                 (void)GlobalCache::getVar_(m_returnableSymbol, value, Type::String);

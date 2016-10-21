@@ -48,7 +48,7 @@ namespace jasl
                     m_sharedCache->setVar(varName, boost::lexical_cast<int64_t>(literalString.literal), Type::Int);
                     return true;
                 } else if(m_func.name == "string_to_real" || m_func.name == "real") {
-                    m_sharedCache->setVar(varName, boost::lexical_cast<double>(literalString.literal), Type::Double);
+                    m_sharedCache->setVar(varName, boost::lexical_cast<double>(literalString.literal), Type::Real);
                     return true;
                 }
                 return false;
@@ -74,7 +74,7 @@ namespace jasl
                         m_sharedCache->setVar(varName, boost::lexical_cast<int64_t>(*result), Type::Int);
                         return true;
                     } else if(m_func.name == "string_to_real" || m_func.name == "real") {
-                        m_sharedCache->setVar(varName, boost::lexical_cast<double>(*result), Type::Double);
+                        m_sharedCache->setVar(varName, boost::lexical_cast<double>(*result), Type::Real);
                         return true;
                     }
                     return false;

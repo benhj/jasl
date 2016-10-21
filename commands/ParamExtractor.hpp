@@ -24,8 +24,8 @@ namespace jasl
             // Try double
             {
                 double value;
-                if(VarExtractor::trySingleDoubleExtraction(v, value, cacheFrom)) {
-                    cacheTo->addToParamStack(Type::Double, value);
+                if(VarExtractor::trySingleRealExtraction(v, value, cacheFrom)) {
+                    cacheTo->addToParamStack(Type::Real, value);
                     continue;
                 }
             } 
@@ -95,8 +95,8 @@ namespace jasl
                 auto entry = GlobalCache::getParamFromStack(i);
                 if(entry.type == Type::Int) {
                     cacheTo->setVar(symbol, ::boost::get<int64_t>(entry.cv), Type::Int);
-                } else if(entry.type == Type::Double) {
-                    cacheTo->setVar(symbol, ::boost::get<double>(entry.cv), Type::Double);
+                } else if(entry.type == Type::Real) {
+                    cacheTo->setVar(symbol, ::boost::get<double>(entry.cv), Type::Real);
                 } else if(entry.type == Type::Bool) {
                     cacheTo->setVar(symbol, ::boost::get<bool>(entry.cv), Type::Bool);
                 } else if(entry.type == Type::List) {

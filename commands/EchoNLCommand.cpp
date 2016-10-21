@@ -61,7 +61,7 @@ namespace jasl
             }
             {
                 double value;
-                if(m_sharedCache->getVar_(symbol, value, Type::Double)) {
+                if(m_sharedCache->getVar_(symbol, value, Type::Real)) {
                     appendToOutputWithNewLine(value);
                     return true;
                 }
@@ -129,7 +129,7 @@ namespace jasl
     {
         {
             double value;
-            if(VarExtractor::tryToGetADouble(m_func.paramA, value, m_sharedCache)) {
+            if(VarExtractor::tryToGetAReal(m_func.paramA, value, m_sharedCache)) {
                 appendToOutputWithNewLine(value);
                 return true;
             }

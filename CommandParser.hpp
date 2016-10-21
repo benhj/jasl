@@ -176,9 +176,9 @@ namespace jasl
             // using-boostspirit-to-parse-multiple-types-of-single-value
             // #comment21459703_15212671
             //
-            using DoublePolicy = boost::spirit::qi::strict_real_policies<double>;
-            using DoubleParse = boost::spirit::qi::real_parser<double, DoublePolicy>;
-            DoubleParse double_with_point;
+            using RealPolicy = boost::spirit::qi::strict_real_policies<double>;
+            using RealParse = boost::spirit::qi::real_parser<double, RealPolicy>;
+            RealParse double_with_point;
             doubleRule %= (long_long >> 'f')
                         | (double_with_point >> -lit('f'));
             intRule %= long_long;
@@ -481,7 +481,7 @@ namespace jasl
                             >> ';';
 
             // will try and convert a string to a double
-            stringToDoubleRule %= string("string_to_real")
+            stringToRealRule %= string("string_to_real")
                                >> (doubleQuotedString | genericString) 
                                >> lit("->")
                                >> genericString
@@ -564,7 +564,7 @@ namespace jasl
                          | whileLoop
                          | appendRule
                          | reverseRule 
-                         | stringToDoubleRule
+                         | stringToRealRule
                          | stringToIntRule
                          | stringLengthRule
                          | stringRule
@@ -617,7 +617,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> stringList;
         qi::rule<Iterator, Function(), ascii::space_type> argsRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
-        qi::rule<Iterator, Function(), ascii::space_type> stringToDoubleRule;
+        qi::rule<Iterator, Function(), ascii::space_type> stringToRealRule;
         qi::rule<Iterator, Function(), ascii::space_type> inputRule;
         qi::rule<Iterator, Function(), ascii::space_type> listToString;
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;

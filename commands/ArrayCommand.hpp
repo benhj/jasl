@@ -23,7 +23,7 @@ namespace jasl
 
     private:
         bool handleInt();
-        bool handleDouble();
+        bool handleReal();
         std::string m_type;
         std::string m_varName;
 

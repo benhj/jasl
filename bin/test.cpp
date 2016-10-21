@@ -53,8 +53,8 @@ void testMath()
     ci.parseAndInterpretSingleCommand("int 2 -> x;", cache);
     ci.parseAndInterpretSingleCommand("int (result * x) -> result;", cache);
     ASSERT_EQUAL(60, *cache->getVar<int64_t>("result", ll::Type::Int), "testMath::result is 60");
-    ci.parseAndInterpretSingleCommand("real (result - 2.5) -> resultDouble;", cache);
-    ASSERT_EQUAL(57.5, *cache->getVar<double>("resultDouble", ll::Type::Double), "testMath::resultDouble is 57.5");
+    ci.parseAndInterpretSingleCommand("real (result - 2.5) -> resultReal;", cache);
+    ASSERT_EQUAL(57.5, *cache->getVar<double>("resultReal", ll::Type::Real), "testMath::resultReal is 57.5");
 }
 
 void testVarNewSyntax()
@@ -65,7 +65,7 @@ void testVarNewSyntax()
     ci.parseAndInterpretSingleCommand("real 1.1->j;", cache);
     ci.parseAndInterpretSingleCommand("bool true->k;", cache);
     ASSERT_EQUAL(1, *cache->getVar<int64_t>("i", ll::Type::Int), "testVarNewSyntax::i is 1");
-    ASSERT_EQUAL(1.1, *cache->getVar<double>("j", ll::Type::Double), "testVarNewSyntax::j is 1.1");
+    ASSERT_EQUAL(1.1, *cache->getVar<double>("j", ll::Type::Real), "testVarNewSyntax::j is 1.1");
     ASSERT_EQUAL(true, *cache->getVar<bool>("k", ll::Type::Bool), "testVarNewSyntax::k is true");
 }
 
@@ -80,9 +80,9 @@ void testVarNewSyntaxFromString()
     ci.parseAndInterpretSingleCommand("int sint -> k;", cache);
     ci.parseAndInterpretSingleCommand("real sdouble -> l;", cache);
     ASSERT_EQUAL(1, *cache->getVar<int64_t>("i", ll::Type::Int), "testVarNewSyntaxFromString A");
-    ASSERT_EQUAL(1.1, *cache->getVar<double>("j", ll::Type::Double), "testVarNewSyntaxFromString B");
+    ASSERT_EQUAL(1.1, *cache->getVar<double>("j", ll::Type::Real), "testVarNewSyntaxFromString B");
     ASSERT_EQUAL(2, *cache->getVar<int64_t>("k", ll::Type::Int), "testVarNewSyntaxFromString C");
-    ASSERT_EQUAL(2.2, *cache->getVar<double>("l", ll::Type::Double), "testVarNewSyntaxFromString D");
+    ASSERT_EQUAL(2.2, *cache->getVar<double>("l", ll::Type::Real), "testVarNewSyntaxFromString D");
 }
 
 void testprLiterals()

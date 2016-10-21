@@ -52,11 +52,11 @@ namespace jasl {
             }
         } else if (m_type == "real") {
             double d;
-            if (VarExtractor::trySingleDoubleExtraction(m_func.paramB, d, m_sharedCache)) {
+            if (VarExtractor::trySingleRealExtraction(m_func.paramB, d, m_sharedCache)) {
                 using Dist = std::uniform_real_distribution<double>;
                 static Dist udd {};
                 auto output = udd(re, Dist::param_type{0, d});
-                m_sharedCache->setVar(m_varName, output, Type::Double);
+                m_sharedCache->setVar(m_varName, output, Type::Real);
                 return true;
             }
         }

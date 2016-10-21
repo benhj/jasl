@@ -23,7 +23,7 @@ namespace jasl
             if(type == "int") {
                 return Type::Int;
             } else if(type == "real") {
-                return Type::Double;
+                return Type::Real;
             } else if(type == "string") {
                 return Type::String;
             } else if(type == "bool") {
@@ -98,7 +98,7 @@ namespace jasl
             bool value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);
-        } else if(m_returnType == Type::Double) {
+        } else if(m_returnType == Type::Real) {
             double value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::setVar(m_returnSymbol, value, m_returnType);

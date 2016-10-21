@@ -58,9 +58,9 @@ namespace jasl {
         // an int if int precision is required
         double vleft;
         double vright;
-        double leftDouble;
+        double leftReal;
         // extracting a double didn't work. Maybe an int
-        if(!VarExtractor::trySingleDoubleExtraction(left, leftDouble, sharedCache)) {
+        if(!VarExtractor::trySingleRealExtraction(left, leftReal, sharedCache)) {
             int64_t leftInt;
             if(!VarExtractor::trySingleIntExtraction(left, leftInt, sharedCache)) {
                 uint8_t leftChar;
@@ -74,12 +74,12 @@ namespace jasl {
             }
         } else {
             resultIsInteger = false;
-            vleft = leftDouble;
+            vleft = leftReal;
         }
 
-        double rightDouble;
+        double rightReal;
         // extracting a double didn't work. Maybe an int
-        if(!VarExtractor::trySingleDoubleExtraction(right, rightDouble, sharedCache)) {
+        if(!VarExtractor::trySingleRealExtraction(right, rightReal, sharedCache)) {
             int64_t rightInt;
             if(!VarExtractor::trySingleIntExtraction(right, rightInt, sharedCache)) {
                 uint8_t rightChar;
@@ -93,7 +93,7 @@ namespace jasl {
             }
         } else {
             resultIsInteger = false;
-            vright = rightDouble;
+            vright = rightReal;
         }
 
         switch (getMathOp(symbolOperator)) {
