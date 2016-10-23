@@ -64,9 +64,6 @@ namespace jasl {
         /// caches for ints, bools and doubles, and other types
         std::map<std::string, CacheEntry> m_bigCache;
 
-        /// a separate parameter stack
-        std::vector<CacheEntry> m_paramStack;
-
     public:
         ScopedVarCache();
 
@@ -93,19 +90,6 @@ namespace jasl {
                                   V const value);
 
         void eraseValue(std::string const &key);
-
-        void resetParamStack();
-        
-        template <typename V>
-        void addToParamStack(Type const type, V && value)
-        {
-            CacheEntry ce;
-            ce.type = type;
-            ce.cv = CacheVariant(std::forward<V>(value));
-            m_paramStack.push_back(ce);
-        }
-
-        CacheEntry getParamFromStack(int const i);
 
         /// functions for getting different types.
         /// These are convenience functions and

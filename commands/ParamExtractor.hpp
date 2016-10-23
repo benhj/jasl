@@ -7,9 +7,7 @@
 namespace jasl 
 {
 
-    inline void extractAndUpdateParams(List & array,
-                                       SharedVarCache const &cacheFrom,
-                                       SharedVarCache const &cacheTo)
+    inline void pushParams(List & array, SharedVarCache const &cacheFrom)
     {
         for(auto & v : array) {
 
@@ -17,7 +15,7 @@ namespace jasl
             {
                 int64_t value;
                 if(VarExtractor::trySingleIntExtraction(v, value, cacheFrom)) {
-                    cacheTo->addToParamStack(Type::Int, value);
+                    GlobalCache::pushParam(Type::Int, (int64_t)value);
                     continue;
                 }
             }
@@ -25,7 +23,7 @@ namespace jasl
             {
                 double value;
                 if(VarExtractor::trySingleRealExtraction(v, value, cacheFrom)) {
-                    cacheTo->addToParamStack(Type::Real, value);
+                    GlobalCache::pushParam(Type::Real, value);
                     continue;
                 }
             } 
@@ -33,7 +31,15 @@ namespace jasl
             {
                 bool value;
                 if(VarExtractor::trySingleBoolExtraction(v, value, cacheFrom)) {
-                    cacheTo->addToParamStack(Type::Bool, value);
+                    GlobalCache::pushParam(Type::Bool, value);
+                    continue;
+                }
+            } 
+            // Try byte
+            {
+                uint8_t value;
+                if(VarExtractor::trySingleByteExtraction(v, value, cacheFrom)) {
+                    GlobalCache::pushParam(Type::Byte, (uint8_t)value);
                     continue;
                 }
             } 
@@ -41,7 +47,7 @@ namespace jasl
             {
                 std::string value;
                 if(VarExtractor::trySingleStringExtraction(v, value, cacheFrom)) {
-                    cacheTo->addToParamStack(Type::String, value);
+                    GlobalCache::pushParam(Type::String, value);
                     continue;
                 }
             } 
@@ -49,7 +55,7 @@ namespace jasl
             {
                 List value;
                 if(VarExtractor::trySingleArrayExtraction<List>(v, value, cacheFrom, Type::List)) {
-                    cacheTo->addToParamStack(Type::List, value);
+                    GlobalCache::pushParam(Type::List, value);
                     continue;
                 }
             } 
@@ -57,7 +63,7 @@ namespace jasl
             {
                 IntArray value;
                 if(VarExtractor::trySingleArrayExtraction<IntArray>(v, value, cacheFrom, Type::IntArray)) {
-                    cacheTo->addToParamStack(Type::IntArray, value);
+                    GlobalCache::pushParam(Type::IntArray, value);
                     continue;
                 }
             } 
@@ -65,7 +71,7 @@ namespace jasl
             {
                 RealArray value;
                 if(VarExtractor::trySingleArrayExtraction<RealArray>(v, value, cacheFrom, Type::RealArray)) {
-                    cacheTo->addToParamStack(Type::RealArray, value);
+                    GlobalCache::pushParam(Type::RealArray, value);
                     continue;
                 }
             } 
@@ -73,7 +79,7 @@ namespace jasl
             {
                 ByteArray value;
                 if(VarExtractor::trySingleArrayExtraction(v, value, cacheFrom, Type::ByteArray)) {
-                    cacheTo->addToParamStack(Type::ByteArray, value);
+                    GlobalCache::pushParam(Type::ByteArray, value);
                     continue;
                 }
             } 
@@ -81,18 +87,16 @@ namespace jasl
         }
     }
 
-    inline void extractAndUpdateParams(Value const &val,
-                                       SharedVarCache const &cacheTo)
+    inline void popParams(Value const &val, SharedVarCache const &cacheTo)
     {
 
         List array;
         if(VarExtractor::tryAnyCast(array, val)) {
 
-            auto i = 0;
             for(auto & v : array) {
                 std::string symbol;
                 VarExtractor::tryAnyCast(symbol, v);  
-                auto entry = GlobalCache::getParamFromStack(i);
+                auto entry = GlobalCache::popParam();
                 if(entry.type == Type::Int) {
                     cacheTo->setVar(symbol, ::boost::get<int64_t>(entry.cv), Type::Int);
                 } else if(entry.type == Type::Real) {
@@ -112,10 +116,7 @@ namespace jasl
                 } else if(entry.type == Type::Byte) {
                     cacheTo->setVar(symbol, ::boost::get<uint8_t>(entry.cv), Type::Byte);
                 }
-                ++i;
             }
-
-            GlobalCache::resetParamStack();
         }
 
     }

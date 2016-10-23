@@ -82,9 +82,9 @@ namespace jasl
         if(!(m_returnType == Type::IntArray || 
              m_returnType == Type::RealArray ||
              m_returnType == Type::ByteArray)) {
-            extractAndUpdateParams(m_func.paramC, m_sharedCache);
+            popParams(m_func.paramC, m_sharedCache);
         } else {
-            extractAndUpdateParams(m_func.paramD, m_sharedCache);
+            popParams(m_func.paramD, m_sharedCache);
         }
 
         interpretFunctionBody();
