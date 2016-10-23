@@ -32,7 +32,6 @@ namespace jasl {
     
     ScopedVarCache::ScopedVarCache() 
     : m_bigCache()
-    , m_paramStack()
     {
     }
 
@@ -214,15 +213,4 @@ namespace jasl {
         }
         return OptionalType();
     }
-
-    void ScopedVarCache::resetParamStack()
-    {
-        decltype(m_paramStack)().swap(m_paramStack);
-    }
-
-    ScopedVarCache::CacheEntry ScopedVarCache::getParamFromStack(int const i)
-    {
-        return m_paramStack[i];
-    }
-
 }

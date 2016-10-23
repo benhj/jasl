@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on on 10/03/2015.
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "BlockCommand.hpp"
@@ -23,7 +23,7 @@ namespace jasl {
 
     bool BlockCommand::execute()
     {
-        extractAndUpdateParams(m_func.paramB, m_sharedCache);
+        popParams(m_func.paramB, m_sharedCache);
         return interpretFunctionBody();
     }
 

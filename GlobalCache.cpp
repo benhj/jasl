@@ -22,13 +22,19 @@ template bool GlobalCache::getVar_(std::string const & key, T & value, Type cons
 #define GET_ARRAY_VALUE(T) \
 template ::boost::optional<typename T::value_type> GlobalCache::getArrayValue<T>(std::string const & key, \
                                                                                  size_t const index, \
-                                                                                 Type const type);
+                                                                                 Type const type); \
+
+#define PUSH_PARAM(V) \
+template void GlobalCache::pushParam<V>(Type const type, V && value); \
+template void GlobalCache::pushParam<V&>(Type const type, V & value);
+
 namespace jasl {
 
     SharedVarCache GlobalCache::bigCache = std::make_shared<ScopedVarCache>();
     std::vector<std::string> GlobalCache::args;
     std::string GlobalCache::script;
     std::string GlobalCache::lastKnownError;
+    std::deque<ScopedVarCache::CacheEntry> GlobalCache::m_paramStack;
  
     template <typename T> 
     void GlobalCache::setVar(std::string const & key,
@@ -150,13 +156,31 @@ namespace jasl {
         return bigCache->getType(key);
     }
 
-    void GlobalCache::resetParamStack()
+    template <typename V>
+    void GlobalCache::pushParam(Type const type, V && value)
     {
-        bigCache->resetParamStack();
+        ScopedVarCache::CacheEntry ce;
+        ce.type = type;
+        ce.cv = CacheVariant(std::forward<V>(value));
+        m_paramStack.push_back(ce);
     }
 
-    ScopedVarCache::CacheEntry GlobalCache::getParamFromStack(int const i)
+    ScopedVarCache::CacheEntry GlobalCache::popParam()
     {
-        return bigCache->getParamFromStack(i);
+        auto val = m_paramStack.front();
+        m_paramStack.pop_front();
+        return val;
     }
+
+    // Explicit instantiations
+    PUSH_PARAM(int64_t);
+    PUSH_PARAM(uint8_t);
+    PUSH_PARAM(std::string);
+    PUSH_PARAM(List);
+    PUSH_PARAM(IntArray);
+    PUSH_PARAM(RealArray);
+    PUSH_PARAM(ByteArray);
+    PUSH_PARAM(bool);
+    PUSH_PARAM(double);
+
 }

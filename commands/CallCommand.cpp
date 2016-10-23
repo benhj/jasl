@@ -103,7 +103,7 @@ namespace jasl
         // try to extract input arguments, if there are any
         List array;
         if(m_func.getValueB<List>(array, m_sharedCache)) {
-            extractAndUpdateParams(array, m_sharedCache, GlobalCache::bigCache);
+            pushParams(array, m_sharedCache);
         }
 
         return parseCommand(m_returnable ? "fn" : "block");
