@@ -68,20 +68,34 @@ namespace jasl {
                                     int const index,
                                     Value const &value)
     {
-         // if size 1, then always the 0th cache map
+        // if size 1, then always the 0th cache map
         if(m_cacheStack.size() == 1) {
             (void)m_cacheStack[0]->setTokenInList(key, index, value);
             return;
+        }
+
+        // otherwise search through all cache maps
+        for (auto const & c : m_cacheStack) {
+            if(c->setTokenInList(key, index, value)) {
+                return;
+            }
         }
     }
 
     void CacheStack::pushBackTokenInList(std::string const &key,
                                              Value const &value)
     {
-         // if size 1, then always the 0th cache map
+        // if size 1, then always the 0th cache map
         if(m_cacheStack.size() == 1) {
             (void)m_cacheStack[0]->pushBackTokenInList(key, value);
             return;
+        }
+
+        // otherwise search through all cache maps
+        for (auto const & c : m_cacheStack) {
+            if(c->pushBackTokenInList(key, value)) {
+                return;
+            }
         }
     }
 
@@ -90,10 +104,17 @@ namespace jasl {
                                      int const index,
                                      V const value)
     {
-         // if size 1, then always the 0th cache map
+        // if size 1, then always the 0th cache map
         if(m_cacheStack.size() == 1) {
             (void)m_cacheStack[0]->setValueInArray<V, T>(key, index, value);
             return;
+        }
+
+        // otherwise search through all cache maps
+        for (auto const & c : m_cacheStack) {
+            if(c->setValueInArray<V, T>(key, index, value)) {
+                return;
+            }
         }
     }
 
@@ -107,10 +128,17 @@ namespace jasl {
     void CacheStack::pushBackValueInArray(std::string const & key,
                                               V const value)
     {
-         // if size 1, then always the 0th cache map
+        // if size 1, then always the 0th cache map
         if(m_cacheStack.size() == 1) {
             (void)m_cacheStack[0]->pushBackValueInArray<V, T>(key, value);
             return;
+        }
+
+        // otherwise search through all cache maps
+        for (auto const & c : m_cacheStack) {
+            if(c->pushBackValueInArray<V, T>(key, value)) {
+                return;
+            }
         }
     }
 
@@ -122,10 +150,17 @@ namespace jasl {
 
     void CacheStack::eraseValue(std::string const &key)
     {
-         // if size 1, then always the 0th cache map
+        // if size 1, then always the 0th cache map
         if(m_cacheStack.size() == 1) {
             (void)m_cacheStack[0]->eraseValue(key);
             return;
+        }
+
+        // otherwise search through all cache maps
+        for (auto const & c : m_cacheStack) {
+            if(c->eraseValue(key)) {
+                return;
+            }
         }
     }
 

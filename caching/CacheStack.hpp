@@ -11,9 +11,13 @@
 #include "SharedVarCache.hpp"
 
 #include <deque>
+#include <memory>
 
 
 namespace jasl {
+
+    class CacheStack;
+    using SharedCacheStack = std::shared_ptr<CacheStack>;
 
     class CacheStack
     {
