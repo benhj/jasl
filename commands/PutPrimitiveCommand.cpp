@@ -7,7 +7,7 @@
 //
 
 #include "PutPrimitiveCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include "../CommandInterpretor.hpp"
 
 namespace jasl

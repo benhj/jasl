@@ -29,6 +29,14 @@ function build_expressions {
     done
 }
 
+function build_caching {
+    for f in caching/*.cpp; do
+        echo "Building $f"
+        $compiler $cflags -I$boostIncPath -c $f -o ${f%%.*}.o
+        mv ${f%%.*}.o objects/
+    done
+}
+
 function build_other {
     for f in *.cpp; do
         echo "Building $f"
@@ -64,6 +72,7 @@ function build_all {
     check_obs_dir
     build_commands
     build_expressions
+    build_caching
     build_other
     build_tests
     build_jasl

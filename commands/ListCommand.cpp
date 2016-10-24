@@ -3,11 +3,11 @@
 //  jasl
 //
 //  Created by Ben Jones on 08/11/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "ListCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 
 namespace jasl
 {

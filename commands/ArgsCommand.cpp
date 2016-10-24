@@ -3,13 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones on 25/10/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 
 #include "ArgsCommand.hpp"
-#include "../VarExtractor.hpp"
-#include "../GlobalCache.hpp"
+#include "../caching/VarExtractor.hpp"
+#include "../caching/GlobalCache.hpp"
 #include <sstream>
 #include <cstdint>
 

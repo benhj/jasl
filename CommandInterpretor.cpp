@@ -8,7 +8,7 @@
 
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
-#include "GlobalCache.hpp"
+#include "caching/GlobalCache.hpp"
 #include "commands/AppendCommand.hpp"
 #include "commands/ArgsCommand.hpp"
 #include "commands/ArrayCommand.hpp"

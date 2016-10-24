@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Function.hpp"
-#include "../VarExtractor.hpp"
-#include "../GlobalCache.hpp"
+#include "../caching/VarExtractor.hpp"
+#include "../caching/GlobalCache.hpp"
 
 namespace jasl 
 {

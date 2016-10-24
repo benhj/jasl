@@ -8,8 +8,8 @@
 
 #include "../SimpleTest.hpp"
 #include "../CommandInterpretor.hpp"
-#include "../GlobalCache.hpp"
-#include "../SharedVarCache.hpp"
+#include "../caching/GlobalCache.hpp"
+#include "../caching/SharedVarCache.hpp"
 
 #include <sstream>
 #include <vector>

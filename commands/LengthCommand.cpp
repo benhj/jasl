@@ -8,7 +8,7 @@
 
 #include "LengthCommand.hpp"
 #include "../LiteralString.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include <algorithm>
 #include <sstream>
 

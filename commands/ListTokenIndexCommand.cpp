@@ -8,7 +8,7 @@
 
 #include "ListTokenIndexCommand.hpp"
 #include "../LiteralString.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include <boost/lexical_cast.hpp>
 
 namespace jasl

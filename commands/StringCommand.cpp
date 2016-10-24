@@ -8,7 +8,7 @@
 
 #include "StringCommand.hpp"
 #include "ListToStringCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include <sstream>
 
 namespace jasl
