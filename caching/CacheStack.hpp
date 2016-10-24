@@ -29,8 +29,12 @@ namespace jasl {
 
     public:
         CacheStack();
+        CacheStack(std::deque<SharedVarCache> const &m_cacheStack);
 
         void pushCacheMap();
+
+        /// deep copying of pointer
+        std::shared_ptr<CacheStack> clone() const;
 
         /// functions for setting different types
         template <typename T> 
@@ -70,6 +74,9 @@ namespace jasl {
         ::boost::optional<typename V::value_type> getArrayValue(std::string const & key, 
                                                                 size_t const index,
                                                                 Type const type);
+
+    private:
+        std::shared_ptr<CacheStack> cloneImpl() const;
         
     };
 

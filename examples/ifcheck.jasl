@@ -4,12 +4,17 @@ start {
     int 1 -> j;
     if(i = j) {
         prn "yes";
+        put 5 -> j;
+        int 8 -> k;
+        prn k;
     }
+    prn j;
 
     if(i /= j) {
         prn "A";
     } else {
         prn "B";
     }
+
 
 }

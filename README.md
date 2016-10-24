@@ -45,7 +45,7 @@ list [This is [a nested list] list] -> g;
 
 Above, I create seven variables, an int, a real, a bool, a string, a byte, and two lists the latter of which contains a nested list
 and store them in variables `a`, `b`, `c`, `d`, `e` and `f` respectively. ~~Note that in jasl, all variables are global.~~ This is no
-longer true. Variables are now scoped at the level of a given block or returnable function.
+longer true. Variables are now scoped at a given block level (blocks, functions, if, else, while, for, repeat, etc.).
 
 To update them, one can use the `put` command, e.g.:
 
@@ -158,14 +158,11 @@ block myFunction () {
     ;;; A loop that executes statements within
     ;;; the enclosing braces several times.
     ;;; Note that since variables are scoped to the enclosing
-    ;;; function block, the variable b will be accessible still
+    ;;; block, the variable b will be no longer be accessible
     ;;; after the loop
     repeat 5 times {
         int 1 -> b;
     }
-
-    ;;; This is valid. Integer b is still accessible
-    prn b;
 
     call otherFunction ();
 }
@@ -186,7 +183,7 @@ A while loop that has C-style syntax:
 ```
 int 0 -> i;
 while (i < 10) {
-    int (i + 1) -> i;
+    put (i + 1) -> i;
 }
 ```
 

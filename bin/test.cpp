@@ -238,7 +238,11 @@ void testIfCommand()
     auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
-    ci.parseAndInterpretSingleCommand("if(1 < 2) { pr \"Hello, world!\"; int 5 -> x; }", cache, ss);
+    std::string const commands("int 0 -> x; if (1 < 2) { pr \"Hello, world!\"; put 5 -> x; } ");
+    auto functions = ci.parseStringCollection(commands, cache);
+    for(auto &f : functions) {
+        (void)ci.interpretFunc(f, cache, ss);
+    }
     ASSERT_EQUAL("Hello, world!", ss.str(), "testIfCommand: Hello, world!");
     ASSERT_EQUAL(5, *cache->getVar<int64_t>("x", ll::Type::Int), "testIfCommand: x is 5");
 }
