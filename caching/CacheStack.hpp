@@ -30,6 +30,8 @@ namespace jasl {
     public:
         CacheStack();
 
+        void pushCacheMap();
+
         /// functions for setting different types
         template <typename T> 
         void setVar(std::string const & key,

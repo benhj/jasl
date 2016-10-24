@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "WhileCommand.hpp"
@@ -13,7 +13,7 @@
 namespace jasl {
 
     WhileCommand::WhileCommand(Function &func_,
-                               SharedVarCache const &sharedCache,
+                               SharedCacheStack const &sharedCache,
                                OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     , m_weHaveFuncs(false)

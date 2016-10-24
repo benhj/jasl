@@ -52,7 +52,7 @@
 
 #define BUILD_COMMAND_AND_EXECUTE(X)                \
     [](Function &func,                              \
-       SharedVarCache const &varCache,              \
+       SharedCacheStack const &varCache,            \
        OptionalOutputStream const &outputStream) {  \
         X##Command c(func, varCache, outputStream); \
         return c.execute();                         \
@@ -60,7 +60,7 @@
 
 #define BUILD_COMMAND(X)                            \
     [](Function &func,                              \
-       SharedVarCache const &varCache,              \
+       SharedCacheStack const &varCache,            \
        OptionalOutputStream const &outputStream) {  \
         return std::make_shared<X##Command>(func, varCache, outputStream); \
     }
@@ -74,7 +74,7 @@ namespace {
 
     
     void parseStringCollectionHelper(std::string const &stringCollection,
-                                     jasl::SharedVarCache const &varCache,
+                                     jasl::SharedCacheStack const &varCache,
                                      std::vector<jasl::Function> &functions)
     {
 
@@ -174,7 +174,7 @@ namespace jasl {
             m_commandMap.emplace("type", BUILD_COMMAND_AND_EXECUTE(Type));
             m_commandMap.emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
             m_commandMap.emplace("exit", [](Function &,
-                                            SharedVarCache const &,
+                                            SharedCacheStack const &,
                                             OptionalOutputStream const &) {
                                                 exit(0);
                                                 return false;
@@ -222,7 +222,7 @@ namespace jasl {
             m_commandBuilders.emplace("type", BUILD_COMMAND(Type));
             m_commandBuilders.emplace("random", BUILD_COMMAND(Random));
             m_commandBuilders.emplace("exit", [](Function &,
-                                                 SharedVarCache const &,
+                                                 SharedCacheStack const &,
                                                  OptionalOutputStream const &) {
                                                      exit(0);
                                                      return nullptr;
@@ -233,7 +233,7 @@ namespace jasl {
 
     std::string
     CommandInterpretor::interpretFunc(Function &func,
-                                      SharedVarCache const &varCache,
+                                      SharedCacheStack const &varCache,
                                       OptionalOutputStream const &outputStream) const
     {
         if(func.name == "script") {
@@ -244,7 +244,7 @@ namespace jasl {
 
     std::string
     CommandInterpretor::doInterpretFunc(Function &func,
-                                        SharedVarCache const &varCache,
+                                        SharedCacheStack const &varCache,
                                         OptionalOutputStream const &outputStream) const
     {
         if(func.name == "script") {
@@ -261,7 +261,7 @@ namespace jasl {
 
     std::string
     CommandInterpretor::parseAndInterpretSingleCommand(std::string const &cs,
-                                                       SharedVarCache const &varCache,
+                                                       SharedCacheStack const &varCache,
                                                        OptionalOutputStream const &outputStream) const
     {
 
@@ -278,7 +278,7 @@ namespace jasl {
 
     std::vector<Function>
     CommandInterpretor::parseCommandFile(std::string const &path,
-                                         SharedVarCache const &varCache) const
+                                         SharedCacheStack const &varCache) const
     {
         auto script = loadScriptFromFile(path);
         return parseStringCollection(script, varCache);
@@ -287,7 +287,7 @@ namespace jasl {
     void
     CommandInterpretor::parseCommandFileAddToExisting(std::string const &path,
                                                       std::vector<Function> &functions,
-                                                      SharedVarCache const &varCache) const
+                                                      SharedCacheStack const &varCache) const
     {
         auto script = loadScriptFromFile(path);
 
@@ -299,7 +299,7 @@ namespace jasl {
 
     std::vector<Function>
     CommandInterpretor::parseStringCollection(std::string const &stringCollection,
-                                              SharedVarCache const &varCache) const
+                                              SharedCacheStack const &varCache) const
     {
         // store the script in global static. 
         jasl::GlobalCache::script = stringCollection;
@@ -310,7 +310,7 @@ namespace jasl {
 
     std::shared_ptr<Command>
     CommandInterpretor::funcToCommand(Function &func,
-                                      SharedVarCache const &varCache,
+                                      SharedCacheStack const &varCache,
                                       OptionalOutputStream const &outputStream) const
     {
         try {

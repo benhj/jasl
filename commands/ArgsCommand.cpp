@@ -16,7 +16,7 @@
 namespace jasl
 {
     ArgsCommand::ArgsCommand(Function &func_,
-                             SharedVarCache const &sharedCache,
+                             SharedCacheStack const &sharedCache,
                              OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {

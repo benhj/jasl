@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Function.hpp"
-#include "caching/SharedVarCache.hpp"
+#include "caching/CacheStack.hpp"
 #include "commands/Command.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
@@ -28,10 +28,10 @@ namespace jasl {
         using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
         using CommandFunction = std::function<bool(Function &, 
-                                                   SharedVarCache const &, 
+                                                   SharedCacheStack const &, 
                                                    OptionalOutputStream const &)>;
         using CommandBuilder = std::function<std::shared_ptr<Command>(Function &, 
-                                                   SharedVarCache const &, 
+                                                   SharedCacheStack const &, 
                                                    OptionalOutputStream const &)>;
 
         using CommandMap = std::map<std::string, CommandFunction>;
@@ -50,35 +50,35 @@ namespace jasl {
          */
         std::string
         parseAndInterpretSingleCommand(std::string const &cs,
-                                       SharedVarCache const &varCache = SharedVarCache(),
+                                       SharedCacheStack const &varCache = SharedCacheStack(),
                                        OptionalOutputStream const &outputStream = OptionalOutputStream())const;
         
         std::vector<Function>
         parseCommandFile(std::string const &path, 
-                         SharedVarCache const &varCache = SharedVarCache()) const;
+                         SharedCacheStack const &varCache = SharedCacheStack()) const;
 
         void parseCommandFileAddToExisting(std::string const &path,
                                            std::vector<Function> &functions,
-                                           SharedVarCache const &varCache  = SharedVarCache()) const;
+                                           SharedCacheStack const &varCache  = SharedCacheStack()) const;
         
         std::vector<Function>
         parseStringCollection(std::string const &stringCollection, 
-                              SharedVarCache const &varCache = SharedVarCache()) const;
+                              SharedCacheStack const &varCache = SharedCacheStack()) const;
 
         std::string
         interpretFunc(Function &func,
-                      SharedVarCache const &varCache = SharedVarCache(),
+                      SharedCacheStack const &varCache = SharedCacheStack(),
                       OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
 
         std::shared_ptr<Command> 
         funcToCommand(Function &func,
-                      SharedVarCache const &varCache = SharedVarCache(),
+                      SharedCacheStack const &varCache = SharedCacheStack(),
                       OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
         
     private:
         std::string
         doInterpretFunc(Function &func,
-                        SharedVarCache const &varCache,
+                        SharedCacheStack const &varCache,
                         OptionalOutputStream const &outputStream) const;
     };
     

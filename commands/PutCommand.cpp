@@ -14,7 +14,7 @@
 namespace jasl
 {
     PutCommand::PutCommand(Function &func_,
-                           SharedVarCache const &sharedCache,
+                           SharedCacheStack const &sharedCache,
                            OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     , m_primitive(false)

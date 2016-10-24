@@ -16,7 +16,7 @@ namespace jasl
 {
 
     namespace {
-        Type getReturnType(Function &func, SharedVarCache const &sharedCache)
+        Type getReturnType(Function &func, SharedCacheStack const &sharedCache)
         {
             std::string type;
             (void)func.getValueA<std::string>(type, sharedCache);
@@ -53,9 +53,9 @@ namespace jasl
     }
 
     ReturnableCommand::ReturnableCommand(Function &func_,
-                                         SharedVarCache const &sharedCache,
+                                         SharedCacheStack const &sharedCache,
                                          OptionalOutputStream const &output)
-        : Command(func_, std::make_shared<ScopedVarCache>(), output)
+        : Command(func_, std::make_shared<CacheStack>(), output)
         , m_functionName()
         , m_returnSymbol()
         , m_returnType(getReturnType(func_, sharedCache))

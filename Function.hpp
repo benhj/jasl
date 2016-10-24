@@ -10,7 +10,7 @@
 
 #include "caching/VarExtractor.hpp"
 #include "caching/Value.hpp"
-#include "caching/SharedVarCache.hpp"
+#include "caching/CacheStack.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -39,43 +39,43 @@ namespace jasl
         Value paramG;
 
         template <typename Type>
-        bool getValueA(Type &t, SharedVarCache const &sharedCache)
+        bool getValueA(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramA, sharedCache);
         }
 
         template <typename Type>
-        bool getValueB(Type &t, SharedVarCache const &sharedCache)
+        bool getValueB(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramB, sharedCache);
         }
 
         template <typename Type>
-        bool getValueC(Type &t, SharedVarCache const &sharedCache)
+        bool getValueC(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramC, sharedCache);
         }
 
         template <typename Type>
-        bool getValueD(Type &t, SharedVarCache const &sharedCache)
+        bool getValueD(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramD, sharedCache);
         }
 
         template <typename Type>
-        bool getValueE(Type &t, SharedVarCache const &sharedCache)
+        bool getValueE(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramE, sharedCache);
         }
 
         template <typename Type>
-        bool getValueF(Type &t, SharedVarCache const &sharedCache)
+        bool getValueF(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramF, sharedCache);
         }
 
         template <typename Type>
-        bool getValueG(Type &t, SharedVarCache const &sharedCache)
+        bool getValueG(Type &t, SharedCacheStack const &sharedCache)
         {
             return VarExtractor::tryExtraction(t, paramG, sharedCache);
         }

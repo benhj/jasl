@@ -9,7 +9,7 @@
 #include "../any.hpp"
 #include "../CommandInterpretor.hpp"
 #include "../LiteralString.hpp"
-#include "../caching/SharedVarCache.hpp"
+#include "../caching/CacheStack.hpp"
 #include "../caching/GlobalCache.hpp"
 #include <boost/progress.hpp>
 #include <iostream>
@@ -43,7 +43,7 @@ int main (int argc , char *argv[])
     }
 
     // parse input file
-    auto sharedCache = std::make_shared<ll::ScopedVarCache>();
+    auto sharedCache = std::make_shared<ll::CacheStack>();
     auto functions = ci.parseCommandFile(argv[1]);
 
     // Now find all instances of 'script' and load extra script 'headers'
