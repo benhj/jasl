@@ -9,7 +9,7 @@
 #include "ReturnableCommand.hpp"
 #include "ParamExtractor.hpp"
 #include "../CommandInterpretor.hpp"
-#include "../GlobalCache.hpp"
+#include "../caching/GlobalCache.hpp"
 #include <vector>
 
 namespace jasl 

@@ -7,7 +7,7 @@
 //
 
 #include "MathExpression.hpp"
-#include "../../VarExtractor.hpp"
+#include "../../caching/VarExtractor.hpp"
 #include <stdexcept>
 #include <cstdint>
 

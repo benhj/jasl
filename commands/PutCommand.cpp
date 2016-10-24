@@ -9,7 +9,7 @@
 #include "PutCommand.hpp"
 #include "ArrayPutCommand.hpp"
 #include "PutPrimitiveCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 
 namespace jasl
 {

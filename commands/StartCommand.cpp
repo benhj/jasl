@@ -3,12 +3,12 @@
 //  jasl
 //
 //  Created by Ben Jones on on 10/03/2015.
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "StartCommand.hpp"
 #include "../CommandInterpretor.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 
 
 namespace jasl {

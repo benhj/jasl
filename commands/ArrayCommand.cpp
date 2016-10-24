@@ -7,7 +7,7 @@
 //
 
 #include "ArrayCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 
 namespace jasl
 {

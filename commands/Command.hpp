@@ -3,13 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
 
 #include "../Function.hpp"
-#include "../SharedVarCache.hpp"
+#include "../caching/SharedVarCache.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>

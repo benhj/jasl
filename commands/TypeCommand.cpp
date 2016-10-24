@@ -7,7 +7,7 @@
 //
 
 #include "TypeCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include <algorithm>
 #include <vector>
 #include <sstream>

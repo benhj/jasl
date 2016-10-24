@@ -3,14 +3,14 @@
 //  jasl
 //
 //  Created by Ben Jones on 10/03/2015.
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #include "../any.hpp"
 #include "../CommandInterpretor.hpp"
 #include "../LiteralString.hpp"
-#include "../SharedVarCache.hpp"
-#include "../GlobalCache.hpp"
+#include "../caching/SharedVarCache.hpp"
+#include "../caching/GlobalCache.hpp"
 #include <boost/progress.hpp>
 #include <iostream>
 #include <sstream>

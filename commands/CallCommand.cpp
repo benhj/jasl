@@ -9,7 +9,7 @@
 
 #include "CallCommand.hpp"
 #include "ParamExtractor.hpp"
-#include "../GlobalCache.hpp"
+#include "../caching/GlobalCache.hpp"
 #include "../CommandInterpretor.hpp"
 #include <vector>
 

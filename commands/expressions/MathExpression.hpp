@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "../../Value.hpp"
-#include "../../SharedVarCache.hpp"
+#include "../../caching/Value.hpp"
+#include "../../caching/SharedVarCache.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 

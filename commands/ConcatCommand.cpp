@@ -6,7 +6,7 @@
 //
 
 #include "ConcatCommand.hpp"
-#include "../VarExtractor.hpp"
+#include "../caching/VarExtractor.hpp"
 #include <sstream>
 
 namespace jasl

@@ -3,18 +3,18 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Value.hpp"
-#include "SharedVarCache.hpp"
-#include "LiteralString.hpp"
-#include "SymbolString.hpp"
-#include "commands/expressions/MathExpression.hpp"
-#include "commands/expressions/MathByteExpression.hpp"
-#include "commands/expressions/ComparisonExpression.hpp"
+#include "../caching/Value.hpp"
+#include "../caching/SharedVarCache.hpp"
+#include "../LiteralString.hpp"
+#include "../SymbolString.hpp"
+#include "../commands/expressions/MathExpression.hpp"
+#include "../commands/expressions/MathByteExpression.hpp"
+#include "../commands/expressions/ComparisonExpression.hpp"
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
