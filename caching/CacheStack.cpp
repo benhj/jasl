@@ -40,9 +40,25 @@ namespace jasl {
     {
     }
 
+    CacheStack::CacheStack(std::deque<SharedVarCache> const &cacheStack)
+    : m_cacheStack(cacheStack)
+    {
+    }
+
     void CacheStack::pushCacheMap()
     {
         m_cacheStack.emplace_front(std::make_shared<jasl::ScopedVarCache>());
+    }
+
+    std::shared_ptr<CacheStack> CacheStack::clone() const
+    {
+        return cloneImpl();
+    }
+
+    std::shared_ptr<CacheStack> CacheStack::cloneImpl() const
+    {
+        auto newStack = std::make_shared<CacheStack>(m_cacheStack);
+        return newStack;
     }
 
     template <typename T> 
@@ -195,6 +211,7 @@ namespace jasl {
                 return opt;
             }
         }
+
         return ::boost::optional<T>();
     }
 

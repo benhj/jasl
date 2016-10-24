@@ -10,12 +10,21 @@
 #include "../CommandInterpretor.hpp"
 #include <string>
 
+namespace {
+    // We're in new scope so add a new cache map to the cache stack
+    jasl::SharedCacheStack withNewCache(jasl::SharedCacheStack const &sharedCache) {
+        auto cloned = sharedCache->clone();
+        cloned->pushCacheMap();
+        return cloned;
+    }
+}
+
 namespace jasl {
 
     WhileCommand::WhileCommand(Function &func_,
                                SharedCacheStack const &sharedCache,
                                OptionalOutputStream const &output)
-    : Command(func_, sharedCache, output)
+    : Command(func_, withNewCache(sharedCache), output)
     , m_weHaveFuncs(false)
     , m_commands()
     {
