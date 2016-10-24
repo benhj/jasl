@@ -41,7 +41,9 @@ namespace jasl
                     return Type::RealArray;
                 } else if(subType == "byte") {
                     return Type::ByteArray;
-                } else {
+                } else if(subType == "string") {
+                    return Type::ByteArray;
+                }  else {
                     throw std::runtime_error("fn: can't derive sub type");
                 }
             } else {
@@ -59,17 +61,19 @@ namespace jasl
         , m_returnType(getReturnType(func_, sharedCache))
     {
         if(m_returnType != Type::None) {
-            if(!(m_returnType == Type::IntArray || 
+            if(!(m_returnType == Type::IntArray  || 
                  m_returnType == Type::RealArray ||
-                 m_returnType == Type::ByteArray)) {
+                 m_returnType == Type::ByteArray ||
+                 m_returnType == Type::StringArray)) {
                 (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
             } else {
                 (void)m_func.getValueE<std::string>(m_returnSymbol, m_sharedCache);
             }
         }
-        if(!(m_returnType == Type::IntArray || 
+        if(!(m_returnType == Type::IntArray  || 
              m_returnType == Type::RealArray ||
-             m_returnType == Type::ByteArray)) {
+             m_returnType == Type::ByteArray ||
+             m_returnType == Type::StringArray)) {
             (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
         } else {
             (void)m_func.getValueC<std::string>(m_functionName, m_sharedCache);
@@ -79,9 +83,10 @@ namespace jasl
     bool ReturnableCommand::execute()
     {
         
-        if(!(m_returnType == Type::IntArray || 
+        if(!(m_returnType == Type::IntArray  || 
              m_returnType == Type::RealArray ||
-             m_returnType == Type::ByteArray)) {
+             m_returnType == Type::ByteArray ||
+             m_returnType == Type::StringArray)) {
             popParams(m_func.paramC, m_sharedCache);
         } else {
             popParams(m_func.paramD, m_sharedCache);
@@ -122,6 +127,10 @@ namespace jasl
             ByteArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
             GlobalCache::pushReturnValue(m_returnType, value);
+        } else if(m_returnType == Type::StringArray) {
+            StringArray value;
+            (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         }
 
         return true;
@@ -131,9 +140,10 @@ namespace jasl
     {
         std::vector<Function> innerFuncs;
         bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, 
-                                                                       (!(m_returnType == Type::IntArray || 
+                                                                       (!(m_returnType == Type::IntArray  || 
                                                                           m_returnType == Type::RealArray ||
-                                                                          m_returnType == Type::ByteArray)) ?
+                                                                          m_returnType == Type::ByteArray ||
+                                                                          m_returnType == Type::StringArray)) ?
                                                                        m_func.paramE :
                                                                        m_func.paramF);
         if (success) {

@@ -163,6 +163,10 @@ namespace jasl
                     ByteArray value;
                     auto cv = GlobalCache::popReturnValue();
                     m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
+                } else if(subType == "string") {
+                    StringArray value;
+                    auto cv = GlobalCache::popReturnValue();
+                    m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
                 }
             } else {
                 setLastErrorMessage("call returnable: unknown return type");

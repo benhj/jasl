@@ -86,6 +86,15 @@ namespace jasl
                     return true;
                 }
             }
+
+            // try string array
+            {
+                auto array = m_sharedCache->getVar<StringArray>(symbol, Type::StringArray);
+                if(array) {
+                    m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
+                    return true;
+                }
+            }
         }
         return false;
     }

@@ -54,6 +54,13 @@ namespace jasl
                 return true;
             }
         }
+        {
+            auto value = m_sharedCache->getArrayValue<StringArray>(m_arrayName, index, Type::StringArray);
+            if(value) {
+                m_sharedCache->setVar(m_varName, *value, Type::String);
+                return true;
+            }
+        }
 
         setLastErrorMessage("get: problem getting array value");
         return false;

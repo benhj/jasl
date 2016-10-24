@@ -63,6 +63,12 @@ namespace jasl
             m_sharedCache->setVar(m_varName, array, Type::ByteArray);
             return true;
 
+        } else if (m_type == "string") {
+
+            StringArray array(value, "");
+            m_sharedCache->setVar(m_varName, array, Type::StringArray);
+            return true;
+
         }
 
         setLastErrorMessage("array: type not supported");

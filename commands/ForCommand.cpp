@@ -63,6 +63,14 @@ namespace jasl {
                     }
                 }
 
+                // try string array
+                {
+                    auto array = m_sharedCache->getVar<StringArray>(listSymbol, Type::StringArray);
+                    if(array) {
+                        processArray(*array, listSymbol);
+                    }
+                }
+                
                 // try string
                 {
                     auto str = m_sharedCache->getVar<std::string>(listSymbol, Type::String);
