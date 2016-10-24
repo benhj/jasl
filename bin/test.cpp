@@ -19,7 +19,7 @@ using namespace simpletest;
 
 void testTypes()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("int 5 -> a;", cache);
     ci.parseAndInterpretSingleCommand("real 1.1 -> b;", cache);
@@ -46,7 +46,7 @@ void testTypes()
 
 void testMath()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("int (10 + 20) -> result;", cache);
     ASSERT_EQUAL(30, *cache->getVar<int64_t>("result", ll::Type::Int), "testMath::result is 30");
@@ -59,7 +59,7 @@ void testMath()
 
 void testVarNewSyntax()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("int 1->i;", cache);
     ci.parseAndInterpretSingleCommand("real 1.1->j;", cache);
@@ -71,7 +71,7 @@ void testVarNewSyntax()
 
 void testVarNewSyntaxFromString()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("int \"1\" -> i;", cache);
     ci.parseAndInterpretSingleCommand("real \"1.1\" -> j;", cache);
@@ -87,7 +87,7 @@ void testVarNewSyntaxFromString()
 
 void testprLiterals()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("pr \"Hello, world!\";", cache, ss);
@@ -96,7 +96,7 @@ void testprLiterals()
 
 void testprNLLiterals()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("prn \"Hello, world!\";", cache, ss);
@@ -105,7 +105,7 @@ void testprNLLiterals()
 
 void testprSymbols()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("int 10 -> b;", cache);
@@ -119,7 +119,7 @@ void testprSymbols()
 
 void testprPrimitives()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("prn 2;", cache, ss);
@@ -130,7 +130,7 @@ void testprPrimitives()
 
 void testprMath()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("prn (5 + 2) * 5.6;", cache, ss);
@@ -139,7 +139,7 @@ void testprMath()
 
 void testprString()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", cache, ss);
@@ -149,7 +149,7 @@ void testprString()
 
 void testStringWithLiteral()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello, world!\" -> hello;", cache, ss);
@@ -158,7 +158,7 @@ void testStringWithLiteral()
 
 void testStringWithNumbers()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string 5 -> numberFive;", cache, ss);
@@ -169,7 +169,7 @@ void testStringWithNumbers()
 
 void testStringWithMath()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string (5 + 2) * 5.6 -> numberMath;", cache, ss);
@@ -180,7 +180,7 @@ void testStringWithMath()
 
 void testStringFromList()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string [hello there] -> listString;", cache, ss);
@@ -192,7 +192,7 @@ void testStringFromList()
 
 void testAppendLiteral()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
@@ -202,7 +202,7 @@ void testAppendLiteral()
 
 void testAppendString()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
@@ -213,7 +213,7 @@ void testAppendString()
 
 void testReverseString()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("string \"Hello\" -> s;", cache, ss);
@@ -223,7 +223,7 @@ void testReverseString()
 
 void testStringLength()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("length \"Hello\" -> s;", cache, ss);
@@ -235,7 +235,7 @@ void testStringLength()
 
 void testIfCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("if(1 < 2) { pr \"Hello, world!\"; int 5 -> x; }", cache, ss);
@@ -245,7 +245,7 @@ void testIfCommand()
 
 void testRepeatCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const commands("int 0 -> x; repeat 5 times { pr \"Hello\"; int (x + 1) -> x; }");
@@ -259,7 +259,7 @@ void testRepeatCommand()
 
 void testWhileCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const commands("int 5 -> x; while(x > 0) { int (x - 1) -> x; }");
@@ -272,7 +272,7 @@ void testWhileCommand()
 
 void testStartCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string const command("start { pr \"Hello\"; int 21 -> x; }");
@@ -283,7 +283,7 @@ void testStartCommand()
 
 void testCallReturnableCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("start { pr \"Starting..\"; int 0 -> x; call foo (x) -> x; call bar (x) -> x; int (x - 5) -> x;}");
@@ -302,7 +302,7 @@ void testCallReturnableCommand()
 
 void testCallBlockCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("start { pr \"Starting..\"; call foo (); call bar ();}");
@@ -320,7 +320,7 @@ void testCallBlockCommand()
 
 void testCallFunctionNil()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     std::string commands("start { pr \"Starting..\"; call foo (); call bar ();}");
@@ -338,7 +338,7 @@ void testCallFunctionNil()
 
 void testArgsCommand()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ll::GlobalCache::args.push_back("argument1");
@@ -351,7 +351,7 @@ void testArgsCommand()
 
 void testList()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> s;", cache, ss);
@@ -368,7 +368,7 @@ void testList()
 
 void testListGetTokenRaw()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("get_token (0, [hello there]) -> s;", cache, ss);
@@ -380,7 +380,7 @@ void testListGetTokenRaw()
 
 void testListGetTokenSymbol()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> lst;", cache, ss);
@@ -393,7 +393,7 @@ void testListGetTokenSymbol()
 
 void testListSetTokenRaw()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("set_token (0, [hello there], \"goodbye\") -> s;", cache, ss);
@@ -410,7 +410,7 @@ void testListSetTokenRaw()
 
 void testListSetTokenSymbol()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache, ss);
@@ -439,7 +439,7 @@ void testListSetTokenSymbol()
 
 void testListAddToken()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("list [hello there] -> la;", cache);
@@ -450,7 +450,7 @@ void testListAddToken()
 
 void testListTokenIndex()
 {
-    auto cache = std::make_shared<ll::ScopedVarCache>();
+    auto cache = std::make_shared<ll::CacheStack>();
     std::ostringstream ss;
     ll::CommandInterpretor ci;
     ci.parseAndInterpretSingleCommand("index_of (\"are\", [hello there what are you doing]) -> i;", cache, ss);

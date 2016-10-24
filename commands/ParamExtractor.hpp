@@ -7,7 +7,7 @@
 namespace jasl 
 {
 
-    inline void pushParams(List & array, SharedVarCache const &cacheFrom)
+    inline void pushParams(List & array, SharedCacheStack const &cacheFrom)
     {
         for(auto & v : array) {
 
@@ -94,7 +94,7 @@ namespace jasl
         }
     }
 
-    inline void popParams(Value const &val, SharedVarCache const &cacheTo)
+    inline void popParams(Value const &val, SharedCacheStack const &cacheTo)
     {
 
         ValueArray array;

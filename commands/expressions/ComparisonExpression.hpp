@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../../caching/Value.hpp"
-#include "../../caching/SharedVarCache.hpp"
+#include "../../caching/CacheStack.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
@@ -19,7 +19,7 @@ namespace jasl {
         mutable Value m_left;
         std::string m_symbolOperator;
         mutable Value m_right;
-        SharedVarCache m_sharedCache;
+        SharedCacheStack m_sharedCache;
         bool evaluate() const;
     };
 }

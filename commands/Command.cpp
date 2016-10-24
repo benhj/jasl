@@ -12,8 +12,8 @@
 namespace jasl
 {
     Command::Command(Function func_,
-            SharedVarCache const &sharedCache,
-            OptionalOutputStream const &output)
+                     SharedCacheStack const &sharedCache,
+                     OptionalOutputStream const &output)
     : m_func(std::move(func_)) 
     , m_sharedCache(sharedCache)
     , m_outputStream(output)

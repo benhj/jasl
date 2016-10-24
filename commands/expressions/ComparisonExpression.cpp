@@ -71,7 +71,7 @@ namespace jasl {
         bool doStage1(T const valA, 
                       Value & right, 
                       std::string const &symbolOperator,
-                      SharedVarCache const &cache)
+                      SharedCacheStack const &cache)
         {
 
             try {

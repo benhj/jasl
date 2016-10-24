@@ -18,7 +18,7 @@ namespace jasl {
     {
     public:
         ForCommand(Function &func_, 
-                   SharedVarCache const &sharedCache = SharedVarCache(),
+                   SharedCacheStack const &sharedCache = SharedCacheStack(),
                    OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;
     private:

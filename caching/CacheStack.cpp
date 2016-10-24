@@ -8,6 +8,7 @@
 
 #include "CacheStack.hpp"
 #include <iostream>
+#include <utility>
 
 #define SET_VAR(X) \
 template void CacheStack::setVar(std::string const & key, X const & value, Type const type);
@@ -23,11 +24,25 @@ template bool CacheStack::getVar_(std::string const & key, T & value, Type const
 template ::boost::optional<typename T::value_type>  CacheStack::getArrayValue<T>(std::string const & key, \
                                                                                  size_t const index, \
                                                                                  Type const type);
+namespace {
+    std::deque<jasl::SharedVarCache> initCacheStack() 
+    {
+        std::deque<jasl::SharedVarCache> cache;
+        cache.emplace_back(std::make_shared<jasl::ScopedVarCache>());
+        return cache;
+    }
+}
+
 namespace jasl {
 
     CacheStack::CacheStack() 
-    : m_cacheStack()
+    : m_cacheStack(initCacheStack())
     {
+    }
+
+    void CacheStack::pushCacheMap()
+    {
+        m_cacheStack.emplace_front(std::make_shared<jasl::ScopedVarCache>());
     }
 
     template <typename T> 

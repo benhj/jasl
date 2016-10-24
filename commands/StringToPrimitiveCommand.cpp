@@ -17,7 +17,7 @@
 namespace jasl
 {
     StringToPrimitiveCommand::StringToPrimitiveCommand(Function &func_,
-                                                       SharedVarCache const &sharedCache,
+                                                       SharedCacheStack const &sharedCache,
                                                        OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {

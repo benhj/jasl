@@ -11,13 +11,12 @@
 #include "../CommandInterpretor.hpp"
 #include "../caching/VarExtractor.hpp"
 
-
 namespace jasl {
 
     BlockCommand::BlockCommand(Function &func_, 
-                               SharedVarCache const &sharedCache, 
+                               SharedCacheStack const &sharedCache, 
                                OptionalOutputStream const &output)
-    : Command(func_, std::make_shared<ScopedVarCache>(), output)
+    : Command(func_, std::make_shared<CacheStack>(), output)
     {
     }
 

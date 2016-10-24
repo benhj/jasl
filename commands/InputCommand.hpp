@@ -17,7 +17,7 @@ namespace jasl
     {
     public:
         InputCommand(Function &func_,
-                     SharedVarCache const &sharedCache = SharedVarCache(),
+                     SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;

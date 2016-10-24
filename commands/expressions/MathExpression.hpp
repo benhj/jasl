@@ -3,13 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
 
 #include "../../caching/Value.hpp"
-#include "../../caching/SharedVarCache.hpp"
+#include "../../caching/CacheStack.hpp"
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <string>
 
@@ -32,7 +32,7 @@ namespace jasl {
         mutable bool resultIsInteger;
 
         /// cache of variables
-        SharedVarCache sharedCache;
+        SharedCacheStack sharedCache;
 
         MathExpression();
 

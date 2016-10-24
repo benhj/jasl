@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../Function.hpp"
-#include "../caching/SharedVarCache.hpp"
+#include "../caching/CacheStack.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
 #include <string>
@@ -23,7 +23,7 @@ namespace jasl
         using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
         Command(Function func_,
-                SharedVarCache const &sharedCache,
+                SharedCacheStack const &sharedCache,
                 OptionalOutputStream const &output = OptionalOutputStream());
 
         virtual bool execute() = 0;
@@ -32,7 +32,7 @@ namespace jasl
         Function m_func;
 
         /// Cache of variables
-        SharedVarCache m_sharedCache;
+        SharedCacheStack m_sharedCache;
 
         /// for optionally capturing output
         ::boost::optional<std::ostream&> m_outputStream;
