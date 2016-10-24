@@ -27,6 +27,9 @@ namespace jasl {
         /// Use a stack to represent function parameters
         static std::deque<ScopedVarCache::CacheEntry> m_paramStack;
 
+        /// A stack to represent value returned from function calls
+        static std::deque<ScopedVarCache::CacheEntry> m_returnStack;
+
         /// the script represents the whole program
         static std::string script;
 
@@ -75,6 +78,11 @@ namespace jasl {
         template <typename V>
         static void pushParam(Type const type, V && value);
         static ScopedVarCache::CacheEntry popParam();
+
+        /// Function parameters handling
+        template <typename V>
+        static void pushReturnValue(Type const type, V && value);
+        static ScopedVarCache::CacheEntry popReturnValue();
     };
 
 }
