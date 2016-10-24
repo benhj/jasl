@@ -90,7 +90,7 @@ namespace jasl
     inline void popParams(Value const &val, SharedVarCache const &cacheTo)
     {
 
-        List array;
+        ValueArray array;
         if(VarExtractor::tryAnyCast(array, val)) {
 
             for(auto & v : array) {

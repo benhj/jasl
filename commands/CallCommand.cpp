@@ -102,7 +102,7 @@ namespace jasl
     {
         // try to extract input arguments, if there are any
         List array;
-        if(m_func.getValueB<List>(array, m_sharedCache)) {
+        if(m_func.getValueB<ValueArray>(array, m_sharedCache)) {
             pushParams(array, m_sharedCache);
         }
 

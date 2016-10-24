@@ -629,8 +629,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
         qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
-        qi::rule<Iterator, List(), ascii::space_type> pairRule;
-        qi::rule<Iterator, List(), ascii::space_type> tupleRule;
+        qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
+        qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
         qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
         qi::rule<Iterator, bool(), ascii::space_type> boolRule;
@@ -652,8 +652,8 @@ namespace jasl
         qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
         qi::rule<Iterator, Value(), ascii::space_type> commaParameter;
         qi::rule<Iterator, Value(), ascii::space_type> parameterList;
-        qi::rule<Iterator, List(), ascii::space_type> words;
-        qi::rule<Iterator, List(), ascii::space_type> parameters;
+        qi::rule<Iterator, ValueArray(), ascii::space_type> words;
+        qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
         qi::rule<Iterator, std::string(), ascii::space_type> barString;
         qi::rule<Iterator, StringArray(), ascii::space_type> concats;
         qi::rule<Iterator, Value(), ascii::space_type> concatList;
