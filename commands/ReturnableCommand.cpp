@@ -93,35 +93,35 @@ namespace jasl
         if(m_returnType == Type::Int) {
             int64_t value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::Bool) {
             bool value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::Real) {
             double value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::String) {
             std::string value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::List) {
             List value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::IntArray) {
             IntArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::RealArray) {
             RealArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         } else if(m_returnType == Type::ByteArray) {
             ByteArray value;
             (void)m_sharedCache->getVar_(m_returnSymbol, value, m_returnType);
-            GlobalCache::setVar(m_returnSymbol, value, m_returnType);
+            GlobalCache::pushReturnValue(m_returnType, value);
         }
 
         return true;

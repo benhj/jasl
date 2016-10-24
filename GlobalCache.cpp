@@ -28,6 +28,10 @@ template ::boost::optional<typename T::value_type> GlobalCache::getArrayValue<T>
 template void GlobalCache::pushParam<V>(Type const type, V && value); \
 template void GlobalCache::pushParam<V&>(Type const type, V & value);
 
+#define PUSH_RETURN_VALUE(V) \
+template void GlobalCache::pushReturnValue<V>(Type const type, V && value); \
+template void GlobalCache::pushReturnValue<V&>(Type const type, V & value);
+
 namespace jasl {
 
     SharedVarCache GlobalCache::bigCache = std::make_shared<ScopedVarCache>();
@@ -35,6 +39,7 @@ namespace jasl {
     std::string GlobalCache::script;
     std::string GlobalCache::lastKnownError;
     std::deque<ScopedVarCache::CacheEntry> GlobalCache::m_paramStack;
+    std::deque<ScopedVarCache::CacheEntry> GlobalCache::m_returnStack;
  
     template <typename T> 
     void GlobalCache::setVar(std::string const & key,
@@ -182,5 +187,31 @@ namespace jasl {
     PUSH_PARAM(ByteArray);
     PUSH_PARAM(bool);
     PUSH_PARAM(double);
+
+    template <typename V>
+    void GlobalCache::pushReturnValue(Type const type, V && value)
+    {
+        ScopedVarCache::CacheEntry ce;
+        ce.type = type;
+        ce.cv = CacheVariant(std::forward<V>(value));
+        m_returnStack.push_back(ce);
+    }
+    ScopedVarCache::CacheEntry GlobalCache::popReturnValue()
+    {
+        auto val = m_returnStack.back();
+        m_returnStack.pop_front();
+        return val;
+    }
+
+    // Explicit instantiations
+    PUSH_RETURN_VALUE(int64_t);
+    PUSH_RETURN_VALUE(uint8_t);
+    PUSH_RETURN_VALUE(std::string);
+    PUSH_RETURN_VALUE(List);
+    PUSH_RETURN_VALUE(IntArray);
+    PUSH_RETURN_VALUE(RealArray);
+    PUSH_RETURN_VALUE(ByteArray);
+    PUSH_RETURN_VALUE(bool);
+    PUSH_RETURN_VALUE(double);
 
 }
