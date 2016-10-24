@@ -11,10 +11,12 @@
 
 #define SET_VAR(X) \
 template void ScopedVarCache::setVar(std::string const & key, X const & value, Type const type);
+#define SET_VAR_IF_EXISTS(X) \
+template bool ScopedVarCache::setVarIfExists(std::string const & key, X const & value, Type const type);
 #define SET_VALUE_IN_ARRAY(V, T) \
-template void ScopedVarCache::setValueInArray<V, T>(std::string const & key, int const index, V value);
+template bool ScopedVarCache::setValueInArray<V, T>(std::string const & key, int const index, V value);
 #define PUSH_BACK_VALUE_IN_ARRAY(V, T) \
-template void ScopedVarCache::pushBackValueInArray<V,T>(std::string const & key, V value);
+template bool ScopedVarCache::pushBackValueInArray<V,T>(std::string const & key, V value);
 #define GET_VAR(T) \
 template ::boost::optional<T> ScopedVarCache::getVar<T>(std::string const&, Type const);
 #define GET_VAR_(T) \
@@ -66,32 +68,78 @@ namespace jasl {
     SET_VAR(StringArray);
     SET_VAR(bool);
     SET_VAR(double);
+
+    template <typename T> 
+    bool ScopedVarCache::setVarIfExists(std::string const & key,
+                                        T const & value,
+                                        Type const type)
+    {
+        auto found = m_bigCache.find(key);
+
+        // If the variable already exists, then only
+        // proceed in updating it, if the type is correct
+        if(found != std::end(m_bigCache)) {
+            if(found->second.type != type) {
+                return false;
+            }
+            found->second.cv = value;
+            return true;
+        }
+        return false;
+    }
+
+    /// Explicit template instantiations (--linkage issues).
+    SET_VAR_IF_EXISTS(int64_t);
+    SET_VAR_IF_EXISTS(uint8_t);
+    SET_VAR_IF_EXISTS(std::string);
+    SET_VAR_IF_EXISTS(List);
+    SET_VAR_IF_EXISTS(IntArray);
+    SET_VAR_IF_EXISTS(RealArray);
+    SET_VAR_IF_EXISTS(ByteArray);
+    SET_VAR_IF_EXISTS(StringArray);
+    SET_VAR_IF_EXISTS(bool);
+    SET_VAR_IF_EXISTS(double);
  
-    void ScopedVarCache::setTokenInList(std::string const &key,
+    bool ScopedVarCache::setTokenInList(std::string const &key,
                                         int const index,
                                         Value const &value)
     {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<List>(keyed.cv);
-        array[index] = value;
+        auto found = m_bigCache.find(key);
+        if(found != std::end(m_bigCache)) {
+            auto &keyed = found->second;
+            auto &array = ::boost::get<List>(keyed.cv);
+            array[index] = value;
+            return true;
+        }
+        return false;
     }
 
-    void ScopedVarCache::pushBackTokenInList(std::string const &key,
+    bool ScopedVarCache::pushBackTokenInList(std::string const &key,
                                              Value const &value)
     {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<List>(keyed.cv);
-        array.push_back(value);
+        auto found = m_bigCache.find(key);
+        if(found != std::end(m_bigCache)) {
+            auto &keyed = found->second;
+            auto &array = ::boost::get<List>(keyed.cv);
+            array.push_back(value);
+            return true;
+        }
+        return false;
     }
 
     template <typename V, typename T>
-    void ScopedVarCache::setValueInArray(std::string const & key,
+    bool ScopedVarCache::setValueInArray(std::string const & key,
                                          int const index,
                                          V const value)
     {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<T>(keyed.cv);
-        array[index] = value;
+        auto found = m_bigCache.find(key);
+        if(found != std::end(m_bigCache)) {
+            auto &keyed = found->second;
+            auto &array = ::boost::get<T>(keyed.cv);
+            array[index] = value;
+            return true;
+        }
+        return false;
     }
 
     /// Explicit instantiations
@@ -101,12 +149,17 @@ namespace jasl {
     SET_VALUE_IN_ARRAY(std::string, StringArray);
 
     template <typename V, typename T>
-    void ScopedVarCache::pushBackValueInArray(std::string const & key,
+    bool ScopedVarCache::pushBackValueInArray(std::string const & key,
                                               V const value)
     {
-        auto &keyed = m_bigCache[key];
-        auto &array = ::boost::get<T>(keyed.cv);
-        array.push_back(value);
+        auto found = m_bigCache.find(key);
+        if(found != std::end(m_bigCache)) {
+            auto &keyed = found->second;
+            auto &array = ::boost::get<T>(keyed.cv);
+            array.push_back(value);
+            return true;
+        }
+        return false;
     }
 
     /// Explicit instantiations
@@ -115,10 +168,14 @@ namespace jasl {
     PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
     PUSH_BACK_VALUE_IN_ARRAY(std::string, StringArray);
 
-    void ScopedVarCache::eraseValue(std::string const &key)
+    bool ScopedVarCache::eraseValue(std::string const &key)
     {
         auto it = m_bigCache.find(key);
-        if(it != std::end(m_bigCache)) { m_bigCache.erase(it); }
+        if(it != std::end(m_bigCache)) { 
+            m_bigCache.erase(it); 
+            return true;
+        }
+        return false;
     }
 
     template <typename T>

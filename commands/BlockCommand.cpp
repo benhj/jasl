@@ -27,7 +27,6 @@ namespace jasl {
         return interpretFunctionBody();
     }
 
-
     bool BlockCommand::interpretFunctionBody()
     {
         std::vector<Function> innerFuncs;
