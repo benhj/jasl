@@ -75,23 +75,33 @@ namespace jasl {
                     T const & value,
                     Type const type);
 
-        void setTokenInList(std::string const &key,
+        /// sets var if exists
+        /// return true if could be set
+        template <typename T> 
+        bool setVarIfExists(std::string const & key,
+                            T const & value,
+                            Type const type);
+
+        /// Returns true if list existed
+        bool setTokenInList(std::string const &key,
                             int const index,
                             Value const &value);
-        void pushBackTokenInList(std::string const &key,
+
+        /// Returns true if list existed
+        bool pushBackTokenInList(std::string const &key,
                                  Value const &value);
 
         /// array support
         template <typename V, typename T>
-        void setValueInArray(std::string const & key,
+        bool setValueInArray(std::string const & key,
                              int const index,
                              V const value);
 
         template <typename V, typename T>
-        void pushBackValueInArray(std::string const & key,
+        bool pushBackValueInArray(std::string const & key,
                                   V const value);
 
-        void eraseValue(std::string const &key);
+        bool eraseValue(std::string const &key);
 
         /// functions for getting different types.
         /// These are convenience functions and
