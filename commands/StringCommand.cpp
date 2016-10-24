@@ -92,6 +92,18 @@ namespace jasl
                     return true;
                 }
             }
+            {
+                StringArray value;
+                if( m_sharedCache->getVar_(symbol, value, Type::StringArray)) {
+
+                    std::string str;
+                    for (auto const & b : value) {
+                        str += b;
+                    }
+                    m_sharedCache->setVar(key, str, Type::String);
+                    return true;
+                }
+            }
         }
 
         return false;

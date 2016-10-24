@@ -31,6 +31,8 @@ namespace jasl
             m_type = "real";
         } else if(*type == Type::ByteArray) {
             m_type = "byte";
+        } else if(*type == Type::StringArray) {
+            m_type = "string";
         }  else {
             setLastErrorMessage("put: couldn't determine type");
         }
@@ -75,6 +77,14 @@ namespace jasl
             } 
 
             m_sharedCache->setValueInArray<uint8_t, ByteArray>(m_varName, index, value);
+        } else if (m_type == "string") {
+            std::string value;
+            if (!VarExtractor::trySingleStringExtraction(m_func.paramA, value, m_sharedCache)) {
+                setLastErrorMessage("put: problem setting byte");
+                return false;
+            } 
+
+            m_sharedCache->setValueInArray<std::string, StringArray>(m_varName, index, value);
         }
         return true;
     }

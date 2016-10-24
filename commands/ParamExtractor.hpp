@@ -83,7 +83,14 @@ namespace jasl
                     continue;
                 }
             } 
-            // TODO: try list, bool, string
+            // Try StringArray
+            {
+                StringArray value;
+                if(VarExtractor::trySingleArrayExtraction(v, value, cacheFrom, Type::StringArray)) {
+                    GlobalCache::pushParam(Type::StringArray, value);
+                    continue;
+                }
+            } 
         }
     }
 
@@ -111,7 +118,9 @@ namespace jasl
                     cacheTo->setVar(symbol, ::boost::get<RealArray>(entry.cv), Type::RealArray);
                 }  else if(entry.type == Type::ByteArray) {
                     cacheTo->setVar(symbol, ::boost::get<ByteArray>(entry.cv), Type::ByteArray);
-                }  else if(entry.type == Type::String) {
+                }  else if(entry.type == Type::StringArray) {
+                    cacheTo->setVar(symbol, ::boost::get<StringArray>(entry.cv), Type::StringArray);
+                }    else if(entry.type == Type::String) {
                     cacheTo->setVar(symbol, ::boost::get<std::string>(entry.cv), Type::String);
                 } else if(entry.type == Type::Byte) {
                     cacheTo->setVar(symbol, ::boost::get<uint8_t>(entry.cv), Type::Byte);

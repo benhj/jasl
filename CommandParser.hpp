@@ -153,7 +153,7 @@ namespace jasl
                           >> (genericString)
                           >> ';';
 
-            arrayTypes %= lexeme[string("int") | string("real") | string("byte")];
+            arrayTypes %= lexeme[string("int") | string("real") | string("byte") | string("string")];
 
             // for building arrays. For example:
             // array:int(5) -> a;
