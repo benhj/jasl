@@ -43,6 +43,8 @@
 #include "commands/TypeCommand.hpp"
 #include "commands/RandomCommand.hpp"
 
+#include "commands/fileio/FolderListCommand.hpp"
+
 #include <boost/spirit/include/qi.hpp>
 
 #include <fstream>
@@ -173,6 +175,9 @@ namespace jasl {
             m_commandMap.emplace("release", BUILD_COMMAND_AND_EXECUTE(Release));
             m_commandMap.emplace("type", BUILD_COMMAND_AND_EXECUTE(Type));
             m_commandMap.emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
+
+            m_commandMap.emplace("folder_list", BUILD_COMMAND_AND_EXECUTE(FolderList));
+
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
                                             OptionalOutputStream const &) {
@@ -221,6 +226,9 @@ namespace jasl {
             m_commandBuilders.emplace("release", BUILD_COMMAND(Release));
             m_commandBuilders.emplace("type", BUILD_COMMAND(Type));
             m_commandBuilders.emplace("random", BUILD_COMMAND(Random));
+
+            m_commandBuilders.emplace("folder_list", BUILD_COMMAND(FolderList));
+
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,
                                                  OptionalOutputStream const &) {

@@ -1,0 +1,9 @@
+;;; example folder listing
+
+start {
+	args 0 -> folder;
+	folder_list folder -> strings;
+	for str in strings {
+		prn str;
+	}
+}

@@ -3,6 +3,7 @@
 compiler=clang++
 cflags="-std=c++1y -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy -fno-pic"
 boostIncPath=/usr/local/include
+boostLibPath=/usr/local/lib
 
 # these objects will exist after compilation of everything
 objects="objects/*.o"
@@ -61,12 +62,12 @@ function build_single () {
 
 function build_tests {
     echo "Building tests..."
-    $compiler $cflags -I$boostIncPath $objects bin/test.cpp -o test
+    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system bin/test.cpp -o test
 }
 
 function build_jasl {
     echo "Building jasl..."
-    $compiler $cflags -I$boostIncPath $objects bin/jasl.cpp -o jasl
+    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system bin/jasl.cpp -o jasl
 }
 
 function build_clean {

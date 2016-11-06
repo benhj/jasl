@@ -35,7 +35,9 @@ namespace jasl
             StringArray sa;
             using ::boost::filesystem::directory_iterator;
             auto path = ::boost::filesystem::path(folderName);
-            for(auto& entry : ::boost::make_iterator_range(directory_iterator(path), {})) {
+            for(auto & entry : ::boost::make_iterator_range(directory_iterator(path), {})) {
+                auto const pathString = entry.path().string();
+                if(pathString == "." || pathString == "..") { continue; }
                 sa.emplace_back(entry.path().string());
             }
 
