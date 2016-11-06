@@ -21,6 +21,14 @@ function build_commands {
     done
 }
 
+function build_commands_fileio {
+    for f in commands/fileio/*.cpp; do
+        echo "Building $f"
+        $compiler $cflags -I$boostIncPath -c $f -o ${f%%.*}.o
+        mv ${f%%.*}.o objects/
+    done
+}
+
 function build_expressions {
     for f in commands/expressions/*.cpp; do
         echo "Building $f"
@@ -71,6 +79,7 @@ function build_clean {
 function build_all {
     check_obs_dir
     build_commands
+    build_commands_fileio
     build_expressions
     build_caching
     build_other
