@@ -539,6 +539,25 @@ namespace jasl
             // for exiting a program
             exitCommand %= string("exit") >> -(genericString) >> ';';
 
+            // list folder
+            // folder_list "/path/to/folder" -> strings;
+            folderList %= string("folderList")
+                       >> (doubleQuotedString | genericString) >> lit("->")
+                       >> genericString 
+                       >> ';';
+
+            // read lines from file       
+            fileReadLines %= string("file_read_lines")
+                          >> (doubleQuotedString | genericString) >> lit("->")
+                          >> genericString 
+                          >> ';';
+
+             // read bytes from file       
+            fileReadBytes %= string("file_read_bytes")
+                          >> (doubleQuotedString | genericString) >> lit("->")
+                          >> genericString 
+                          >> ';';
+
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -583,7 +602,10 @@ namespace jasl
                          | exitCommand
                          | array
                          | put
-                         | get;
+                         | get
+                         | folderList
+                         | fileReadLines
+                         | fileReadBytes;
                          
             start %= allCommands;
         }
@@ -645,6 +667,11 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> mathSymbols;
         qi::rule<Iterator, std::string(), ascii::space_type> comparisonSymbols;
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
+
+        // file i/o
+        qi::rule<Iterator, Function(), ascii::space_type> folderList;
+        qi::rule<Iterator, Function(), ascii::space_type> fileReadLines;
+        qi::rule<Iterator, Function(), ascii::space_type> fileReadBytes;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
