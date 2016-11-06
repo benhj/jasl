@@ -541,7 +541,7 @@ namespace jasl
 
             // list folder
             // folder_list "/path/to/folder" -> strings;
-            folderList %= string("folderList")
+            folderList %= string("folder_list")
                        >> (doubleQuotedString | genericString) >> lit("->")
                        >> genericString 
                        >> ';';
