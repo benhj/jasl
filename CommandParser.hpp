@@ -599,6 +599,7 @@ namespace jasl
                          | call 
                          | returnable
                          | returnableArray
+                         | array | ints | bytes | strings | bools | reals
                          | intNewSyntax
                          | byteNewSyntax
                          | doubleNewSyntax
@@ -632,7 +633,6 @@ namespace jasl
                          | typeCommand
                          | randomCommand
                          | exitCommand
-                         | array | ints | bytes | strings | bools | reals
                          | put
                          | get
                          | folderList

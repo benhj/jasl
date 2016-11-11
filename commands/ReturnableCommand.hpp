@@ -19,6 +19,7 @@ namespace jasl
         std::string m_functionName;
         std::string m_returnSymbol;
         Type m_returnType;
+        std::string m_stringType;
 
     public:
         ReturnableCommand(Function &func_,

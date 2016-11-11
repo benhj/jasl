@@ -25,19 +25,29 @@ namespace jasl
         // reals 5 -> a;
         // etc.
         // get type and var name
-        (void)m_func.getValueA<std::string>(m_type, m_sharedCache);
-        (void)m_func.getValueC<std::string>(m_varName, m_sharedCache);
+        if(m_func.name != "array") {
+            m_type = m_func.name;
+            (void)m_func.getValueB<std::string>(m_varName, m_sharedCache);
+        } else {
+            (void)m_func.getValueA<std::string>(m_type, m_sharedCache);
+            (void)m_func.getValueC<std::string>(m_varName, m_sharedCache);
+        }
+
+        
     }
 
     bool ArrayCommand::execute() 
     {
         // Find out how big the array should be
+        auto & param = (m_func.name == "array" ? m_func.paramB : m_func.paramA);
         int64_t value;
-        if (!VarExtractor::trySingleIntExtraction(m_func.paramB, value, m_sharedCache)) {
+        if (!VarExtractor::trySingleIntExtraction(param, 
+                                                  value, 
+                                                  m_sharedCache)) {
             // might be that we have array:byte str -> bytes; type syntax.
             // this is for when we implicitly convert a string to a byte array
             std::string str;
-            if (VarExtractor::trySingleStringExtraction(m_func.paramB, str, m_sharedCache)) {
+            if (VarExtractor::trySingleStringExtraction(param, str, m_sharedCache)) {
                 ByteArray array;
                 for (auto const & c : str) {
                     array.push_back(c);
