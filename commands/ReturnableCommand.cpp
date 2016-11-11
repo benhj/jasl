@@ -158,13 +158,17 @@ namespace jasl
     bool ReturnableCommand::interpretFunctionBody()
     {
         std::vector<Function> innerFuncs;
+
+        auto const isArray = (m_returnType == Type::IntArray  || 
+                              m_returnType == Type::RealArray ||
+                              m_returnType == Type::ByteArray ||
+                              m_returnType == Type::StringArray);
+
         bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, 
-                                                                       (!(m_returnType == Type::IntArray  || 
-                                                                          m_returnType == Type::RealArray ||
-                                                                          m_returnType == Type::ByteArray ||
-                                                                          m_returnType == Type::StringArray)) ?
-                                                                       m_func.paramE :
-                                                                       (m_stringType == "array" ? m_func.paramF : m_func.paramE));
+                                                                       !isArray ? m_func.paramE :
+                                                                       (m_stringType == "array" ? 
+                                                                        m_func.paramF : 
+                                                                        m_func.paramE));
         if (success) {
             success = parseCommands(innerFuncs);
         } else {
