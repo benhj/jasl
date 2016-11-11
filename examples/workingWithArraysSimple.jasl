@@ -1,0 +1,28 @@
+;;; Simpler array syntax.
+;;; rather than 'array:int(5) -> A;'
+;;; we can do 'ints 5 -> A;'
+
+;;; returning an int array from a function
+fn:ints testReturnArray(size, index) -> A {
+    ints size -> A;
+    put 3 -> A(index);
+}
+
+start {
+  
+    ints 5 -> a;
+    reals 10 -> d;
+
+    type a -> typea;
+    type d -> typed;
+
+    prn typea;
+    prn typed;
+
+    call testReturnArray(5, 2) -> result;
+
+    for i in result {
+        prn i;
+    }
+
+}

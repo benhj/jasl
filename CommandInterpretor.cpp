@@ -160,7 +160,13 @@ namespace jasl {
             m_commandMap.emplace("length", BUILD_COMMAND_AND_EXECUTE(Length));
             m_commandMap.emplace("list", BUILD_COMMAND_AND_EXECUTE(List));
             m_commandMap.emplace("args", BUILD_COMMAND_AND_EXECUTE(Args));
+
             m_commandMap.emplace("array", BUILD_COMMAND_AND_EXECUTE(Array));
+            m_commandMap.emplace("ints", BUILD_COMMAND_AND_EXECUTE(Array));
+            m_commandMap.emplace("reals", BUILD_COMMAND_AND_EXECUTE(Array));
+            m_commandMap.emplace("bytes", BUILD_COMMAND_AND_EXECUTE(Array));
+            m_commandMap.emplace("strings", BUILD_COMMAND_AND_EXECUTE(Array));
+
             m_commandMap.emplace("put", BUILD_COMMAND_AND_EXECUTE(Put));
             m_commandMap.emplace("get", BUILD_COMMAND_AND_EXECUTE(ArrayGet));
             m_commandMap.emplace("int", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
@@ -213,7 +219,13 @@ namespace jasl {
             m_commandBuilders.emplace("length", BUILD_COMMAND(Length));
             m_commandBuilders.emplace("list", BUILD_COMMAND(List));
             m_commandBuilders.emplace("args", BUILD_COMMAND(Args));
+
             m_commandBuilders.emplace("array", BUILD_COMMAND(Array));
+            m_commandBuilders.emplace("ints", BUILD_COMMAND(Array));
+            m_commandBuilders.emplace("reals", BUILD_COMMAND(Array));
+            m_commandBuilders.emplace("bytes", BUILD_COMMAND(Array));
+            m_commandBuilders.emplace("strings", BUILD_COMMAND(Array));
+
             m_commandBuilders.emplace("put", BUILD_COMMAND(Put));
             m_commandBuilders.emplace("get", BUILD_COMMAND(ArrayGet));
             m_commandBuilders.emplace("int", BUILD_COMMAND(NewPrimitiveSyntax));
