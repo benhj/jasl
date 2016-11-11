@@ -44,6 +44,7 @@
 #include "commands/RandomCommand.hpp"
 
 #include "commands/fileio/FolderListCommand.hpp"
+#include "commands/fileio/FileReadBytesCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -177,6 +178,7 @@ namespace jasl {
             m_commandMap.emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
 
             m_commandMap.emplace("folder_list", BUILD_COMMAND_AND_EXECUTE(FolderList));
+            m_commandMap.emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
 
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
@@ -228,6 +230,7 @@ namespace jasl {
             m_commandBuilders.emplace("random", BUILD_COMMAND(Random));
 
             m_commandBuilders.emplace("folder_list", BUILD_COMMAND(FolderList));
+            m_commandBuilders.emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,
