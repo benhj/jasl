@@ -109,6 +109,36 @@ namespace jasl
         return parseCommand(m_returnable ? "fn" : "block");
     }
 
+    bool CallCommand::tryArrayTypes(std::string const theType)
+    {
+        // In the following, theType may either be a sub-type in
+        // the case that array:int style was used, or a non sub-type
+        // in the cade the ints style was used.
+        if(theType == "int" || theType == "ints") {
+            IntArray value;
+            auto cv = GlobalCache::popReturnValue();
+            m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
+            return true;
+        } else if(theType == "real" || theType == "reals") {
+            RealArray value;
+            auto cv = GlobalCache::popReturnValue();
+            m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
+            return true;
+        } else if(theType == "byte" || theType == "bytes") {
+            ByteArray value;
+            auto cv = GlobalCache::popReturnValue();
+            m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
+            return true;
+        } else if(theType == "string" || theType == "strings") {
+            StringArray value;
+            auto cv = GlobalCache::popReturnValue();
+            m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
+            return true;
+        }
+        return false;
+        
+    }
+
     bool CallCommand::parseCommand(std::string const &kind)
     {
         CommandInterpretor ci;
@@ -145,32 +175,17 @@ namespace jasl
                 uint8_t value;
                 auto cv = GlobalCache::popReturnValue();
                 m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
-            }  else if(m_returnableType == "nil") {
+            } else if(m_returnableType == "nil") {
                 // don't do anything for return type 'nil'
             } else if (m_returnableType == "array") {
-
                 std::string subType;
                 (void)m_functionFunc.getValueB<std::string>(subType, m_sharedCache);
-                if(subType == "int") {
-                    IntArray value;
-                    auto cv = GlobalCache::popReturnValue();
-                    m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
-                } else if(subType == "real") {
-                    RealArray value;
-                    auto cv = GlobalCache::popReturnValue();
-                    m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
-                } else if(subType == "byte") {
-                    ByteArray value;
-                    auto cv = GlobalCache::popReturnValue();
-                    m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
-                } else if(subType == "string") {
-                    StringArray value;
-                    auto cv = GlobalCache::popReturnValue();
-                    m_sharedCache->setVar(m_returnSymbol, ::boost::get<decltype(value)>(cv.cv), cv.type);
-                }
+                (void)tryArrayTypes(subType);
             } else {
-                setLastErrorMessage("call returnable: unknown return type");
-                return false;
+                if(!tryArrayTypes(m_returnableType)) {
+                    setLastErrorMessage("call returnable: unknown return type");
+                    return false;
+                }
             }
         }
 

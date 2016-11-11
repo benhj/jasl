@@ -170,6 +170,38 @@ namespace jasl
                   >> (genericString)
                   >> ';';
 
+            // simpler array types. Arrays are 'plural' versions of primitives
+            // reals 5 -> a;
+            reals %= string("reals")
+                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
+            ints %= string("ints")
+                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
+            bytes %= string("bytes")
+                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
+            bools %= string("bools")
+                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
+            strings %= string("strings")
+                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> lit("->")
+                  >> (genericString)
+                  >> ';';
+
             //
             // with thanks to sehe and llonesmix @
             // http://stackoverflow.com/questions/15212671/
@@ -600,7 +632,7 @@ namespace jasl
                          | typeCommand
                          | randomCommand
                          | exitCommand
-                         | array
+                         | array | ints | bytes | strings | bools | reals
                          | put
                          | get
                          | folderList
@@ -620,6 +652,11 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
         qi::rule<Iterator, Function(), ascii::space_type> array;
+        qi::rule<Iterator, Function(), ascii::space_type> ints;
+        qi::rule<Iterator, Function(), ascii::space_type> bytes;
+        qi::rule<Iterator, Function(), ascii::space_type> strings;
+        qi::rule<Iterator, Function(), ascii::space_type> bools;
+        qi::rule<Iterator, Function(), ascii::space_type> reals;
         qi::rule<Iterator, Function(), ascii::space_type> put;
         qi::rule<Iterator, Function(), ascii::space_type> get;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
