@@ -22,6 +22,7 @@ namespace jasl
     private:
 
         bool parseCommand(std::string const &kind = "block");
+        bool tryArrayTypes(std::string const theType);
         void setFunction();
 
         // The name of the block or returnable being called

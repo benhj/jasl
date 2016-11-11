@@ -20,6 +20,10 @@ namespace jasl
     , m_varName()
     {
         // array:int(5) -> a;
+        // OR
+        // ints 5 -> a;
+        // reals 5 -> a;
+        // etc.
         // get type and var name
         (void)m_func.getValueA<std::string>(m_type, m_sharedCache);
         (void)m_func.getValueC<std::string>(m_varName, m_sharedCache);
@@ -45,25 +49,25 @@ namespace jasl
             return false;
         } 
 
-        if (m_type == "int") {
+        if (m_type == "int" || m_type == "ints") {
 
             IntArray array(value, 0);
             m_sharedCache->setVar(m_varName, array, Type::IntArray);
             return true;
             
-        } else if (m_type == "real") {
+        } else if (m_type == "real" || m_type == "reals") {
 
             RealArray array(value, 0.0);
             m_sharedCache->setVar(m_varName, array, Type::RealArray);
             return true;
 
-        } else if (m_type == "byte") {
+        } else if (m_type == "byte" || m_type == "bytes") {
 
             ByteArray array(value, 0.0);
             m_sharedCache->setVar(m_varName, array, Type::ByteArray);
             return true;
 
-        } else if (m_type == "string") {
+        } else if (m_type == "string" || m_type == "strings") {
 
             StringArray array(value, "");
             m_sharedCache->setVar(m_varName, array, Type::StringArray);
