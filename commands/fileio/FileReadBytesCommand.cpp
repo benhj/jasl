@@ -17,8 +17,8 @@ namespace jasl
 {
 
     FileReadBytesCommand::FileReadBytesCommand(Function &func_,
-                                         SharedCacheStack const &sharedCache,
-                                         OptionalOutputStream const &output)
+                                               SharedCacheStack const &sharedCache,
+                                               OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
 

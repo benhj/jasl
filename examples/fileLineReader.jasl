@@ -1,0 +1,9 @@
+;;; example to read lines from a file
+
+start {
+    args 0 -> filename;
+    file_read_lines filename -> lines;
+    for line in lines {
+        prn line;
+    }
+}

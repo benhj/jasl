@@ -45,6 +45,7 @@
 
 #include "commands/fileio/FolderListCommand.hpp"
 #include "commands/fileio/FileReadBytesCommand.hpp"
+#include "commands/fileio/FileReadLinesCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -179,6 +180,7 @@ namespace jasl {
 
             m_commandMap.emplace("folder_list", BUILD_COMMAND_AND_EXECUTE(FolderList));
             m_commandMap.emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
+            m_commandMap.emplace("file_read_lines", BUILD_COMMAND_AND_EXECUTE(FileReadLines));
 
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
@@ -231,6 +233,7 @@ namespace jasl {
 
             m_commandBuilders.emplace("folder_list", BUILD_COMMAND(FolderList));
             m_commandBuilders.emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
+            m_commandBuilders.emplace("file_read_lines", BUILD_COMMAND(FileReadLines));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,
