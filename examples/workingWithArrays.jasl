@@ -1,8 +1,8 @@
 ;;; How to use arrays. Note incomplete. 
 
 ;;; returning an int array from a function
-fn:array:int testReturnArray(size, index) -> A {
-    array:int(size) -> A;
+fn:ints testReturnArray(size, index) -> A {
+    ints(size) -> A;
     put 3 -> A(index);
 }
 
@@ -10,8 +10,8 @@ start {
     
     prn "Creating some arrays";
 
-    array:int(5) -> a;
-    array:real(10) -> d;
+    ints(5) -> a;
+    reals(10) -> d;
 
     prn "Arrays created";
 
