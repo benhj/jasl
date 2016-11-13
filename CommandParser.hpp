@@ -155,14 +155,9 @@ namespace jasl
 
             arrayTypes %= lexeme[string("int") | string("real") | string("byte") | string("string")];
 
-            // for building arrays. For example:
-            // array:int(5) -> a;
-            // array:real(10) -> d;     
-            // convert a string to a byte array:         
-            // array:byte str -> bytes; 
-            array %= string("array")
-                  >> ':'
-                  >> arrayTypes
+            // simpler array types. Arrays are 'plural' versions of primitives
+            // reals 5 -> a;
+            reals %= string("reals")
                   >> (('('
                   >> (mathExpression | bracketedMathExpression | intRule | genericString)
                   >> ')') | genericString)
@@ -170,34 +165,34 @@ namespace jasl
                   >> (genericString)
                   >> ';';
 
-            // simpler array types. Arrays are 'plural' versions of primitives
-            // reals 5 -> a;
-            reals %= string("reals")
-                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
-                  >> lit("->")
-                  >> (genericString)
-                  >> ';';
-
             ints %= string("ints")
-                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> (('('
+                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                  >> ')') | genericString)
                   >> lit("->")
                   >> (genericString)
                   >> ';';
 
             bytes %= string("bytes")
-                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> (('('
+                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                  >> ')') | genericString)
                   >> lit("->")
                   >> (genericString)
                   >> ';';
 
             bools %= string("bools")
-                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> (('('
+                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                  >> ')') | genericString)
                   >> lit("->")
                   >> (genericString)
                   >> ';';
 
             strings %= string("strings")
-                  >> ((mathExpression | bracketedMathExpression | intRule | genericString) | genericString)
+                  >> (('('
+                  >> (mathExpression | bracketedMathExpression | intRule | genericString)
+                  >> ')') | genericString)
                   >> lit("->")
                   >> (genericString)
                   >> ';';
@@ -599,7 +594,7 @@ namespace jasl
                          | call 
                          | returnable
                          | returnableArray
-                         | array | ints | bytes | strings | bools | reals
+                         | ints | bytes | strings | bools | reals
                          | intNewSyntax
                          | byteNewSyntax
                          | doubleNewSyntax
@@ -651,7 +646,6 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
-        qi::rule<Iterator, Function(), ascii::space_type> array;
         qi::rule<Iterator, Function(), ascii::space_type> ints;
         qi::rule<Iterator, Function(), ascii::space_type> bytes;
         qi::rule<Iterator, Function(), ascii::space_type> strings;
