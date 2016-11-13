@@ -63,17 +63,17 @@ Arrays
 Arrays are a fairly new and experimental feature and aren't yet fully supported. Only integer and real types are currently 
 available. 
 
-To create some arrays, you do something like:
+To create some arrays, the primitive types are 'pluralised'  so you do something like:
 
 ```
 ;;; integer array
-array:int(5) -> a;
+ints(5) -> a;
 
 ;;; double array
-array:real(10) -> d
+reals(10) -> d
 
 ;;; byte array
-array:byte(10) -> bytes;
+bytes(10) -> bytes;
 ```
 
 Note all arrays are implcitly zeroed out. 
@@ -131,8 +131,8 @@ fn:int funk (a) -> toReturn {
 }
 
 ;;; A function whereby the return type is an array
-fn:array:real arrayFunc() -> result {
-    array:real(10) -> result;
+fn:reals arrayFunc() -> result {
+    reals(10) -> result;
     put 3.14 -> result(0);
 }
 
@@ -205,7 +205,7 @@ for element in mylist {
 }
 
 ;;; array example
-array:real(10) -> myarray;
+reals(10) -> myarray;
 for element in myarray {
     prn element;
 }

@@ -1,9 +1,9 @@
 ;;; simple xor cryptor
 
-fn:array:byte encrypt(input, key) -> crypted {
+fn:bytes encrypt(input, key) -> crypted {
     length input -> inlength;
     length key -> keylength;
-    array:byte(inlength) -> crypted;
+    bytes(inlength) -> crypted;
     int 0 -> k;
     for i in input {
         int (k % keylength) -> keyval;
@@ -23,8 +23,8 @@ start {
     input "Key? " -> key;
 
     ;;; convert to byte arrays
-    array:byte key -> keybytes;
-    array:byte input -> inbytes;
+    bytes key -> keybytes;
+    bytes input -> inbytes;
 
     ;;; require lengths of clear text and key
     length input -> inlength;

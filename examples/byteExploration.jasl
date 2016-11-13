@@ -12,7 +12,7 @@ start {
     prn "finished!";
 
     ;;; Try creating a byte array
-    array:byte(10) -> bytes;
+    bytes(10) -> bytes;
 
     ;;; check the type
     type bytes -> bytesType;
@@ -38,7 +38,7 @@ start {
 
     ;;; create a string and convert to an array of bytes
     string "hello, world!" -> mystring;
-    array:byte mystring -> zebytes;
+    bytes mystring -> zebytes;
     for z in zebytes {
         pr z;
     }
