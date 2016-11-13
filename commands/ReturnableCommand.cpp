@@ -18,13 +18,13 @@ namespace jasl
     namespace {
 
         Type getForArrayTypes(std::string const & theType) {
-            if(theType == "int" || theType == "ints") {
+            if(theType == "ints") {
                 return Type::IntArray;
-            } else if(theType == "real" || theType == "reals") {
+            } else if(theType == "reals") {
                 return Type::RealArray;
-            } else if(theType == "byte" || theType == "bytes") {
+            } else if(theType == "bytes") {
                 return Type::ByteArray;
-            } else if(theType == "string" || theType == "string") {
+            } else if(theType == "strings") {
                 return Type::StringArray;
             } else {
                 throw std::runtime_error("fn: can't derive sub type");
@@ -32,9 +32,9 @@ namespace jasl
         }
 
         Type getReturnType(Function &func, 
-                           SharedCacheStack const &sharedCache,
-                           std::string & type)
+                           SharedCacheStack const &sharedCache)
         {
+            std::string type;
             (void)func.getValueA<std::string>(type, sharedCache);
             if(type == "int") {
                 return Type::Int;
@@ -48,10 +48,6 @@ namespace jasl
                 return Type::List;
             } else if(type == "nil") {
                 return Type::None;
-            } else if(type == "array") {
-                std::string subType;
-                (void)func.getValueB<std::string>(subType, sharedCache);
-                return getForArrayTypes(subType);
             } else {
                 return getForArrayTypes(type);
             }
@@ -64,53 +60,18 @@ namespace jasl
         : Command(func_, std::make_shared<CacheStack>(), output)
         , m_functionName()
         , m_returnSymbol()
-        , m_returnType(getReturnType(func_, sharedCache, m_stringType))
+        , m_returnType(getReturnType(func_, sharedCache))
     {
         if(m_returnType != Type::None) {
-            if(!(m_returnType == Type::IntArray  || 
-                 m_returnType == Type::RealArray ||
-                 m_returnType == Type::ByteArray ||
-                 m_returnType == Type::StringArray)) {
-                (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
-            } else {
-                if(m_stringType == "array") {
-                    (void)m_func.getValueE<std::string>(m_returnSymbol, m_sharedCache);
-                } else {
-                    (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
-                }
-            }
+            (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
         }
-        if(!(m_returnType == Type::IntArray  || 
-             m_returnType == Type::RealArray ||
-             m_returnType == Type::ByteArray ||
-             m_returnType == Type::StringArray)) {
-            (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
-        } else {
-            if(m_stringType == "array") {
-                (void)m_func.getValueC<std::string>(m_functionName, m_sharedCache);
-            } else {
-                (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);
-            }
-            
-        }
+        (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);    
     }
 
     bool ReturnableCommand::execute()
     {
         
-        if(!(m_returnType == Type::IntArray  || 
-             m_returnType == Type::RealArray ||
-             m_returnType == Type::ByteArray ||
-             m_returnType == Type::StringArray)) {
-            popParams(m_func.paramC, m_sharedCache);
-        } else {
-            if(m_stringType == "array") {
-                popParams(m_func.paramD, m_sharedCache);
-            } else {
-                popParams(m_func.paramC, m_sharedCache);
-            }
-        }
-
+        popParams(m_func.paramC, m_sharedCache);
         interpretFunctionBody();
 
         // Now set return param in GlobalCache
@@ -159,16 +120,8 @@ namespace jasl
     {
         std::vector<Function> innerFuncs;
 
-        auto const isArray = (m_returnType == Type::IntArray  || 
-                              m_returnType == Type::RealArray ||
-                              m_returnType == Type::ByteArray ||
-                              m_returnType == Type::StringArray);
-
         bool success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, 
-                                                                       !isArray ? m_func.paramE :
-                                                                       (m_stringType == "array" ? 
-                                                                        m_func.paramF : 
-                                                                        m_func.paramE));
+                                                                       m_func.paramE);
         if (success) {
             success = parseCommands(innerFuncs);
         } else {

@@ -26,8 +26,8 @@ void testTypes()
     ci.parseAndInterpretSingleCommand("bool true -> c;", cache);
     ci.parseAndInterpretSingleCommand("string \"hello\" -> d;", cache);
     ci.parseAndInterpretSingleCommand("list [some big list] -> e;", cache);
-    ci.parseAndInterpretSingleCommand("array:int(5) -> f;", cache);
-    ci.parseAndInterpretSingleCommand("array:real(5) -> g;", cache);
+    ci.parseAndInterpretSingleCommand("ints(5) -> f;", cache);
+    ci.parseAndInterpretSingleCommand("reals(5) -> g;", cache);
     ci.parseAndInterpretSingleCommand("type a -> atype;", cache);
     ci.parseAndInterpretSingleCommand("type b -> btype;", cache);
     ci.parseAndInterpretSingleCommand("type c -> ctype;", cache);
