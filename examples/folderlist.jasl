@@ -1,9 +1,24 @@
-;;; example folder listing
+;;; example folder listing -- list files with specific extension
+
+block reg(strings, ext) {
+	string "^.*\.(" -> myreg;
+	concat myreg,ext,")$" -> myreg;
+    for str in strings {
+    	regex(str, myreg) -> result;
+    	if (result = 1) {
+    		prn str;
+    	}
+    }
+}
 
 start {
-    args 0 -> folder;
-    folder_list folder -> strings;
-    for str in strings {
-        prn str;
+	if (argsCount < 2) {
+		prn "error, too few args";
+		prn "usage: folderlist.jasl </path/to/list> <extension>";
+	} else {
+	    args 0 -> folder;
+	    args 1 -> ext;
+	    folder_list folder -> strings;
+	    call reg(strings, ext);
     }
 }
