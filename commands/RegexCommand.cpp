@@ -38,7 +38,7 @@ namespace jasl
         }
 
         std::string symbol;
-        if(!m_func.getValueB<std::string>(symbol, m_sharedCache)) {
+        if(!m_func.getValueC<std::string>(symbol, m_sharedCache)) {
             setLastErrorMessage("regex: couldn't dtermine symbol");
             return false;
         }
