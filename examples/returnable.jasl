@@ -1,14 +1,14 @@
 ;;; Tests the parsing of a returnable function
 
 fn:int func (a, somelist) -> returned {
-	prn "Hello";
+    prn "Hello";
     prn somelist;
-	int 5 + a -> returned;
+    int 5 + a -> returned;
 }
 
 start {
     list [some list] -> somelist;
-	call func (1, somelist) -> result;
-	pr "called: ";
-	prn result;
+    call func (1, somelist) -> result;
+    pr "called: ";
+    prn result;
 }

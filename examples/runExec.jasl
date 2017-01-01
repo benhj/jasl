@@ -3,8 +3,8 @@
 ;;; E.g. ./jasl runExec /path/to/exec arg1 arg2 argN
 start {
 
-	;;; extract 0th argument from command line, 
-	;;; which corresponds to the executable
+    ;;; extract 0th argument from command line, 
+    ;;; which corresponds to the executable
     args 0 -> s;
 
     ;;; append any extra arguments also passed in,
@@ -12,10 +12,10 @@ start {
     ;;; Note that 'argsCount' is implicitly known.
     int 1 -> i;
     repeat (argsCount - 1) times {
-    	append (s, " ") -> s;
-    	args i -> extra;
-   	    append (s, extra) -> s;
-    	int (i + 1) -> i;
+        append (s, " ") -> s;
+        args i -> extra;
+        append (s, extra) -> s;
+        int (i + 1) -> i;
     }
 
     ;;; execute the command
