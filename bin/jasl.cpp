@@ -33,7 +33,7 @@ int main (int argc , char *argv[])
 
     // Store how many arguments there are
     // in special reserved int, 'argsCount'
-    ll::GlobalCache::setVar("argsCount", (int64_t)(argc - 2), ll::Type::Int);
+    //ll::GlobalCache::setVar("argsCount", (int64_t)(argc - 2), ll::Type::Int);
 
     // store any command line arguments that should also be interpreted
     if(argc >= 2) {
@@ -44,6 +44,7 @@ int main (int argc , char *argv[])
 
     // parse input file
     auto sharedCache = std::make_shared<ll::CacheStack>();
+    sharedCache->setVar("argsCount", (int64_t)(argc - 2), ll::Type::Int);
     auto functions = ci.parseCommandFile(argv[1]);
 
     // Now find all instances of 'script' and load extra script 'headers'
