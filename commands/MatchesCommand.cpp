@@ -1,45 +1,45 @@
 //
-//  RegexCommand.cpp
+//  MatchesCommand.cpp
 //  jasl
 //
 //  Copyright (c) 2017 Ben Jones. All rights reserved.
 //
 
-#include "RegexCommand.hpp"
+#include "MatchesCommand.hpp"
 #include "../caching/VarExtractor.hpp"
 #include <regex>
 #include <string>
 
 namespace jasl
 {
-    RegexCommand::RegexCommand(Function &func_,
-                               SharedCacheStack const &sharedCache,
-                               OptionalOutputStream const &output)
+    MatchesCommand::MatchesCommand(Function &func_,
+                                  SharedCacheStack const &sharedCache,
+                                  OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
     }
 
-    bool RegexCommand::execute()
+    bool MatchesCommand::execute()
     {
 
         // Command syntax:
-        // regex(toMatch, reg) -> result;
+        // matches(toMatch, reg) -> result;
 
         std::string toMatch;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramA, toMatch, m_sharedCache)) {
-            setLastErrorMessage("regex: couldn't determine string to match");
+            setLastErrorMessage("matches: couldn't determine string to match");
             return false;
         }
 
         std::string reg;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramB, reg, m_sharedCache)) {
-            setLastErrorMessage("regex: couldn't determine regex string");
+            setLastErrorMessage("matches: couldn't determine matches string");
             return false;
         }
 
         std::string symbol;
         if(!m_func.getValueC<std::string>(symbol, m_sharedCache)) {
-            setLastErrorMessage("regex: couldn't dtermine symbol");
+            setLastErrorMessage("matches: couldn't dtermine symbol");
             return false;
         }
 

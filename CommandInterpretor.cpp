@@ -31,7 +31,7 @@
 #include "commands/ListTokenIndexCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/PutCommand.hpp"
-#include "commands/RegexCommand.hpp"
+#include "commands/MatchesCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
 #include "commands/WhileCommand.hpp"
@@ -188,7 +188,7 @@ namespace jasl {
             m_commandMap.emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
             m_commandMap.emplace("file_read_lines", BUILD_COMMAND_AND_EXECUTE(FileReadLines));
 
-            m_commandMap.emplace("regex", BUILD_COMMAND_AND_EXECUTE(Regex));
+            m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
 
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
@@ -248,7 +248,7 @@ namespace jasl {
             m_commandBuilders.emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
             m_commandBuilders.emplace("file_read_lines", BUILD_COMMAND(FileReadLines));
 
-            m_commandBuilders.emplace("regex", BUILD_COMMAND(Regex));
+            m_commandBuilders.emplace("matches", BUILD_COMMAND(Matches));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,
