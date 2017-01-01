@@ -579,11 +579,17 @@ namespace jasl
                           >> genericString 
                           >> ';';
 
-             // read bytes from file       
+            // read bytes from file       
             fileReadBytes %= string("file_read_bytes")
                           >> (doubleQuotedString | genericString) >> lit("->")
                           >> genericString 
                           >> ';';
+
+            // write bytes to file       
+            fileWriteBytes %= string("file_write_bytes")
+                           >> (genericString) >> lit("->")
+                           >> (doubleQuotedString | genericString) 
+                           >> ';';
 
             matchesCommand %= string("matches")
                          >> ('(') 
@@ -641,6 +647,7 @@ namespace jasl
                          | folderList
                          | fileReadLines
                          | fileReadBytes
+                         | fileWriteBytes
                          | matchesCommand;
                          
             start %= allCommands;
@@ -712,6 +719,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> folderList;
         qi::rule<Iterator, Function(), ascii::space_type> fileReadLines;
         qi::rule<Iterator, Function(), ascii::space_type> fileReadBytes;
+        qi::rule<Iterator, Function(), ascii::space_type> fileWriteBytes;
 
         // string manipulation new (2017)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
