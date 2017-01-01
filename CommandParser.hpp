@@ -585,6 +585,14 @@ namespace jasl
                           >> genericString 
                           >> ';';
 
+            regexCommand %= string("regex")
+                         >> ('(') 
+                         >> (doubleQuotedString | genericString) >> ','
+                         >> (doubleQuotedString | genericString) 
+                         >> (')')
+                         >> lit("->")
+                         >> genericString
+                         >> ';';
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -632,7 +640,8 @@ namespace jasl
                          | get
                          | folderList
                          | fileReadLines
-                         | fileReadBytes;
+                         | fileReadBytes
+                         | regexCommand;
                          
             start %= allCommands;
         }
@@ -703,6 +712,9 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> folderList;
         qi::rule<Iterator, Function(), ascii::space_type> fileReadLines;
         qi::rule<Iterator, Function(), ascii::space_type> fileReadBytes;
+
+        // string manipulation new (2017)
+        qi::rule<Iterator, Function(), ascii::space_type> regexCommand;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
