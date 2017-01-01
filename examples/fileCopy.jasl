@@ -1,8 +1,11 @@
 ;;; test file writing
 
 start {
-	args 0 -> in;
-	args 1 -> out;
-	file_read_bytes in -> inbytes;
-	file_write_bytes inbytes -> out;
+    args 0 -> in;
+    args 1 -> out;
+    prn in;
+    prn out;
+    file_read_bytes in -> inbytes;
+    file_write_bytes inbytes -> out;
+    prn "Done!";
 }

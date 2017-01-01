@@ -26,7 +26,7 @@ namespace jasl
         if(VarExtractor::trySingleStringExtraction(m_func.paramB, filename, m_sharedCache)) {
 
             ByteArray value;
-            if(VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
+            if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
                 setLastErrorMessage("file_write_bytes: problem with bytes array");
                 return false;
             }
@@ -35,6 +35,7 @@ namespace jasl
             std::ofstream file(filename, std::ios::binary);
             auto const fileSize = value.size();
             file.write(reinterpret_cast<char const*>(&value.front()), fileSize);
+            file.close();
         } else {
             setLastErrorMessage("file_write_bytes: couldn't parse filename");
             return false;
