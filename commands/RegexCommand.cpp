@@ -46,7 +46,7 @@ namespace jasl
         std::regex txtRegex(reg);
         auto const result = std::regex_match(toMatch, txtRegex);
 
-        m_sharedCache->setVar(symbol, result, Type::Bool);
+        m_sharedCache->setVar(symbol, (int64_t)result, Type::Int);
         return true;
     }
 }
