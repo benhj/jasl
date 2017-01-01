@@ -4,7 +4,7 @@ block reg(strings, ext) {
     string "^.*\.(" -> myreg;
     concat myreg,ext,")$" -> myreg;
     for str in strings {
-        regex(str, myreg) -> result;
+        matches(str, myreg) -> result;
         if (result = 1) {
             prn str;
         }
