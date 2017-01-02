@@ -48,6 +48,7 @@
 #include "commands/fileio/FileReadBytesCommand.hpp"
 #include "commands/fileio/FileReadLinesCommand.hpp"
 #include "commands/fileio/FileWriteBytesCommand.hpp"
+#include "commands/fileio/FileAppendBytesCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -189,6 +190,7 @@ namespace jasl {
             m_commandMap.emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
             m_commandMap.emplace("file_read_lines", BUILD_COMMAND_AND_EXECUTE(FileReadLines));
             m_commandMap.emplace("file_write_bytes", BUILD_COMMAND_AND_EXECUTE(FileWriteBytes));
+            m_commandMap.emplace("file_append_bytes", BUILD_COMMAND_AND_EXECUTE(FileAppendBytes));
 
             m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
 
@@ -249,8 +251,8 @@ namespace jasl {
             m_commandBuilders.emplace("folder_list", BUILD_COMMAND(FolderList));
             m_commandBuilders.emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
             m_commandBuilders.emplace("file_read_lines", BUILD_COMMAND(FileReadLines));
-
             m_commandBuilders.emplace("file_write_bytes", BUILD_COMMAND(FileWriteBytes));
+            m_commandBuilders.emplace("file_append_bytes", BUILD_COMMAND(FileAppendBytes));
 
             m_commandBuilders.emplace("matches", BUILD_COMMAND(Matches));
 
