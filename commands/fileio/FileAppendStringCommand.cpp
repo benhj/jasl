@@ -1,34 +1,35 @@
 //
-//  FileAppendBytesCommand.cpp
+//  FileAppendStringCommand.cpp
 //  jasl
 //
 //  Copyright (c) 2017 Ben Jones. All rights reserved.
 //
 
-#include "FileAppendBytesCommand.hpp"
+#include "FileAppendStringCommand.hpp"
 #include "IOFunctions.hpp"
 #include "../../caching/VarExtractor.hpp"
 #include <boost/filesystem.hpp>
 #include <fstream>
+#include <string>
 
 namespace jasl
 {
 
-    FileAppendBytesCommand::FileAppendBytesCommand(Function &func_,
-                                                   SharedCacheStack const &sharedCache,
-                                                   OptionalOutputStream const &output)
+    FileAppendStringCommand::FileAppendStringCommand(Function &func_,
+                                                     SharedCacheStack const &sharedCache,
+                                                     OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
     }
 
-    bool FileAppendBytesCommand::execute() 
+    bool FileAppendStringCommand::execute() 
     { 
-         std::string filename;
+        std::string filename;
         if(VarExtractor::trySingleStringExtraction(m_func.paramB, filename, m_sharedCache)) {
 
-            ByteArray value;
-            if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
-                setLastErrorMessage("file_write_bytes: problem with bytes array");
+            std::string value;
+            if(!VarExtractor::trySingleStringExtraction(m_func.paramA, value, m_sharedCache)) {
+                setLastErrorMessage("file_write_bytes: problem with string");
                 return false;
             }
             // open the file and write data

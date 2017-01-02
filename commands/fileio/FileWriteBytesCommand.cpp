@@ -32,7 +32,7 @@ namespace jasl
                 return false;
             }
             // open the file and write data
-            writeBytes(filename, value);
+            writeBytes(filename, reinterpret_cast<char const*>(&value.front()), value.size());
         } else {
             setLastErrorMessage("file_write_bytes: couldn't parse filename");
             return false;
