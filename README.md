@@ -14,6 +14,26 @@ The interpretor will let you run a jasl script. E.g.:
 ./jasl examples/recursiveQueens.jasl 8
 ```
 
+TODO
+----
+
+The plan is to support the following stuff. I will cross out when each bit is done, and add more stuff as I think of it.
+
+* ~~basic types (64-bit integers, reals, arrays, strings, lists).~~
+* ~~random number generation~~
+* ~~conditionals~~
+* ~~loops~~
+* ~~functions~~
+* ~~file i/o API~~
+* ~~scoped variable allocation~~
+* ~~program argument handling~~
+* ~~command line input~~
+* ~~printing to standard out~~
+* ~~regex string matching~~
+* basic networking API
+* basic GUI support (draing of primitive shapes etc.)
+
+
 A program
 ---------
 
