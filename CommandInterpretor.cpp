@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2017 Ben Jones. All rights reserved.
 //
 
 #include "CommandInterpretor.hpp"
@@ -52,6 +52,7 @@
 #include "commands/fileio/FileAppendStringCommand.hpp"
 
 #include "commands/net/TCPConnectCommand.hpp"
+#include "commands/net/NetReadCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -199,6 +200,7 @@ namespace jasl {
             m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
 
             m_commandMap.emplace("tcp_connect", BUILD_COMMAND_AND_EXECUTE(TCPConnect));
+            m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
 
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
@@ -264,6 +266,7 @@ namespace jasl {
             m_commandBuilders.emplace("matches", BUILD_COMMAND(Matches));
 
             m_commandBuilders.emplace("tcp_connect", BUILD_COMMAND(TCPConnect));
+            m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,

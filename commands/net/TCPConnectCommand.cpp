@@ -2,7 +2,7 @@
 //  TCPConnectCommand.cpp
 //  jasl
 //
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2017 Ben Jones. All rights reserved.
 //
 
 #include "TCPConnectCommand.hpp"
@@ -27,7 +27,6 @@ namespace jasl
                                                OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
 
     bool TCPConnectCommand::execute() 
