@@ -4,13 +4,13 @@ start {
 
     ;;; open the connection
     prn "Connecting...";
-    tcp_connect "checkip.dyndns.org" : 80 -> gfd;
+    tcp_connect "localhost" : 8000 -> gfd;
 
     pr "gfd reads: "; prn gfd;
     
     ;;; write to the server
     prn "Writing to server...";
-    string "GET /index.html HTTP/1.0\n\n" -> request;
+    string "GET /index.html HTTP/1.1\n\n" -> request;
     bytes request -> req;
     net_write req -> gfd;
     

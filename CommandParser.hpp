@@ -51,8 +51,9 @@ namespace jasl
             using qi::uint_;
 
             // convenience rules
-            quotedString        %= lexeme['\'' >> +(char_ - '\'') >> '\''];
-            doubleQuotedString  %= lexeme['\"' >> +(char_ - '\"') >> '\"'];
+            escChar %= '\\' >> char_("n"); // new line
+            quotedString        %= lexeme['\'' >> +((escChar | char_) - '\'') >> '\''];
+            doubleQuotedString  %= lexeme['\"' >> +((escChar | char_) - '\"') >> '\"'];
             genericString       %= lexeme[+(char_("a-zA-Z_"))];
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
@@ -788,6 +789,7 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
         qi::rule<Iterator, std::string(), ascii::space_type> commentColons;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
+        qi::rule<Iterator, char()> escChar;
         qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
         qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
