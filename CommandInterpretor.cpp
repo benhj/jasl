@@ -53,6 +53,7 @@
 
 #include "commands/net/TCPConnectCommand.hpp"
 #include "commands/net/NetReadCommand.hpp"
+#include "commands/net/NetWriteCommand.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -201,6 +202,7 @@ namespace jasl {
 
             m_commandMap.emplace("tcp_connect", BUILD_COMMAND_AND_EXECUTE(TCPConnect));
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
+            m_commandMap.emplace("net_write", BUILD_COMMAND_AND_EXECUTE(NetWrite));
 
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
@@ -267,6 +269,7 @@ namespace jasl {
 
             m_commandBuilders.emplace("tcp_connect", BUILD_COMMAND(TCPConnect));
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
+            m_commandBuilders.emplace("net_write", BUILD_COMMAND(NetWrite));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,

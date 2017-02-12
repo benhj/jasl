@@ -627,6 +627,13 @@ namespace jasl
                     >> genericString
                     >> ';';
 
+            //Writes to a tcp connection. When implemented, will allow
+            // net_write bytes -> fd;
+            netWrite %= string("net_write")
+                     >> (doubleQuotedString | genericString) >> lit("->")
+                     >> (genericString | intRule)
+                     >> ';';
+
             // all the instructions at out disposal
             allCommands %= forLoop
                          | query 
@@ -679,7 +686,8 @@ namespace jasl
                          | fileAppendLine
                          | matchesCommand
                          | tcpConnect
-                         | netRead;
+                         | netRead
+                         | netWrite;
                          
             start %= allCommands;
         }
@@ -760,6 +768,7 @@ namespace jasl
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
         qi::rule<Iterator, Function(), ascii::space_type> netRead;
+        qi::rule<Iterator, Function(), ascii::space_type> netWrite;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
