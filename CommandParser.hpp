@@ -612,13 +612,20 @@ namespace jasl
                          >> genericString
                          >> ';';
 
-            // opn a tcp connection. When implemented, will allow
+            // opens a tcp connection. When implemented, will allow
             // tcp_connect server:port -> descriptor;
             tcpConnect %= string("tcp_connect")
-                       >> (doubleQuotedString | genericString) >> lit(":")
-                       >> (genericString | intRule) >> ':'
+                       >> (doubleQuotedString | genericString) >> ':'
+                       >> (genericString | intRule) >> lit("->")
                        >> genericString
                        >> ';';
+
+            // Reads from a tcp connection. When implemented, will allow
+            // net_read fd -> bytes;
+            netRead %= string("net_read")
+                    >> (genericString | intRule) >> lit("->")
+                    >> genericString
+                    >> ';';
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -671,7 +678,8 @@ namespace jasl
                          | fileAppendBytes
                          | fileAppendLine
                          | matchesCommand
-                         | tcpConnect;
+                         | tcpConnect
+                         | netRead;
                          
             start %= allCommands;
         }
@@ -751,6 +759,7 @@ namespace jasl
 
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
+        qi::rule<Iterator, Function(), ascii::space_type> netRead;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
