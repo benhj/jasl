@@ -612,6 +612,14 @@ namespace jasl
                          >> genericString
                          >> ';';
 
+            // opn a tcp connection. When implemented, will allow
+            // tcp_connect server:port -> descriptor;
+            tcpConnect %= string("tcp_connect")
+                       >> (doubleQuotedString | genericString) >> lit(":")
+                       >> (genericString | intRule) >> ':'
+                       >> genericString
+                       >> ';';
+
             // all the instructions at out disposal
             allCommands %= forLoop
                          | query 
@@ -662,7 +670,8 @@ namespace jasl
                          | fileWriteBytes
                          | fileAppendBytes
                          | fileAppendLine
-                         | matchesCommand;
+                         | matchesCommand
+                         | tcpConnect;
                          
             start %= allCommands;
         }
@@ -739,6 +748,9 @@ namespace jasl
 
         // string manipulation new (2017)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
+
+        // net i/o
+        qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
