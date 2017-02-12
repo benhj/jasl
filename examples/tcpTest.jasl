@@ -1,0 +1,33 @@
+;;; tcp connection test
+
+start {
+
+    ;;; open the connection
+    prn "Connecting...";
+    tcp_connect "checkip.dyndns.org" : 80 -> gfd;
+
+    pr "gfd reads: "; prn gfd;
+    
+    ;;; write to the server
+    prn "Writing to server...";
+    string "GET /index.html HTTP/1.0\n\n" -> request;
+    bytes request -> req;
+    net_write req -> gfd;
+    
+    ;;; get server response
+    prn "Getting response...";
+    net_read gfd -> bytes;
+
+    length bytes -> blength;
+    pr "length: ";
+    prn blength;
+
+    ;;; print out response
+    for b in bytes {
+        pr b;
+    }
+    prn " ";
+
+    prn "Done";
+
+}
