@@ -51,6 +51,8 @@
 #include "commands/fileio/FileAppendBytesCommand.hpp"
 #include "commands/fileio/FileAppendStringCommand.hpp"
 
+#include "commands/net/TCPConnectCommand.hpp"
+
 #include <boost/spirit/include/qi.hpp>
 
 #include <fstream>
@@ -196,6 +198,8 @@ namespace jasl {
 
             m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
 
+            m_commandMap.emplace("tcp_connect", BUILD_COMMAND_AND_EXECUTE(TCPConnect));
+
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
                                             OptionalOutputStream const &) {
@@ -258,6 +262,8 @@ namespace jasl {
             m_commandBuilders.emplace("file_append_line", BUILD_COMMAND(FileAppendString));
 
             m_commandBuilders.emplace("matches", BUILD_COMMAND(Matches));
+
+            m_commandBuilders.emplace("tcp_connect", BUILD_COMMAND(TCPConnect));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,
