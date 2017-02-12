@@ -52,14 +52,12 @@ namespace jasl
             return false;
         } 
 
-        memset(&serv_addr, '0', sizeof(serv_addr)); 
+        ::bzero((char *) &serv_addr, sizeof(serv_addr));
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port); 
-
-        if(::inet_pton(AF_INET, server.c_str(), &serv_addr.sin_addr) <= 0) {
-            setLastErrorMessage("tcp_connect: inet_pton error occured");
-            return false;
-        } 
+        auto serverAddress = ::gethostbyname(server.c_str());
+        ::bcopy((char *)serverAddress->h_addr, 
+          (char *)&serv_addr.sin_addr.s_addr, serverAddress->h_length);
 
         if(::connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
            setLastErrorMessage("tcp_connect: connection failed");

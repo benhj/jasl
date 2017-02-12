@@ -32,28 +32,36 @@ namespace jasl
             return false;
         }
 
+        std::cout<<"d "<<fd<<std::endl;
+
         char recvBuff[1024];
         memset(recvBuff, '0',sizeof(recvBuff));
         int n = 0;
         std::vector<uint8_t> bytes;
         while ( (n = ::read(fd, recvBuff, sizeof(recvBuff) - 1)) > 0) {
             recvBuff[n] = 0;
+            std::cout<<"d2"<<std::endl;
             for (int i = 0; i < n; ++i) {
                 bytes.push_back(recvBuff[i]);
             }
+            std::cout<<"d3"<<std::endl;
         } 
+
+        std::cout<<"e"<<std::endl;
 
         if (n < 0) {
             setLastErrorMessage("net_read: read error");
             return false;
         }
 
+        std::cout<<"f"<<std::endl;
+
         std::string bytesArrayName;
         if(!m_func.getValueB<std::string>(bytesArrayName, m_sharedCache)) {
             setLastErrorMessage("net_read: couldn't parse name");
             return false;
         }
-
+std::cout<<"g"<<std::endl;
         m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);        
         return true;
     }
