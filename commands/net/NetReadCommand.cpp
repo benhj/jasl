@@ -36,7 +36,7 @@ namespace jasl
         memset(recvBuff, '0',sizeof(recvBuff));
         int n = 0;
         std::vector<uint8_t> bytes;
-        while ( (n = ::read(fd, recvBuff, sizeof(recvBuff) - 1)) >= 0) {
+        while ( (n = ::read(fd, recvBuff, sizeof(recvBuff) - 1)) > 0) {
             recvBuff[n] = 0;
             for (int i = 0; i < n; ++i) {
                 bytes.push_back(recvBuff[i]);

@@ -44,7 +44,7 @@ namespace jasl
         }
 
         // connect to server and port
-        int sockfd = 0;
+        int64_t sockfd = 0;
         struct sockaddr_in serv_addr; 
 
         if((sockfd = ::socket(AF_INET, SOCK_STREAM, 0)) < 0) {
