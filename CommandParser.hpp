@@ -77,7 +77,7 @@ namespace jasl
 
 
             escChar %= '\\' >> char_("n"); // new line
-            quotedString        %= lexeme['\'' >> +((escChar | char_) - '\'') >> '\''];
+            quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | escapes ) >> '\''];
             doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | escapes ) >> '"'];
             genericString       %= lexeme[+(char_("a-zA-Z_"))];
             allChars            %= lexeme[+(char_ - '\n')];
