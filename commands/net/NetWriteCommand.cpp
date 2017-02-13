@@ -25,11 +25,6 @@ namespace jasl
 
     bool NetWriteCommand::execute() 
     {
-        ByteArray value;
-        if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
-            setLastErrorMessage("net_write: problem with bytes array");
-            return false;
-        }
 
         int64_t fd;
         if(!VarExtractor::trySingleIntExtraction(m_func.paramB, fd, m_sharedCache)) {
@@ -37,7 +32,19 @@ namespace jasl
             return false;
         }
 
+        ByteArray value;
+        if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
+            std::string tryString;
+            if(VarExtractor::trySingleStringExtraction(m_func.paramA, tryString, m_sharedCache)) {
+                ::write(fd, &tryString.front(), tryString.size());
+                return true;
+            }
+            setLastErrorMessage("net_write: problem with bytes array");
+            return false;
+        } 
         ::write(fd, &value.front(), value.size());
         return true;
+
+        
     }
 }

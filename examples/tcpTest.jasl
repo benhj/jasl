@@ -4,23 +4,16 @@ start {
 
     ;;; open the connection
     prn "Connecting...";
-    tcp_connect "localhost" : 8000 -> gfd;
+    args 0 -> hostname;
+    tcp_connect hostname:80 -> gfd;
 
-    pr "gfd reads: "; prn gfd;
-    
     ;;; write to the server
     prn "Writing to server...";
-    string "GET /index.html HTTP/1.1\n\n" -> request;
-    bytes request -> req;
-    net_write req -> gfd;
+    net_write "GET /index.html HTTP/1.1\n\n" -> gfd;
     
     ;;; get server response
     prn "Getting response...";
     net_read gfd -> bytes;
-
-    length bytes -> blength;
-    pr "length: ";
-    prn blength;
 
     ;;; print out response
     for b in bytes {
