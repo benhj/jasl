@@ -30,15 +30,14 @@ namespace jasl
             setLastErrorMessage("net_write: problem with bytes array");
             return false;
         }
-        std::cout<<"a"<<std::endl;
+
         int64_t fd;
         if(!VarExtractor::trySingleIntExtraction(m_func.paramB, fd, m_sharedCache)) {
             setLastErrorMessage("net_write: can't extract fd");
             return false;
         }
-        std::cout<<"b"<<std::endl;
-        ::write(fd, &value.front(), value.size());     
-        std::cout<<"c"<<std::endl;   
+
+        ::write(fd, &value.front(), value.size());
         return true;
     }
 }
