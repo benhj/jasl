@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-2017 Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -25,6 +25,10 @@
 #include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/io.hpp>
+#include <boost/spirit/include/phoenix.hpp>
+
+#include <unicode/unistr.h>
+#include <unicode/bytestream.h>
 
 #include <cstdint>
 
@@ -41,6 +45,7 @@ namespace jasl
             // token types that we're interested in using
             using qi::long_long;
             using qi::lit;
+            using qi::eol;
             using qi::double_;
             using qi::bool_;
             using qi::lexeme;
@@ -51,9 +56,29 @@ namespace jasl
             using qi::uint_;
 
             // convenience rules
+            escapes = '\\' > ( escaped_character[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ]
+                                     | ( "x" > qi::uint_parser< UChar32, 16, 2, 2 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
+                                     | ( "u" > qi::uint_parser< UChar32, 16, 4, 4 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
+                                     | ( "U" > qi::uint_parser< UChar32, 16, 8, 8 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
+                                     | qi::uint_parser< UChar32,  8, 1, 3 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ]
+                                     );
+
+            escaped_character.add
+            (  "a", 0x07 ) // alert
+            (  "b", 0x08 ) // backspace
+            (  "f", 0x0c ) // form feed
+            (  "n", 0x0a ) // new line
+            (  "r", 0x0d ) // carriage return
+            (  "t", 0x09 ) // horizontal tab
+            (  "v", 0x0b ) // vertical tab
+            ( "\"", 0x22 ) // literal quotation mark
+            ( "\\", 0x5c ) // literal backslash
+            ;
+
+
             escChar %= '\\' >> char_("n"); // new line
             quotedString        %= lexeme['\'' >> +((escChar | char_) - '\'') >> '\''];
-            doubleQuotedString  %= lexeme['\"' >> +((escChar | char_) - '\"') >> '\"'];
+            doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | escapes ) >> '"'];
             genericString       %= lexeme[+(char_("a-zA-Z_"))];
             allChars            %= lexeme[+(char_ - '\n')];
             commentSlash        %= string("//");
@@ -790,6 +815,22 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> commentColons;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
         qi::rule<Iterator, char()> escChar;
+
+        struct cp2utf8_f
+        {
+            template < typename ... > struct result { using type = void; };
+
+            void operator()( std::string & a, UChar32 codepoint ) const
+            {
+                icu::StringByteSink< std::string > bs( &a );
+                icu::UnicodeString::fromUTF32( &codepoint, 1 ).toUTF8( bs );
+            }
+        };
+
+        ::boost::phoenix::function< cp2utf8_f > cp2utf8;
+
+        qi::rule< Iterator, std::string() > escapes;
+        qi::symbols< char const, UChar32 > escaped_character;
         qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
         qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
