@@ -6,7 +6,7 @@ My probably crappy attempt at a programming language. Please check out the examp
 sh build.sh all
 ```
 
-Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build.
+Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build. The libicu development libraries an headers are also required by the parsing engine -- basically to allow the parsing of code points and escape characters. It's a pain in the arse to build but seems to work well. It is assumed by the build script that all boost and icu libs are under `/usr/loca/lib` and headers under `/usr/local/include`.
 
 The interpretor will let you run a jasl script. E.g.:
 
