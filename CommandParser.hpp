@@ -661,6 +661,13 @@ namespace jasl
                      >> (genericString | intRule)
                      >> ';';
 
+
+            // Closes a tcp connection:
+            // net_close fd;
+            netClose %= string("net_close")
+                     >> (genericString | intRule)
+                     >> ';';
+
             // all the instructions at out disposal
             allCommands %= forLoop
                          | query 
@@ -714,7 +721,8 @@ namespace jasl
                          | matchesCommand
                          | tcpConnect
                          | netRead
-                         | netWrite;
+                         | netWrite
+                         | netClose;
                          
             start %= allCommands;
         }
@@ -796,6 +804,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
         qi::rule<Iterator, Function(), ascii::space_type> netRead;
         qi::rule<Iterator, Function(), ascii::space_type> netWrite;
+        qi::rule<Iterator, Function(), ascii::space_type> netClose;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;

@@ -21,6 +21,9 @@ start {
     }
     prn " ";
 
+    ;;; close the connection
+    net_close gfd;
+
     prn "Done";
 
 }
