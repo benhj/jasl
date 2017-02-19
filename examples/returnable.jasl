@@ -3,7 +3,7 @@
 fn:int func (a, somelist) -> returned {
     prn "Hello";
     prn somelist;
-    int 5 + a -> returned;
+    int (5 + a) -> returned;
 }
 
 start {
