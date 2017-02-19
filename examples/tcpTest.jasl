@@ -7,8 +7,9 @@ start {
     args 0 -> hostname;
     tcp_connect hostname:80 -> gfd;
 
-    pr "gfd: ";
-    prn gfd;
+    say "gfd: ";
+    say gfd;
+    say "\n";
 
     ;;; write to the server
     say "Writing to server..\n";
