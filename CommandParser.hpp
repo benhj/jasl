@@ -469,6 +469,13 @@ namespace jasl
                        comparisonExpression | bracketedComparisonExpression)
                    >> ';';
 
+            // equivalent to 'pr' -- slightly nicer syntax
+            say %= string("say")
+                   >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                       mathExpression | bracketedMathExpression | 
+                       comparisonExpression | bracketedComparisonExpression)
+                   >> ';';
+
             // lists all variables
             vars %= string("vars") >> brackets >> ';';
 
@@ -552,6 +559,7 @@ namespace jasl
                          | ints | bytes | strings | bools | reals
                          | prn
                          | pr
+                         | say
                          | ifRule 
                          | ifRule_B
                          | commentFunc
@@ -604,6 +612,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
         qi::rule<Iterator, Function(), ascii::space_type> pr;
         qi::rule<Iterator, Function(), ascii::space_type> prn;
+        qi::rule<Iterator, Function(), ascii::space_type> say;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;

@@ -3,7 +3,7 @@
 start {
 
     ;;; open the connection
-    prn "Connecting...";
+    say "Connecting...\n";
     args 0 -> hostname;
     tcp_connect hostname:80 -> gfd;
 
@@ -11,22 +11,22 @@ start {
     prn gfd;
 
     ;;; write to the server
-    prn "Writing to server...";
+    say "Writing to server..\n";
     net_write "GET /index.html HTTP/1.1\n\n" -> gfd;
     
     ;;; get server response
-    prn "Getting response...";
+    say "Getting response...\n";
     net_read gfd -> bytes;
 
     ;;; print out response
     for b in bytes {
         pr b;
     }
-    prn " ";
+    say "\n";
 
     ;;; close the connection
     net_close gfd;
 
-    prn "Done";
+    say "Done\n";
 
 }
