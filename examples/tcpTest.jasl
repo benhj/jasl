@@ -7,6 +7,9 @@ start {
     args 0 -> hostname;
     tcp_connect hostname:80 -> gfd;
 
+    pr "gfd: ";
+    prn gfd;
+
     ;;; write to the server
     prn "Writing to server...";
     net_write "GET /index.html HTTP/1.1\n\n" -> gfd;
