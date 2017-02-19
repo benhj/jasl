@@ -541,12 +541,6 @@ namespace jasl
                                >> genericString
                                >> ';';
 
-            argsRule %= string("args")
-                     >> (intRule | genericString) 
-                     >> lit("->")
-                     >> genericString
-                     >> ';';
-
             // for printing out a string to screen
             pr %= string("pr")
                  >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
@@ -593,43 +587,6 @@ namespace jasl
             // for exiting a program
             exitCommand %= string("exit") >> -(genericString) >> ';';
 
-            // list folder
-            // folder_list "/path/to/folder" -> strings;
-            folderList %= string("folder_list")
-                       >> (doubleQuotedString | genericString) >> lit("->")
-                       >> genericString 
-                       >> ';';
-
-            // read lines from file       
-            fileReadLines %= string("file_read_lines")
-                          >> (doubleQuotedString | genericString) >> lit("->")
-                          >> genericString 
-                          >> ';';
-
-            // read bytes from file       
-            fileReadBytes %= string("file_read_bytes")
-                          >> (doubleQuotedString | genericString) >> lit("->")
-                          >> genericString 
-                          >> ';';
-
-            // write bytes to file       
-            fileWriteBytes %= string("file_write_bytes")
-                           >> (genericString) >> lit("->")
-                           >> (doubleQuotedString | genericString) 
-                           >> ';';
-
-            // append bytes to file       
-            fileAppendBytes %= string("file_append_bytes")
-                            >> (genericString) >> lit("->")
-                            >> (doubleQuotedString | genericString) 
-                            >> ';';
-
-
-            fileAppendLine %= string("file_append_line")
-                            >> (genericString) >> lit("->")
-                            >> (doubleQuotedString | genericString) 
-                            >> ';';
-
             matchesCommand %= string("matches")
                          >> ('(') 
                          >> (doubleQuotedString | genericString) >> ','
@@ -647,26 +604,24 @@ namespace jasl
                        >> genericString
                        >> ';';
 
-            // Reads from a tcp connection. When implemented, will allow
-            // net_read fd -> bytes;
-            netRead %= string("net_read")
-                    >> (genericString | intRule) >> lit("->")
-                    >> genericString
-                    >> ';';
-
-            //Writes to a tcp connection. When implemented, will allow
-            // net_write bytes -> fd;
-            netWrite %= string("net_write")
-                     >> (doubleQuotedString | genericString) >> lit("->")
-                     >> (genericString | intRule)
-                     >> ';';
-
-
             // Closes a tcp connection:
             // net_close fd;
             netClose %= string("net_close")
                      >> (genericString | intRule)
                      >> ';';
+
+            // matches this type of command:
+            // net_send something -> somethingElse;
+            genericArrowRule %= genericString
+                             >> (doubleQuotedString | 
+                                 genericString |
+                                 doubleRule | 
+                                 intRule | 
+                                 mathExpression | 
+                                 bracketedMathExpression)
+                              >> lit("->")
+                              >> (doubleQuotedString | genericString) 
+                              >> ';';
 
             // all the instructions at out disposal
             allCommands %= forLoop
@@ -683,7 +638,6 @@ namespace jasl
                          | boolNewSyntax
                          | ifRule 
                          | ifRule_B
-                         | argsRule
                          | commentFunc
                          | vars 
                          | loadScript
@@ -712,17 +666,10 @@ namespace jasl
                          | exitCommand
                          | put
                          | get
-                         | folderList
-                         | fileReadLines
-                         | fileReadBytes
-                         | fileWriteBytes
-                         | fileAppendBytes
-                         | fileAppendLine
                          | matchesCommand
                          | tcpConnect
-                         | netRead
-                         | netWrite
-                         | netClose;
+                         | netClose
+                         | genericArrowRule;
                          
             start %= allCommands;
         }
@@ -758,7 +705,6 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringList;
-        qi::rule<Iterator, Function(), ascii::space_type> argsRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
         qi::rule<Iterator, Function(), ascii::space_type> stringToRealRule;
         qi::rule<Iterator, Function(), ascii::space_type> inputRule;
@@ -789,21 +735,14 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> comparisonSymbols;
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
-        // file i/o
-        qi::rule<Iterator, Function(), ascii::space_type> folderList;
-        qi::rule<Iterator, Function(), ascii::space_type> fileReadLines;
-        qi::rule<Iterator, Function(), ascii::space_type> fileReadBytes;
-        qi::rule<Iterator, Function(), ascii::space_type> fileWriteBytes;
-        qi::rule<Iterator, Function(), ascii::space_type> fileAppendBytes;
-        qi::rule<Iterator, Function(), ascii::space_type> fileAppendLine;
+        // generic rule
+        qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
 
         // string manipulation new (2017)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
 
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
-        qi::rule<Iterator, Function(), ascii::space_type> netRead;
-        qi::rule<Iterator, Function(), ascii::space_type> netWrite;
         qi::rule<Iterator, Function(), ascii::space_type> netClose;
 
         // Core rule declarations

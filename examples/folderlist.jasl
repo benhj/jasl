@@ -1,7 +1,7 @@
 ;;; example folder listing -- list files with specific extension
 
 block reg(strings, ext) {
-    string "^.*\.(" -> myreg;
+    string "^.*\\.(" -> myreg;
     concat myreg,ext,")$" -> myreg;
     for str in strings {
         matches(str, myreg) -> result;
