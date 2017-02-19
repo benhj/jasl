@@ -153,33 +153,6 @@ namespace jasl
                                     | bracketedMathExpression
                                     | bracketedComparisonExpression);
 
-            // int 4 -> i;
-            intNewSyntax %= string("int")
-                         >> (mathExpression | bracketedMathExpression | intRule | genericString | doubleQuotedString)
-                         >> lit("->")
-                         >> (genericString)
-                         >> ';';
-
-            byteNewSyntax %= string("byte")
-                          >> (mathExpression | bracketedMathExpression | intRule | genericString)
-                          >> lit("->")
-                          >> (genericString)
-                          >> ';';
-
-            // real 5.0 -> d; 
-            doubleNewSyntax %= string("real")
-                            >> (mathExpression | bracketedMathExpression | doubleRule | genericString | doubleQuotedString)
-                            >> lit("->")
-                            >> (genericString)
-                            >> ';';
-
-            // bool true -> b;
-            boolNewSyntax %= string("bool")
-                          >> (comparisonExpression | bracketedComparisonExpression | boolRule | genericString | doubleQuotedString)
-                          >> lit("->")
-                          >> (genericString)
-                          >> ';';
-
             arrayTypes %= lexeme[string("int") | string("real") | string("byte") | string("string")];
 
             // simpler array types. Arrays are 'plural' versions of primitives
@@ -356,8 +329,6 @@ namespace jasl
                        >> commandCollection
                        >> '}';
 
-            
-
             // a simple if statement
             ifRule %= string("if")
                    >> '(' 
@@ -386,37 +357,6 @@ namespace jasl
                  // optional return part
                  >> -(lit("->") >> genericString)
                  >> ';';
-
-            // string or array length
-            // length "hello" -> len;
-            stringLengthRule %= string("length")
-                             >> (doubleQuotedString | genericString) 
-                             >> lit("->")
-                             >> genericString
-                             >> ';';
-
-            // queries for user input
-            // input "What do you want ?" -> s;
-            inputRule %= string("input")
-                      >> (doubleQuotedString | genericString) >> lit("->")
-                      >> genericString 
-                      >> ';';
-
-            // string type
-            // string "hello" -> name;
-            stringRule %= string("string")
-                       >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
-                           mathExpression | bracketedMathExpression | 
-                           comparisonExpression | bracketedComparisonExpression | bracketedWords
-                           | concatList) >> lit("->")
-                       >> genericString 
-                       >> ';';
-       
-            // concatenate strings
-            concatRule %= string("concat")
-                       >> (parameterList) >> lit("->")
-                       >> genericString 
-                       >> ';';
 
             //  for setting a value in an array
             //  put 5 -> a(0);             
@@ -449,18 +389,6 @@ namespace jasl
             // a collection of words
             words          %= *(word | bracketedWords); // zero or more words
             bracketedWords %= '[' >> words >> ']';
-            stringList     %= string("list")
-                           >> (bracketedWords | genericString)
-                           >> lit("->")
-                           >> genericString // the name of the list
-                           >> ';';
-
-            // list_to_string [hello there] -> s;
-            listToString  %= string("list_to_string")
-                          >> (bracketedWords | genericString)
-                          >> lit("->")
-                          >> genericString 
-                          >> ';';
 
             // index_of ("hello", [hello there]) -> s;
             listTokenIndex  %= string("index_of")
@@ -527,20 +455,6 @@ namespace jasl
                         >> (doubleQuotedString | genericString)
                         >> ';';
 
-            // will try and convert a string to an int
-            stringToIntRule %= string("string_to_int")
-                            >> (doubleQuotedString | genericString) 
-                            >> lit("->")
-                            >> genericString
-                            >> ';';
-
-            // will try and convert a string to a double
-            stringToRealRule %= string("string_to_real")
-                               >> (doubleQuotedString | genericString) 
-                               >> lit("->")
-                               >> genericString
-                               >> ';';
-
             // for printing out a string to screen
             pr %= string("pr")
                  >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
@@ -565,13 +479,6 @@ namespace jasl
             // erases a variable from the cache
             releaseCommand %= string("release")
                            >> genericString >> ';';
-
-            // determines the type of a variable and stores in a string
-            typeCommand %= string("type") 
-                        >> genericString
-                        >> lit("->") 
-                        >> genericString
-                        >> ';';
 
             // generates an int or real in somce range [0, n]
             // random:int n -> value;
@@ -610,15 +517,25 @@ namespace jasl
                      >> (genericString | intRule)
                      >> ';';
 
+            // concatenate strings. 
+            concatRule %= string("concat")
+                       >> (parameterList) >> lit("->")
+                       >> genericString 
+                       >> ';';
+
             // matches this type of command:
             // net_send something -> somethingElse;
             genericArrowRule %= genericString
-                             >> (doubleQuotedString | 
-                                 genericString |
-                                 doubleRule | 
-                                 intRule | 
-                                 mathExpression | 
-                                 bracketedMathExpression)
+                             >> (doubleQuotedString
+                                 | boolRule
+                                 | genericString
+                                 | doubleRule
+                                 | intRule
+                                 | mathExpression
+                                 | bracketedMathExpression
+                                 | comparisonExpression
+                                 | bracketedComparisonExpression
+                                 | bracketedWords)
                               >> lit("->")
                               >> (doubleQuotedString | genericString) 
                               >> ';';
@@ -631,44 +548,32 @@ namespace jasl
                          | call 
                          | returnable
                          | returnableArray
+                         | put
                          | ints | bytes | strings | bools | reals
-                         | intNewSyntax
-                         | byteNewSyntax
-                         | doubleNewSyntax
-                         | boolNewSyntax
+                         | prn
+                         | pr
                          | ifRule 
                          | ifRule_B
                          | commentFunc
                          | vars 
                          | loadScript
-                         | prn
-                         | pr
                          | repeatLoop
                          | whileLoop
                          | appendRule
                          | reverseRule 
-                         | stringToRealRule
-                         | stringToIntRule
-                         | stringLengthRule
-                         | stringRule
-                         | concatRule
                          | listGetToken
                          | listSetToken
                          | listAddToken
-                         | listToString
                          | listTokenIndex
-                         | stringList
-                         | inputRule
                          | execCommand
                          | releaseCommand
-                         | typeCommand
                          | randomCommand
                          | exitCommand
-                         | put
                          | get
                          | matchesCommand
                          | tcpConnect
                          | netClose
+                         | concatRule
                          | genericArrowRule;
                          
             start %= allCommands;
@@ -699,23 +604,14 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
         qi::rule<Iterator, Function(), ascii::space_type> pr;
         qi::rule<Iterator, Function(), ascii::space_type> prn;
-        qi::rule<Iterator, Function(), ascii::space_type> stringRule;
-        qi::rule<Iterator, Function(), ascii::space_type> concatRule;
-        qi::rule<Iterator, Function(), ascii::space_type> stringLengthRule;
         qi::rule<Iterator, Function(), ascii::space_type> appendRule;
         qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
-        qi::rule<Iterator, Function(), ascii::space_type> stringList;
-        qi::rule<Iterator, Function(), ascii::space_type> stringToIntRule;
-        qi::rule<Iterator, Function(), ascii::space_type> stringToRealRule;
-        qi::rule<Iterator, Function(), ascii::space_type> inputRule;
-        qi::rule<Iterator, Function(), ascii::space_type> listToString;
         qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
         qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
         qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
         qi::rule<Iterator, Function(), ascii::space_type> listAddToken;
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
-        qi::rule<Iterator, Function(), ascii::space_type> typeCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
         qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
         qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
@@ -723,10 +619,6 @@ namespace jasl
         qi::rule<Iterator, double(), ascii::space_type> doubleRule;
         qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
         qi::rule<Iterator, bool(), ascii::space_type> boolRule;
-        qi::rule<Iterator, Function(), ascii::space_type> intNewSyntax;
-        qi::rule<Iterator, Function(), ascii::space_type> byteNewSyntax;
-        qi::rule<Iterator, Function(), ascii::space_type> doubleNewSyntax;
-        qi::rule<Iterator, Function(), ascii::space_type> boolNewSyntax;
         qi::rule<Iterator, MathExpression(), ascii::space_type> mathExpression;
         qi::rule<Iterator, MathExpression(), ascii::space_type> bracketedMathExpression;
         qi::rule<Iterator, ComparisonExpression(), ascii::space_type> comparisonExpression;
@@ -736,6 +628,7 @@ namespace jasl
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // generic rule
+        qi::rule<Iterator, Function(), ascii::space_type> concatRule;
         qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
 
         // string manipulation new (2017)
