@@ -66,6 +66,9 @@ namespace jasl
             }
         } 
 
+        SSL_free(ssl);
+        SSL_CTX_free(ctx);
+
         if (n < 0) {
             setLastErrorMessage("net_sread: read error");
             return false;

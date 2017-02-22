@@ -64,10 +64,11 @@ namespace jasl
             setLastErrorMessage("net_swrite: problem with bytes array");
             return false;
         } 
-
-
-                              
+           
         SSL_write(ssl, &value.front(), value.size());  
+        SSL_free(ssl);
+        SSL_CTX_free(ctx);
+
         return true;
     }
 }
