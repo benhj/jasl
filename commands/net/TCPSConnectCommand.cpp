@@ -48,19 +48,6 @@ namespace {
         }
         return sd;
     }
-
-    /*---------------------------------------------------------------------*/
-    /*--- InitCTX - initialize the SSL engine.                          ---*/
-    /*---------------------------------------------------------------------*/
-    SSL_CTX* InitCTX(void)
-    {   
-        OpenSSL_add_all_algorithms();        /* Load cryptos, et.al. */
-        SSL_load_error_strings();            /* Bring in and register error messages */
-        auto method = SSLv2_client_method(); /* Create new client-method instance */
-        return SSL_CTX_new(method);          /* Create new context */
-    }
-
-
 }
 
 namespace jasl
@@ -88,8 +75,6 @@ namespace jasl
         }
 
         // connect to server and port
-
-        auto ctx = InitCTX();
         auto sockfd = OpenConnection(server.c_str(), port);
         auto ssl = SSL_new(ctx);                /* create new SSL connection state */
         SSL_set_fd(ssl, sockfd);                /* attach the socket descriptor */
