@@ -76,12 +76,6 @@ namespace jasl
 
         // connect to server and port
         auto sockfd = OpenConnection(server.c_str(), port);
-        auto ssl = SSL_new(ctx);                /* create new SSL connection state */
-        SSL_set_fd(ssl, sockfd);                /* attach the socket descriptor */
-        if (SSL_connect(ssl) == -1) {       /* perform the connection */
-            setLastErrorMessage("tcp_sconnect: ssl failure");
-            return false;
-        }
         
         std::string connectionName;
         if(!m_func.getValueC<std::string>(connectionName, m_sharedCache)) {
