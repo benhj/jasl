@@ -1,11 +1,11 @@
 //
-//  NetSWriteCommand.cpp
+//  NetSReadCommand.cpp
 //  jasl
 //
 //  Copyright (c) 2017 Ben Jones. All rights reserved.
 //
 
-#include "NetSWriteCommand.hpp"
+#include "NetSReadCommand.hpp"
 #include "../../caching/VarExtractor.hpp"
 
 #include <stdio.h>
@@ -31,18 +31,19 @@ namespace {
 namespace jasl
 {
 
-    NetSWriteCommand::NetSWriteCommand(Function &func_,
+    NetSReadCommand::NetSReadCommand(Function &func_,
                                       SharedCacheStack const &sharedCache,
                                       OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
     }
 
-    bool NetSWriteCommand::execute() 
+    bool NetSReadCommand::execute() 
     {
+        // now try and extract the actual words
         int64_t fd;
-        if(!VarExtractor::trySingleIntExtraction(m_func.paramB, fd, m_sharedCache)) {
-            setLastErrorMessage("net_swrite: can't extract fd");
+        if(!VarExtractor::trySingleIntExtraction(m_func.paramA, fd, m_sharedCache)) {
+            setLastErrorMessage("net_sread: can't extract fd");
             return false;
         }
 
@@ -50,24 +51,33 @@ namespace jasl
         auto ssl = SSL_new(ctx);            /* create new SSL connection state */
         SSL_set_fd(ssl, fd);                /* attach the socket descriptor */
         if (SSL_connect(ssl) == -1) {       /* perform the connection */
-            setLastErrorMessage("net_swrite: ssl failure");
+            setLastErrorMessage("net_sread: ssl failure");
+            return false;
+        }
+                              
+        char recvBuff[1024];
+        memset(recvBuff, '0',sizeof(recvBuff));
+        int n = 0;
+        std::vector<uint8_t> bytes;
+        while ( (n = SSL_read(ssl, recvBuff, sizeof(recvBuff) - 1)) > 0) {
+            recvBuff[n] = 0;
+            for (int i = 0; i < n; ++i) {
+                bytes.push_back(recvBuff[i]);
+            }
+        } 
+
+        if (n < 0) {
+            setLastErrorMessage("net_sread: read error");
             return false;
         }
 
-        ByteArray value;
-        if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
-            std::string tryString;
-            if(VarExtractor::trySingleStringExtraction(m_func.paramA, tryString, m_sharedCache)) {
-                SSL_write(ssl, &tryString.front(), tryString.size());
-                return true;
-            }
-            setLastErrorMessage("net_swrite: problem with bytes array");
+        std::string bytesArrayName;
+        if(!m_func.getValueB<std::string>(bytesArrayName, m_sharedCache)) {
+            setLastErrorMessage("net_sread: couldn't parse name");
             return false;
-        } 
+        }
 
-
-                              
-        SSL_write(ssl, &value.front(), value.size());  
+        m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);        
         return true;
     }
 }
