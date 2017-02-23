@@ -20,11 +20,10 @@ namespace {
     /*--- InitCTX - initialize the SSL engine.                          ---*/
     /*---------------------------------------------------------------------*/
     SSL_CTX* InitCTX(void)
-    {   
-        OpenSSL_add_all_algorithms();        /* Load cryptos, et.al. */
-        SSL_load_error_strings();            /* Bring in and register error messages */
-        auto method = SSLv2_client_method(); /* Create new client-method instance */
-        return SSL_CTX_new(method);          /* Create new context */
+    {
+        auto method = SSLv23_method();
+        std::cout<<"4"<<std::endl;
+        return SSL_CTX_new(method);    
     }
 }
 
@@ -48,18 +47,27 @@ namespace jasl
         }
 
         auto ctx = InitCTX();
-        auto ssl = SSL_new(ctx);            /* create new SSL connection state */
-        SSL_set_fd(ssl, fd);                /* attach the socket descriptor */
-        if (SSL_connect(ssl) == -1) {       /* perform the connection */
+        std::cout<<"A"<<std::endl;
+        auto ssl = SSL_new(ctx);         
+        std::cout<<"B"<<std::endl;
+        if (SSL_set_rfd(ssl, fd) == 0) {
             setLastErrorMessage("net_sread: ssl failure");
             return false;
         }
-                              
+          
+        std::cout<<"C"<<std::endl;
+        if (SSL_connect(ssl) == -1) {     
+            setLastErrorMessage("net_sread: ssl failure");
+            return false;
+        }
+
+        std::cout<<"D"<<std::endl;
         char recvBuff[1024];
         memset(recvBuff, '0',sizeof(recvBuff));
         int n = 0;
         std::vector<uint8_t> bytes;
         while ( (n = SSL_read(ssl, recvBuff, sizeof(recvBuff) - 1)) > 0) {
+            std::cout<<"n: "<<n<<std::endl;
             recvBuff[n] = 0;
             for (int i = 0; i < n; ++i) {
                 bytes.push_back(recvBuff[i]);

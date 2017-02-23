@@ -20,11 +20,9 @@ namespace {
     /*--- InitCTX - initialize the SSL engine.                          ---*/
     /*---------------------------------------------------------------------*/
     SSL_CTX* InitCTX(void)
-    {   
-        OpenSSL_add_all_algorithms();        /* Load cryptos, et.al. */
-        SSL_load_error_strings();            /* Bring in and register error messages */
-        auto method = SSLv2_client_method(); /* Create new client-method instance */
-        return SSL_CTX_new(method);          /* Create new context */
+    {
+        auto method = SSLv23_method();
+        return SSL_CTX_new(method); 
     }
 }
 
@@ -45,11 +43,13 @@ namespace jasl
             setLastErrorMessage("net_swrite: can't extract fd");
             return false;
         }
-
         auto ctx = InitCTX();
-        auto ssl = SSL_new(ctx);            /* create new SSL connection state */
-        SSL_set_fd(ssl, fd);                /* attach the socket descriptor */
-        if (SSL_connect(ssl) == -1) {       /* perform the connection */
+        auto ssl = SSL_new(ctx);
+        if (SSL_set_wfd(ssl, fd) == 0) {
+            setLastErrorMessage("net_swrite: ssl failure");
+            return false;
+        }
+        if (SSL_connect(ssl) == -1) {
             setLastErrorMessage("net_swrite: ssl failure");
             return false;
         }

@@ -75,6 +75,8 @@ namespace jasl
         }
 
         // connect to server and port
+        (void)SSL_library_init();
+        SSL_load_error_strings();
         auto sockfd = OpenConnection(server.c_str(), port);
         
         std::string connectionName;
