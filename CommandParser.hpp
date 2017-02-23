@@ -517,6 +517,11 @@ namespace jasl
                        >> (genericString | intRule) >> lit("->")
                        >> genericString
                        >> ';';
+            tcpSConnect %= string("tcp_sconnect")
+                        >> (doubleQuotedString | genericString) >> ':'
+                        >> (genericString | intRule) >> lit("->")
+                        >> genericString
+                        >> ';';
 
             // Closes a tcp connection:
             // net_close fd;
@@ -580,6 +585,7 @@ namespace jasl
                          | get
                          | matchesCommand
                          | tcpConnect
+                         | tcpSConnect
                          | netClose
                          | concatRule
                          | genericArrowRule;
@@ -645,6 +651,7 @@ namespace jasl
 
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
+        qi::rule<Iterator, Function(), ascii::space_type> tcpSConnect;
         qi::rule<Iterator, Function(), ascii::space_type> netClose;
 
         // Core rule declarations
