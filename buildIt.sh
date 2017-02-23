@@ -70,12 +70,12 @@ function build_single () {
 
 function build_tests {
     echo "Building tests..."
-    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system -licuuc bin/test.cpp -o test
+    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system -licuuc -lssl -lcrypto bin/test.cpp -o test
 }
 
 function build_jasl {
     echo "Building jasl..."
-    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system -licuuc bin/jasl.cpp -o jasl
+    $compiler $cflags -I$boostIncPath $objects -L$boostLibPath -lboost_filesystem -lboost_system -licuuc -lssl -lcrypto bin/jasl.cpp -o jasl
 }
 
 function build_clean {
