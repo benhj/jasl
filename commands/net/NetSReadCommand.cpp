@@ -16,6 +16,20 @@
 #include <openssl/err.h>
 #include <vector>
 
+namespace {
+    int getBytes(SSL* ssl, std::vector<uint8_t> &buffer) {
+        char recvBuff[1024];
+        memset(recvBuff, '0',sizeof(recvBuff));
+        int n = 0;
+        if ( (n = SSL_read(ssl, recvBuff, sizeof(recvBuff) - 1)) > 0) {
+            recvBuff[n] = 0;
+            for (int i = 0; i < n; ++i) {
+                buffer.push_back(recvBuff[i]);
+            }
+        }
+        return n;
+    }
+}
 
 namespace jasl
 {
@@ -44,15 +58,9 @@ namespace jasl
             memset(recvBuff, '0',sizeof(recvBuff));
             int n = 0;
             std::vector<uint8_t> bytes;
-            while ( (n = SSL_read(ssl, recvBuff, sizeof(recvBuff) - 1)) > 0) {
-                std::cout<<"n: "<<n<<std::endl;
-                recvBuff[n] = 0;
-                for (int i = 0; i < n; ++i) {
-                    bytes.push_back(recvBuff[i]);
-                }
-            } 
+            while((n = getBytes(ssl, bytes)) == 1024) {}
 
-            if (n < 0) {
+            if (n == 0) {
                 setLastErrorMessage("net_sread: read error");
                 return false;
             }
