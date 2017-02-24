@@ -42,8 +42,7 @@ namespace jasl
             if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
                 std::string tryString;
                 if(VarExtractor::trySingleStringExtraction(m_func.paramA, tryString, m_sharedCache)) {
-                    auto n = SSL_write(ssl, &tryString.front(), tryString.size());
-                    std::cout<<"Written: "<<n<<std::endl;
+                    SSL_write(ssl, &tryString.front(), tryString.size());
                     return true;
                 }
                 setLastErrorMessage("net_swrite: problem with bytes array");
