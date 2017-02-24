@@ -6,6 +6,7 @@
 //
 
 #include "NetSWriteCommand.hpp"
+#include "StaticSSLMap.hpp"
 #include "../../caching/VarExtractor.hpp"
 
 #include <stdio.h>
@@ -14,17 +15,6 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <vector>
-
-namespace {
-    /*---------------------------------------------------------------------*/
-    /*--- InitCTX - initialize the SSL engine.                          ---*/
-    /*---------------------------------------------------------------------*/
-    SSL_CTX* InitCTX(void)
-    {
-        auto method = SSLv23_method();
-        return SSL_CTX_new(method); 
-    }
-}
 
 namespace jasl
 {
@@ -43,32 +33,29 @@ namespace jasl
             setLastErrorMessage("net_swrite: can't extract fd");
             return false;
         }
-        auto ctx = InitCTX();
-        auto ssl = SSL_new(ctx);
-        if (SSL_set_wfd(ssl, fd) == 0) {
-            setLastErrorMessage("net_swrite: ssl failure");
-            return false;
-        }
-        if (SSL_connect(ssl) == -1) {
-            setLastErrorMessage("net_swrite: ssl failure");
-            return false;
+
+        auto ssl = SSLMap::sslMap[fd];
+
+        if (ssl) {
+
+            ByteArray value;
+            if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
+                std::string tryString;
+                if(VarExtractor::trySingleStringExtraction(m_func.paramA, tryString, m_sharedCache)) {
+                    auto n = SSL_write(ssl, &tryString.front(), tryString.size());
+                    std::cout<<"Written: "<<n<<std::endl;
+                    return true;
+                }
+                setLastErrorMessage("net_swrite: problem with bytes array");
+                return false;
+            } 
+
+            SSL_write(ssl, &value.front(), value.size());  
+            return true;
         }
 
-        ByteArray value;
-        if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
-            std::string tryString;
-            if(VarExtractor::trySingleStringExtraction(m_func.paramA, tryString, m_sharedCache)) {
-                SSL_write(ssl, &tryString.front(), tryString.size());
-                return true;
-            }
-            setLastErrorMessage("net_swrite: problem with bytes array");
-            return false;
-        } 
-           
-        SSL_write(ssl, &value.front(), value.size());  
-        SSL_free(ssl);
-        SSL_CTX_free(ctx);
+        setLastErrorMessage("net_swrite: invalid ssl context");
+        return false;
 
-        return true;
     }
 }

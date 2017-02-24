@@ -6,6 +6,7 @@
 //
 
 #include "TCPSConnectCommand.hpp"
+#include "StaticSSLMap.hpp"
 #include "../../caching/VarExtractor.hpp"
 
 #include <sys/socket.h>
@@ -23,7 +24,7 @@
 
 namespace {
 
-    // Adapted slightly from 
+    // Based on code found at
     // https://www.cs.utah.edu/~swalton/listings/articles/ssl_client.c
 
     /*---------------------------------------------------------------------*/
@@ -31,22 +32,35 @@ namespace {
     /*---------------------------------------------------------------------*/
     int OpenConnection(const char *hostname, int port)
     {  
-        struct hostent *host;
-        struct sockaddr_in addr;
+        int sockfd = 0;
+        if((sockfd = ::socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+            return -1;
+        } 
+        struct sockaddr_in serv_addr; 
+        ::bzero((char *) &serv_addr, sizeof(serv_addr));
+        serv_addr.sin_family = AF_INET;
+        serv_addr.sin_port = htons(port); 
+        auto serverAddress = ::gethostbyname(hostname);
+        ::bcopy((char *)serverAddress->h_addr, 
+          (char *)&serv_addr.sin_addr.s_addr, serverAddress->h_length);
 
-        if ( (host = ::gethostbyname(hostname)) == NULL ) {
-            return -1;
-        }
-        auto sd = socket(PF_INET, SOCK_STREAM, 0);
-        bzero(&addr, sizeof(addr));
-        addr.sin_family = AF_INET;
-        addr.sin_port = htons(port);
-        addr.sin_addr.s_addr = *(long*)(host->h_addr);
-        if ( ::connect(sd, (struct sockaddr *)&addr, sizeof(addr)) != 0 ) {
-            close(sd);
-            return -1;
-        }
-        return sd;
+        if(::connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) != 0) {
+           ::close(sockfd);
+           return -1;
+        } 
+        return sockfd;
+    }
+
+    /*---------------------------------------------------------------------*/
+    /*--- InitCTX - initialize the SSL engine.                          ---*/
+    /*---------------------------------------------------------------------*/
+    SSL_CTX* InitCTX(void)
+    {
+        SSL_load_error_strings();
+        SSL_library_init();
+        OpenSSL_add_all_algorithms();
+        auto method = SSLv23_client_method();
+        return SSL_CTX_new(method); 
     }
 }
 
@@ -73,12 +87,22 @@ namespace jasl
             setLastErrorMessage("tcp_sconnect: can't extract port");
             return false;
         }
-
         // connect to server and port
-        (void)SSL_library_init();
-        SSL_load_error_strings();
         auto sockfd = OpenConnection(server.c_str(), port);
-        
+
+        // create ssl connection and store in static map
+        auto ctx = InitCTX();
+        auto ssl = SSL_new(ctx);
+        if (SSL_set_fd(ssl, sockfd) == 0) {
+            setLastErrorMessage("net_swrite: ssl failure");
+            return false;
+        }
+        if (SSL_connect(ssl) == -1) {
+            setLastErrorMessage("net_swrite: ssl failure");
+            return false;
+        }
+        SSLMap::sslMap.emplace(sockfd, ssl);
+
         std::string connectionName;
         if(!m_func.getValueC<std::string>(connectionName, m_sharedCache)) {
             setLastErrorMessage("tcp_sconnect: couldn't parse name");
