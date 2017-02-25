@@ -1,0 +1,36 @@
+;;; tcp connection test
+
+start {
+
+    ;;; open the connection
+    say "Connecting...\n";
+    args 0 -> hostname;
+    tcp_sconnect hostname:443 -> gfd;
+
+    say "gfd: ";
+    say gfd;
+    say "\n";
+
+    ;;; write to the server
+    say "Writing to server..\n";
+    net_swrite "GET /index.html HTTP/1.1\n" -> gfd;
+    net_swrite "Host: " -> gfd;
+    net_swrite hostname -> gfd;
+    net_swrite "\n\n" -> gfd;
+    
+    ;;; get server response
+    say "Getting response...\n";
+    net_sread gfd -> bytes;
+
+    ;;; print out response
+    for b in bytes {
+        pr b;
+    }
+    say "\n";
+
+    ;;; close the connection
+    net_close gfd;
+
+    say "Done\n";
+
+}
