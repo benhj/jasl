@@ -90,15 +90,20 @@ namespace jasl
         // connect to server and port
         auto sockfd = OpenConnection(server.c_str(), port);
 
+        if (sockfd == -1) {
+            setLastErrorMessage("tcp_sconnect: bad descriptor");
+            return false;
+        }
+
         // create ssl connection and store in static map
         auto ctx = InitCTX();
         auto ssl = SSL_new(ctx);
         if (SSL_set_fd(ssl, sockfd) == 0) {
-            setLastErrorMessage("net_swrite: ssl failure");
+            setLastErrorMessage("tcp_sconnect: ssl failure");
             return false;
         }
         if (SSL_connect(ssl) == -1) {
-            setLastErrorMessage("net_swrite: ssl failure");
+            setLastErrorMessage("tcp_sconnect: ssl failure");
             return false;
         }
         SSLMap::sslMap.emplace(sockfd, ssl);
