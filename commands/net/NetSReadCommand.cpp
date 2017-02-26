@@ -18,7 +18,7 @@
 
 namespace {
     int getBytes(SSL* ssl, std::vector<uint8_t> &buffer) {
-        char recvBuff[1024];
+        char recvBuff[101];
         memset(recvBuff, '0',sizeof(recvBuff));
         int n = 0;
         if ( (n = SSL_read(ssl, recvBuff, sizeof(recvBuff) - 1)) > 0) {
@@ -58,7 +58,11 @@ namespace jasl
             memset(recvBuff, '0',sizeof(recvBuff));
             int n = 0;
             std::vector<uint8_t> bytes;
-            while((n = getBytes(ssl, bytes)) == 1024) {}
+
+            // Simple heuristic. There's probably more bytes to received
+            // if the recv buffer is saturated.
+            while((n = getBytes(ssl, bytes)) == 100) {std::cout<<"n: "<<n<<std::endl;}
+            std::cout<<"n: "<<n<<std::endl;
 
             if (n == 0) {
                 setLastErrorMessage("net_sread: read error");
