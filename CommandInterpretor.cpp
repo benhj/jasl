@@ -84,10 +84,8 @@
 namespace {
     /// Make the parser static as an optimization. We will
     /// only ever have one ot these so this is ok, I think.
-    using iterator_type = std::string::const_iterator;
-    using Parser = jasl::CommandParser<iterator_type>;
+    using Parser = jasl::CommandParser;
     static Parser functionGrammar;
-
     
     void parseStringCollectionHelper(std::string const &stringCollection,
                                      jasl::SharedCacheStack const &varCache,
