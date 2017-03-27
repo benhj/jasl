@@ -21,9 +21,9 @@ add_library(other_lib ${other})
 
 # external lib deps. Need to make this generic. dylibs are mac-specifc
 find_package(Boost COMPONENTS filesystem system REQUIRED)
-find_library(SSL_LIB libssl.dylib REQUIRED)
-find_library(CRYPTO_LIB libcrypto.dylib REQUIRED)
-find_library(ICUUC_LIB libicuuc.dylib REQUIRED)
+find_library(SSL_LIB NAMES ssl REQUIRED)
+find_library(CRYPTO_LIB NAMES crypto REQUIRED)
+find_library(ICUUC_LIB NAMES icuuc REQUIRED)
 
 # print some shit out...
 message(${SSL_LIB})
