@@ -1,12 +1,15 @@
 # jasl -- Just Another Scripting Language
 
-My probably crappy attempt at a programming language. Please check out the examples folder for examples! To build the actual `jasl` interpretor, probably best to just run the following in a terminal prompt:
+My probably crappy attempt at a programming language. Please check out the examples folder for examples! To build the actual `jasl` interpretor, prob best to follow the cmake convention:
 
 ```
-sh build.sh all
+mkdir build
+cd build
+cmake ..
+make
 ```
 
-Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build. The libicu development libraries an headers are also required by the parsing engine -- basically to allow the parsing of code points and escape characters. It's a pain in the arse to build but seems to work well. It is assumed by the build script that all boost and icu libs are under `/usr/loca/lib` and headers under `/usr/local/include`.
+Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build. The libicu development libraries an headers are also required by the parsing engine -- basically to allow the parsing of code points and escape characters. It's a pain in the arse to build but seems to work well. It is assumed by the build script that all boost and icu libs are under `/usr/local/lib` and headers under `/usr/local/include`. Finally, libcrypto and libssl as provider by OpenSSL are also required for a bunch of the secure networking API.
 
 The interpretor will let you run a jasl script. E.g.:
 
