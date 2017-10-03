@@ -25,6 +25,9 @@ find_library(SSL_LIB NAMES ssl REQUIRED)
 find_library(CRYPTO_LIB NAMES crypto REQUIRED)
 find_library(ICUUC_LIB NAMES icuuc REQUIRED)
 
+# make sure boost headers can be found
+include_directories(${Boost_INCLUDE_DIRS})
+
 # print some shit out...
 message(${SSL_LIB})
 message(${CRYPTO_LIB})
