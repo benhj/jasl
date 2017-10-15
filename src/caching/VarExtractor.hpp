@@ -42,38 +42,94 @@ namespace jasl {
             return false;
         }
 
+        static bool tryExtractionDispatch
+        (int64_t &t, Value &val)
+        {
+            return tryAnyCast<int64_t>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (std::vector<int64_t> &t, Value &val)
+        {
+            return tryAnyCast<std::vector<int64_t>>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (std::vector<double> &t, Value &val)
+        {
+            return tryAnyCast<std::vector<double>>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (std::vector<uint8_t> &t, Value &val)
+        {
+            return tryAnyCast<std::vector<uint8_t>>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (std::vector<std::string> &t, Value &val)
+        {
+            return tryAnyCast<std::vector<std::string>>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (uint8_t &t, Value &val)
+        {
+            return tryAnyCast<uint8_t>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (char &t, Value &val)
+        {
+            return tryAnyCast<char>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (bool &t, Value &val)
+        {
+            return tryAnyCast<bool>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (double &t, Value &val)
+        {
+            return tryAnyCast<double>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (std::string &t, Value &val)
+        {
+            return tryAnyCast<std::string>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (List &t, Value &val)
+        {
+            return tryAnyCast<List>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (MathExpression &t, Value &val)
+        {
+            return tryAnyCast<MathExpression>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (MathByteExpression &t, Value &val)
+        {
+            return tryAnyCast<MathByteExpression>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (ComparisonExpression &t, Value &val)
+        {
+            return tryAnyCast<ComparisonExpression>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (LiteralString &t, Value &val)
+        {
+            return tryAnyCast<LiteralString>(t, val);
+        }
+        static bool tryExtractionDispatch
+        (SymbolString &t, Value &val)
+        {
+            return tryAnyCast<SymbolString>(t, val);
+        }
+
         /// tries to extract a value from val storing the result in t
         template <typename T>
         static bool tryExtraction(T &t, Value &val, SharedCacheStack const &sharedCache)
         {
             // attempt to convert the any in to one of the basic types
             // storing the value in val if successful and returning true
-            bool extracted = false;
-            if (typeid(T) == typeid(int64_t)) {
-                extracted = tryAnyCast<int64_t>((int64_t&)t, val);
-            } else if (typeid(T) == typeid(uint8_t)) {
-                extracted = tryAnyCast<uint8_t>((uint8_t&)t, val);
-            } else if (typeid(T) == typeid(char)) {
-                extracted = tryAnyCast<char>((char&)t, val);
-            }  else if (typeid(T) == typeid(bool)) {
-                extracted = tryAnyCast<bool>((bool&)t, val);
-            } else if (typeid(T) == typeid(double)) {
-                extracted = tryAnyCast<double>((double&)t, val);
-            } else if (typeid(T) == typeid(std::string)) {
-                extracted = tryAnyCast<std::string>((std::string&)t, val);
-            } else if (typeid(T) == typeid(List)) {
-                extracted = tryAnyCast<List>((List&)t, val);
-            } else if (typeid(T) == typeid(MathExpression)) {
-                extracted = tryAnyCast<MathExpression>((MathExpression&)t, val);
-            } else if (typeid(T) == typeid(MathByteExpression)) {
-                extracted = tryAnyCast<MathByteExpression>((MathByteExpression&)t, val);
-            }  else if (typeid(T) == typeid(ComparisonExpression)) {
-                extracted = tryAnyCast<ComparisonExpression>((ComparisonExpression&)t, val);
-            } else if (typeid(T) == typeid(LiteralString)) {
-                extracted = tryAnyCast<LiteralString>((LiteralString&)t, val);
-            } else if (typeid(T) == typeid(SymbolString)) {
-                extracted = tryAnyCast<SymbolString>((SymbolString&)t, val);
-            }
+            bool extracted = tryExtractionDispatch(t, val);
             if (extracted) {
                 return true;
             } 
