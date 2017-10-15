@@ -122,6 +122,83 @@ namespace jasl {
         {
             return tryAnyCast<SymbolString>(t, val);
         }
+        static bool 
+        cacheExtract(std::string const & str, int64_t &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::Int);
+        }
+        static bool 
+        cacheExtract(std::string const & str, uint8_t &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::Byte);
+        }
+        static bool 
+        cacheExtract(std::string const & str, char &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::Byte);
+        }
+        static bool 
+        cacheExtract(std::string const & str, bool &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::Bool);
+        }
+        static bool 
+        cacheExtract(std::string const & str, double &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::Real);
+        }
+        static bool 
+        cacheExtract(std::string const & str, std::vector<double> &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::RealArray);
+        }
+        static bool 
+        cacheExtract(std::string const & str, std::vector<uint8_t> &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::ByteArray);
+        }
+        static bool 
+        cacheExtract(std::string const & str, std::vector<std::string> &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::StringArray);
+        }
+        static bool 
+        cacheExtract(std::string const & str, std::vector<int64_t> &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::IntArray);
+        }
+        static bool 
+        cacheExtract(std::string const & str, std::string &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::String);
+        }
+        static bool 
+        cacheExtract(std::string const & str, List &t, SharedCacheStack const &sharedCache)
+        {
+            return sharedCache->getVar_(str, t, Type::List);
+        }
+
+        // The following specializations aren't required, so just return false
+        static bool 
+        cacheExtract(std::string const &, ComparisonExpression &, SharedCacheStack const &)
+        {
+            return false;
+        }
+        static bool 
+        cacheExtract(std::string const &, MathExpression &, SharedCacheStack const &)
+        {
+            return false;
+        }
+        static bool 
+        cacheExtract(std::string const &, MathByteExpression &, SharedCacheStack const &)
+        {
+            return false;
+        }
+        static bool 
+        cacheExtract(std::string const &, LiteralString &, SharedCacheStack const &)
+        {
+            return false;
+        }
 
         /// tries to extract a value from val storing the result in t
         template <typename T>
@@ -140,32 +217,7 @@ namespace jasl {
             std::string str;
             extracted = tryAnyCast<std::string>(str, val);
             if (extracted) {
-                if (typeid(T) == typeid(int64_t)) {
-                    auto result = sharedCache->getVar_(str, (int64_t&)t, Type::Int);
-                    if(result) {
-                        return true;
-                    }
-                } else if (typeid(T) == typeid(uint8_t)) {
-                    auto result = sharedCache->getVar_(str, (uint8_t&)t, Type::Byte);
-                    if(result) {
-                        return true;
-                    }
-                } else if (typeid(T) == typeid(char)) {
-                    auto result = sharedCache->getVar_(str, (uint8_t&)t, Type::Byte);
-                    if(result) {
-                        return true;
-                    }
-                }  else if (typeid(T) == typeid(bool)) {
-                    auto result = sharedCache->getVar_(str, (bool&)t, Type::Bool);
-                    if(result) {
-                        return true;
-                    }
-                } else if (typeid(T) == typeid(double)) {
-                    auto result = sharedCache->getVar_(str, (double&)t, Type::Real);
-                    if(result) {
-                        return true;
-                    }
-                }
+                return cacheExtract(str, t, sharedCache);
             }
             return false;
         }
