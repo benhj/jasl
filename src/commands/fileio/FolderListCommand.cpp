@@ -21,7 +21,7 @@ namespace jasl
 
     }
 
-    bool FolderListCommand::execute() 
+    bool FolderListCommand::execute()
     {
         // now try and extract the actual words
         std::string folderName;
@@ -38,7 +38,7 @@ namespace jasl
             for(auto & entry : ::boost::make_iterator_range(directory_iterator(path), {})) {
                 auto const pathString = entry.path().string();
                 if(pathString == "." || pathString == "..") { continue; }
-                sa.emplace_back(entry.path().string());
+                sa.emplace_back(pathString);
             }
 
             m_sharedCache->setVar(stringArrayName, sa, Type::StringArray);
@@ -47,7 +47,7 @@ namespace jasl
             setLastErrorMessage("folder_list: unknown folder");
             return false;
         }
-        
+
         return true;
     }
 }

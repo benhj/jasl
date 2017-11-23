@@ -45,6 +45,7 @@
 #include "commands/RandomCommand.hpp"
 
 #include "commands/fileio/FolderListCommand.hpp"
+#include "commands/fileio/FolderListRecursiveCommand.hpp"
 #include "commands/fileio/FileReadBytesCommand.hpp"
 #include "commands/fileio/FileReadLinesCommand.hpp"
 #include "commands/fileio/FileWriteBytesCommand.hpp"
@@ -195,6 +196,7 @@ namespace jasl {
             m_commandMap.emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
 
             m_commandMap.emplace("folder_list", BUILD_COMMAND_AND_EXECUTE(FolderList));
+            m_commandMap.emplace("folder_list_recursive", BUILD_COMMAND_AND_EXECUTE(FolderListRecursive));
             m_commandMap.emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
             m_commandMap.emplace("file_read_lines", BUILD_COMMAND_AND_EXECUTE(FileReadLines));
             m_commandMap.emplace("file_write_bytes", BUILD_COMMAND_AND_EXECUTE(FileWriteBytes));
@@ -267,6 +269,7 @@ namespace jasl {
             m_commandBuilders.emplace("random", BUILD_COMMAND(Random));
 
             m_commandBuilders.emplace("folder_list", BUILD_COMMAND(FolderList));
+            m_commandBuilders.emplace("folder_list_recursive", BUILD_COMMAND(FolderListRecursive));
             m_commandBuilders.emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
             m_commandBuilders.emplace("file_read_lines", BUILD_COMMAND(FileReadLines));
             m_commandBuilders.emplace("file_write_bytes", BUILD_COMMAND(FileWriteBytes));

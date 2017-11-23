@@ -13,7 +13,7 @@
 namespace jasl
 {
     inline
-    void writeBytes(std::string const & filename, 
+    void writeBytes(std::string const & filename,
                     char const * bytes,
                     size_t const n,
                     std::ios_base::openmode const mode = std::ios::binary)
