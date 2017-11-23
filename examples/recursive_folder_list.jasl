@@ -1,0 +1,9 @@
+;;; for testing recursive folder listing
+
+start {
+    args 0 -> folder;
+    folder_list_recursive folder -> strings;
+    for element in strings {
+        prn element;
+    }
+}
