@@ -25,9 +25,9 @@ namespace jasl
         // now try and extract the actual words
         std::string folderName;
         if(VarExtractor::trySingleStringExtraction(m_func.paramA, folderName, m_sharedCache)) {
-            std::string stringArrayName;
-            if(!m_func.getValueB<std::string>(stringArrayName, m_sharedCache)) {
-                setLastErrorMessage("folder_list_recursive: couldn't parse name");
+            std::string varName;
+            if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
+                setLastErrorMessage("folder_list_recursive: couldn't parse variable name.");
                 return false;
             }
 
@@ -41,7 +41,7 @@ namespace jasl
                 sa.emplace_back(it->path().string());
                 ++it;
             }
-            m_sharedCache->setVar(stringArrayName, sa, Type::StringArray);
+            m_sharedCache->setVar(varName, sa, Type::StringArray);
 
         } else {
             setLastErrorMessage("folder_list_recursive: unknown folder");
