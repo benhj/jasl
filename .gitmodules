@@ -1,0 +1,3 @@
+[submodule "simpleprompt"]
+	path = simpleprompt
+	url = https://github.com/benhj/simpleprompt

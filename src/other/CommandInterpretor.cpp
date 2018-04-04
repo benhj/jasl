@@ -203,7 +203,7 @@ namespace jasl {
             m_commandMap.emplace("file_write_bytes", BUILD_COMMAND_AND_EXECUTE(FileWriteBytes));
             m_commandMap.emplace("file_append_bytes", BUILD_COMMAND_AND_EXECUTE(FileAppendBytes));
             m_commandMap.emplace("file_append_line", BUILD_COMMAND_AND_EXECUTE(FileAppendString));
-            m_commandMap.emplace("file_type", BUILD_COMMAND_AND_EXECUTE(FileTypeString));
+            m_commandMap.emplace("file_type", BUILD_COMMAND_AND_EXECUTE(FileType));
 
             m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
 

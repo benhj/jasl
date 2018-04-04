@@ -7,9 +7,11 @@ project (jasl)
 file(GLOB_RECURSE caching src/caching/*.cpp src/caching/*.hpp)
 file(GLOB_RECURSE commands src/commands/*.cpp src/commands/*.hpp)
 file(GLOB_RECURSE other src/other/*.cpp src/other/*.hpp)
+file(GLOB_RECURSE simpleprompt simpleprompt/*.hpp)
 
 # ensure headers in the src folder are compiler-found
 include_directories(src)
+include_directories(simpleprompt)
 
 # annoyingly, lbs here aren't picked up automatically
 link_directories(/usr/local/lib)
