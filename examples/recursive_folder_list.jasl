@@ -4,6 +4,10 @@ start {
     args 0 -> folder;
     folder_list_recursive folder -> strings;
     for element in strings {
-        prn element;
+        file_type element -> type;
+        pr element;
+        pr ": ";
+        pr type;
+        prn " ";
     }
 }
