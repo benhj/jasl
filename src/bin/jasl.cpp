@@ -33,12 +33,13 @@ int main (int argc , char *argv[])
     if(argc <= 1) {
 
         // Command prompt
-        SimplePrompt sp("", [&](std::string const & com){
+        simpleprompt::SimplePrompt sp("", [&](std::string const & com){
             if(com == "quit") {
                 exit(0);
             }
-            ci.parseCommandFileAddToExisting(com, sharedCache, std::cout);
+            ci.parseAndInterpretSingleCommand(com, sharedCache, std::cout);
         });
+        sp.start();
 
     } else {
 
