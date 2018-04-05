@@ -30,7 +30,6 @@ namespace {
     }
 }
 
-
 int main (int argc , char *argv[])
 {
 
@@ -43,6 +42,8 @@ int main (int argc , char *argv[])
     auto sharedCache = std::make_shared<ll::CacheStack>();
     sharedCache->setVar("argsCount", (int64_t)(argc - 2), ll::Type::Int);
 
+    // When jasl is started without any arguments, start
+    // the interactive interpreter
     if(argc <= 1) {
 
         // Command prompt
@@ -54,9 +55,9 @@ int main (int argc , char *argv[])
         }, getWelcome(), "J> ");
         sp.start();
 
-    } else {
-
-
+    } 
+    // Else interpret the supplied jasl source code
+    else {
 
         // Store how many arguments there are
         // in special reserved int, 'argsCount'
@@ -82,7 +83,6 @@ int main (int argc , char *argv[])
                 upper = functions.size();
             }
         }
-
 
         // Find start function
         ::boost::progress_timer t;
