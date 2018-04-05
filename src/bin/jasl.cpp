@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 10/03/2015.
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "SimplePrompt.hpp"
@@ -17,6 +17,19 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
+
+namespace {
+    std::string getWelcome()
+    {
+        return std::string("    _____     _       ______   _____\n")
+                   .append("   |_   _|   / \\    .' ____ \\ |_   _|\n")
+                     .append("     | |    / _ \\   | (___ \\_|  | |\n")
+                     .append("     | |   / ___ \\   _.____`.   | |   _ \n")
+                .append("| |__' | _/ /   \\ \\_| \\____) | _| |__/ |\n")
+                .append("`.____.'|____| |____|\\______.'|________|   v0.1");
+    }
+}
+
 
 int main (int argc , char *argv[])
 {
@@ -38,7 +51,7 @@ int main (int argc , char *argv[])
                 exit(0);
             }
             ci.parseAndInterpretSingleCommand(com, sharedCache, std::cout);
-        });
+        }, getWelcome(), "J> ");
         sp.start();
 
     } else {
