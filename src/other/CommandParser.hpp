@@ -102,6 +102,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
         qi::rule<Iterator, Function(), ascii::space_type> tcpSConnect;
         qi::rule<Iterator, Function(), ascii::space_type> netClose;
+        qi::rule<Iterator, Function(), ascii::space_type> netRead;
+        qi::rule<Iterator, Function(), ascii::space_type> netSRead;
 
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
