@@ -46,6 +46,10 @@ int main (int argc , char *argv[])
     // the interactive interpreter
     if(argc <= 1) {
 
+        // Simple prompt, as well as being hacky as fuck, it actually
+        // buggy as fuck. Create a better prompt here, directly, using
+        // a basic while true loop and getline.
+
         // Command prompt
         simpleprompt::SimplePrompt sp("", [&](std::string const & com){
             if(com == "quit") {
@@ -55,6 +59,20 @@ int main (int argc , char *argv[])
         }, getWelcome(), "J> ");
         sp.start();
 
+        // Alternative prompt -- might be less buggy but doesn't support
+        // history and tab-complete.
+        // std::cout << "\n\n" << std::endl;
+        // std::cout << getWelcome() << std::endl;
+        // std::cout << "\n\n" << std::endl;
+        // while(true) {
+        //     std::cout<<"J> ";
+        //     std::string com;
+        //     std::getline (std::cin, com);
+        //     if (com == "quit") {
+        //         exit(0);
+        //     }
+        //     ci.parseAndInterpretSingleCommand(com, sharedCache, std::cout);
+        // }
     } 
     // Else interpret the supplied jasl source code
     else {
