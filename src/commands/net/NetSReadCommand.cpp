@@ -2,7 +2,7 @@
 //  NetSReadCommand.cpp
 //  jasl
 //
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
 #include "NetSReadCommand.hpp"
@@ -56,13 +56,11 @@ namespace jasl
         if(ssl) {
             char recvBuff[1024];
             memset(recvBuff, '0',sizeof(recvBuff));
-            int n = 0;
             std::vector<uint8_t> bytes;
 
             // Simple heuristic. There's probably more bytes to received
             // if the recv buffer is saturated.
-            while((n = getBytes(ssl, bytes)) == 100) {std::cout<<"n: "<<n<<std::endl;}
-            std::cout<<"n: "<<n<<std::endl;
+            auto n = getBytes(ssl, bytes);
 
             if (n == 0) {
                 setLastErrorMessage("net_sread: read error");
@@ -75,7 +73,14 @@ namespace jasl
                 return false;
             }
 
-            m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);        
+            std::string bytesReadName;
+            if(!m_func.getValueC<std::string>(bytesReadName, m_sharedCache)) {
+                setLastErrorMessage("net_read: couldn't bytes read name");
+                return false;
+            }
+
+            m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);
+            m_sharedCache->setVar(bytesReadName, static_cast<int64_t>(n), Type::Int);        
             return true;
         }
 

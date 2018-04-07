@@ -2,7 +2,7 @@
 //  NetReadCommand.cpp
 //  jasl
 //
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
 #include "NetReadCommand.hpp"
@@ -34,14 +34,12 @@ namespace jasl
 
         char recvBuff[1024];
         memset(recvBuff, '0',sizeof(recvBuff));
-        int n = 0;
         std::vector<uint8_t> bytes;
-        while ( (n = ::read(fd, recvBuff, sizeof(recvBuff) - 1)) > 0) {
-            recvBuff[n] = 0;
-            for (int i = 0; i < n; ++i) {
-                bytes.push_back(recvBuff[i]);
-            }
-        } 
+        auto n = ::read(fd, recvBuff, sizeof(recvBuff) - 1);
+        recvBuff[n] = 0;
+        for (int i = 0; i < n; ++i) {
+            bytes.push_back(recvBuff[i]);
+        }
 
         if (n < 0) {
             setLastErrorMessage("net_read: read error");
@@ -54,7 +52,14 @@ namespace jasl
             return false;
         }
 
-        m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);        
+        std::string bytesReadName;
+        if(!m_func.getValueC<std::string>(bytesReadName, m_sharedCache)) {
+            setLastErrorMessage("net_read: couldn't bytes read name");
+            return false;
+        }
+
+        m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);
+        m_sharedCache->setVar(bytesReadName, static_cast<int64_t>(n), Type::Int);         
         return true;
     }
 }

@@ -20,7 +20,10 @@ start {
     
     ;;; get server response
     say "Getting response...\n";
-    net_sread gfd -> bytes;
+    net_sread gfd -> bytes,n;
+
+    say "n: ";
+    prn n;
 
     ;;; print out response
     for b in bytes {

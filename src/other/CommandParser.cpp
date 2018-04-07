@@ -498,6 +498,22 @@ namespace jasl
                  >> (genericString | intRule)
                  >> ';';
 
+        netRead %= string("net_read")
+                >> (genericString)
+                >> lit("->")
+                >> (genericString) 
+                >> ','
+                >> (genericString)
+                >> ';';
+        netSRead %= string("net_sread")
+                >> (genericString)
+                >> lit("->")
+                >> (genericString) 
+                >> ','
+                >> (genericString)
+                >> ';';
+
+
         // concatenate strings. 
         concatRule %= string("concat")
                    >> (parameterList) >> lit("->")
@@ -557,6 +573,8 @@ namespace jasl
                      | tcpSConnect
                      | netClose
                      | concatRule
+                     | netRead
+                     | netSRead
                      | genericArrowRule;
                      
         start %= allCommands;
