@@ -498,18 +498,23 @@ namespace jasl
                  >> (genericString | intRule)
                  >> ';';
 
+        // Attempt to read some bytes from the open connection
+        // net_read gfd -> bytes -> n;
         netRead %= string("net_read")
                 >> (genericString)
                 >> lit("->")
                 >> (genericString) 
-                >> ','
+                >> lit("->")
                 >> (genericString)
                 >> ';';
+
+        // Attempt to read some bytes from the open secure connection
+        // net_sread gfd -> bytes -> n;
         netSRead %= string("net_sread")
                 >> (genericString)
                 >> lit("->")
                 >> (genericString) 
-                >> ','
+                >> lit("->")
                 >> (genericString)
                 >> ';';
 
