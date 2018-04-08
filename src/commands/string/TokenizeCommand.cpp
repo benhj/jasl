@@ -10,11 +10,11 @@
 #include <sstream>
 
 namespace {
-    jasl::StringArray getStrings(std::string const & str)
+    StringArray getStrings(std::string const & str)
     {
         std::istringstream iss(str);
-        return jasl::StringArray{std::istream_iterator<std::string>{iss},
-                                 std::istream_iterator<std::string>{}};
+        return StringArray{std::istream_iterator<std::string>{iss},
+                           std::istream_iterator<std::string>{}};
     }
 }
 
@@ -48,7 +48,8 @@ namespace jasl
         if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
             auto const literal = literalString.literal;
             auto strs = getStrings(literal);
-            m_sharedCache->setVar(key, strs, Type::List);
+            std::cout<<"Setting cache wth key "<<key<<std::endl;
+            m_sharedCache->setVar(key, strs, Type::StringArray);
             return true;
         }
         return false;
@@ -62,7 +63,7 @@ namespace jasl
             std::string value;
             if(m_sharedCache->getVar_(symbol, value, Type::String)) {
                 auto strs = getStrings(value);
-                m_sharedCache->setVar(key, strs, Type::List);
+                m_sharedCache->setVar(key, strs, Type::StringArray);
                 return true;
             }
         }
