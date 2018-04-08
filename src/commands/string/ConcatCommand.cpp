@@ -2,7 +2,7 @@
 //  ConcatCommand.cpp
 //  jasl
 //
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2016-present Ben Jones. All rights reserved.
 //
 
 #include "ConcatCommand.hpp"

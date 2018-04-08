@@ -7,7 +7,7 @@
 //
 
 #include "RandomCommand.hpp"
-#include "StringToPrimitiveCommand.hpp"
+#include "string/StringToPrimitiveCommand.hpp"
 #include <cstdlib>
 #include <random>
 

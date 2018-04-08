@@ -2,12 +2,12 @@
 //  MatchesCommand.hpp
 //  jasl  
 //  
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "../Command.hpp"
 
 namespace jasl
 {
