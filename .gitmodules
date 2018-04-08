@@ -1,3 +1,6 @@
 [submodule "simpleprompt"]
 	path = simpleprompt
 	url = https://github.com/benhj/simpleprompt
+[submodule "simpletest"]
+	path = simpletest
+	url = https://github.com/benhj/simpletest

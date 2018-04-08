@@ -13,10 +13,12 @@ file(GLOB commands_string src/commands/string/*.cpp src/commands/string/*.hpp)
 file(GLOB other src/other/*.hpp)
 file(GLOB core src/core/*.cpp src/core/*.hpp)
 file(GLOB simpleprompt simpleprompt/*.hpp)
+file(GLOB simpletest simpletest/*.hpp)
 
 # ensure headers in the src folder are compiler-found
 include_directories(src)
 include_directories(simpleprompt)
+include_directories(simpletest)
 
 # annoyingly, lbs here aren't picked up automatically
 link_directories(/usr/local/lib)
