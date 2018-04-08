@@ -6,7 +6,7 @@
 //  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
-#include "other/SimpleTest.hpp"
+#include "SimpleTest.hpp"
 #include "core/CommandInterpretor.hpp"
 #include "caching/GlobalCache.hpp"
 #include "caching/SharedVarCache.hpp"
