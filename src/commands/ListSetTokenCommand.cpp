@@ -7,7 +7,7 @@
 //
 
 #include "ListSetTokenCommand.hpp"
-#include "other/LiteralString.hpp"
+#include "core/LiteralString.hpp"
 #include "caching/VarExtractor.hpp"
 
 namespace jasl

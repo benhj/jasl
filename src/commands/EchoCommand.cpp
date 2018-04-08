@@ -7,7 +7,7 @@
 //
 
 #include "EchoCommand.hpp"
-#include "other/LiteralString.hpp"
+#include "core/LiteralString.hpp"
 #include "caching/VarExtractor.hpp"
 #include <boost/algorithm/string.hpp>
 

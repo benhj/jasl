@@ -7,7 +7,7 @@
 //
 
 #include "WhileCommand.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include <string>
 
 namespace {

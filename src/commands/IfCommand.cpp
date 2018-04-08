@@ -8,7 +8,7 @@
 
 #include "IfCommand.hpp"
 #include "expressions/ComparisonExpression.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/VarExtractor.hpp"
 #include <vector>
 

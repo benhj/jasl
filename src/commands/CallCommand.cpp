@@ -10,7 +10,7 @@
 #include "CallCommand.hpp"
 #include "ParamExtractor.hpp"
 #include "caching/GlobalCache.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include <vector>
 
 namespace jasl
