@@ -31,6 +31,8 @@ The interpretor will let you run a jasl script. E.g.:
 ./jasl examples/recursiveQueens.jasl 8
 ```
 
+Note: running the binary without any arguments will drop you into an interactive shell.
+
 TODO
 ----
 
