@@ -1,3 +1,15 @@
+ ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          
+ ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌          
+      ▐░▌    ▐░▌       ▐░▌▐░▌          ▐░▌          
+      ▐░▌    ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌          
+      ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          
+      ▐░▌    ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀▀▀▀▀▀█░▌▐░▌          
+      ▐░▌    ▐░▌       ▐░▌          ▐░▌▐░▌          
+ ▄▄▄▄▄█░▌    ▐░▌       ▐░▌ ▄▄▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░▌    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+ ▀▀▀▀▀▀▀      ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ 
+
 # jasl -- Just Another Scripting Language
 
 My probably crappy attempt at a programming language. Please check out the examples folder for examples! To build the actual `jasl` interpretor, prob best to follow the cmake convention:
