@@ -45,6 +45,7 @@
 #include "commands/string/ListToStringCommand.hpp"
 #include "commands/string/MatchesCommand.hpp"
 #include "commands/string/StringToPrimitiveCommand.hpp"
+#include "commands/string/TokenizeCommand.hpp"
 
 #include "commands/fileio/FolderListCommand.hpp"
 #include "commands/fileio/FolderListRecursiveCommand.hpp"
@@ -170,6 +171,7 @@ namespace jasl {
             m_commandMap.emplace("concat", BUILD_COMMAND_AND_EXECUTE(Concat));
             m_commandMap.emplace("call", BUILD_COMMAND_AND_EXECUTE(Call));
             m_commandMap.emplace("append", BUILD_COMMAND_AND_EXECUTE(Append));
+            m_commandMap.emplace("tokenize", BUILD_COMMAND_AND_EXECUTE(Tokenize));
 
             m_commandMap.emplace("string_reverse", BUILD_COMMAND_AND_EXECUTE(Reverse));
             m_commandMap.emplace("length", BUILD_COMMAND_AND_EXECUTE(Length));
@@ -244,6 +246,7 @@ namespace jasl {
             m_commandBuilders.emplace("concat", BUILD_COMMAND(Concat));
             m_commandBuilders.emplace("call", BUILD_COMMAND(Call));
             m_commandBuilders.emplace("append", BUILD_COMMAND(Append));
+            m_commandBuilders.emplace("tokenize", BUILD_COMMAND(Tokenize));
 
             m_commandBuilders.emplace("string_reverse", BUILD_COMMAND(Reverse));
             m_commandBuilders.emplace("length", BUILD_COMMAND(Length));
