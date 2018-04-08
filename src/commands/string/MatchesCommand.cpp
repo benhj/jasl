@@ -2,7 +2,7 @@
 //  MatchesCommand.cpp
 //  jasl
 //
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
 #include "MatchesCommand.hpp"

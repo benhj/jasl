@@ -1,33 +1,31 @@
 //
-//  AppendCommand.hpp
+//  StringCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 11/03/15
-//  Copyright (c) 2015 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "../Command.hpp"
 
 namespace jasl
 {
-    class AppendCommand : public Command
+    class StringCommand : public Command
     {
     public:
-        AppendCommand(Function &func_,
+        StringCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
 
     private:
-
-        OptionalString getStringBeingAppendedTo();
         bool tryLiteralExtraction(std::string const &key);
         bool trySymbolExtraction(std::string const &key);
         bool tryNumericExtraction(std::string const &key);
-
+        bool tryListExtraction();
     };
 
 }

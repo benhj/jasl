@@ -7,7 +7,7 @@
 //
 
 #include "NewPrimitiveSyntaxCommand.hpp"
-#include "StringToPrimitiveCommand.hpp"
+#include "string/StringToPrimitiveCommand.hpp"
 
 #include <iostream>
 

@@ -3,13 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones
-//  Copyright (c) 2015-2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "caching/GlobalCache.hpp"
-#include "commands/AppendCommand.hpp"
+
 #include "commands/ArgsCommand.hpp"
 #include "commands/ArrayCommand.hpp"
 #include "commands/ArrayPutCommand.hpp"
@@ -17,7 +17,6 @@
 #include "commands/BlockCommand.hpp"
 #include "commands/ReturnableCommand.hpp"
 #include "commands/CallCommand.hpp"
-#include "commands/ConcatCommand.hpp"
 #include "commands/EchoCommand.hpp"
 #include "commands/EchoNLCommand.hpp"
 #include "commands/ExecCommand.hpp"
@@ -27,22 +26,25 @@
 #include "commands/ListGetTokenCommand.hpp"
 #include "commands/ListSetTokenCommand.hpp"
 #include "commands/ListAddTokenCommand.hpp"
-#include "commands/ListToStringCommand.hpp"
 #include "commands/ListTokenIndexCommand.hpp"
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/PutCommand.hpp"
-#include "commands/MatchesCommand.hpp"
 #include "commands/RepeatCommand.hpp"
 #include "commands/StartCommand.hpp"
 #include "commands/WhileCommand.hpp"
 #include "commands/ForCommand.hpp"
 #include "commands/ReverseCommand.hpp"
-#include "commands/StringCommand.hpp"
+#include "commands/string/StringCommand.hpp"
 #include "commands/LengthCommand.hpp"
-#include "commands/StringToPrimitiveCommand.hpp"
 #include "commands/ReleaseCommand.hpp"
 #include "commands/TypeCommand.hpp"
 #include "commands/RandomCommand.hpp"
+
+#include "commands/string/AppendCommand.hpp"
+#include "commands/string/ConcatCommand.hpp"
+#include "commands/string/ListToStringCommand.hpp"
+#include "commands/string/MatchesCommand.hpp"
+#include "commands/string/StringToPrimitiveCommand.hpp"
 
 #include "commands/fileio/FolderListCommand.hpp"
 #include "commands/fileio/FolderListRecursiveCommand.hpp"
