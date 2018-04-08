@@ -8,7 +8,7 @@
 
 #include "ReturnableCommand.hpp"
 #include "ParamExtractor.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/GlobalCache.hpp"
 #include <vector>
 

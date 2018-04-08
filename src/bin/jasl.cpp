@@ -7,9 +7,9 @@
 //
 
 #include "SimplePrompt.hpp"
-#include "other/any.hpp"
-#include "other/CommandInterpretor.hpp"
-#include "other/LiteralString.hpp"
+#include "core/any.hpp"
+#include "core/CommandInterpretor.hpp"
+#include "core/LiteralString.hpp"
 #include "caching/CacheStack.hpp"
 #include "caching/GlobalCache.hpp"
 #include <boost/progress.hpp>

@@ -10,7 +10,8 @@ file(GLOB commands_expressions src/commands/expressions/*.cpp src/commands/expre
 file(GLOB commands_fileio src/commands/fileio/*.cpp src/commands/fileio/*.hpp)
 file(GLOB commands_net src/commands/net/*.cpp src/commands/net/*.hpp)
 file(GLOB commands_string src/commands/string/*.cpp src/commands/string/*.hpp)
-file(GLOB other src/other/*.cpp src/other/*.hpp)
+file(GLOB other src/other/*.hpp)
+file(GLOB core src/core/*.cpp src/core/*.hpp)
 file(GLOB simpleprompt simpleprompt/*.hpp)
 
 # ensure headers in the src folder are compiler-found
@@ -27,7 +28,7 @@ add_library(commands_expressions_lib ${commands_expressions})
 add_library(commands_fileio_lib ${commands_fileio})
 add_library(commands_net_lib ${commands_net})
 add_library(commands_string_lib ${commands_string})
-add_library(other_lib ${other})
+add_library(core_lib ${core})
 
 # external lib deps. Need to make this generic. dylibs are mac-specifc
 find_package(Boost COMPONENTS filesystem system REQUIRED)
@@ -53,7 +54,7 @@ target_link_libraries(jasl
                       commands_fileio_lib
                       commands_net_lib
                       commands_string_lib
-                      other_lib
+                      core_lib
                       ${EXT_DEPS})
 
 # build test binary
@@ -64,8 +65,9 @@ target_link_libraries(jtest
                       commands_expressions_lib
                       commands_fileio_lib
                       commands_net_lib
-                      commands_string_lib 
-	                  other_lib ${EXT_DEPS})
+                      commands_string_lib
+                      core_lib
+	                    ${EXT_DEPS})
 
 # compile options. Lots of redundancy here. Can prob clean up.
 set(COMP_FLAGS -std=c++14 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy -fno-pic)
@@ -75,7 +77,7 @@ target_compile_options(commands_expressions_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_fileio_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_net_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_string_lib PUBLIC ${COMP_FLAGS})
-target_compile_options(other_lib PUBLIC ${COMP_FLAGS})
+target_compile_options(core_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(jasl PUBLIC ${COMP_FLAGS})
 target_compile_options(jtest PUBLIC ${COMP_FLAGS})
 

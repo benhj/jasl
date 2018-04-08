@@ -7,7 +7,7 @@
 //
 
 #include "ListTokenIndexCommand.hpp"
-#include "other/LiteralString.hpp"
+#include "core/LiteralString.hpp"
 #include "caching/VarExtractor.hpp"
 #include <boost/lexical_cast.hpp>
 

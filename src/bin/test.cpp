@@ -7,7 +7,7 @@
 //
 
 #include "other/SimpleTest.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/GlobalCache.hpp"
 #include "caching/SharedVarCache.hpp"
 

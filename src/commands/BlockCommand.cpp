@@ -8,7 +8,7 @@
 
 #include "BlockCommand.hpp"
 #include "ParamExtractor.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/VarExtractor.hpp"
 
 namespace jasl {

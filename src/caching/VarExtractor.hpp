@@ -10,8 +10,8 @@
 
 #include "caching/Value.hpp"
 #include "caching/CacheStack.hpp"
-#include "other/LiteralString.hpp"
-#include "other/SymbolString.hpp"
+#include "core/LiteralString.hpp"
+#include "core/SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/MathByteExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"

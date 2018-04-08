@@ -7,7 +7,7 @@
 //
 
 #include "StartCommand.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/VarExtractor.hpp"
 
 

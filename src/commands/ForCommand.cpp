@@ -10,7 +10,7 @@
 #include "ArrayGetCommand.hpp"
 #include "ListGetTokenCommand.hpp"
 #include "ReleaseCommand.hpp"
-#include "other/CommandInterpretor.hpp"
+#include "core/CommandInterpretor.hpp"
 #include <string>
 
 namespace {

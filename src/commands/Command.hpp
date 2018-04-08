@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "other/Function.hpp"
+#include "core/Function.hpp"
 #include "caching/CacheStack.hpp"
 #include <boost/optional.hpp>
 #include <ostream>
