@@ -59,10 +59,8 @@ namespace jasl
         // Now try extracting a symbol
         std::string symbol;
         if(m_func.getValueA<std::string>(symbol, m_sharedCache)) {
-            std::cout<<"A"<<std::endl;
             std::string value;
-            if( m_sharedCache->getVar_(symbol, value, Type::String)) {
-            std::cout<<"B"<<std::endl;
+            if(m_sharedCache->getVar_(symbol, value, Type::String)) {
                 auto strs = getStrings(value);
                 m_sharedCache->setVar(key, strs, Type::List);
                 return true;
