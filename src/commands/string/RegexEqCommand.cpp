@@ -1,25 +1,25 @@
 //
-//  MatchesCommand.cpp
+//  RegexEqCommand.cpp
 //  jasl
 //
 //  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
-#include "MatchesCommand.hpp"
+#include "RegexEqCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include <regex>
 #include <string>
 
 namespace jasl
 {
-    MatchesCommand::MatchesCommand(Function &func_,
-                                  SharedCacheStack const &sharedCache,
-                                  OptionalOutputStream const &output)
+    RegexEqCommand::RegexEqCommand(Function &func_,
+                                   SharedCacheStack const &sharedCache,
+                                   OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
     }
 
-    bool MatchesCommand::execute()
+    bool RegexEqCommand::execute()
     {
 
         // Command syntax:
