@@ -1,5 +1,5 @@
 //
-//  MatchesCommand.hpp
+//  RegexEqCommand.hpp
 //  jasl  
 //  
 //  Copyright (c) 2017-present Ben Jones. All rights reserved.
@@ -11,10 +11,10 @@
 
 namespace jasl
 {
-    class MatchesCommand : public Command
+    class RegexEqCommand : public Command
     {  
     public:
-        MatchesCommand(Function &func_,
+        RegexEqCommand(Function &func_,
                        SharedCacheStack const &sharedCache = SharedCacheStack(),
                        OptionalOutputStream const &output = OptionalOutputStream());
 

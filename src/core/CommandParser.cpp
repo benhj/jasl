@@ -54,8 +54,8 @@ namespace jasl
         commentColons       %= string(";;;");
         commentPound        %= string("#");
         commentFunc         %= (commentColons | commentSlash | commentPound) >> -allChars;
-        word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')')];
-        carrotWord          %= lexeme['^' >> +(char_ - '^')];
+        word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')' - '^' - '?')];
+        carrotWord          %= lexeme['^' >> +(char_ - ' ' - ',' - '[' - ']' - '(' - ')' - '^')];
 
         // symbols to be used in a math expression
         mathSymbols %= lexeme[ string("%")
@@ -356,7 +356,7 @@ namespace jasl
         // e.g. list [hello [nested list] there] -> L;
         // will be useful for pattern matching
         // a collection of words
-        words          %= *(word | bracketedWords); // zero or more words
+        words          %= *(carrotWord | word | bracketedWords); // zero or more words
         bracketedWords %= '[' >> words >> ']';
 
         // index_of ("hello", [hello there]) -> s;
@@ -470,14 +470,14 @@ namespace jasl
         // for exiting a program
         exitCommand %= string("exit") >> -(genericString) >> ';';
 
-        matchesCommand %= string("matches")
-                     >> ('(') 
-                     >> (doubleQuotedString | genericString) >> ','
-                     >> (doubleQuotedString | genericString) 
-                     >> (')')
-                     >> lit("->")
-                     >> genericString
-                     >> ';';
+        regexEqCommand %= string("regex_eq")
+                       >> ('(') 
+                       >> (doubleQuotedString | genericString) >> ','
+                       >> (doubleQuotedString | genericString) 
+                       >> (')')
+                       >> lit("->")
+                       >> genericString
+                       >> ';';
 
         // opens a tcp connection. When implemented, will allow
         // tcp_connect server:port -> descriptor;
@@ -573,7 +573,7 @@ namespace jasl
                      | randomCommand
                      | exitCommand
                      | get
-                     | matchesCommand
+                     | regexEqCommand
                      | tcpConnect
                      | tcpSConnect
                      | netClose

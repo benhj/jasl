@@ -43,7 +43,7 @@
 #include "commands/string/AppendCommand.hpp"
 #include "commands/string/ConcatCommand.hpp"
 #include "commands/string/ListToStringCommand.hpp"
-#include "commands/string/MatchesCommand.hpp"
+#include "commands/string/RegexEqCommand.hpp"
 #include "commands/string/StringToPrimitiveCommand.hpp"
 #include "commands/string/TokenizeCommand.hpp"
 
@@ -209,7 +209,7 @@ namespace jasl {
             m_commandMap.emplace("file_append_line", BUILD_COMMAND_AND_EXECUTE(FileAppendString));
             m_commandMap.emplace("file_type", BUILD_COMMAND_AND_EXECUTE(FileType));
 
-            m_commandMap.emplace("matches", BUILD_COMMAND_AND_EXECUTE(Matches));
+            m_commandMap.emplace("regex_eq", BUILD_COMMAND_AND_EXECUTE(RegexEq));
 
             m_commandMap.emplace("tcp_connect", BUILD_COMMAND_AND_EXECUTE(TCPConnect));
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
@@ -283,7 +283,7 @@ namespace jasl {
             m_commandBuilders.emplace("file_append_bytes", BUILD_COMMAND(FileAppendBytes));
             m_commandBuilders.emplace("file_append_line", BUILD_COMMAND(FileAppendString));
 
-            m_commandBuilders.emplace("matches", BUILD_COMMAND(Matches));
+            m_commandBuilders.emplace("regex_eq", BUILD_COMMAND(RegexEq));
 
             m_commandBuilders.emplace("tcp_connect", BUILD_COMMAND(TCPConnect));
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));

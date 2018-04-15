@@ -96,7 +96,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
 
         // string manipulation new (2017)
-        qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;
 
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;

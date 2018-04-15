@@ -1,0 +1,8 @@
+start {
+	string "hello world" -> str;
+	tokenize str -> toks;
+	for t in toks {
+		pr "t: ";
+		prn t;
+	}
+}
