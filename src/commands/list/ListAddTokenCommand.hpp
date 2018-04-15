@@ -1,30 +1,29 @@
 //
-//  ListSetTokenCommand.hpp
+//  ListAddTokenCommand.hpp
 //  jasl
 //
-//  Created by Ben Jones on 18/03/15
+//  Created by Ben Jones on 04/10/15
 //  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "../Command.hpp"
+#include <string>
 
 namespace jasl
 {
-    class ListSetTokenCommand : public Command
+    class ListAddTokenCommand : public Command
     {
     public:
-        ListSetTokenCommand(Function &func_,
+        ListAddTokenCommand(Function &func_,
                             SharedCacheStack const &sharedCache = SharedCacheStack(),
                             OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
     private:
-        bool getIndex(int64_t&);
-        bool getNewStringToken(std::string&);
-        bool getNewVAToken(List&);
-        bool tryWithRawList(std::string const &varName);
+        OptionalString getNewStringToken();
+        OptionalList getNewVAToken();
         bool tryWithSymbolList(std::string const &varName);
     };
 
