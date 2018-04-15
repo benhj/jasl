@@ -10,6 +10,7 @@ file(GLOB commands_expressions src/commands/expressions/*.cpp src/commands/expre
 file(GLOB commands_fileio src/commands/fileio/*.cpp src/commands/fileio/*.hpp)
 file(GLOB commands_net src/commands/net/*.cpp src/commands/net/*.hpp)
 file(GLOB commands_string src/commands/string/*.cpp src/commands/string/*.hpp)
+file(GLOB commands_list src/commands/list/*.cpp src/commands/list/*.hpp)
 file(GLOB other src/other/*.hpp)
 file(GLOB core src/core/*.cpp src/core/*.hpp)
 file(GLOB simpleprompt simpleprompt/*.hpp)
@@ -30,6 +31,7 @@ add_library(commands_expressions_lib ${commands_expressions})
 add_library(commands_fileio_lib ${commands_fileio})
 add_library(commands_net_lib ${commands_net})
 add_library(commands_string_lib ${commands_string})
+add_library(commands_list_lib ${commands_list})
 add_library(core_lib ${core})
 
 # external lib deps. Need to make this generic. dylibs are mac-specifc
@@ -56,18 +58,20 @@ target_link_libraries(jasl
                       commands_fileio_lib
                       commands_net_lib
                       commands_string_lib
+                      commands_list_lib
                       core_lib
                       ${EXT_DEPS})
 
 # build test binary
 add_executable(jtest src/bin/test.cpp)
 target_link_libraries(jtest 
-	                  caching_lib 
-	                  commands_lib
+                      caching_lib 
+                      commands_lib
                       commands_expressions_lib
                       commands_fileio_lib
                       commands_net_lib
                       commands_string_lib
+                      commands_list_lib
                       core_lib
 	                    ${EXT_DEPS})
 
@@ -79,6 +83,7 @@ target_compile_options(commands_expressions_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_fileio_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_net_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_string_lib PUBLIC ${COMP_FLAGS})
+target_compile_options(commands_list_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(core_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(jasl PUBLIC ${COMP_FLAGS})
 target_compile_options(jtest PUBLIC ${COMP_FLAGS})

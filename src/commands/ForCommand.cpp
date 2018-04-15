@@ -8,7 +8,7 @@
 
 #include "ForCommand.hpp"
 #include "ArrayGetCommand.hpp"
-#include "ListGetTokenCommand.hpp"
+#include "list/ListGetTokenCommand.hpp"
 #include "ReleaseCommand.hpp"
 #include "core/CommandInterpretor.hpp"
 #include <string>

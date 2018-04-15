@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Command.hpp"
+#include "../Command.hpp"
 
 namespace jasl
 {
