@@ -356,7 +356,7 @@ namespace jasl
         // e.g. list [hello [nested list] there] -> L;
         // will be useful for pattern matching
         // a collection of words
-        words          %= *(carrotWord | word | bracketedWords); // zero or more words
+        words          %= *(word | bracketedWords); // zero or more words
         bracketedWords %= '[' >> words >> ']';
 
         // index_of ("hello", [hello there]) -> s;
@@ -405,8 +405,16 @@ namespace jasl
                       >> genericString 
                       >> ';';
 
+        matchesCommand %= string("matches")
+                       >> bracketedWords
+                       >> '|'
+                       >> bracketedWords
+                       >> lit("->")
+                       >> genericString 
+                       >> ';';
+
         // appends to end of a string, s  
-        // append (s, "hello") --> result;
+        // append (s, "hello") -> result;
         appendRule %= string("append")
                    >> ('(')
                    >> (doubleQuotedString | genericString)

@@ -11,7 +11,6 @@
 #include "Function.hpp"
 #include "CarrotString.hpp"
 #include "LiteralString.hpp"
-#include "SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 
@@ -97,6 +96,10 @@ namespace jasl
 
         // string manipulation new (2017)
         qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;
+
+        // list manipulation (2018)
+        qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
+
 
         // net i/o
         qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
