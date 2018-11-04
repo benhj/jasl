@@ -487,6 +487,15 @@ namespace jasl
                        >> genericString
                        >> ';';
 
+        regexParseCommand %= string("regex_parse")
+                          >> ('(') 
+                          >> (doubleQuotedString | genericString) >> ','
+                          >> (doubleQuotedString | genericString) 
+                          >> (')')
+                          >> lit("->")
+                          >> genericString
+                          >> ';';
+
         wildcardEqCommand %= string("wildcard_eq")
                           >> ('(') 
                           >> (doubleQuotedString | genericString) >> ','
@@ -550,6 +559,7 @@ namespace jasl
                      | exitCommand
                      | get
                      | regexEqCommand
+                     | regexParseCommand
                      | wildcardEqCommand
                      | concatRule
                      | genericArrowRule;
