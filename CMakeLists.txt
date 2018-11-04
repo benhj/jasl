@@ -36,21 +36,20 @@ add_library(core_lib ${core})
 
 # external lib deps. Need to make this generic. dylibs are mac-specifc
 find_package(Boost COMPONENTS filesystem system REQUIRED)
-find_library(SSL_LIB NAMES ssl REQUIRED)
-find_library(CRYPTO_LIB NAMES crypto REQUIRED)
+find_package(CURL REQUIRED)
 find_library(ICUUC_LIB NAMES icuuc REQUIRED)
 
 # make sure boost headers can be found
 include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${CURL_INCLUDE_DIR})
 
 # print some shit out...
-message(${SSL_LIB})
-message(${CRYPTO_LIB})
 message(${ICUUC_LIB})
+message(${CURL_LIBRARIES})
 
 # build the interpretor
 add_executable(jasl src/bin/jasl.cpp)
-set(EXT_DEPS ${Boost_LIBRARIES} ${SSL_LIB} ${CRYPTO_LIB} ${ICUUC_LIB})
+set(EXT_DEPS ${Boost_LIBRARIES} ${CURL_LIBRARIES} ${ICUUC_LIB})
 target_link_libraries(jasl
                       caching_lib
                       commands_lib

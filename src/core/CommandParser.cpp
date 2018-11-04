@@ -487,46 +487,6 @@ namespace jasl
                        >> genericString
                        >> ';';
 
-        // opens a tcp connection. When implemented, will allow
-        // tcp_connect server:port -> descriptor;
-        tcpConnect %= string("tcp_connect")
-                   >> (doubleQuotedString | genericString) >> ':'
-                   >> (genericString | intRule) >> lit("->")
-                   >> genericString
-                   >> ';';
-        tcpSConnect %= string("tcp_sconnect")
-                    >> (doubleQuotedString | genericString) >> ':'
-                    >> (genericString | intRule) >> lit("->")
-                    >> genericString
-                    >> ';';
-
-        // Closes a tcp connection:
-        // net_close fd;
-        netClose %= string("net_close")
-                 >> (genericString | intRule)
-                 >> ';';
-
-        // Attempt to read some bytes from the open connection
-        // net_read gfd -> bytes -> n;
-        netRead %= string("net_read")
-                >> (genericString)
-                >> lit("->")
-                >> (genericString) 
-                >> lit("->")
-                >> (genericString)
-                >> ';';
-
-        // Attempt to read some bytes from the open secure connection
-        // net_sread gfd -> bytes -> n;
-        netSRead %= string("net_sread")
-                >> (genericString)
-                >> lit("->")
-                >> (genericString) 
-                >> lit("->")
-                >> (genericString)
-                >> ';';
-
-
         // concatenate strings. 
         concatRule %= string("concat")
                    >> (parameterList) >> lit("->")
@@ -582,12 +542,7 @@ namespace jasl
                      | exitCommand
                      | get
                      | regexEqCommand
-                     | tcpConnect
-                     | tcpSConnect
-                     | netClose
                      | concatRule
-                     | netRead
-                     | netSRead
                      | genericArrowRule;
                      
         start %= allCommands;
