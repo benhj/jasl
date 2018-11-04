@@ -45,6 +45,7 @@
 #include "commands/string/ConcatCommand.hpp"
 #include "commands/string/ListToStringCommand.hpp"
 #include "commands/string/RegexEqCommand.hpp"
+#include "commands/string/RegexParseCommand.hpp"
 #include "commands/string/StringToPrimitiveCommand.hpp"
 #include "commands/string/TokenizeCommand.hpp"
 #include "commands/string/WildcardEqCommand.hpp"
@@ -206,6 +207,7 @@ namespace jasl {
             m_commandMap.emplace("file_type", BUILD_COMMAND_AND_EXECUTE(FileType));
 
             m_commandMap.emplace("regex_eq", BUILD_COMMAND_AND_EXECUTE(RegexEq));
+            m_commandMap.emplace("regex_parse", BUILD_COMMAND_AND_EXECUTE(RegexParse));
             m_commandMap.emplace("wildcard_eq", BUILD_COMMAND_AND_EXECUTE(WildcardEq));
 
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
@@ -275,6 +277,7 @@ namespace jasl {
             m_commandBuilders.emplace("file_append_line", BUILD_COMMAND(FileAppendString));
 
             m_commandBuilders.emplace("regex_eq", BUILD_COMMAND(RegexEq));
+            m_commandBuilders.emplace("regex_parse", BUILD_COMMAND(RegexParse));
             m_commandBuilders.emplace("wildcard_eq", BUILD_COMMAND(WildcardEq));
 
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
