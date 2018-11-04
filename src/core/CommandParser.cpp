@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
 
 #include "CommandParser.hpp"
@@ -487,6 +487,14 @@ namespace jasl
                        >> genericString
                        >> ';';
 
+        wildcardEqCommand %= string("wildcard_eq")
+                          >> ('(') 
+                          >> (doubleQuotedString | genericString) >> ','
+                          >> (doubleQuotedString | genericString) 
+                          >> (')')
+                          >> lit("->")
+                          >> genericString
+                          >> ';';
         // concatenate strings. 
         concatRule %= string("concat")
                    >> (parameterList) >> lit("->")
@@ -542,6 +550,7 @@ namespace jasl
                      | exitCommand
                      | get
                      | regexEqCommand
+                     | wildcardEqCommand
                      | concatRule
                      | genericArrowRule;
                      

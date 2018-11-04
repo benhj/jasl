@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #pragma once
@@ -94,8 +94,9 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> concatRule;
         qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
 
-        // string manipulation new (2017)
+        // string manipulation new (2017-2018)
         qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> wildcardEqCommand;
 
         // list manipulation (2018)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
