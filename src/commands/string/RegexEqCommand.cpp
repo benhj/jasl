@@ -27,19 +27,19 @@ namespace jasl
 
         std::string toMatch;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramA, toMatch, m_sharedCache)) {
-            setLastErrorMessage("matches: couldn't determine string to match");
+            setLastErrorMessage("regex_eq: couldn't determine string to match");
             return false;
         }
 
         std::string reg;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramB, reg, m_sharedCache)) {
-            setLastErrorMessage("matches: couldn't determine matches string");
+            setLastErrorMessage("regex_eq: couldn't determine matches string");
             return false;
         }
 
         std::string symbol;
         if(!m_func.getValueC<std::string>(symbol, m_sharedCache)) {
-            setLastErrorMessage("matches: couldn't dtermine symbol");
+            setLastErrorMessage("regex_eq: couldn't dtermine symbol");
             return false;
         }
 

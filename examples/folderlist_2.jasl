@@ -1,0 +1,22 @@
+;;; example folder listing -- list files with wildcard pattern
+
+block reg(strings, wildcard) {
+    for str in strings {
+        wildcard_eq (str, wildcard) -> result;
+        if (result = 1) {
+            prn str;
+        }
+    }
+}
+
+start {
+    if (argsCount < 2) {
+        prn "error, too few args";
+        prn "usage: folderlist.jasl </path/to/list> <wildcard>";
+    } else {
+        args 0 -> folder;
+        args 1 -> ext;
+        folder_list folder -> strings;
+        call reg(strings, ext);
+    }
+}
