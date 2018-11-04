@@ -100,14 +100,6 @@ namespace jasl
         // list manipulation (2018)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
 
-
-        // net i/o
-        qi::rule<Iterator, Function(), ascii::space_type> tcpConnect;
-        qi::rule<Iterator, Function(), ascii::space_type> tcpSConnect;
-        qi::rule<Iterator, Function(), ascii::space_type> netClose;
-        qi::rule<Iterator, Function(), ascii::space_type> netRead;
-        qi::rule<Iterator, Function(), ascii::space_type> netSRead;
-
         // Core rule declarations
         qi::rule<Iterator, std::string(), ascii::space_type> word;
         qi::rule<Iterator, Value(), ascii::space_type> parameter;
