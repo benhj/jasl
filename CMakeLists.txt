@@ -72,7 +72,7 @@ target_link_libraries(jtest
                       commands_string_lib
                       commands_list_lib
                       core_lib
-	                    ${EXT_DEPS})
+                      ${EXT_DEPS})
 
 # compile options. Lots of redundancy here. Can prob clean up.
 set(COMP_FLAGS -std=c++14 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy -fno-pic)
