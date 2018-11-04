@@ -206,7 +206,6 @@ namespace jasl {
 
             m_commandMap.emplace("regex_eq", BUILD_COMMAND_AND_EXECUTE(RegexEq));
 
-            m_commandMap.emplace("tcp_connect", BUILD_COMMAND_AND_EXECUTE(TCPConnect));
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
 
             m_commandMap.emplace("exit", [](Function &,
@@ -275,7 +274,6 @@ namespace jasl {
 
             m_commandBuilders.emplace("regex_eq", BUILD_COMMAND(RegexEq));
 
-            m_commandBuilders.emplace("tcp_connect", BUILD_COMMAND(TCPConnect));
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
 
             m_commandBuilders.emplace("exit", [](Function &,
