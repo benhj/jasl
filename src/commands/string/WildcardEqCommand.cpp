@@ -11,7 +11,7 @@
 
 namespace {
     // Not mine -- copied directly from
-    // https://stackoverflow.com/questions/19430890/handling-a-wildcard-character-in-c
+    // https://stackoverflow.com/questions/3300419/file-name-matching-with-wildcard
     bool match(char const *needle, char const *haystack) {
         for (; *needle != '\0'; ++needle) {
             switch (*needle) {
