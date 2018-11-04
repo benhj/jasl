@@ -8,10 +8,40 @@
 #include "NetReadCommand.hpp"
 #include "caching/VarExtractor.hpp"
 
+#include <curl/curl.h>
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <vector>
+
+namespace {
+
+    inline
+    size_t write_data(const char * data, size_t size, 
+        size_t count, std::vector<unit8_t> * bytes) {
+        //stream->write(data, count);
+        return size * count;
+    }
+
+    inline
+    void pull_one_url(URL const & url,
+                      std::vector<unit8_t> & bytes)
+    {
+        CURL *curl;
+        curl = curl_easy_init();
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, url.getWholeThing().c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &bytes);
+            curl_easy_perform(curl);
+            /* always cleanup */
+            curl_easy_cleanup(curl);
+            stream->flush();
+        }
+    }
+}
+
 
 namespace jasl
 {
@@ -25,26 +55,6 @@ namespace jasl
 
     bool NetReadCommand::execute() 
     {
-        // now try and extract the actual words
-        int64_t fd;
-        if(!VarExtractor::trySingleIntExtraction(m_func.paramA, fd, m_sharedCache)) {
-            setLastErrorMessage("net_read: can't extract fd");
-            return false;
-        }
-
-        char recvBuff[1024];
-        memset(recvBuff, '0',sizeof(recvBuff));
-        std::vector<uint8_t> bytes;
-        auto n = ::read(fd, recvBuff, sizeof(recvBuff) - 1);
-        recvBuff[n] = 0;
-        for (int i = 0; i < n; ++i) {
-            bytes.push_back(recvBuff[i]);
-        }
-
-        if (n < 0) {
-            setLastErrorMessage("net_read: read error");
-            return false;
-        }
 
         std::string bytesArrayName;
         if(!m_func.getValueB<std::string>(bytesArrayName, m_sharedCache)) {
@@ -52,14 +62,7 @@ namespace jasl
             return false;
         }
 
-        std::string bytesReadName;
-        if(!m_func.getValueC<std::string>(bytesReadName, m_sharedCache)) {
-            setLastErrorMessage("net_read: couldn't bytes read name");
-            return false;
-        }
-
-        m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);
-        m_sharedCache->setVar(bytesReadName, static_cast<int64_t>(n), Type::Int);         
+        m_sharedCache->setVar(bytesArrayName, bytes, Type::ByteArray);       
         return true;
     }
 }
