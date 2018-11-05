@@ -49,6 +49,7 @@
 #include "commands/string/StringToPrimitiveCommand.hpp"
 #include "commands/string/TokenizeCommand.hpp"
 #include "commands/string/WildcardEqCommand.hpp"
+#include "commands/string/WildcardParseCommand.hpp"
 
 #include "commands/fileio/FolderListCommand.hpp"
 #include "commands/fileio/FolderListRecursiveCommand.hpp"
@@ -209,6 +210,7 @@ namespace jasl {
             m_commandMap.emplace("regex_eq", BUILD_COMMAND_AND_EXECUTE(RegexEq));
             m_commandMap.emplace("regex_parse", BUILD_COMMAND_AND_EXECUTE(RegexParse));
             m_commandMap.emplace("wildcard_eq", BUILD_COMMAND_AND_EXECUTE(WildcardEq));
+            m_commandMap.emplace("wildcard_parse", BUILD_COMMAND_AND_EXECUTE(WildcardParse));
 
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
 
@@ -279,6 +281,7 @@ namespace jasl {
             m_commandBuilders.emplace("regex_eq", BUILD_COMMAND(RegexEq));
             m_commandBuilders.emplace("regex_parse", BUILD_COMMAND(RegexParse));
             m_commandBuilders.emplace("wildcard_eq", BUILD_COMMAND(WildcardEq));
+            m_commandBuilders.emplace("wildcard_parse", BUILD_COMMAND(WildcardParse));
 
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
 

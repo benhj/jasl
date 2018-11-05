@@ -98,6 +98,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;
         qi::rule<Iterator, Function(), ascii::space_type> wildcardEqCommand;
         qi::rule<Iterator, Function(), ascii::space_type> regexParseCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> wildcardParseCommand;
 
         // list manipulation (2018)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
