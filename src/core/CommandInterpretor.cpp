@@ -10,6 +10,7 @@
 #include "CommandParser.hpp"
 #include "caching/GlobalCache.hpp"
 
+#include "commands/AnsiUPCommand.hpp"
 #include "commands/ArgsCommand.hpp"
 #include "commands/ArrayCommand.hpp"
 #include "commands/ArrayPutCommand.hpp"
@@ -214,6 +215,8 @@ namespace jasl {
 
             m_commandMap.emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
 
+            m_commandMap.emplace("ansi_up", BUILD_COMMAND_AND_EXECUTE(AnsiUP));
+
             m_commandMap.emplace("exit", [](Function &,
                                             SharedCacheStack const &,
                                             OptionalOutputStream const &) {
@@ -284,6 +287,8 @@ namespace jasl {
             m_commandBuilders.emplace("wildcard_parse", BUILD_COMMAND(WildcardParse));
 
             m_commandBuilders.emplace("net_read", BUILD_COMMAND(NetRead));
+
+            m_commandBuilders.emplace("ansi_up", BUILD_COMMAND(AnsiUP));
 
             m_commandBuilders.emplace("exit", [](Function &,
                                                  SharedCacheStack const &,

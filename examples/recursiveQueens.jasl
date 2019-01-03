@@ -34,10 +34,11 @@ block printQueens(N, x) {
             }
             put (j + 1) -> j;
         }
-        prn " ";
+        say "\n";
         put (i + 1) -> i;
     }
-}
+
+ }
 
 block placeNQueens(r, n, x) {
     
@@ -46,11 +47,12 @@ block placeNQueens(r, n, x) {
         call canPlaceQueen(r, c, x) -> yes;
         ? (yes = 1) {
             string c -> strtok;
-            set_token(r, x, strtok) -> x; 
+            set_token(r, x, strtok) -> x;
+            call printQueens(n,x); 
             ? (r = (n - 1)) {
-                call printQueens(n, x);
                 exit;
             } : {
+               ansi_up n;
                call placeNQueens((r + 1), n, x);
             }
         }
@@ -69,5 +71,6 @@ start {
         add_token(strtok, x);
         put (i + 1) -> i;    
     }
+    say "\n\n";
     call placeNQueens(0, N, x);
 }

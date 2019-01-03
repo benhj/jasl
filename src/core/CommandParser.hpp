@@ -93,6 +93,7 @@ namespace jasl
         // generic rule
         qi::rule<Iterator, Function(), ascii::space_type> concatRule;
         qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
+        qi::rule<Iterator, Function(), ascii::space_type> ansiUPRule;
 
         // string manipulation new (2017-2018)
         qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;

@@ -536,6 +536,14 @@ namespace jasl
                           >> (doubleQuotedString | genericString) 
                           >> ';';
 
+        // matches this type of command:
+        // net_send something;
+        ansiUPRule %= string("ansi_up")
+                            >> (genericString
+                               | intRule
+                               | mathExpression
+                               | bracketedMathExpression) >> ';';
+
         // all the instructions at out disposal
         allCommands %= forLoop
                      | query 
@@ -572,6 +580,7 @@ namespace jasl
                      | wildcardEqCommand
                      | wildcardParseCommand
                      | concatRule
+                     | ansiUPRule
                      | genericArrowRule;
                      
         start %= allCommands;
