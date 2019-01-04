@@ -10,16 +10,17 @@
 #include "CommandParser.hpp"
 #include "caching/GlobalCache.hpp"
 
-#include "commands/AnsiUPCommand.hpp"
 #include "commands/ArgsCommand.hpp"
 #include "commands/ArrayCommand.hpp"
 #include "commands/ArrayPutCommand.hpp"
 #include "commands/ArrayGetCommand.hpp"
-#include "commands/EchoCommand.hpp"
-#include "commands/EchoNLCommand.hpp"
 #include "commands/ExecCommand.hpp"
 
-#include "commands/InputCommand.hpp"
+#include "commands/screenio/AnsiUPCommand.hpp"
+#include "commands/screenio/EchoCommand.hpp"
+#include "commands/screenio/EchoNLCommand.hpp"
+#include "commands/screenio/InputCommand.hpp"
+
 #include "commands/NewPrimitiveSyntaxCommand.hpp"
 #include "commands/PutCommand.hpp"
 
