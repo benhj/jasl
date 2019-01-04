@@ -3,13 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones on 03/10/15
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "ForCommand.hpp"
-#include "ArrayGetCommand.hpp"
-#include "list/ListGetTokenCommand.hpp"
-#include "ReleaseCommand.hpp"
+#include "commands/list/ListGetTokenCommand.hpp"
+#include "commands/ArrayGetCommand.hpp"
+#include "commands/ReleaseCommand.hpp"
 #include "core/CommandInterpretor.hpp"
 #include <string>
 

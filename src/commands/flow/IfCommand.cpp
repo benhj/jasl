@@ -3,11 +3,11 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "IfCommand.hpp"
-#include "expressions/ComparisonExpression.hpp"
+#include "commands/expressions/ComparisonExpression.hpp"
 #include "core/CommandInterpretor.hpp"
 #include "caching/VarExtractor.hpp"
 #include <vector>

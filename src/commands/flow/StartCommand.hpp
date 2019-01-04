@@ -1,21 +1,21 @@
 //
-//  BlockCommand.hpp
+//  StartCommand.hpp
 //  jasl
 //
-//  Created by Ben Jones on 10/03/2015.
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Created by Ben Jones on on 10/03/2015.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "commands/Command.hpp"
 #include <vector>
 
 namespace jasl {
-    class BlockCommand : public Command
+    class StartCommand : public Command
     {
     public:
-        BlockCommand(Function &func_, 
+        StartCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
         bool execute() override;

@@ -3,11 +3,11 @@
 //  jasl
 //
 //  Created by Ben Jones on 10/10/2015.
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "ReturnableCommand.hpp"
-#include "ParamExtractor.hpp"
+#include "commands/ParamExtractor.hpp"
 #include "core/CommandInterpretor.hpp"
 #include "caching/GlobalCache.hpp"
 #include <vector>
