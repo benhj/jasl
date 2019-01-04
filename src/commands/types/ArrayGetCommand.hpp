@@ -1,28 +1,32 @@
 //
-//  ArrayPutCommand.hpp
+//  ArrayGetCommand.hpp
 //  jasl
 //
 //  Created by Ben Jones on 30/06/15
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2016-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "commands/Command.hpp"
+#include <string>
 
 namespace jasl
 {
-    class ArrayPutCommand : public Command
+    class ArrayGetCommand : public Command
     {
     public:
-        ArrayPutCommand(Function &func_,
+        ArrayGetCommand(Function &func_,
                         SharedCacheStack const &sharedCache = SharedCacheStack(),
                         OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
     private:
-        bool getIndex(int64_t &index);
-        std::string m_type;
+        bool getIndex(int64_t&);
+        std::string m_arrayName;
         std::string m_varName;
+        std::string m_type;
+
     };
+
 }

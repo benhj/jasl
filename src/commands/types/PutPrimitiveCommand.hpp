@@ -3,12 +3,12 @@
 //  jasl
 //
 //  Created by Ben Jones on 06/07/16
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2016-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
-#include "Command.hpp"
+#include "commands/Command.hpp"
 
 namespace jasl
 {

@@ -13,6 +13,7 @@ file(GLOB commands_string src/commands/string/*.cpp src/commands/string/*.hpp)
 file(GLOB commands_list src/commands/list/*.cpp src/commands/list/*.hpp)
 file(GLOB commands_flow src/commands/flow/*.cpp src/commands/flow/*.hpp)
 file(GLOB commands_screenio src/commands/screenio/*.cpp src/commands/screenio/*.hpp)
+file(GLOB commands_types src/commands/types/*.cpp src/commands/types/*.hpp)
 file(GLOB other src/other/*.hpp)
 file(GLOB core src/core/*.cpp src/core/*.hpp)
 file(GLOB simpleprompt simpleprompt/*.hpp)
@@ -36,6 +37,7 @@ add_library(commands_string_lib ${commands_string})
 add_library(commands_list_lib ${commands_list})
 add_library(commands_flow_lib ${commands_flow})
 add_library(commands_screenio_lib ${commands_screenio})
+add_library(commands_types_lib ${commands_types})
 add_library(core_lib ${core})
 
 # external lib deps. Need to make this generic. dylibs are mac-specifc
@@ -64,6 +66,7 @@ target_link_libraries(jasl
                       commands_list_lib
                       commands_flow_lib
                       commands_screenio_lib
+                      commands_types_lib
                       core_lib
                       ${EXT_DEPS})
 
@@ -79,6 +82,7 @@ target_link_libraries(jtest
                       commands_list_lib
                       commands_flow_lib
                       commands_screenio_lib
+                      commands_types_lib
                       core_lib
                       ${EXT_DEPS})
 
@@ -93,6 +97,7 @@ target_compile_options(commands_string_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_list_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_flow_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_screenio_lib PUBLIC ${COMP_FLAGS})
+target_compile_options(commands_types_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(core_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(jasl PUBLIC ${COMP_FLAGS})
 target_compile_options(jtest PUBLIC ${COMP_FLAGS})

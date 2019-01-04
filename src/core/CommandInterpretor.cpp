@@ -11,9 +11,6 @@
 #include "caching/GlobalCache.hpp"
 
 #include "commands/ArgsCommand.hpp"
-#include "commands/ArrayCommand.hpp"
-#include "commands/ArrayPutCommand.hpp"
-#include "commands/ArrayGetCommand.hpp"
 #include "commands/ExecCommand.hpp"
 
 #include "commands/screenio/AnsiUPCommand.hpp"
@@ -21,14 +18,17 @@
 #include "commands/screenio/EchoNLCommand.hpp"
 #include "commands/screenio/InputCommand.hpp"
 
-#include "commands/NewPrimitiveSyntaxCommand.hpp"
-#include "commands/PutCommand.hpp"
+#include "commands/types/ArrayCommand.hpp"
+#include "commands/types/ArrayPutCommand.hpp"
+#include "commands/types/ArrayGetCommand.hpp"
+#include "commands/types/NewPrimitiveSyntaxCommand.hpp"
+#include "commands/types/PutCommand.hpp"
+#include "commands/types/ReleaseCommand.hpp"
+#include "commands/types/TypeCommand.hpp"
 
 #include "commands/ReverseCommand.hpp"
 #include "commands/string/StringCommand.hpp"
 #include "commands/LengthCommand.hpp"
-#include "commands/ReleaseCommand.hpp"
-#include "commands/TypeCommand.hpp"
 #include "commands/RandomCommand.hpp"
 
 #include "commands/flow/BlockCommand.hpp"
