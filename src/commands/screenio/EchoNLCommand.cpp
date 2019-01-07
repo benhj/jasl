@@ -8,8 +8,11 @@
 
 #include "EchoNLCommand.hpp"
 #include "core/LiteralString.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include <boost/algorithm/string.hpp>
+
+bool jasl::EchoNLCommand::m_registered = registerCommand<jasl::EchoNLCommand>({"prn"});
 
 namespace jasl
 {

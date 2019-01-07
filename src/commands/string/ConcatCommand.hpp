@@ -22,6 +22,7 @@ namespace jasl
 
     private:
         bool tryConcatExtraction(std::string const & key);
+        static bool m_registered;
     };
 
 }

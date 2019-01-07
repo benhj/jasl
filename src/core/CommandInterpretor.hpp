@@ -36,11 +36,17 @@ namespace jasl {
 
         using CommandMap = std::map<std::string, CommandFunction>;
         using CommandBuilders = std::map<std::string, CommandBuilder>;
+        using CommandRegistry = std::map<std::string, CommandBuilder>;
 
-        static CommandMap m_commandMap;
-        static CommandBuilders m_commandBuilders;
+        // Static ordering issue
+        static CommandMap & getCommandMap();
+        static CommandBuilders & getCommandBuilders();
 
         CommandInterpretor();
+
+        /// Register a command builder with a given name, with the registry
+        static void registerCommand(std::string commandName,
+                                    CommandBuilder builder);
 
         /**
          * @brief Attempts to parse and interpret a single command

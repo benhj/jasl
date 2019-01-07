@@ -25,6 +25,7 @@ namespace jasl
         OptionalString getNewStringToken();
         OptionalList getNewVAToken();
         bool tryWithSymbolList(std::string const &varName);
+        static bool m_registered;
     };
 
 }

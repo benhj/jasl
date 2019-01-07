@@ -23,6 +23,7 @@ namespace jasl
     private:
         std::string m_type;
         std::string m_varName;
+        static bool m_registered;
     };
 
 }

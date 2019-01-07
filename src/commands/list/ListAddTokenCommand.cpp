@@ -8,6 +8,7 @@
 
 #include "ListAddTokenCommand.hpp"
 #include "core/LiteralString.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>

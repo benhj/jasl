@@ -26,6 +26,7 @@ namespace jasl
       private:
         bool tryLiteralExtraction(std::string const &key);
         bool trySymbolExtraction(std::string const &key);
+        static bool m_registered;
     };
 
 }

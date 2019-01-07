@@ -8,8 +8,14 @@
 
 #include "EchoCommand.hpp"
 #include "core/LiteralString.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include <boost/algorithm/string.hpp>
+
+/**
+ * AUTO TYPE REGISTRAION
+ */
+bool jasl::EchoCommand::m_registered = registerCommand<jasl::EchoCommand>({"pr", "say"});
 
 namespace jasl
 {

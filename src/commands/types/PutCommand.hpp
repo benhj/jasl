@@ -22,6 +22,7 @@ namespace jasl
         bool execute() override;
     private:
         bool m_primitive;
+        static bool m_registered;
     };
 
 }

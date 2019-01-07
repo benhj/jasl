@@ -8,6 +8,7 @@
 
 #include "BlockCommand.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 #include "commands/ParamExtractor.hpp"
 #include "caching/VarExtractor.hpp"
 

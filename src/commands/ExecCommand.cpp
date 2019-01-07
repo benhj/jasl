@@ -9,6 +9,7 @@
 
 #include "ExecCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <sstream>
 
 namespace jasl
@@ -54,3 +55,14 @@ namespace jasl
         return false;
     }
 }
+
+/*
+template<class T>
+char RegisterType(){
+  std::cout<<"exec"<<std::endl;
+  return 0; // doesn't matter, never used.
+}
+
+// char jasl::Command::_enforce_registration = 
+char jasl::Command::_enforce_registration = RegisterType<jasl::ExecCommand>();
+*/

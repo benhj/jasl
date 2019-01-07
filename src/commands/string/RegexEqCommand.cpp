@@ -7,6 +7,7 @@
 
 #include "RegexEqCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <regex>
 #include <string>
 

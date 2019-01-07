@@ -8,6 +8,7 @@
 #include "WildcardEqCommand.hpp"
 #include "WildcardMatch.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <string>
 
 namespace jasl

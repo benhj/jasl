@@ -9,6 +9,7 @@
 #include "PutPrimitiveCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 
 namespace jasl
 {

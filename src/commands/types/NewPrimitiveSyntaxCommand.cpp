@@ -8,6 +8,7 @@
 
 #include "NewPrimitiveSyntaxCommand.hpp"
 #include "commands/string/StringToPrimitiveCommand.hpp"
+#include "core/RegisterCommand.hpp"
 
 #include <iostream>
 

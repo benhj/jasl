@@ -7,6 +7,7 @@
 
 #include "FileTypeCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <boost/filesystem.hpp>
 
 namespace jasl

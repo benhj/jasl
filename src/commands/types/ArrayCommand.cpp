@@ -8,6 +8,7 @@
 
 #include "ArrayCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 
 namespace jasl
 {

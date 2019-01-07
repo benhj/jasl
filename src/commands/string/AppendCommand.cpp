@@ -8,6 +8,7 @@
 
 #include "AppendCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <sstream>
 
 namespace jasl

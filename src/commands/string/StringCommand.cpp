@@ -9,6 +9,7 @@
 #include "StringCommand.hpp"
 #include "ListToStringCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <sstream>
 
 namespace jasl

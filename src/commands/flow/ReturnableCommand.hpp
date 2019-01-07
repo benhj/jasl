@@ -27,6 +27,7 @@ namespace jasl
     	bool execute();
     private:
         bool interpretFunctionBody();
-    	bool parseCommands(std::vector<Function> &functions); 
+    	bool parseCommands(std::vector<Function> &functions);
+        static bool m_registered;
     };
 }

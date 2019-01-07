@@ -26,5 +26,6 @@ namespace jasl
         bool trySymbolExtraction();
         void processListElement(List const &valueArray, std::string &output);
         bool tryNumericExtraction();
+        static bool m_registered;
     };
 }

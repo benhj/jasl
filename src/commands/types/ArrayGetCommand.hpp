@@ -26,6 +26,7 @@ namespace jasl
         std::string m_arrayName;
         std::string m_varName;
         std::string m_type;
+        static bool m_registered;
 
     };
 

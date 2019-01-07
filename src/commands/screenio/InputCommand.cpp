@@ -8,6 +8,7 @@
 
 #include "InputCommand.hpp"
 #include "core/LiteralString.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 
 namespace jasl

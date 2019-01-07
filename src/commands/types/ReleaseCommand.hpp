@@ -23,6 +23,7 @@ namespace jasl
 
     private:
         bool trySymbolExtraction();
+        static bool m_registered;
     };
 
 }

@@ -7,6 +7,7 @@
 //
 
 #include "ReleaseCommand.hpp"
+#include "core/RegisterCommand.hpp"
 #include <sstream>
 
 namespace jasl

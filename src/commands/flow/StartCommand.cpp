@@ -8,8 +8,8 @@
 
 #include "StartCommand.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
-
 
 namespace jasl {
 

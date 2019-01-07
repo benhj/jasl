@@ -19,6 +19,7 @@ namespace jasl
                           OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static bool m_registered;
     };
 
 }

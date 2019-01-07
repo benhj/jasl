@@ -25,6 +25,7 @@ namespace jasl
         bool getIndex(int64_t&);
         bool tryWithRawList(std::string const &varName);
         bool tryWithSymbolList(std::string const &varName);
+        static bool m_registered;
     };
 
 }

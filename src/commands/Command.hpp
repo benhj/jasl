@@ -18,7 +18,7 @@ namespace jasl
 {
     class Command
     {
-    public:
+      public:
         /// for capturing any output
         using OptionalOutputStream = ::boost::optional<std::ostream&>;
 
@@ -28,7 +28,7 @@ namespace jasl
 
         virtual bool execute() = 0;
 
-    protected:
+      protected:
         Function m_func;
 
         /// Cache of variables

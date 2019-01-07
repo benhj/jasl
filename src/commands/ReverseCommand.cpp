@@ -8,6 +8,7 @@
 
 #include "ReverseCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <algorithm>
 #include <sstream>
 

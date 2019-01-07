@@ -12,6 +12,8 @@
 #include "core/LiteralString.hpp"
 #include "caching/CacheStack.hpp"
 #include "caching/GlobalCache.hpp"
+#include "commands/CommandRegisterer.hpp"
+#include "commands/Command.hpp"
 #include <boost/progress.hpp>
 #include <iostream>
 #include <sstream>
@@ -46,6 +48,8 @@ int main (int argc , char *argv[])
 
     namespace ll = jasl;
     ll::CommandInterpretor ci;
+
+    jasl::registerAll();
 
     auto sharedCache = std::make_shared<ll::CacheStack>();
     sharedCache->setVar("argsCount", (int64_t)(argc - 2), ll::Type::Int);

@@ -26,6 +26,7 @@ namespace jasl {
         bool parseCommands();
         bool m_weHaveFuncs;
         std::vector<std::shared_ptr<Command>> m_commands;
+        static bool m_registered;
     };
 
 }

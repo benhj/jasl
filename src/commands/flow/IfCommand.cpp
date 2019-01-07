@@ -9,17 +9,15 @@
 #include "IfCommand.hpp"
 #include "commands/expressions/ComparisonExpression.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "caching/WithNewCache.hpp"
 #include <vector>
 
-namespace {
-    // We're in new scope so add a new cache map to the cache stack
-    jasl::SharedCacheStack withNewCache(jasl::SharedCacheStack const &sharedCache) {
-        auto cloned = sharedCache->clone();
-        cloned->pushCacheMap();
-        return cloned;
-    }
-}
+/**
+ * AUTO TYPE REGISTRAION
+ */
+bool jasl::IfCommand::m_registered = registerCommand<jasl::IfCommand>({"if", "?"});
 
 namespace jasl
 {

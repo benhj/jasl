@@ -25,6 +25,6 @@ namespace jasl {
         std::string m_type;
         std::string m_varName;
         std::random_device m_r;
-
+        static bool m_registered;
     };
 }

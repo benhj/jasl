@@ -7,20 +7,13 @@
 //
 
 #include "ForCommand.hpp"
+#include "caching/WithNewCache.hpp"
 #include "commands/list/ListGetTokenCommand.hpp"
 #include "commands/types/ArrayGetCommand.hpp"
 #include "commands/types/ReleaseCommand.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <string>
-
-namespace {
-    // We're in new scope so add a new cache map to the cache stack
-    jasl::SharedCacheStack withNewCache(jasl::SharedCacheStack const &sharedCache) {
-        auto cloned = sharedCache->clone();
-        cloned->pushCacheMap();
-        return cloned;
-    }
-}
 
 namespace jasl {
 

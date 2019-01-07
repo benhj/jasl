@@ -8,6 +8,7 @@
 #include "FileWriteBytesCommand.hpp"
 #include "IOFunctions.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <boost/filesystem.hpp>
 #include <fstream>
 

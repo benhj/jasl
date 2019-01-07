@@ -7,6 +7,7 @@
 
 #include "NetReadCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 
 #include <curl/curl.h>
 

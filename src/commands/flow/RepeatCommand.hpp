@@ -28,6 +28,7 @@ namespace jasl {
         bool m_weHaveFuncs;
         int64_t m_loopCount;
         std::vector<std::shared_ptr<Command>> m_commands;
+        static bool m_registered;
     };
 
 }

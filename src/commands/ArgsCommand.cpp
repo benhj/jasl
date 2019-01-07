@@ -3,18 +3,26 @@
 //  jasl
 //
 //  Created by Ben Jones on 25/10/15
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 
 #include "ArgsCommand.hpp"
+#include "core/RegisterCommand.hpp"
+#include "core/CommandInterpretor.hpp"
 #include "caching/VarExtractor.hpp"
 #include "caching/GlobalCache.hpp"
 #include <sstream>
 #include <cstdint>
+#include <vector>
+
+/**
+ * AUTO TYPE REGISTRAION
+ */
+bool jasl::ArgsCommand::m_registered = registerCommand<jasl::ArgsCommand>({"args"});
 
 namespace jasl
-{
+{ 
     ArgsCommand::ArgsCommand(Function &func_,
                              SharedCacheStack const &sharedCache,
                              OptionalOutputStream const &output)
@@ -27,7 +35,7 @@ namespace jasl
 
         int64_t value;
         if(!VarExtractor::trySingleIntExtraction(m_func.paramA, value, m_sharedCache)) {
-            setLastErrorMessage("repeat: problem extracting int");
+            setLastErrorMessage("args: problem extracting int");
             return false;
         }
 

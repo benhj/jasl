@@ -24,6 +24,7 @@ namespace jasl
     private:
         bool tryLiteralExtraction();
         bool trySymbolExtraction();
+        static bool m_registered;
     };
 
 }

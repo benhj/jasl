@@ -7,6 +7,7 @@
 
 #include "AnsiUPCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <iostream>
 
 namespace jasl

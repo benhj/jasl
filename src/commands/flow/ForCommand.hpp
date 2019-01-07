@@ -30,6 +30,8 @@ namespace jasl {
 
         bool processString(std::string const &str, 
                            std::string const & stringSymbol);
+
+        static bool m_registered;
     };
 
 }

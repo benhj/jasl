@@ -14,12 +14,14 @@ namespace jasl
 {
     class ArgsCommand : public Command
     {
-    public:
+      public:
         ArgsCommand(Function &func_,
                     SharedCacheStack const &sharedCache = SharedCacheStack(),
                     OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+
+        static bool m_registered;
     };
 
 }

@@ -11,6 +11,7 @@
 #include "commands/ParamExtractor.hpp"
 #include "caching/GlobalCache.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <vector>
 
 namespace jasl

@@ -2,8 +2,10 @@
 //  IOFunctions.hpp
 //  jasl
 //
-//  Copyright (c) 2017 Ben Jones. All rights reserved.
+//  Copyright (c) 2017-present Ben Jones. All rights reserved.
 //
+
+#pragma once
 
 #include "caching/VarExtractor.hpp"
 #include <boost/filesystem.hpp>
@@ -23,6 +25,4 @@ namespace jasl
         file.write(bytes, n);
         file.close();
     }
-
-
 }

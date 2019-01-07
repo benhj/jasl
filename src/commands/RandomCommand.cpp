@@ -8,6 +8,7 @@
 
 #include "RandomCommand.hpp"
 #include "string/StringToPrimitiveCommand.hpp"
+#include "core/RegisterCommand.hpp"
 #include <cstdlib>
 #include <random>
 

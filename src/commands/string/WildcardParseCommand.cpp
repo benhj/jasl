@@ -8,6 +8,7 @@
 #include "WildcardMatch.hpp"
 #include "WildcardParseCommand.hpp"
 #include "caching/VarExtractor.hpp"
+#include "core/RegisterCommand.hpp"
 #include <string>
 #include <vector>
 

@@ -10,6 +10,7 @@
 #include "core/CommandInterpretor.hpp"
 #include "caching/GlobalCache.hpp"
 #include "caching/SharedVarCache.hpp"
+#include "commands/CommandRegisterer.hpp"
 
 #include <sstream>
 #include <vector>
@@ -471,6 +472,7 @@ void testListTokenIndex()
 
 int main()
 {
+    jasl::registerAll();
     testTypes();
     testMath();
     testVarNewSyntax();

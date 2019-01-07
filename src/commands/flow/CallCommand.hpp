@@ -42,5 +42,7 @@ namespace jasl
         // The symbol of the return statement of the actual function called
         std::string m_returnableSymbol;
 
+        static bool m_registered;
+
     };
 }
