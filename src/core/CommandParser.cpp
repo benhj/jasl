@@ -7,6 +7,7 @@
 //
 
 #include "CommandParser.hpp"
+#include "parser/Escapes.hpp"
 
 namespace jasl
 {
@@ -26,28 +27,10 @@ namespace jasl
         using qi::uint_;
 
         // convenience rules
-        escapes = '\\' > ( escaped_character[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ]
-                                 | ( "x" > qi::uint_parser< UChar32, 16, 2, 2 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
-                                 | ( "u" > qi::uint_parser< UChar32, 16, 4, 4 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
-                                 | ( "U" > qi::uint_parser< UChar32, 16, 8, 8 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ] )
-                                 | qi::uint_parser< UChar32,  8, 1, 3 >()[ cp2utf8( ::boost::spirit::_val, ::boost::spirit::_1 ) ]
-                                 );
+        Escapes::init();
 
-        escaped_character.add
-        (  "a", 0x07 ) // alert
-        (  "b", 0x08 ) // backspace
-        (  "f", 0x0c ) // form feed
-        (  "n", 0x0a ) // new line
-        (  "r", 0x0d ) // carriage return
-        (  "t", 0x09 ) // horizontal tab
-        (  "v", 0x0b ) // vertical tab
-        ( "\"", 0x22 ) // literal quotation mark
-        ( "\\", 0x5c ) // literal backslash
-        ;
-
-        escChar %= '\\' >> char_("n"); // new line
-        quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | escapes ) >> '\''];
-        doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | escapes ) >> '"'];
+        quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '\''];
+        doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '"'];
         genericString       %= lexeme[+(char_("a-zA-Z_"))];
         allChars            %= lexeme[+(char_ - '\n')];
         commentSlash        %= string("//");

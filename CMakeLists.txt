@@ -5,6 +5,7 @@ project (jasl)
 
 # put all source code in one place for convenience
 file(GLOB caching src/caching/*.cpp src/caching/*.hpp)
+file(GLOB parser src/parser/*.cpp src/parser/*.hpp)
 file(GLOB commands src/commands/*.cpp src/commands/*.hpp)
 file(GLOB commands_expressions src/commands/expressions/*.cpp src/commands/expressions/*.hpp)
 file(GLOB commands_fileio src/commands/fileio/*.cpp src/commands/fileio/*.hpp)
@@ -29,6 +30,7 @@ link_directories(/usr/local/lib)
 
 # break above sub-folders into individual libraries
 add_library(caching_lib ${caching})
+add_library(parser_lib ${parser})
 add_library(commands_lib ${commands})
 add_library(commands_expressions_lib ${commands_expressions})
 add_library(commands_fileio_lib ${commands_fileio})
@@ -58,6 +60,7 @@ add_executable(jasl src/bin/jasl.cpp)
 set(EXT_DEPS ${Boost_LIBRARIES} ${CURL_LIBRARIES} ${ICUUC_LIB})
 target_link_libraries(jasl
                       caching_lib
+                      parser_lib
                       commands_lib
                       commands_expressions_lib
                       commands_fileio_lib
@@ -73,7 +76,8 @@ target_link_libraries(jasl
 # build test binary
 add_executable(jtest src/bin/test.cpp)
 target_link_libraries(jtest 
-                      caching_lib 
+                      caching_lib
+                      parser_lib
                       commands_lib
                       commands_expressions_lib
                       commands_fileio_lib
@@ -89,6 +93,7 @@ target_link_libraries(jtest
 # compile options. Lots of redundancy here. Can prob clean up.
 set(COMP_FLAGS -std=c++14 -O3 -ffast-math -funroll-loops -Wno-ctor-dtor-privacy -fno-pic)
 target_compile_options(caching_lib PUBLIC ${COMP_FLAGS})
+target_compile_options(parser_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_expressions_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(commands_fileio_lib PUBLIC ${COMP_FLAGS})
@@ -101,4 +106,3 @@ target_compile_options(commands_types_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(core_lib PUBLIC ${COMP_FLAGS})
 target_compile_options(jasl PUBLIC ${COMP_FLAGS})
 target_compile_options(jtest PUBLIC ${COMP_FLAGS})
-

@@ -123,23 +123,7 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> commentColons;
         qi::rule<Iterator, std::string(), ascii::space_type> commentPound;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
-        qi::rule<Iterator, char()> escChar;
 
-        struct cp2utf8_f
-        {
-            template < typename ... > struct result { using type = void; };
-
-            void operator()( std::string & a, UChar32 codepoint ) const
-            {
-                icu::StringByteSink< std::string > bs( &a );
-                icu::UnicodeString::fromUTF32( &codepoint, 1 ).toUTF8( bs );
-            }
-        };
-
-        ::boost::phoenix::function< cp2utf8_f > cp2utf8;
-
-        qi::rule< Iterator, std::string() > escapes;
-        qi::symbols< char const, UChar32 > escaped_character;
         qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
         qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
