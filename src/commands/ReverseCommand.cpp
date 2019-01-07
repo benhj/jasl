@@ -12,6 +12,9 @@
 #include <algorithm>
 #include <sstream>
 
+bool jasl::ReverseCommand::m_registered = 
+registerCommand<jasl::ReverseCommand>();
+
 namespace jasl
 {
     ReverseCommand::ReverseCommand(Function &func_,
@@ -23,14 +26,14 @@ namespace jasl
 
     std::vector<std::string> ReverseCommand::getCommandNames()
     {
-        return {"reverse"};
+        return {"string_reverse"};
     }
 
     bool ReverseCommand::execute()
     {
         std::string stringName;
         if(!m_func.getValueA<std::string>(stringName, m_sharedCache)) {
-            setLastErrorMessage("string: couldn't parse");
+            setLastErrorMessage("string_reverse: couldn't parse");
             return false;
         }
 

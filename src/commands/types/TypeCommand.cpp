@@ -13,6 +13,9 @@
 #include <vector>
 #include <sstream>
 
+bool jasl::TypeCommand::m_registered = 
+registerCommand<jasl::TypeCommand>();
+
 namespace {
     /// Convert a type enum value to a string representation
     std::string getType(jasl::Type const type) 

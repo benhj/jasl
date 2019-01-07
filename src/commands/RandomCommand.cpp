@@ -12,6 +12,9 @@
 #include <cstdlib>
 #include <random>
 
+bool jasl::RandomCommand::m_registered = 
+registerCommand<jasl::RandomCommand>();
+
 namespace jasl {
 
     RandomCommand::RandomCommand(Function &func_,

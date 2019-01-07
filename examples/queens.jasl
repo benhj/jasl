@@ -163,11 +163,15 @@ start {
             put (count + 1) -> count;
         }
 
-        pr "Error: ";
-        prn currentError;
+        ;;;pr "Error: ";
+        ;;;prn currentError;
+        call showBoard (N, representation);
+        if(currentError > 0) {
+            ansi_up N;
+        }
     }
 
     ;;; print out the board representation
-    call showBoard (N, representation);
+    
 
 }

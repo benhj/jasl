@@ -14,6 +14,9 @@
 #include "core/RegisterCommand.hpp"
 #include <vector>
 
+bool jasl::CallCommand::m_registered = 
+registerCommand<jasl::CallCommand>();
+
 namespace jasl
 {
     CallCommand::CallCommand(Function &func_,

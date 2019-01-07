@@ -12,6 +12,9 @@
 #include <boost/filesystem.hpp>
 #include <fstream>
 
+bool jasl::FileWriteBytesCommand::m_registered = 
+registerCommand<jasl::FileWriteBytesCommand>();
+
 namespace jasl
 {
 

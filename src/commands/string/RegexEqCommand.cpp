@@ -11,6 +11,9 @@
 #include <regex>
 #include <string>
 
+bool jasl::RegexEqCommand::m_registered = 
+registerCommand<jasl::RegexEqCommand>();
+
 namespace jasl
 {
     RegexEqCommand::RegexEqCommand(Function &func_,

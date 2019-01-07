@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 
+bool jasl::WildcardParseCommand::m_registered = 
+registerCommand<jasl::WildcardParseCommand>();
+
 namespace jasl
 {
     WildcardParseCommand::WildcardParseCommand(Function &func_,

@@ -10,6 +10,9 @@
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
 
+bool jasl::ArrayGetCommand::m_registered = 
+registerCommand<jasl::ArrayGetCommand>();
+
 namespace jasl
 {
     ArrayGetCommand::ArrayGetCommand(Function &func_,

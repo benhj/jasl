@@ -17,6 +17,9 @@
 #include <cstdint>
 #include <vector>
 
+bool jasl::NetReadCommand::m_registered = 
+registerCommand<jasl::NetReadCommand>();
+
 namespace {
 
     inline

@@ -11,6 +11,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/range/iterator_range.hpp>
 
+bool jasl::FolderListCommand::m_registered = 
+registerCommand<jasl::FolderListCommand>();
+
 namespace jasl
 {
 

@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <iostream>
 
+bool jasl::AnsiUPCommand::m_registered = 
+registerCommand<jasl::AnsiUPCommand>();
+
 namespace jasl
 {
     AnsiUPCommand::AnsiUPCommand(Function &func_,

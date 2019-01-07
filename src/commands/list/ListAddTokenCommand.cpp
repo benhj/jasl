@@ -14,6 +14,9 @@
 #include <algorithm>
 #include <sstream>
 
+bool jasl::ListAddTokenCommand::m_registered = 
+registerCommand<jasl::ListAddTokenCommand>();
+
 namespace jasl
 {
     ListAddTokenCommand::ListAddTokenCommand(Function &func_,

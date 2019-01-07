@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <boost/filesystem.hpp>
 
+bool jasl::FileTypeCommand::m_registered = 
+registerCommand<jasl::FileTypeCommand>();
+
 namespace jasl
 {
 

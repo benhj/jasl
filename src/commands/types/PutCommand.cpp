@@ -12,6 +12,9 @@
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
 
+bool jasl::PutCommand::m_registered = 
+registerCommand<jasl::PutCommand>();
+
 namespace jasl
 {
     PutCommand::PutCommand(Function &func_,

@@ -11,6 +11,9 @@
 #include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 
+bool jasl::StartCommand::m_registered = 
+registerCommand<jasl::StartCommand>();
+
 namespace jasl {
 
     StartCommand::StartCommand(Function &func_,

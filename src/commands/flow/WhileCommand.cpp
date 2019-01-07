@@ -12,6 +12,9 @@
 #include "core/RegisterCommand.hpp"
 #include <string>
 
+bool jasl::WhileCommand::m_registered = 
+registerCommand<jasl::WhileCommand>();
+
 namespace jasl {
 
     WhileCommand::WhileCommand(Function &func_,

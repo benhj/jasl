@@ -10,6 +10,10 @@
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
 
+
+bool jasl::ArrayCommand::m_registered = 
+registerCommand<jasl::ArrayCommand>();
+
 namespace jasl
 {
 

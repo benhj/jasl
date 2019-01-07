@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <sstream>
 
+bool jasl::LengthCommand::m_registered = 
+registerCommand<jasl::LengthCommand>();
+
 namespace jasl
 {
     LengthCommand::LengthCommand(Function &func_,

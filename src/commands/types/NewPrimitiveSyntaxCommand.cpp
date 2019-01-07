@@ -12,6 +12,9 @@
 
 #include <iostream>
 
+bool jasl::NewPrimitiveSyntaxCommand::m_registered = 
+registerCommand<jasl::NewPrimitiveSyntaxCommand>();
+
 namespace jasl {
 
     NewPrimitiveSyntaxCommand::NewPrimitiveSyntaxCommand(Function &func_,

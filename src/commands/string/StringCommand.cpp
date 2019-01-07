@@ -12,6 +12,9 @@
 #include "core/RegisterCommand.hpp"
 #include <sstream>
 
+bool jasl::StringCommand::m_registered = 
+registerCommand<jasl::StringCommand>();
+
 namespace jasl
 {
     StringCommand::StringCommand(Function &func_,

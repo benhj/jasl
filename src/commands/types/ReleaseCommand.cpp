@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <sstream>
 
+bool jasl::ReleaseCommand::m_registered = 
+registerCommand<jasl::ReleaseCommand>();
+
 namespace jasl
 {
     ReleaseCommand::ReleaseCommand(Function &func_,

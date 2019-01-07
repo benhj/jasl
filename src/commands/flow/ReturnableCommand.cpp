@@ -13,6 +13,9 @@
 #include "caching/GlobalCache.hpp"
 #include <vector>
 
+bool jasl::ReturnableCommand::m_registered = 
+registerCommand<jasl::ReturnableCommand>();
+
 namespace jasl 
 {
 
@@ -71,7 +74,7 @@ namespace jasl
 
     std::vector<std::string> ReturnableCommand::getCommandNames()
     {
-        return {"fn"};
+        return {"fn","fnfn"};
     }
 
     bool ReturnableCommand::execute()

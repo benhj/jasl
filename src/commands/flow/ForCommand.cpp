@@ -15,6 +15,9 @@
 #include "core/RegisterCommand.hpp"
 #include <string>
 
+bool jasl::ForCommand::m_registered = 
+registerCommand<jasl::ForCommand>();
+
 namespace jasl {
 
     ForCommand::ForCommand(Function &func_,

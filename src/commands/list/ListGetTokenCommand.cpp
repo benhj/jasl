@@ -12,6 +12,9 @@
 #include "caching/VarExtractor.hpp"
 #include <boost/lexical_cast.hpp>
 
+bool jasl::ListGetTokenCommand::m_registered = 
+registerCommand<jasl::ListGetTokenCommand>();
+
 namespace jasl
 {
     ListGetTokenCommand::ListGetTokenCommand(Function &func_,

@@ -11,6 +11,9 @@
 #include "core/RegisterCommand.hpp"
 #include <sstream>
 
+bool jasl::AppendCommand::m_registered = 
+registerCommand<jasl::AppendCommand>();
+
 namespace jasl
 {
 

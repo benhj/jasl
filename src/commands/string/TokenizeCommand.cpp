@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <sstream>
 
+bool jasl::TokenizeCommand::m_registered = 
+registerCommand<jasl::TokenizeCommand>();
+
 namespace {
     StringArray getStrings(std::string const & str)
     {

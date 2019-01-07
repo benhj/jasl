@@ -12,6 +12,11 @@
 #include "caching/VarExtractor.hpp"
 #include <boost/lexical_cast.hpp>
 
+
+bool jasl::ListTokenIndexCommand::m_registered = 
+registerCommand<jasl::ListTokenIndexCommand>();
+
+
 namespace jasl
 {
 

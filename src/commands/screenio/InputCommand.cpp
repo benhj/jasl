@@ -11,6 +11,9 @@
 #include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 
+bool jasl::InputCommand::m_registered = 
+registerCommand<jasl::InputCommand>();
+
 namespace jasl
 {
     InputCommand::InputCommand(Function &func_,

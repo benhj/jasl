@@ -13,6 +13,9 @@
 #include "core/RegisterCommand.hpp"
 #include <string>
 
+bool jasl::AsyncCommand::m_registered = 
+registerCommand<jasl::AsyncCommand>();
+
 namespace jasl {
 
     AsyncCommand::AsyncCommand(Function &func_,

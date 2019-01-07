@@ -12,6 +12,9 @@
 #include "commands/ParamExtractor.hpp"
 #include "caching/VarExtractor.hpp"
 
+bool jasl::BlockCommand::m_registered = 
+registerCommand<jasl::BlockCommand>();
+
 namespace jasl {
 
     BlockCommand::BlockCommand(Function &func_, 

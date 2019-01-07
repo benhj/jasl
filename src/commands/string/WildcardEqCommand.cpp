@@ -11,6 +11,9 @@
 #include "core/RegisterCommand.hpp"
 #include <string>
 
+bool jasl::WildcardEqCommand::m_registered = 
+registerCommand<jasl::WildcardEqCommand>();
+
 namespace jasl
 {
     WildcardEqCommand::WildcardEqCommand(Function &func_,

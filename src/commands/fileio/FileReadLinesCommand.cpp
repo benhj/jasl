@@ -14,6 +14,9 @@
 #include <fstream>
 #include <string>
 
+bool jasl::FileReadLinesCommand::m_registered = 
+registerCommand<jasl::FileReadLinesCommand>();
+
 namespace jasl
 {
 

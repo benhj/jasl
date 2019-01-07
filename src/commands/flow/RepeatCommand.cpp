@@ -12,6 +12,9 @@
 #include "core/RegisterCommand.hpp"
 #include <string>
 
+bool jasl::RepeatCommand::m_registered = 
+registerCommand<jasl::RepeatCommand>();
+
 namespace jasl {
 
     RepeatCommand::RepeatCommand(Function &func_,

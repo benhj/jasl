@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 
+bool jasl::RegexParseCommand::m_registered = 
+registerCommand<jasl::RegexParseCommand>();
+
 namespace {
     inline
     std::vector<std::string> extract(std::string const & text,

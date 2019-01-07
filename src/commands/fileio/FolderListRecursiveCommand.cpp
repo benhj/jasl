@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <boost/filesystem.hpp>
 
+bool jasl::FolderListRecursiveCommand::m_registered = 
+registerCommand<jasl::FolderListRecursiveCommand>();
+
 namespace jasl
 {
 

@@ -10,6 +10,9 @@
 #include "core/RegisterCommand.hpp"
 #include <sstream>
 
+bool jasl::ConcatCommand::m_registered = 
+registerCommand<jasl::ConcatCommand>();
+
 namespace jasl
 {
     ConcatCommand::ConcatCommand(Function &func_,

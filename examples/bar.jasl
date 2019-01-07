@@ -1,6 +1,6 @@
 start {
-	repeat 20 times {
-		say "░";
-	}
-	say "\n";
+    repeat 20 times {
+        say "=";
+    }
+    say "\n";
 }

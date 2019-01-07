@@ -9,64 +9,6 @@
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "caching/GlobalCache.hpp"
-
-#include "commands/ArgsCommand.hpp"
-#include "commands/ExecCommand.hpp"
-
-#include "commands/screenio/AnsiUPCommand.hpp"
-#include "commands/screenio/EchoCommand.hpp"
-#include "commands/screenio/EchoNLCommand.hpp"
-#include "commands/screenio/InputCommand.hpp"
-
-#include "commands/types/ArrayCommand.hpp"
-#include "commands/types/ArrayPutCommand.hpp"
-#include "commands/types/ArrayGetCommand.hpp"
-#include "commands/types/NewPrimitiveSyntaxCommand.hpp"
-#include "commands/types/PutCommand.hpp"
-#include "commands/types/ReleaseCommand.hpp"
-#include "commands/types/TypeCommand.hpp"
-
-#include "commands/ReverseCommand.hpp"
-#include "commands/string/StringCommand.hpp"
-#include "commands/LengthCommand.hpp"
-#include "commands/RandomCommand.hpp"
-
-#include "commands/flow/BlockCommand.hpp"
-#include "commands/flow/ReturnableCommand.hpp"
-#include "commands/flow/CallCommand.hpp"
-#include "commands/flow/IfCommand.hpp"
-#include "commands/flow/RepeatCommand.hpp"
-#include "commands/flow/StartCommand.hpp"
-#include "commands/flow/WhileCommand.hpp"
-#include "commands/flow/ForCommand.hpp"
-
-#include "commands/list/ListCommand.hpp"
-#include "commands/list/ListGetTokenCommand.hpp"
-#include "commands/list/ListSetTokenCommand.hpp"
-#include "commands/list/ListAddTokenCommand.hpp"
-#include "commands/list/ListTokenIndexCommand.hpp"
-
-#include "commands/string/AppendCommand.hpp"
-#include "commands/string/ConcatCommand.hpp"
-#include "commands/string/ListToStringCommand.hpp"
-#include "commands/string/RegexEqCommand.hpp"
-#include "commands/string/RegexParseCommand.hpp"
-#include "commands/string/StringToPrimitiveCommand.hpp"
-#include "commands/string/TokenizeCommand.hpp"
-#include "commands/string/WildcardEqCommand.hpp"
-#include "commands/string/WildcardParseCommand.hpp"
-
-#include "commands/fileio/FolderListCommand.hpp"
-#include "commands/fileio/FolderListRecursiveCommand.hpp"
-#include "commands/fileio/FileReadBytesCommand.hpp"
-#include "commands/fileio/FileReadLinesCommand.hpp"
-#include "commands/fileio/FileWriteBytesCommand.hpp"
-#include "commands/fileio/FileAppendBytesCommand.hpp"
-#include "commands/fileio/FileAppendStringCommand.hpp"
-#include "commands/fileio/FileTypeCommand.hpp"
-
-#include "commands/net/NetReadCommand.hpp"
-
 #include <boost/spirit/include/qi.hpp>
 
 #include <fstream>
@@ -159,153 +101,19 @@ namespace jasl {
 
     CommandInterpretor::CommandInterpretor()
     {
-        // Populate the command map with  basic command.
-        // TODO: ability to dynamically register new commands at runtime
-        //if(getCommandMap().empty()) 
-        {
-            getCommandMap().emplace("repeat", BUILD_COMMAND_AND_EXECUTE(Repeat));
-            getCommandMap().emplace("while", BUILD_COMMAND_AND_EXECUTE(While));
-            getCommandMap().emplace("for", BUILD_COMMAND_AND_EXECUTE(For));
-            getCommandMap().emplace("block", BUILD_COMMAND_AND_EXECUTE(Block));
-            getCommandMap().emplace("fn", BUILD_COMMAND_AND_EXECUTE(Returnable));
-            // Hack due to two version of 'fn' in parser. The second one can fail
-            // but keeps the 'fn' keyword, appended to the first one. At least
-            // I think this is what's hapenning.
-            getCommandMap().emplace("fnfn", BUILD_COMMAND_AND_EXECUTE(Returnable));
-            getCommandMap().emplace("start", BUILD_COMMAND_AND_EXECUTE(Start));
-            getCommandMap().emplace("string", BUILD_COMMAND_AND_EXECUTE(String));
-            getCommandMap().emplace("concat", BUILD_COMMAND_AND_EXECUTE(Concat));
-            getCommandMap().emplace("call", BUILD_COMMAND_AND_EXECUTE(Call));
-            getCommandMap().emplace("append", BUILD_COMMAND_AND_EXECUTE(Append));
-            getCommandMap().emplace("tokenize", BUILD_COMMAND_AND_EXECUTE(Tokenize));
-
-            getCommandMap().emplace("string_reverse", BUILD_COMMAND_AND_EXECUTE(Reverse));
-            getCommandMap().emplace("length", BUILD_COMMAND_AND_EXECUTE(Length));
-            getCommandMap().emplace("list", BUILD_COMMAND_AND_EXECUTE(List));
-            //getCommandMap().emplace("args", BUILD_COMMAND_AND_EXECUTE(Args));
-
-            getCommandMap().emplace("ints", BUILD_COMMAND_AND_EXECUTE(Array));
-            getCommandMap().emplace("reals", BUILD_COMMAND_AND_EXECUTE(Array));
-            getCommandMap().emplace("bytes", BUILD_COMMAND_AND_EXECUTE(Array));
-            getCommandMap().emplace("strings", BUILD_COMMAND_AND_EXECUTE(Array));
-
-            getCommandMap().emplace("put", BUILD_COMMAND_AND_EXECUTE(Put));
-            getCommandMap().emplace("get", BUILD_COMMAND_AND_EXECUTE(ArrayGet));
-            getCommandMap().emplace("int", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
-            getCommandMap().emplace("byte", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
-            getCommandMap().emplace("real", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
-            getCommandMap().emplace("bool", BUILD_COMMAND_AND_EXECUTE(NewPrimitiveSyntax));
-            getCommandMap().emplace("input", BUILD_COMMAND_AND_EXECUTE(Input));
-            getCommandMap().emplace("index_of", BUILD_COMMAND_AND_EXECUTE(ListTokenIndex));
-            getCommandMap().emplace("get_token", BUILD_COMMAND_AND_EXECUTE(ListGetToken));
-            getCommandMap().emplace("set_token", BUILD_COMMAND_AND_EXECUTE(ListSetToken));
-
-            getCommandMap().emplace("add_token", BUILD_COMMAND_AND_EXECUTE(ListAddToken));
-            getCommandMap().emplace("exec", BUILD_COMMAND_AND_EXECUTE(Exec));
-            getCommandMap().emplace("release", BUILD_COMMAND_AND_EXECUTE(Release));
-            getCommandMap().emplace("type", BUILD_COMMAND_AND_EXECUTE(Type));
-            getCommandMap().emplace("random", BUILD_COMMAND_AND_EXECUTE(Random));
-
-            getCommandMap().emplace("folder_list", BUILD_COMMAND_AND_EXECUTE(FolderList));
-            getCommandMap().emplace("folder_list_recursive", BUILD_COMMAND_AND_EXECUTE(FolderListRecursive));
-            getCommandMap().emplace("file_read_bytes", BUILD_COMMAND_AND_EXECUTE(FileReadBytes));
-            getCommandMap().emplace("file_read_lines", BUILD_COMMAND_AND_EXECUTE(FileReadLines));
-            getCommandMap().emplace("file_write_bytes", BUILD_COMMAND_AND_EXECUTE(FileWriteBytes));
-            getCommandMap().emplace("file_append_bytes", BUILD_COMMAND_AND_EXECUTE(FileAppendBytes));
-            getCommandMap().emplace("file_append_line", BUILD_COMMAND_AND_EXECUTE(FileAppendString));
-            getCommandMap().emplace("file_type", BUILD_COMMAND_AND_EXECUTE(FileType));
-
-            getCommandMap().emplace("regex_eq", BUILD_COMMAND_AND_EXECUTE(RegexEq));
-            getCommandMap().emplace("regex_parse", BUILD_COMMAND_AND_EXECUTE(RegexParse));
-            getCommandMap().emplace("wildcard_eq", BUILD_COMMAND_AND_EXECUTE(WildcardEq));
-            getCommandMap().emplace("wildcard_parse", BUILD_COMMAND_AND_EXECUTE(WildcardParse));
-
-            getCommandMap().emplace("net_read", BUILD_COMMAND_AND_EXECUTE(NetRead));
-
-            getCommandMap().emplace("ansi_up", BUILD_COMMAND_AND_EXECUTE(AnsiUP));
-
-            getCommandMap().emplace("exit", [](Function &,
-                                            SharedCacheStack const &,
-                                            OptionalOutputStream const &) {
-                                                exit(0);
-                                                return false;
-                                            });
-        }
-        //if(getCommandBuilders().empty()) 
-        {
-            getCommandBuilders().emplace("pr", BUILD_COMMAND(Echo));
-            getCommandBuilders().emplace("prn", BUILD_COMMAND(EchoNL));
-            getCommandBuilders().emplace("say", BUILD_COMMAND(Echo));
-            getCommandBuilders().emplace("if", BUILD_COMMAND(If));
-            getCommandBuilders().emplace("?", BUILD_COMMAND(If));
-            getCommandBuilders().emplace("repeat", BUILD_COMMAND(Repeat));
-            getCommandBuilders().emplace("while", BUILD_COMMAND(While));
-            getCommandBuilders().emplace("for", BUILD_COMMAND(For));
-            getCommandBuilders().emplace("block", BUILD_COMMAND(Block));
-            getCommandBuilders().emplace("fn", BUILD_COMMAND(Returnable));
-            // Hack due to two version of 'fn' in parser. The second one can fail
-            // but keeps the 'fn' keyword, appended to the first one. At least
-            // I think this is what's hapenning.
-            getCommandBuilders().emplace("fnfn", BUILD_COMMAND(Returnable));
-            getCommandBuilders().emplace("start", BUILD_COMMAND(Start));
-            getCommandBuilders().emplace("string", BUILD_COMMAND(String));
-            getCommandBuilders().emplace("concat", BUILD_COMMAND(Concat));
-            getCommandBuilders().emplace("call", BUILD_COMMAND(Call));
-            getCommandBuilders().emplace("append", BUILD_COMMAND(Append));
-            getCommandBuilders().emplace("tokenize", BUILD_COMMAND(Tokenize));
-
-            getCommandBuilders().emplace("string_reverse", BUILD_COMMAND(Reverse));
-            getCommandBuilders().emplace("length", BUILD_COMMAND(Length));
-            getCommandBuilders().emplace("list", BUILD_COMMAND(List));
-            //getCommandBuilders().emplace("args", BUILD_COMMAND(Args));
-
-            getCommandBuilders().emplace("ints", BUILD_COMMAND(Array));
-            getCommandBuilders().emplace("reals", BUILD_COMMAND(Array));
-            getCommandBuilders().emplace("bytes", BUILD_COMMAND(Array));
-            getCommandBuilders().emplace("strings", BUILD_COMMAND(Array));
-
-            getCommandBuilders().emplace("put", BUILD_COMMAND(Put));
-            getCommandBuilders().emplace("get", BUILD_COMMAND(ArrayGet));
-            getCommandBuilders().emplace("int", BUILD_COMMAND(NewPrimitiveSyntax));
-            getCommandBuilders().emplace("byte", BUILD_COMMAND(NewPrimitiveSyntax));
-            getCommandBuilders().emplace("real", BUILD_COMMAND(NewPrimitiveSyntax));
-            getCommandBuilders().emplace("bool", BUILD_COMMAND(NewPrimitiveSyntax));
-            getCommandBuilders().emplace("input", BUILD_COMMAND(Input));
-            getCommandBuilders().emplace("index_of", BUILD_COMMAND(ListTokenIndex));
-            getCommandBuilders().emplace("get_token", BUILD_COMMAND(ListGetToken));
-            getCommandBuilders().emplace("set_token", BUILD_COMMAND(ListSetToken));
-
-            getCommandBuilders().emplace("add_token", BUILD_COMMAND(ListAddToken));
-            getCommandBuilders().emplace("exec", BUILD_COMMAND(Exec));
-            getCommandBuilders().emplace("release", BUILD_COMMAND(Release));
-            getCommandBuilders().emplace("type", BUILD_COMMAND(Type));
-            getCommandBuilders().emplace("random", BUILD_COMMAND(Random));
-
-            getCommandBuilders().emplace("folder_list", BUILD_COMMAND(FolderList));
-            getCommandBuilders().emplace("folder_list_recursive", BUILD_COMMAND(FolderListRecursive));
-            getCommandBuilders().emplace("file_read_bytes", BUILD_COMMAND(FileReadBytes));
-            getCommandBuilders().emplace("file_read_lines", BUILD_COMMAND(FileReadLines));
-            getCommandBuilders().emplace("file_write_bytes", BUILD_COMMAND(FileWriteBytes));
-            getCommandBuilders().emplace("file_append_bytes", BUILD_COMMAND(FileAppendBytes));
-            getCommandBuilders().emplace("file_append_line", BUILD_COMMAND(FileAppendString));
-
-            getCommandBuilders().emplace("regex_eq", BUILD_COMMAND(RegexEq));
-            getCommandBuilders().emplace("regex_parse", BUILD_COMMAND(RegexParse));
-            getCommandBuilders().emplace("wildcard_eq", BUILD_COMMAND(WildcardEq));
-            getCommandBuilders().emplace("wildcard_parse", BUILD_COMMAND(WildcardParse));
-
-            getCommandBuilders().emplace("net_read", BUILD_COMMAND(NetRead));
-
-            getCommandBuilders().emplace("ansi_up", BUILD_COMMAND(AnsiUP));
-
-            getCommandBuilders().emplace("exit", [](Function &,
-                                                 SharedCacheStack const &,
-                                                 OptionalOutputStream const &) {
-                                                     exit(0);
-                                                     return nullptr;
-                                                 });
-        }
-
+        getCommandMap().emplace("exit", [](Function &,
+                                        SharedCacheStack const &,
+                                        OptionalOutputStream const &) {
+                                            exit(0);
+                                            return false;
+                                        });
+        
+        getCommandBuilders().emplace("exit", [](Function &,
+                                             SharedCacheStack const &,
+                                             OptionalOutputStream const &) {
+                                                 exit(0);
+                                                 return nullptr;
+                                             });
     }
 
     void CommandInterpretor::registerCommand(std::string name, CommandBuilder builder)

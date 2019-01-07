@@ -11,6 +11,9 @@
 #include "core/RegisterCommand.hpp"
 #include "caching/VarExtractor.hpp"
 
+bool jasl::ListSetTokenCommand::m_registered = 
+registerCommand<jasl::ListSetTokenCommand>();
+
 namespace jasl
 {
     ListSetTokenCommand::ListSetTokenCommand(Function &func_,
