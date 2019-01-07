@@ -41,6 +41,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> TypeCommand::getCommandNames()
+    {
+        return {"type"};
+    }
+
     bool TypeCommand::execute()
     {
         // now try and extract the var symbol

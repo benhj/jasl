@@ -28,6 +28,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> TokenizeCommand::getCommandNames()
+    {
+        return {"tokenize"};
+    }
+
     bool TokenizeCommand::execute() 
     {
         std::string listName;

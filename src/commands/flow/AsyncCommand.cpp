@@ -34,6 +34,11 @@ namespace jasl {
         }
     }
 
+    std::vector<std::string> AsyncCommand::getCommandNames()
+    {
+        return {"async"};
+    }
+
     bool AsyncCommand::execute() 
     {
         if(!m_weHaveFuncs) {

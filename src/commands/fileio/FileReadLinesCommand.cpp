@@ -25,6 +25,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> FileReadLinesCommand::getCommandNames()
+    {
+        return {"file_read_line"};
+    }
+
     bool FileReadLinesCommand::execute() 
     {
         // now try and extract the actual words

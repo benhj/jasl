@@ -14,13 +14,14 @@ namespace jasl
 {
     class PutPrimitiveCommand : public Command
     {
-    public:
+      public:
         PutPrimitiveCommand(Function &func_,
                             SharedCacheStack const &sharedCache = SharedCacheStack(),
                             OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
-    private:
+        static std::vector<std::string> getCommandNames();
+      private:
         std::string m_type;
         std::string m_varName;
         static bool m_registered;

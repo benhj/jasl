@@ -36,6 +36,11 @@ namespace jasl
         }
     }
 
+    std::vector<std::string> PutCommand::getCommandNames()
+    {
+        return {"put"};
+    }
+
     bool PutCommand::execute() 
     {
 

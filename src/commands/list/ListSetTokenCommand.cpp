@@ -20,17 +20,22 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ListSetTokenCommand::getCommandNames()
+    {
+        return {"set_token"};
+    }
+
     bool ListSetTokenCommand::execute() 
     {
         std::string varName;
         if(!m_func.getValueD<std::string>(varName, m_sharedCache)) {
-            setLastErrorMessage("set token: couldn't parse variable name");
+            setLastErrorMessage("set_token: couldn't parse variable name");
             return false;
         }
 
         if(tryWithRawList(varName)) { return true; }
         if(tryWithSymbolList(varName)) { return true; }
-        setLastErrorMessage("get token: no list found");
+        setLastErrorMessage("set_token: no list found");
         return false;
     }
 
@@ -53,7 +58,7 @@ namespace jasl
                 return true;
             }
         }
-        setLastErrorMessage("get token: problem getting new token");
+        setLastErrorMessage("set_token: problem getting new token");
         return false;
     }
 
@@ -69,7 +74,7 @@ namespace jasl
                 return true;
             }
         }
-        setLastErrorMessage("get token: problem getting new token");
+        setLastErrorMessage("set_token: problem getting new token");
         return false;
     }
 
@@ -77,7 +82,7 @@ namespace jasl
     {
         int64_t index;
         if(!getIndex(index)) {
-            setLastErrorMessage("get token: error getting index");
+            setLastErrorMessage("set_token: error getting index");
             return false;
         }
 
@@ -85,7 +90,7 @@ namespace jasl
         List v;
         if(m_func.getValueB<List>(v, m_sharedCache)) {
             if(index >= v.size()) {
-                setLastErrorMessage("get token: index bigger than list");
+                setLastErrorMessage("set_token: index bigger than list");
                 return false;
             }
             // string token
@@ -108,7 +113,7 @@ namespace jasl
             }
         }
 
-        setLastErrorMessage("get token: problem setting token");
+        setLastErrorMessage("set_token: problem setting token");
         return false;
     }
 
@@ -116,7 +121,7 @@ namespace jasl
     {
         int64_t index;
         if(!getIndex(index)) {
-            setLastErrorMessage("get token: error getting index");
+            setLastErrorMessage("set_token: error getting index");
             return false;
         }
         
@@ -131,7 +136,7 @@ namespace jasl
             if(found) {
 
                 if(index >= found->size()) {
-                    setLastErrorMessage("get token: index bigger than list");
+                    setLastErrorMessage("set_token: index bigger than list");
                     return false;
                 }
 

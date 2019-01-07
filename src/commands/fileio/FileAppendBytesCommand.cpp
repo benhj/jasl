@@ -12,6 +12,9 @@
 #include <boost/filesystem.hpp>
 #include <fstream>
 
+bool jasl::FileAppendBytesCommand::m_registered = 
+registerCommand<jasl::FileAppendBytesCommand>();
+
 namespace jasl
 {
 
@@ -22,6 +25,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> FileAppendBytesCommand::getCommandNames()
+    {
+        return {"file_append_bytes"};
+    }
+
     bool FileAppendBytesCommand::execute() 
     { 
          std::string filename;
@@ -29,7 +37,7 @@ namespace jasl
 
             ByteArray value;
             if(!VarExtractor::trySingleArrayExtraction(m_func.paramA, value, m_sharedCache, Type::ByteArray)) {
-                setLastErrorMessage("file_write_bytes: problem with bytes array");
+                setLastErrorMessage("file_append_bytes: problem with bytes array");
                 return false;
             }
             // open the file and write data
@@ -38,7 +46,7 @@ namespace jasl
                        value.size(),
                        std::ios::binary | std::ios::app);
         } else {
-            setLastErrorMessage("file_write_bytes: couldn't parse filename");
+            setLastErrorMessage("file_append_bytes: couldn't parse filename");
             return false;
         }
         return true;

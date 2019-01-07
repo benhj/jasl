@@ -52,6 +52,11 @@ namespace jasl
         }
     }
 
+    std::vector<std::string> CallCommand::getCommandNames()
+    {
+        return {"call"};
+    }
+
     void CallCommand::setFunction()
     {
         // First get all subroutines

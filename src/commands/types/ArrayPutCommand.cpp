@@ -39,6 +39,11 @@ namespace jasl
         }
     }
 
+    std::vector<std::string> ArrayPutCommand::getCommandNames()
+    {
+        return {"array_put"};
+    }
+
     bool ArrayPutCommand::execute() 
     {
 

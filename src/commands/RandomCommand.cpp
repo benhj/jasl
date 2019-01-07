@@ -33,6 +33,11 @@ namespace jasl {
         }
     }
 
+    std::vector<std::string> RandomCommand::getCommandNames()
+    {
+        return {"random"};
+    }
+
     bool RandomCommand::execute()
     {
         if(m_varName.empty()) {

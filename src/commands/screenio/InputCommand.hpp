@@ -15,14 +15,15 @@ namespace jasl
 {
     class InputCommand : public Command
     {
-    public:
+      public:
         InputCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool tryLiteralExtraction();
         bool trySymbolExtraction();
         static bool m_registered;

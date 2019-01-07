@@ -21,6 +21,7 @@ namespace jasl
                             OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
     private:
         OptionalString getNewStringToken();
         OptionalList getNewVAToken();

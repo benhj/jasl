@@ -14,12 +14,14 @@ namespace jasl
     /// ansi_up 5;
     class AnsiUPCommand : public Command
     {
-    public:
+      public:
         AnsiUPCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
+      private:
         static bool m_registered;
     };
 

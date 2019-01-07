@@ -19,6 +19,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> AnsiUPCommand::getCommandNames()
+    {
+        return {"ansi_up"};
+    }
+
     bool AnsiUPCommand::execute()
     {
         int64_t count;

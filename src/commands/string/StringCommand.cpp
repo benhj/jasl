@@ -21,6 +21,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> StringCommand::getCommandNames()
+    {
+        return {"string"};
+    }
+
     bool StringCommand::execute() 
     {
         std::string stringName;

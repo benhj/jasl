@@ -14,14 +14,15 @@ namespace jasl
 {
     class StringCommand : public Command
     {
-    public:
+      public:
         StringCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool tryLiteralExtraction(std::string const &key);
         bool trySymbolExtraction(std::string const &key);
         bool tryNumericExtraction(std::string const &key);

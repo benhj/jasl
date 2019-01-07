@@ -14,14 +14,15 @@ namespace jasl
 {
     class EchoNLCommand : public Command
     {
-    public:
+      public:
         EchoNLCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool tryLiteralExtraction();
         bool trySymbolExtraction();
         void processListElement(List const &valueArray, std::string &output);

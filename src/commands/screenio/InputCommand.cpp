@@ -20,6 +20,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> InputCommand::getCommandNames()
+    {
+        return {"input"};
+    }
+
     bool InputCommand::execute()
     {
         if(!tryLiteralExtraction()) {

@@ -23,16 +23,21 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ListAddTokenCommand::getCommandNames()
+    {
+        return {"add_token"};
+    }
+
     bool ListAddTokenCommand::execute()
     {
         std::string varName;
         if(!m_func.getValueB<std::string>(varName, m_sharedCache)) {
-            setLastErrorMessage("add token: couldn't parse variable name");
+            setLastErrorMessage("list_add: couldn't parse variable name");
             return false;
         }
 
         if(tryWithSymbolList(varName)) { return true; }
-        setLastErrorMessage("add token: no list found");
+        setLastErrorMessage("list_add: no list found");
         return false;
     }
 
@@ -50,7 +55,7 @@ namespace jasl
                 return OptionalString(*result);
             }
         }
-        setLastErrorMessage("add token: problem getting new token");
+        setLastErrorMessage("list_add: problem getting new token");
         return OptionalString();
     }
 
@@ -68,7 +73,7 @@ namespace jasl
                 return *result;
             }
         }
-        setLastErrorMessage("add token: problem getting new token");
+        setLastErrorMessage("list_add: problem getting new token");
         return OptionalList();
     }
 

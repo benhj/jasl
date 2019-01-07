@@ -14,14 +14,15 @@ namespace jasl
 {
     class ListToStringCommand : public Command
     {
-    public:
+      public:
         ListToStringCommand(Function &func_,
                             SharedCacheStack const &sharedCache = SharedCacheStack(),
                             OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
 
         bool tryRawListExtraction(std::string const &varName);
         bool trySymbolExtraction(std::string const &varName);

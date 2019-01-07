@@ -15,7 +15,7 @@
 /**
  * AUTO TYPE REGISTRAION
  */
-bool jasl::EchoCommand::m_registered = registerCommand<jasl::EchoCommand>({"pr", "say"});
+bool jasl::EchoCommand::m_registered = registerCommand<jasl::EchoCommand>();
 
 namespace jasl
 {
@@ -25,6 +25,11 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
 
+    }
+
+    std::vector<std::string> EchoCommand::getCommandNames()
+    {
+        return {"pr","say"};
     }
 
     bool EchoCommand::execute()

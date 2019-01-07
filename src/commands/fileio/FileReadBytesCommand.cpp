@@ -14,6 +14,9 @@
 #include <fstream>
 #include <algorithm>
 
+bool jasl::FileReadBytesCommand::m_registered = 
+registerCommand<jasl::FileReadBytesCommand>();
+
 namespace jasl
 {
 
@@ -23,6 +26,11 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
 
+    }
+
+    std::vector<std::string> FileReadBytesCommand::getCommandNames()
+    {
+        return {"file_read_bytes"};
     }
 
     bool FileReadBytesCommand::execute() 

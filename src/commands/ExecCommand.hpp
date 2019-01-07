@@ -14,14 +14,15 @@ namespace jasl
 {
     class ExecCommand : public Command
     {
-    public:
+      public:
         ExecCommand(Function &func_,
                     SharedCacheStack const &sharedCache = SharedCacheStack(),
                     OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool tryLiteralExtraction();
         bool trySymbolExtraction();
         static bool m_registered;

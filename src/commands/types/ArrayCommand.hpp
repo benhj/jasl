@@ -14,14 +14,15 @@ namespace jasl
 {
     class ArrayCommand : public Command
     {
-    public:
+      public:
         ArrayCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool handleInt();
         bool handleReal();
         std::string m_type;

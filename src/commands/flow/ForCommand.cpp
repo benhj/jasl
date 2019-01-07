@@ -25,6 +25,11 @@ namespace jasl {
 
     }
 
+    std::vector<std::string> ForCommand::getCommandNames()
+    {
+        return {"for"};
+    }
+
     bool ForCommand::execute() 
     {
 

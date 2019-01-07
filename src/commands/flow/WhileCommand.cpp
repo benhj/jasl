@@ -33,6 +33,11 @@ namespace jasl {
         }
     }
 
+    std::vector<std::string> WhileCommand::getCommandNames()
+    {
+        return {"while"};
+    }
+
     bool WhileCommand::execute() 
     {
         if(!m_weHaveFuncs) {

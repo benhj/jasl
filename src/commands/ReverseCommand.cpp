@@ -21,6 +21,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ReverseCommand::getCommandNames()
+    {
+        return {"reverse"};
+    }
+
     bool ReverseCommand::execute()
     {
         std::string stringName;

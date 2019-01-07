@@ -22,6 +22,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> ExecCommand::getCommandNames()
+    {
+        return {"exec"};
+    }
+
     bool ExecCommand::execute() 
     {
         if(tryLiteralExtraction()) { return true; }

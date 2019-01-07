@@ -19,6 +19,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ReleaseCommand::getCommandNames()
+    {
+        return {"release"};
+    }
+
     bool ReleaseCommand::execute()
     {
         if(trySymbolExtraction()) { return true; }

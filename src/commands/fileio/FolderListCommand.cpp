@@ -22,6 +22,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> FolderListCommand::getCommandNames()
+    {
+        return {"folder_list"};
+    }
+
     bool FolderListCommand::execute()
     {
         // now try and extract the actual words

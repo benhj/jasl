@@ -21,6 +21,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ListToStringCommand::getCommandNames()
+    {
+        return {"list_to_string"};
+    }
+
     bool ListToStringCommand::execute()
     {
         std::string varName;

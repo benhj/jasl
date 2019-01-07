@@ -24,6 +24,11 @@ namespace jasl {
         (void)m_func.getValueB<std::string>(m_varName, m_sharedCache);
     }
 
+    std::vector<std::string> NewPrimitiveSyntaxCommand::getCommandNames()
+    {
+        return {"int","byte","real","bool"};
+    }
+
     bool NewPrimitiveSyntaxCommand::execute()
     {
 

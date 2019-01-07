@@ -24,6 +24,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> StringToPrimitiveCommand::getCommandNames()
+    {
+        return {"string_to_"};
+    }
+
     bool StringToPrimitiveCommand::execute()
     {
         std::string varName;

@@ -22,6 +22,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> AppendCommand::getCommandNames()
+    {
+        return {"append"};
+    }
+
     bool AppendCommand::execute()
     {
 

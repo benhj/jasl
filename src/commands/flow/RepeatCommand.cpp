@@ -38,6 +38,11 @@ namespace jasl {
         }
     }
 
+    std::vector<std::string>RepeatCommand::getCommandNames()
+    {
+        return {"repeat"};
+    }
+
     bool RepeatCommand::execute() 
     {
         if(!m_weHaveFuncs) {

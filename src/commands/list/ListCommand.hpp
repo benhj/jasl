@@ -14,12 +14,14 @@ namespace jasl
 {
     class ListCommand : public Command
     {
-    public:
+      public:
         ListCommand(Function &func_,
                     SharedCacheStack const &sharedCache = SharedCacheStack(),
                     OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
+      private:
         static bool m_registered;
     };
 

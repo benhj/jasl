@@ -20,6 +20,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> FileTypeCommand::getCommandNames()
+    {
+        return {"file_type"};
+    }
+
     bool FileTypeCommand::execute()
     {
         // now try and extract the actual words

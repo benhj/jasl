@@ -19,7 +19,7 @@
 /**
  * AUTO TYPE REGISTRAION
  */
-bool jasl::ArgsCommand::m_registered = registerCommand<jasl::ArgsCommand>({"args"});
+bool jasl::ArgsCommand::m_registered = registerCommand<jasl::ArgsCommand>();
 
 namespace jasl
 { 
@@ -28,6 +28,11 @@ namespace jasl
                              OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
+    }
+
+    std::vector<std::string> ArgsCommand::getCommandNames()
+    {
+        return {"args"};
     }
 
     bool ArgsCommand::execute() 

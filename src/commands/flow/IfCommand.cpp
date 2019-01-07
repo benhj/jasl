@@ -17,7 +17,7 @@
 /**
  * AUTO TYPE REGISTRAION
  */
-bool jasl::IfCommand::m_registered = registerCommand<jasl::IfCommand>({"if", "?"});
+bool jasl::IfCommand::m_registered = registerCommand<jasl::IfCommand>();
 
 namespace jasl
 {
@@ -27,6 +27,11 @@ namespace jasl
                          OptionalOutputStream const &output)
         : Command(func_, withNewCache(sharedCache), output)
     {
+    }
+
+    std::vector<std::string> IfCommand::getCommandNames()
+    {
+        return {"if","?"};
     }
 
     bool IfCommand::execute() 

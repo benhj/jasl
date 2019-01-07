@@ -14,14 +14,15 @@ namespace jasl
 {
     class ReleaseCommand : public Command
     {
-    public:
+      public:
         ReleaseCommand(Function &func_,
                        SharedCacheStack const &sharedCache = SharedCacheStack(),
                        OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool trySymbolExtraction();
         static bool m_registered;
     };

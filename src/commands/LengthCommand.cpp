@@ -22,6 +22,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> LengthCommand::getCommandNames()
+    {
+        return {"length"};
+    }
+
     bool LengthCommand::execute() 
     {
         std::string varName;

@@ -21,6 +21,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> WildcardParseCommand::getCommandNames()
+    {
+        return {"wildcard_parse"};
+    }
+
     bool WildcardParseCommand::execute()
     {
 

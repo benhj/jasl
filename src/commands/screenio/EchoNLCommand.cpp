@@ -12,7 +12,7 @@
 #include "caching/VarExtractor.hpp"
 #include <boost/algorithm/string.hpp>
 
-bool jasl::EchoNLCommand::m_registered = registerCommand<jasl::EchoNLCommand>({"prn"});
+bool jasl::EchoNLCommand::m_registered = registerCommand<jasl::EchoNLCommand>();
 
 namespace jasl
 {
@@ -22,6 +22,11 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
 
+    }
+
+    std::vector<std::string> EchoNLCommand::getCommandNames()
+    {
+        return {"prn"};
     }
 
     bool EchoNLCommand::execute()

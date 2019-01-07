@@ -25,6 +25,11 @@ namespace jasl
         (void)m_func.getValueC<std::string>(m_varName, m_sharedCache);
     }
 
+    std::vector<std::string> ArrayGetCommand::getCommandNames()
+    {
+        return {"get"};
+    }
+
     bool ArrayGetCommand::execute()
     {
         int64_t index;

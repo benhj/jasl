@@ -21,18 +21,23 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ListGetTokenCommand::getCommandNames()
+    {
+        return {"get_token"};
+    }
+
     bool ListGetTokenCommand::execute()
     {
         std::string varName;
         if(!m_func.getValueC<std::string>(varName, m_sharedCache)) {
-            setLastErrorMessage("get token: couldn't parse variable name");
+            setLastErrorMessage("get_token: couldn't parse variable name");
             return false;
         }
 
         if(tryWithRawList(varName)) { return true; }
         if(tryWithSymbolList(varName)) { return true; }
         std::cout<<varName<<std::endl;
-        setLastErrorMessage("get token: no list found");
+        setLastErrorMessage("get_token: no list found");
         return false;
     }
 
@@ -83,7 +88,7 @@ namespace jasl
                 setLastErrorMessage("get_token: problem extracting token");
                 return false;
             } catch( boost::bad_lexical_cast const& ) {
-                setLastErrorMessage("get token: error in lexical cast");
+                setLastErrorMessage("get_token: error in lexical cast");
                 return false;
             }
         }
@@ -94,7 +99,7 @@ namespace jasl
     {
         int64_t index;
         if(!getIndex(index)) {
-            setLastErrorMessage("get token: error getting index");
+            setLastErrorMessage("get_token: error getting index");
             return false;
         }
 
@@ -135,10 +140,10 @@ namespace jasl
                     }
                         ++i;
                     }
-                    setLastErrorMessage("get token: error getting list");
+                    setLastErrorMessage("get_token: error getting list");
                     return false;
                 } catch( boost::bad_lexical_cast const& ) {
-                    setLastErrorMessage("get token: error in lexical cast");
+                    setLastErrorMessage("get_token: error in lexical cast");
                     return false;
                 }
             }

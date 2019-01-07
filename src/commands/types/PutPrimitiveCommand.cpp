@@ -43,6 +43,11 @@ namespace jasl
         setLastErrorMessage("put: couldn't determine type");
     }
 
+    std::vector<std::string> PutPrimitiveCommand::getCommandNames()
+    {
+        return {"put_primitive"};
+    }
+
     bool PutPrimitiveCommand::execute() 
     {
         if(m_type.empty()) {

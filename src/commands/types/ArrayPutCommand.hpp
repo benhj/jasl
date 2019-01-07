@@ -14,13 +14,14 @@ namespace jasl
 {
     class ArrayPutCommand : public Command
     {
-    public:
+      public:
         ArrayPutCommand(Function &func_,
                         SharedCacheStack const &sharedCache = SharedCacheStack(),
                         OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
-    private:
+        static std::vector<std::string> getCommandNames();
+      private:
         bool getIndex(int64_t &index);
         std::string m_type;
         std::string m_varName;

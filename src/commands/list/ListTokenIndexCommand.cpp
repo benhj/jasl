@@ -22,11 +22,16 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ListTokenIndexCommand::getCommandNames()
+    {
+        return {"index_of"};
+    }
+
     bool ListTokenIndexCommand::execute() 
     {
         std::string varName;
         if(!m_func.getValueC<std::string>(varName, m_sharedCache)) {
-            setLastErrorMessage("index: couldn't parse list");
+            setLastErrorMessage("index_of: couldn't parse list");
             return false;
         }
 

@@ -13,6 +13,9 @@
 #include <fstream>
 #include <string>
 
+bool jasl::FileAppendStringCommand::m_registered = 
+registerCommand<jasl::FileAppendStringCommand>();
+
 namespace jasl
 {
 
@@ -23,6 +26,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> FileAppendStringCommand::getCommandNames()
+    {
+        return {"file_append_line"};
+    }
+
     bool FileAppendStringCommand::execute() 
     { 
         std::string filename;
@@ -30,7 +38,7 @@ namespace jasl
 
             std::string value;
             if(!VarExtractor::trySingleStringExtraction(m_func.paramA, value, m_sharedCache)) {
-                setLastErrorMessage("file_write_bytes: problem with string");
+                setLastErrorMessage("file_append_line: problem with string");
                 return false;
             }
             // open the file and write data
@@ -39,7 +47,7 @@ namespace jasl
                        value.size(),
                        std::ios::binary | std::ios::app);
         } else {
-            setLastErrorMessage("file_write_bytes: couldn't parse filename");
+            setLastErrorMessage("file_append_line: couldn't parse filename");
             return false;
         }
         return true;

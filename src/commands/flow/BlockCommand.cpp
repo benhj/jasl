@@ -21,6 +21,11 @@ namespace jasl {
     {
     }
 
+    std::vector<std::string> BlockCommand::getCommandNames()
+    {
+        return {"block"};
+    }
+
     bool BlockCommand::execute()
     {
         popParams(m_func.paramB, m_sharedCache);

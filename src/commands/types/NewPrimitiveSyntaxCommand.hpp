@@ -13,14 +13,15 @@
 namespace jasl {
     class NewPrimitiveSyntaxCommand : public Command
     {
-    public:
+      public:
         NewPrimitiveSyntaxCommand(Function &func_,
                                   SharedCacheStack const &sharedCache = SharedCacheStack(),
                                   OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool handleInt();
         bool handleReal();
         bool handleBool();

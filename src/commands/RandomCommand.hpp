@@ -14,14 +14,15 @@
 namespace jasl {
     class RandomCommand : public Command
     {
-    public:
+      public:
         RandomCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         std::string m_type;
         std::string m_varName;
         std::random_device m_r;

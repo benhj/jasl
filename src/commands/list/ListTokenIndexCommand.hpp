@@ -14,15 +14,16 @@ namespace jasl
 {
     class ListTokenIndexCommand : public Command
     {
-    public:
+      public:
         
         ListTokenIndexCommand(Function &func_,
                               SharedCacheStack const &sharedCache = SharedCacheStack(),
                               OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
 
         OptionalString getTestToken();
         bool tryWithRawList(std::string const &varName);

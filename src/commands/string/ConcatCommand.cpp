@@ -19,6 +19,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> ConcatCommand::getCommandNames()
+    {
+        return {"concat"};
+    }
+
     bool ConcatCommand::execute() 
     {
         std::string stringName;

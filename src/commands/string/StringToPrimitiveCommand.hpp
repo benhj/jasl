@@ -14,13 +14,14 @@ namespace jasl
 {
     class StringToPrimitiveCommand : public Command
     {
-    public:
+      public:
         StringToPrimitiveCommand(Function &func_,
                                  SharedCacheStack const &sharedCache = SharedCacheStack(),
                                  OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
-    private:
+        static std::vector<std::string> getCommandNames();
+      private:
         bool tryLiteralExtraction(std::string const &varName);
         bool trySymbolExtraction(std::string const &varName);
         static bool m_registered;

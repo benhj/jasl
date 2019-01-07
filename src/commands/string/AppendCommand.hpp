@@ -14,14 +14,15 @@ namespace jasl
 {
     class AppendCommand : public Command
     {
-    public:
+      public:
         AppendCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
 
         OptionalString getStringBeingAppendedTo();
         bool tryLiteralExtraction(std::string const &key);

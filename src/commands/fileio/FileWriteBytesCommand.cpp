@@ -22,6 +22,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> FileWriteBytesCommand::getCommandNames()
+    {
+        return {"file_write_bytes"};
+    }
+
     bool FileWriteBytesCommand::execute() 
     {
         std::string filename;

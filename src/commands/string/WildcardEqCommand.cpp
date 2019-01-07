@@ -20,6 +20,11 @@ namespace jasl
     {
     }
 
+    std::vector<std::string> WildcardEqCommand::getCommandNames()
+    {
+        return {"wildcard_eq"};
+    }
+
     bool WildcardEqCommand::execute()
     {
 
@@ -28,19 +33,19 @@ namespace jasl
 
         std::string text;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramA, text, m_sharedCache)) {
-            setLastErrorMessage("wildcardex_eq: couldn't determine string to match");
+            setLastErrorMessage("wildcard_eq: couldn't determine string to match");
             return false;
         }
 
         std::string wildcard;
         if(!VarExtractor::trySingleStringExtraction(m_func.paramB, wildcard, m_sharedCache)) {
-            setLastErrorMessage("wildcardex_eq: couldn't determine matches string");
+            setLastErrorMessage("wildcard_eq: couldn't determine matches string");
             return false;
         }
 
         std::string symbol;
         if(!m_func.getValueC<std::string>(symbol, m_sharedCache)) {
-            setLastErrorMessage("wildcardex_eq: couldn't dtermine symbol");
+            setLastErrorMessage("wildcard_eq: couldn't dtermine symbol");
             return false;
         }
 

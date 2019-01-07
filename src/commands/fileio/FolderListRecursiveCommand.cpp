@@ -21,6 +21,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> FolderListRecursiveCommand::getCommandNames()
+    {
+        return {"folder_list_recursive"};
+    }
+
     bool FolderListRecursiveCommand::execute()
     {
         // now try and extract the actual words

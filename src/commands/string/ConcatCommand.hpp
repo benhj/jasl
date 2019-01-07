@@ -13,14 +13,15 @@ namespace jasl
 {
     class ConcatCommand : public Command
     {
-    public:
+      public:
         ConcatCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+        static std::vector<std::string> getCommandNames();
 
-    private:
+      private:
         bool tryConcatExtraction(std::string const & key);
         static bool m_registered;
     };

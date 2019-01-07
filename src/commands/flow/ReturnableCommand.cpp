@@ -69,6 +69,11 @@ namespace jasl
         (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);    
     }
 
+    std::vector<std::string> ReturnableCommand::getCommandNames()
+    {
+        return {"fn"};
+    }
+
     bool ReturnableCommand::execute()
     {
         

@@ -20,11 +20,15 @@ namespace jasl {
     {
     }
 
+    std::vector<std::string> StartCommand::getCommandNames()
+    {
+        return {"start"};
+    }
+
     bool StartCommand::execute()
     {
         return interpretFunctionBody();
     }
-
 
     bool StartCommand::interpretFunctionBody()
     {

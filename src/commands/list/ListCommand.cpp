@@ -21,6 +21,11 @@ namespace jasl
 
     }
 
+    std::vector<std::string> ListCommand::getCommandNames()
+    {
+        return {"list"};
+    }
+
     bool ListCommand::execute() 
     {
         // now try and extract the actual words

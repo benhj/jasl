@@ -13,12 +13,15 @@ namespace jasl
 {
     class FileAppendBytesCommand : public Command
     {
-    public:
+      public:
         FileAppendBytesCommand(Function &func_,
                                SharedCacheStack const &sharedCache = SharedCacheStack(),
                                OptionalOutputStream const &output = OptionalOutputStream());
 
         bool execute() override;
+
+        static std::vector<std::string> getCommandNames();
+
         static bool m_registered;
     };
 
