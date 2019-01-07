@@ -124,8 +124,6 @@ namespace jasl
         qi::rule<Iterator, std::string(), ascii::space_type> commentPound;
         qi::rule<Iterator, std::string(), ascii::space_type> genericString;
 
-        qi::rule<Iterator, LiteralString(), ascii::space_type> quotedString;
-        qi::rule<Iterator, LiteralString(), ascii::space_type> doubleQuotedString;
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
         qi::rule<Iterator, Function(), ascii::space_type> start;
         qi::rule<Iterator, Function(), ascii::space_type> allCommands;

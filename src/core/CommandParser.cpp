@@ -8,6 +8,7 @@
 
 #include "CommandParser.hpp"
 #include "parser/Escapes.hpp"
+#include "parser/Strings.hpp"
 
 namespace jasl
 {
@@ -28,10 +29,8 @@ namespace jasl
 
         // convenience rules
         Escapes::init();
+        Strings::init();
 
-        quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '\''];
-        doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '"'];
-        genericString       %= lexeme[+(char_("a-zA-Z_"))];
         allChars            %= lexeme[+(char_ - '\n')];
         commentSlash        %= string("//");
         commentColons       %= string(";;;");
@@ -63,15 +62,15 @@ namespace jasl
         // a math expression enclose by brackets to aid compound expressions
         // e.g. (5.0 + 5.0)
         bracketedMathExpression %= '('
-                                >> (doubleRule | intRule | genericString | bracketedMathExpression)
+                                >> (doubleRule | intRule | Strings::genericString | bracketedMathExpression)
                                 >> mathSymbols
-                                >> (doubleRule | intRule | genericString | bracketedMathExpression)
+                                >> (doubleRule | intRule | Strings::genericString | bracketedMathExpression)
                                 >> ')';
 
         // a simple math expression e.g. 5 + 5
-        mathExpression %= (doubleRule | intRule | genericString | bracketedMathExpression)
+        mathExpression %= (doubleRule | intRule | Strings::genericString | bracketedMathExpression)
                            >> mathSymbols
-                           >> (doubleRule | intRule | genericString | bracketedMathExpression);
+                           >> (doubleRule | intRule | Strings::genericString | bracketedMathExpression);
 
         // a logical expression inside a pair of brackets e.g. (2 > 1)
         bracketedComparisonExpression  %= '('
@@ -79,28 +78,28 @@ namespace jasl
                                           | bracketedMathExpression
                                           | doubleRule
                                           | intRule
-                                          | genericString
+                                          | Strings::genericString
                                           | boolRule)
                                        >> comparisonSymbols
                                        >> ( bracketedComparisonExpression
                                           | bracketedMathExpression
                                           | doubleRule
                                           | intRule
-                                          | genericString
+                                          | Strings::genericString
                                           | boolRule)
                                        >> ')';
 
         // a simple logical expression e.g 2 > 1
         comparisonExpression %= ( doubleRule
                                 | intRule
-                                | genericString
+                                | Strings::genericString
                                 | boolRule
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression)
                              >> comparisonSymbols
                              >> ( doubleRule
                                 | intRule
-                                | genericString
+                                | Strings::genericString
                                 | boolRule
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression);
@@ -111,42 +110,42 @@ namespace jasl
         // reals 5 -> a;
         reals %= string("reals")
               >> (('('
-              >> (mathExpression | bracketedMathExpression | intRule | genericString)
-              >> ')') | genericString)
+              >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
+              >> ')') | Strings::genericString)
               >> lit("->")
-              >> (genericString)
+              >> (Strings::genericString)
               >> ';';
 
         ints %= string("ints")
               >> (('('
-              >> (mathExpression | bracketedMathExpression | intRule | genericString)
-              >> ')') | genericString)
+              >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
+              >> ')') | Strings::genericString)
               >> lit("->")
-              >> (genericString)
+              >> (Strings::genericString)
               >> ';';
 
         bytes %= string("bytes")
               >> (('('
-              >> (mathExpression | bracketedMathExpression | intRule | genericString)
-              >> ')') | genericString)
+              >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
+              >> ')') | Strings::genericString)
               >> lit("->")
-              >> (genericString)
+              >> (Strings::genericString)
               >> ';';
 
         bools %= string("bools")
               >> (('('
-              >> (mathExpression | bracketedMathExpression | intRule | genericString)
-              >> ')') | genericString)
+              >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
+              >> ')') | Strings::genericString)
               >> lit("->")
-              >> (genericString)
+              >> (Strings::genericString)
               >> ';';
 
         strings %= string("strings")
               >> (('('
-              >> (mathExpression | bracketedMathExpression | intRule | genericString)
-              >> ')') | genericString)
+              >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
+              >> ')') | Strings::genericString)
               >> lit("->")
-              >> (genericString)
+              >> (Strings::genericString)
               >> ';';
 
         //
@@ -166,17 +165,17 @@ namespace jasl
         brackets %= "()";
 
         // represents a pair of values e.g. (5, 5)
-        pairRule %= '(' >> (doubleRule | intRule | genericString) >> ','
-                        >> (doubleRule | intRule | genericString) >> ')';
+        pairRule %= '(' >> (doubleRule | intRule | Strings::genericString) >> ','
+                        >> (doubleRule | intRule | Strings::genericString) >> ')';
 
         // respresnts a triple of values e.g. (1, 2, 3)
-        tupleRule %= '(' >> (doubleRule | intRule | genericString) >> ','
-                         >> (doubleRule | intRule | genericString) >> ','
-                         >> (doubleRule | intRule | genericString) >> ')';
+        tupleRule %= '(' >> (doubleRule | intRule | Strings::genericString) >> ','
+                         >> (doubleRule | intRule | Strings::genericString) >> ','
+                         >> (doubleRule | intRule | Strings::genericString) >> ')';
     
         // prints out the value of a given variable
         query %= string("query") >> '('
-              >> genericString
+              >> Strings::genericString
                >> ')' >> ';';
 
         // the entire set of instructions at out disposal
@@ -185,9 +184,9 @@ namespace jasl
         // a for-loop for iterating over elements in a list
         // e.g. for i in list {...}
         forLoop %= string("for")
-                >> genericString // variable e.g. c
+                >> Strings::genericString // variable e.g. c
                 >> lit("in")
-                >> (genericString | bracketedWords) 
+                >> (Strings::genericString | bracketedWords) 
                 >> '{'
                 >>  commandCollection
                 >> '}';
@@ -195,7 +194,7 @@ namespace jasl
         // for a loop having the syntax
         // repeat N times {  }
         repeatLoop %= string("repeat") 
-                    >> (intRule | genericString | bracketedMathExpression)
+                    >> (intRule | Strings::genericString | bracketedMathExpression)
                     >> lit("times")
                     >> '{'
                     >> commandCollection
@@ -218,7 +217,7 @@ namespace jasl
         // where s is a string
         execCommand %= string("exec") 
                     >> '(' 
-                    >> (doubleQuotedString | genericString)
+                    >> (Strings::doubleQuotedString | Strings::genericString)
                     >> ')'
                     >> ';';
 
@@ -229,13 +228,13 @@ namespace jasl
                      >> '}';
 
         // Rules defining parameter sets for functions
-        parameter      %= (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+        parameter      %= (Strings::doubleQuotedString | Strings::genericString | doubleRule | intRule | boolRule | 
                            mathExpression | bracketedMathExpression | 
                            comparisonExpression | bracketedComparisonExpression | bracketedWords);
         commaParameter %= ',' >> parameter;
-        barString      %= '|' >> genericString;
+        barString      %= '|' >> Strings::genericString;
         parameters     %= -(parameter >> *commaParameter); // comma-separated
-        concats        %= (genericString >> *barString); // bar-separated
+        concats        %= (Strings::genericString >> *barString); // bar-separated
         // a collection of parameters
         // to be used by a function. This could be empty as in
         // () or have arguments, as in (a, b, c);
@@ -246,7 +245,7 @@ namespace jasl
 
         // a callable execution point
         block %= string("block")
-              >> genericString // functionName
+              >> Strings::genericString // functionName
               // take an optional list of arguments
               >> '(' >> parameterList >> ')'
               >> '{'
@@ -259,9 +258,9 @@ namespace jasl
                         >> arrayLexeme
                         >> ':' 
                         >> arrayTypes// return type
-                        >> genericString // functionName
+                        >> Strings::genericString // functionName
                         >> '(' >> parameterList >> ')' // list of parameters
-                        >> -(lit("->") >> genericString)
+                        >> -(lit("->") >> Strings::genericString)
                         >> '{'
                         >> commandCollection
                         >> '}';
@@ -273,10 +272,10 @@ namespace jasl
         // fn:array:real func() -> result {}
         returnable %= string("fn")
                    >> ':'
-                   >> genericString // return type
-                   >> genericString // functionName
+                   >> Strings::genericString // return type
+                   >> Strings::genericString // functionName
                    >> '(' >> parameterList >> ')' // list of parameters
-                   >> -(lit("->") >> genericString)
+                   >> -(lit("->") >> Strings::genericString)
                    >> '{'
                    >> commandCollection
                    >> '}';
@@ -304,33 +303,33 @@ namespace jasl
 
         // calls a function with given name
         call %= string("call")
-             >> genericString // functionName
+             >> Strings::genericString // functionName
              >> '(' >> parameterList >> ')' // optional parameters
              // optional return part
-             >> -(lit("->") >> genericString)
+             >> -(lit("->") >> Strings::genericString)
              >> ';';
 
         //  for setting a value in an array
         //  put 5 -> a(0);             
         put  %= string("put")
-             >> (genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
+             >> (Strings::genericString | doubleRule | intRule | mathExpression | bracketedMathExpression)
              >> lit("->")
-             >> genericString 
+             >> Strings::genericString 
              // optional indexing
              >> -('('
-             >> (mathExpression | bracketedMathExpression | intRule | genericString)
+             >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
              >> ')')
              >> ';';
 
         // for getting a value in an array
         // get a(0) -> val;
         get  %= string("get")
-             >> (genericString)
+             >> (Strings::genericString)
              >> '('
-             >> (mathExpression | bracketedMathExpression | intRule | genericString)
+             >> (mathExpression | bracketedMathExpression | intRule | Strings::genericString)
              >> ')'
              >> lit("->")
-             >> (genericString)
+             >> (Strings::genericString)
              >> ';';
 
         // a list of words
@@ -345,31 +344,31 @@ namespace jasl
         // index_of ("hello", [hello there]) -> s;
         listTokenIndex  %= string("index_of")
                         >> '('
-                        >> (genericString | doubleQuotedString)
+                        >> (Strings::genericString | Strings::doubleQuotedString)
                         >> lit(",")
-                        >> (bracketedWords | genericString)
+                        >> (bracketedWords | Strings::genericString)
                         >> (')')
                         >> lit("->")
-                        >> genericString 
+                        >> Strings::genericString 
                         >> ';';
 
         // get_token(0, [hello there]) -> t;
         listGetToken  %= string("get_token")
                       >> '('
-                      >> (genericString | intRule)
+                      >> (Strings::genericString | intRule)
                       >> ','
-                      >> (bracketedWords | genericString)
+                      >> (bracketedWords | Strings::genericString)
                       >> ')'
                       >> lit("->")
-                      >> genericString 
+                      >> Strings::genericString 
                       >> ';';
 
         // add_token("token", L);
         listAddToken  %= string("add_token")
                       >> '('
-                      >> (genericString | doubleQuotedString | bracketedWords)
+                      >> (Strings::genericString | Strings::doubleQuotedString | bracketedWords)
                       >> ','
-                      >> (genericString)
+                      >> (Strings::genericString)
                       >> ')'
                       >> ';';
 
@@ -378,14 +377,14 @@ namespace jasl
         // set_token (0, [hello there], [nested bit]) -> t;
         listSetToken  %= string("set_token")
                       >> ('(')
-                      >> (genericString | intRule)
+                      >> (Strings::genericString | intRule)
                       >> (',')
-                      >> (bracketedWords | genericString)
+                      >> (bracketedWords | Strings::genericString)
                       >> (',')
-                      >> (genericString | doubleQuotedString | bracketedWords)
+                      >> (Strings::genericString | Strings::doubleQuotedString | bracketedWords)
                       >> (')')
                       >> lit("->")
-                      >> genericString 
+                      >> Strings::genericString 
                       >> ';';
 
         matchesCommand %= string("matches")
@@ -393,45 +392,45 @@ namespace jasl
                        >> '|'
                        >> bracketedWords
                        >> lit("->")
-                       >> genericString 
+                       >> Strings::genericString 
                        >> ';';
 
         // appends to end of a string, s  
         // append (s, "hello") -> result;
         appendRule %= string("append")
                    >> ('(')
-                   >> (doubleQuotedString | genericString)
+                   >> (Strings::doubleQuotedString | Strings::genericString)
                    >> ','
-                   >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+                   >> (Strings::doubleQuotedString | Strings::genericString | doubleRule | intRule | boolRule | 
                        mathExpression | bracketedMathExpression | 
                        comparisonExpression | bracketedComparisonExpression)
                    >> ')'
                    >> lit("->")
-                   >> genericString
+                   >> Strings::genericString
                    >> ';';
 
         // string_reverse name; 
         reverseRule %= string("string_reverse")
-                    >> (doubleQuotedString | genericString)
+                    >> (Strings::doubleQuotedString | Strings::genericString)
                     >> ';';
 
         // for printing out a string to screen
         pr %= string("pr")
-             >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+             >> (Strings::doubleQuotedString | Strings::genericString | doubleRule | intRule | boolRule | 
                  mathExpression | bracketedMathExpression | 
                  comparisonExpression | bracketedComparisonExpression)
              >> ';';
 
         // for printing out a string to screen with newline
         prn %= string("prn")
-               >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+               >> (Strings::doubleQuotedString | Strings::genericString | doubleRule | intRule | boolRule | 
                    mathExpression | bracketedMathExpression | 
                    comparisonExpression | bracketedComparisonExpression)
                >> ';';
 
         // equivalent to 'pr' -- slightly nicer syntax
         say %= string("say")
-               >> (doubleQuotedString | genericString | doubleRule | intRule | boolRule | 
+               >> (Strings::doubleQuotedString | Strings::genericString | doubleRule | intRule | boolRule | 
                    mathExpression | bracketedMathExpression | 
                    comparisonExpression | bracketedComparisonExpression)
                >> ';';
@@ -441,73 +440,73 @@ namespace jasl
 
         // loads a jasl script
         loadScript %= string("script") 
-                   >> doubleQuotedString >> ';';
+                   >> Strings::doubleQuotedString >> ';';
 
         // erases a variable from the cache
         releaseCommand %= string("release")
-                       >> genericString >> ';';
+                       >> Strings::genericString >> ';';
 
         // generates an int or real in somce range [0, n]
         // random:int n -> value;
         // random:real n -> value;
         randomCommand %= string("random") >> ':'
-                      >> genericString
-                      >> (genericString | doubleRule | intRule | 
+                      >> Strings::genericString
+                      >> (Strings::genericString | doubleRule | intRule | 
                            mathExpression | bracketedMathExpression)
                       >> lit("->") 
-                      >> genericString
+                      >> Strings::genericString
                       >> ';';
 
         // for exiting a program
-        exitCommand %= string("exit") >> -(genericString) >> ';';
+        exitCommand %= string("exit") >> -(Strings::genericString) >> ';';
 
         regexEqCommand %= string("regex_eq")
                        >> ('(') 
-                       >> (doubleQuotedString | genericString) >> ','
-                       >> (doubleQuotedString | genericString) 
+                       >> (Strings::doubleQuotedString | Strings::genericString) >> ','
+                       >> (Strings::doubleQuotedString | Strings::genericString) 
                        >> (')')
                        >> lit("->")
-                       >> genericString
+                       >> Strings::genericString
                        >> ';';
 
         regexParseCommand %= string("regex_parse")
                           >> ('(') 
-                          >> (doubleQuotedString | genericString) >> ','
-                          >> (doubleQuotedString | genericString) 
+                          >> (Strings::doubleQuotedString | Strings::genericString) >> ','
+                          >> (Strings::doubleQuotedString | Strings::genericString) 
                           >> (')')
                           >> lit("->")
-                          >> genericString
+                          >> Strings::genericString
                           >> ';';
 
         wildcardParseCommand %= string("wildcard_parse")
                              >> ('(') 
-                             >> (doubleQuotedString | genericString) >> ','
-                             >> (doubleQuotedString | genericString) 
+                             >> (Strings::doubleQuotedString | Strings::genericString) >> ','
+                             >> (Strings::doubleQuotedString | Strings::genericString) 
                              >> (')')
                              >> lit("->")
-                             >> genericString
+                             >> Strings::genericString
                              >> ';';
 
         wildcardEqCommand %= string("wildcard_eq")
                           >> ('(') 
-                          >> (doubleQuotedString | genericString) >> ','
-                          >> (doubleQuotedString | genericString) 
+                          >> (Strings::doubleQuotedString | Strings::genericString) >> ','
+                          >> (Strings::doubleQuotedString | Strings::genericString) 
                           >> (')')
                           >> lit("->")
-                          >> genericString
+                          >> Strings::genericString
                           >> ';';
         // concatenate strings. 
         concatRule %= string("concat")
                    >> (parameterList) >> lit("->")
-                   >> genericString 
+                   >> Strings::genericString 
                    >> ';';
 
         // matches this type of command:
         // net_send something -> somethingElse;
-        genericArrowRule %= genericString
-                         >> (doubleQuotedString
+        genericArrowRule %= Strings::genericString
+                         >> (Strings::doubleQuotedString
                              | boolRule
-                             | genericString
+                             | Strings::genericString
                              | doubleRule
                              | intRule
                              | mathExpression
@@ -516,13 +515,13 @@ namespace jasl
                              | bracketedComparisonExpression
                              | bracketedWords)
                           >> lit("->")
-                          >> (doubleQuotedString | genericString) 
+                          >> (Strings::doubleQuotedString | Strings::genericString) 
                           >> ';';
 
         // matches this type of command:
         // net_send something;
         ansiUPRule %= string("ansi_up")
-                            >> (genericString
+                            >> (Strings::genericString
                                | intRule
                                | mathExpression
                                | bracketedMathExpression) >> ';';
