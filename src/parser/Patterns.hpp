@@ -10,12 +10,10 @@
 #include <string>
 
 namespace jasl {
-    class Comments {
+    class Patterns {
       public:
         using Iterator = std::string::const_iterator;
-        static ::boost::spirit::qi::rule< Iterator,
-                                          Function(),
-                                          ::boost::spirit::ascii::space_type> commentFunc;
+        static ::boost::spirit::qi::rule<Iterator, Function(), ::boost::spirit::ascii::space_type> pattern;
         static void init();
     };
 }

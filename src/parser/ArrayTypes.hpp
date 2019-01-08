@@ -15,11 +15,7 @@ namespace jasl {
         using Iterator = std::string::const_iterator;
         static ::boost::spirit::qi::rule<Iterator, std::string(), ::boost::spirit::ascii::space_type> arrayLexeme;
         static ::boost::spirit::qi::rule<Iterator, std::string(), ::boost::spirit::ascii::space_type> arrayTypes;
-        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > ints;
-        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > bytes;
-        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > strings;
-        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > bools;
-        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > reals;
+        static ::boost::spirit::qi::rule< Iterator, Function(), ::boost::spirit::ascii::space_type > array;
         static void init();
     };
 }

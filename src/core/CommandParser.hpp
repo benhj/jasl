@@ -58,15 +58,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> returnableArray;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
-        qi::rule<Iterator, Function(), ascii::space_type> pr;
-        qi::rule<Iterator, Function(), ascii::space_type> prn;
-        qi::rule<Iterator, Function(), ascii::space_type> say;
-        qi::rule<Iterator, Function(), ascii::space_type> appendRule;
-        qi::rule<Iterator, Function(), ascii::space_type> reverseRule;
-        qi::rule<Iterator, Function(), ascii::space_type> listTokenIndex;
-        qi::rule<Iterator, Function(), ascii::space_type> listGetToken;
-        qi::rule<Iterator, Function(), ascii::space_type> listSetToken;
-        qi::rule<Iterator, Function(), ascii::space_type> listAddToken;
+
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
@@ -74,25 +66,12 @@ namespace jasl
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // generic rule
-        qi::rule<Iterator, Function(), ascii::space_type> concatRule;
         qi::rule<Iterator, Function(), ascii::space_type> genericArrowRule;
-        qi::rule<Iterator, Function(), ascii::space_type> ansiUPRule;
-
-        // string manipulation new (2017-2018)
-        qi::rule<Iterator, Function(), ascii::space_type> regexEqCommand;
-        qi::rule<Iterator, Function(), ascii::space_type> wildcardEqCommand;
-        qi::rule<Iterator, Function(), ascii::space_type> regexParseCommand;
-        qi::rule<Iterator, Function(), ascii::space_type> wildcardParseCommand;
 
         // list manipulation (2018)
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
 
         // Core rule declarations
-        
-        qi::rule<Iterator, Value(), ascii::space_type> parameter;
-        qi::rule<Iterator, Value(), ascii::space_type> commaParameter;
-        qi::rule<Iterator, Value(), ascii::space_type> parameterList;
-        qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
         qi::rule<Iterator, std::string(), ascii::space_type> arrayLexeme;
 
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;

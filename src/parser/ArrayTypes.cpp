@@ -7,11 +7,7 @@ namespace qi = ::boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 qi::rule< jasl::ArrayTypes::Iterator, std::string(), ascii::space_type> jasl::ArrayTypes::arrayLexeme;
 qi::rule< jasl::ArrayTypes::Iterator, std::string(), ascii::space_type> jasl::ArrayTypes::arrayTypes;
-qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::ints;
-qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::bytes;
-qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::strings;
-qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::bools;
-qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::reals;
+qi::rule< jasl::ArrayTypes::Iterator, jasl::Function(), ascii::space_type > jasl::ArrayTypes::array;
 
 namespace jasl {
     void ArrayTypes::init() 
@@ -25,51 +21,11 @@ namespace jasl {
 
         // simpler array types. Arrays are 'plural' versions of primitives
         // reals 5 -> a;
-        reals %= string("reals")
-              >> (('('
-              >> (Expressions::mathExpression          |
-                  Expressions::bracketedMathExpression |
-                  BasicTypes::intRule                  |
-                  Strings::genericString)
-              >> ')') | Strings::genericString)
-              >> lit("->")
-              >> (Strings::genericString)
-              >> ';';
-
-        ints %= string("ints")
-              >> (('('
-              >> (Expressions::mathExpression          |
-                  Expressions::bracketedMathExpression |
-                  BasicTypes::intRule                  |
-                  Strings::genericString)
-              >> ')') | Strings::genericString)
-              >> lit("->")
-              >> (Strings::genericString)
-              >> ';';
-
-        bytes %= string("bytes")
-              >> (('('
-              >> (Expressions::mathExpression          |
-                  Expressions::bracketedMathExpression |
-                  BasicTypes::intRule                  |
-                  Strings::genericString)
-              >> ')') | Strings::genericString)
-              >> lit("->")
-              >> (Strings::genericString)
-              >> ';';
-
-        bools %= string("bools")
-              >> (('('
-              >> (Expressions::mathExpression          |
-                  Expressions::bracketedMathExpression |
-                  BasicTypes::intRule                  |
-                  Strings::genericString)
-              >> ')') | Strings::genericString)
-              >> lit("->")
-              >> (Strings::genericString)
-              >> ';';
-
-        strings %= string("strings")
+        array %= lexeme[string("ints")   |
+                        string("reals")  |
+                        string("bytes")  |
+                        string("strings")|
+                        string("bools")]
               >> (('('
               >> (Expressions::mathExpression          |
                   Expressions::bracketedMathExpression |

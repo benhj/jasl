@@ -24,15 +24,7 @@ namespace jasl {
         // a math expression enclose by brackets to aid compound expressions
         // e.g. (5.0 + 5.0)
         bracketedMathExpression %= '('
-                                >> (BasicTypes::doubleRule |
-                                    BasicTypes::intRule    |
-                                    Strings::genericString |
-                                    bracketedMathExpression)
-                                >> Symbols::mathSymbols
-                                >> (BasicTypes::doubleRule |
-                                    BasicTypes::intRule    |
-                                    Strings::genericString |
-                                    bracketedMathExpression)
+                                >> mathExpression
                                 >> ')';
 
         // a simple math expression e.g. 5 + 5
@@ -48,19 +40,7 @@ namespace jasl {
 
         // a logical expression inside a pair of brackets e.g. (2 > 1)
         bracketedComparisonExpression  %= '('
-                                       >> ( bracketedComparisonExpression
-                                          | bracketedMathExpression
-                                          | BasicTypes::doubleRule
-                                          | BasicTypes::intRule
-                                          | Strings::genericString
-                                          | BasicTypes::boolRule)
-                                       >> Symbols::comparisonSymbols
-                                       >> ( bracketedComparisonExpression
-                                          | bracketedMathExpression
-                                          | BasicTypes::doubleRule
-                                          | BasicTypes::intRule
-                                          | Strings::genericString
-                                          | BasicTypes::boolRule)
+                                       >> comparisonExpression
                                        >> ')';
 
         // a simple logical expression e.g 2 > 1

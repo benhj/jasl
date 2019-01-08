@@ -14,6 +14,11 @@
 #include "parser/BasicTypes.hpp"
 #include "parser/Expressions.hpp"
 #include "parser/ArrayTypes.hpp"
+#include "parser/Parameters.hpp"
+#include "parser/ScreenIO.hpp"
+#include "parser/Patterns.hpp"
+#include "parser/ListManip.hpp"
+#include "parser/StringManip.hpp"
 
 namespace jasl
 {
@@ -40,6 +45,11 @@ namespace jasl
         BasicTypes::init();
         Expressions::init();
         ArrayTypes::init();
+        Parameters::init();
+        ScreenIO::init();
+        Patterns::init();
+        ListManip::init();
+        StringManip::init();
 
         brackets %= "()";
     
@@ -97,22 +107,11 @@ namespace jasl
                      >>  commandCollection
                      >> '}';
 
-        // Rules defining parameter sets for functions
-        parameter      %= (Strings::doubleQuotedString | Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | BasicTypes::boolRule | 
-                           Expressions::mathExpression | Expressions::bracketedMathExpression | 
-                           Expressions::comparisonExpression | Expressions::bracketedComparisonExpression | Strings::bracketedWords);
-        commaParameter %= ',' >> parameter;
-        parameters     %= -(parameter >> *commaParameter); // comma-separated
-        // a collection of parameters
-        // to be used by a function. This could be empty as in
-        // () or have arguments, as in (a, b, c);
-        parameterList %= parameters;
-
         // a callable execution point
         block %= string("block")
               >> Strings::genericString // functionName
               // take an optional list of arguments
-              >> '(' >> parameterList >> ')'
+              >> '(' >> Parameters::parameterList >> ')'
               >> '{'
               >>  commandCollection
               >> '}';
@@ -123,7 +122,7 @@ namespace jasl
                         >> ':' 
                         >> ArrayTypes::arrayTypes// return type
                         >> Strings::genericString // functionName
-                        >> '(' >> parameterList >> ')' // list of parameters
+                        >> '(' >> Parameters::parameterList >> ')' // list of parameters
                         >> -(lit("->") >> Strings::genericString)
                         >> '{'
                         >> commandCollection
@@ -138,7 +137,7 @@ namespace jasl
                    >> ':'
                    >> Strings::genericString // return type
                    >> Strings::genericString // functionName
-                   >> '(' >> parameterList >> ')' // list of parameters
+                   >> '(' >> Parameters::parameterList >> ')' // list of parameters
                    >> -(lit("->") >> Strings::genericString)
                    >> '{'
                    >> commandCollection
@@ -168,13 +167,14 @@ namespace jasl
         // calls a function with given name
         call %= string("call")
              >> Strings::genericString // functionName
-             >> '(' >> parameterList >> ')' // optional parameters
+             >> '(' >> Parameters::parameterList >> ')' // optional parameters
              // optional return part
              >> -(lit("->") >> Strings::genericString)
              >> ';';
 
-        //  for setting a value in an array
-        //  put 5 -> a(0);             
+        // for setting a value
+        // put 5 -> a;
+        // put 10 -> b(1);       
         put  %= string("put")
              >> (Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | Expressions::mathExpression | Expressions::bracketedMathExpression)
              >> lit("->")
@@ -196,51 +196,6 @@ namespace jasl
              >> (Strings::genericString)
              >> ';';
 
-        // index_of ("hello", [hello there]) -> s;
-        listTokenIndex  %= string("index_of")
-                        >> '('
-                        >> (Strings::genericString | Strings::doubleQuotedString)
-                        >> lit(",")
-                        >> (Strings::bracketedWords | Strings::genericString)
-                        >> (')')
-                        >> lit("->")
-                        >> Strings::genericString 
-                        >> ';';
-
-        // get_token(0, [hello there]) -> t;
-        listGetToken  %= string("get_token")
-                      >> '('
-                      >> (Strings::genericString | BasicTypes::intRule)
-                      >> ','
-                      >> (Strings::bracketedWords | Strings::genericString)
-                      >> ')'
-                      >> lit("->")
-                      >> Strings::genericString 
-                      >> ';';
-
-        // add_token("token", L);
-        listAddToken  %= string("add_token")
-                      >> '('
-                      >> (Strings::genericString | Strings::doubleQuotedString | Strings::bracketedWords)
-                      >> ','
-                      >> (Strings::genericString)
-                      >> ')'
-                      >> ';';
-
-        // set_token (0, [hello there], "goodbye") -> t;
-        // set_token (0, [hello there], [nested bit]) -> t;
-        listSetToken  %= string("set_token")
-                      >> ('(')
-                      >> (Strings::genericString | BasicTypes::intRule)
-                      >> (',')
-                      >> (Strings::bracketedWords | Strings::genericString)
-                      >> (',')
-                      >> (Strings::genericString | Strings::doubleQuotedString | Strings::bracketedWords)
-                      >> (')')
-                      >> lit("->")
-                      >> Strings::genericString 
-                      >> ';';
-
         matchesCommand %= string("matches")
                        >> Strings::bracketedWords
                        >> '|'
@@ -248,46 +203,6 @@ namespace jasl
                        >> lit("->")
                        >> Strings::genericString 
                        >> ';';
-
-        // appends to end of a string, s  
-        // append (s, "hello") -> result;
-        appendRule %= string("append")
-                   >> ('(')
-                   >> (Strings::doubleQuotedString | Strings::genericString)
-                   >> ','
-                   >> (Strings::doubleQuotedString | Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | BasicTypes::boolRule | 
-                       Expressions::mathExpression | Expressions::bracketedMathExpression | 
-                       Expressions::comparisonExpression | Expressions::bracketedComparisonExpression)
-                   >> ')'
-                   >> lit("->")
-                   >> Strings::genericString
-                   >> ';';
-
-        // string_reverse name; 
-        reverseRule %= string("string_reverse")
-                    >> (Strings::doubleQuotedString | Strings::genericString)
-                    >> ';';
-
-        // for printing out a string to screen
-        pr %= string("pr")
-             >> (Strings::doubleQuotedString | Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | BasicTypes::boolRule | 
-                 Expressions::mathExpression | Expressions::bracketedMathExpression | 
-                 Expressions::comparisonExpression | Expressions::bracketedComparisonExpression)
-             >> ';';
-
-        // for printing out a string to screen with newline
-        prn %= string("prn")
-               >> (Strings::doubleQuotedString | Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | BasicTypes::boolRule | 
-                   Expressions::mathExpression | Expressions::bracketedMathExpression | 
-                   Expressions::comparisonExpression | Expressions::bracketedComparisonExpression)
-               >> ';';
-
-        // equivalent to 'pr' -- slightly nicer syntax
-        say %= string("say")
-               >> (Strings::doubleQuotedString | Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | BasicTypes::boolRule | 
-                   Expressions::mathExpression | Expressions::bracketedMathExpression | 
-                   Expressions::comparisonExpression | Expressions::bracketedComparisonExpression)
-               >> ';';
 
         // lists all variables
         vars %= string("vars") >> brackets >> ';';
@@ -314,47 +229,6 @@ namespace jasl
         // for exiting a program
         exitCommand %= string("exit") >> -(Strings::genericString) >> ';';
 
-        regexEqCommand %= string("regex_eq")
-                       >> ('(') 
-                       >> (Strings::doubleQuotedString | Strings::genericString) >> ','
-                       >> (Strings::doubleQuotedString | Strings::genericString) 
-                       >> (')')
-                       >> lit("->")
-                       >> Strings::genericString
-                       >> ';';
-
-        regexParseCommand %= string("regex_parse")
-                          >> ('(') 
-                          >> (Strings::doubleQuotedString | Strings::genericString) >> ','
-                          >> (Strings::doubleQuotedString | Strings::genericString) 
-                          >> (')')
-                          >> lit("->")
-                          >> Strings::genericString
-                          >> ';';
-
-        wildcardParseCommand %= string("wildcard_parse")
-                             >> ('(') 
-                             >> (Strings::doubleQuotedString | Strings::genericString) >> ','
-                             >> (Strings::doubleQuotedString | Strings::genericString) 
-                             >> (')')
-                             >> lit("->")
-                             >> Strings::genericString
-                             >> ';';
-
-        wildcardEqCommand %= string("wildcard_eq")
-                          >> ('(') 
-                          >> (Strings::doubleQuotedString | Strings::genericString) >> ','
-                          >> (Strings::doubleQuotedString | Strings::genericString) 
-                          >> (')')
-                          >> lit("->")
-                          >> Strings::genericString
-                          >> ';';
-        // concatenate strings. 
-        concatRule %= string("concat")
-                   >> (parameterList) >> lit("->")
-                   >> Strings::genericString 
-                   >> ';';
-
         // matches this type of command:
         // net_send something -> somethingElse;
         genericArrowRule %= Strings::genericString
@@ -372,14 +246,6 @@ namespace jasl
                           >> (Strings::doubleQuotedString | Strings::genericString) 
                           >> ';';
 
-        // matches this type of command:
-        // net_send something;
-        ansiUPRule %= string("ansi_up")
-                   >> (Strings::genericString
-                      | BasicTypes::intRule
-                      | Expressions::mathExpression
-                      | Expressions::bracketedMathExpression) >> ';';
-
         // all the instructions at out disposal
         allCommands %= forLoop
                      | query 
@@ -389,14 +255,8 @@ namespace jasl
                      | returnable
                      | returnableArray
                      | put
-                     | ArrayTypes::ints
-                     | ArrayTypes::bytes
-                     | ArrayTypes::strings
-                     | ArrayTypes::bools
-                     | ArrayTypes::reals
-                     | prn
-                     | pr
-                     | say
+                     | ArrayTypes::array
+                     | ScreenIO::echo
                      | ifRule 
                      | ifRule_B
                      | Comments::commentFunc
@@ -404,23 +264,20 @@ namespace jasl
                      | loadScript
                      | repeatLoop
                      | whileLoop
-                     | appendRule
-                     | reverseRule 
-                     | listGetToken
-                     | listSetToken
-                     | listAddToken
-                     | listTokenIndex
+                     | StringManip::appendRule
+                     | StringManip::reverseRule 
+                     | ListManip::listGetToken
+                     | ListManip::listSetToken
+                     | ListManip::listAddToken
+                     | ListManip::listTokenIndex
                      | execCommand
                      | releaseCommand
                      | randomCommand
                      | exitCommand
                      | get
-                     | regexEqCommand
-                     | regexParseCommand
-                     | wildcardEqCommand
-                     | wildcardParseCommand
-                     | concatRule
-                     | ansiUPRule
+                     | Patterns::pattern
+                     | StringManip::concatRule
+                     | ScreenIO::ansiUPRule
                      | genericArrowRule;
                      
         start %= allCommands;
