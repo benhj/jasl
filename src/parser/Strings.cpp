@@ -12,6 +12,18 @@ qi::rule< jasl::Strings::Iterator,
 qi::rule< jasl::Strings::Iterator,
           jasl::LiteralString(),
           ascii::space_type> jasl::Strings::doubleQuotedString;
+qi::rule< jasl::Strings::Iterator, 
+          std::string(),
+          ascii::space_type> jasl::Strings::allChars;
+qi::rule< jasl::Strings::Iterator,
+          std::string(), 
+          ascii::space_type> jasl::Strings::word;
+qi::rule< jasl::Strings::Iterator,
+          ValueArray(),
+          ascii::space_type> jasl::Strings::words;
+qi::rule< jasl::Strings::Iterator,
+          Value(),
+          ascii::space_type> jasl::Strings::bracketedWords;
 
 namespace jasl {
     void Strings::init() 
@@ -22,5 +34,9 @@ namespace jasl {
         genericString       %= lexeme[+(char_("a-zA-Z_"))];
         quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '\''];
         doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '"'];
+        allChars            %= lexeme[+(char_ - '\n')];
+        word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')' - '^' - '?')];
+        words               %= *(word | bracketedWords); // zero or more words
+        bracketedWords      %= '[' >> words >> ']';
     }
 }

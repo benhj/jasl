@@ -47,14 +47,8 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> forLoop;
         qi::rule<Iterator, Function(), ascii::space_type> repeatLoop;
         qi::rule<Iterator, Function(), ascii::space_type> whileLoop;
-        qi::rule<Iterator, Function(), ascii::space_type> commentFunc;
         qi::rule<Iterator, Function(), ascii::space_type> vars;
         qi::rule<Iterator, Function(), ascii::space_type> query;
-        qi::rule<Iterator, Function(), ascii::space_type> ints;
-        qi::rule<Iterator, Function(), ascii::space_type> bytes;
-        qi::rule<Iterator, Function(), ascii::space_type> strings;
-        qi::rule<Iterator, Function(), ascii::space_type> bools;
-        qi::rule<Iterator, Function(), ascii::space_type> reals;
         qi::rule<Iterator, Function(), ascii::space_type> put;
         qi::rule<Iterator, Function(), ascii::space_type> get;
         qi::rule<Iterator, Function(), ascii::space_type> startFunction;
@@ -77,17 +71,6 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
         qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
-        qi::rule<Iterator, ValueArray(), ascii::space_type> pairRule;
-        qi::rule<Iterator, ValueArray(), ascii::space_type> tupleRule;
-        qi::rule<Iterator, double(), ascii::space_type> doubleRule;
-        qi::rule<Iterator, int64_t(), ascii::space_type> intRule;
-        qi::rule<Iterator, bool(), ascii::space_type> boolRule;
-        qi::rule<Iterator, MathExpression(), ascii::space_type> mathExpression;
-        qi::rule<Iterator, MathExpression(), ascii::space_type> bracketedMathExpression;
-        qi::rule<Iterator, ComparisonExpression(), ascii::space_type> comparisonExpression;
-        qi::rule<Iterator, ComparisonExpression(), ascii::space_type> bracketedComparisonExpression;
-        qi::rule<Iterator, std::string(), ascii::space_type> mathSymbols;
-        qi::rule<Iterator, std::string(), ascii::space_type> comparisonSymbols;
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // generic rule
@@ -105,24 +88,12 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> matchesCommand;
 
         // Core rule declarations
-        qi::rule<Iterator, std::string(), ascii::space_type> word;
+        
         qi::rule<Iterator, Value(), ascii::space_type> parameter;
-        qi::rule<Iterator, Value(), ascii::space_type> bracketedWords;
         qi::rule<Iterator, Value(), ascii::space_type> commaParameter;
         qi::rule<Iterator, Value(), ascii::space_type> parameterList;
-        qi::rule<Iterator, ValueArray(), ascii::space_type> words;
         qi::rule<Iterator, ValueArray(), ascii::space_type> parameters;
-        qi::rule<Iterator, std::string(), ascii::space_type> barString;
-        qi::rule<Iterator, StringArray(), ascii::space_type> concats;
-        qi::rule<Iterator, Value(), ascii::space_type> concatList;
-        qi::rule<Iterator, CarrotString(), ascii::space_type> carrotWord;
         qi::rule<Iterator, std::string(), ascii::space_type> arrayLexeme;
-        qi::rule<Iterator, std::string(), ascii::space_type> arrayTypes;
-        qi::rule<Iterator, std::string(), ascii::space_type> allChars;
-        qi::rule<Iterator, std::string(), ascii::space_type> commentSlash;
-        qi::rule<Iterator, std::string(), ascii::space_type> commentColons;
-        qi::rule<Iterator, std::string(), ascii::space_type> commentPound;
-        qi::rule<Iterator, std::string(), ascii::space_type> genericString;
 
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
         qi::rule<Iterator, Function(), ascii::space_type> start;
