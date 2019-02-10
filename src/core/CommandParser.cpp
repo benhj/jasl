@@ -107,6 +107,12 @@ namespace jasl
                      >>  commandCollection
                      >> '}';
 
+        // for running asynchronous (threaded) blocks of code
+        asyncCommand %= string("async")
+                     >> '{'
+                     >>  commandCollection
+                     >> '}';
+
         // a callable execution point
         block %= string("block")
               >> Strings::genericString // functionName
@@ -248,7 +254,8 @@ namespace jasl
 
         // all the instructions at out disposal
         allCommands %= forLoop
-                     | query 
+                     | query
+                     | asyncCommand
                      | startFunction 
                      | block
                      | call 

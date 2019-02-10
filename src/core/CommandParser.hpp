@@ -76,6 +76,7 @@ namespace jasl
 
         qi::rule<Iterator, std::string(), ascii::space_type> brackets;
         qi::rule<Iterator, Function(), ascii::space_type> start;
+        qi::rule<Iterator, Function(), ascii::space_type> asyncCommand;
         qi::rule<Iterator, Function(), ascii::space_type> allCommands;
     };
 }

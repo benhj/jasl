@@ -22,6 +22,7 @@
 #include "commands/LengthCommand.cpp"
 #include "commands/RandomCommand.cpp"
 
+#include "commands/flow/AsyncCommand.cpp"
 #include "commands/flow/BlockCommand.cpp"
 #include "commands/flow/ReturnableCommand.cpp"
 #include "commands/flow/CallCommand.cpp"
