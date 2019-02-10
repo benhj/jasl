@@ -26,7 +26,7 @@ namespace jasl {
         , m_commands()
     {
         std::vector<Function> innerFuncs;
-        if(VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB)) {
+        if(VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramA)) {
             m_weHaveFuncs = true;
         }
         if(m_weHaveFuncs) {

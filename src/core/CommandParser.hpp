@@ -63,6 +63,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> releaseCommand;
         qi::rule<Iterator, Function(), ascii::space_type> randomCommand;
         qi::rule<Iterator, Function(), ascii::space_type> exitCommand;
+        qi::rule<Iterator, Function(), ascii::space_type> joinAllCommand;
         qi::rule<Iterator, std::vector<Function>(), ascii::space_type> commandCollection;
 
         // generic rule

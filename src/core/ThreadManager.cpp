@@ -6,7 +6,7 @@ namespace jasl {
     std::vector<std::thread> ThreadManager::m_threads;
     void ThreadManager::create(std::function<void()> f)
     {
-        m_threads.emplace_back(std::move(f));
+        m_threads.push_back(std::move(f));
     }
     void ThreadManager::joinAll()
     {

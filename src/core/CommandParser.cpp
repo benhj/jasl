@@ -235,6 +235,9 @@ namespace jasl
         // for exiting a program
         exitCommand %= string("exit") >> -(Strings::genericString) >> ';';
 
+        // For joining on all threads
+        joinAllCommand %= string("join_all") >> -(Strings::genericString) >> ';';
+
         // matches this type of command:
         // net_send something -> somethingElse;
         genericArrowRule %= Strings::genericString
@@ -281,6 +284,7 @@ namespace jasl
                      | releaseCommand
                      | randomCommand
                      | exitCommand
+                     | joinAllCommand
                      | get
                      | Patterns::pattern
                      | StringManip::concatRule
