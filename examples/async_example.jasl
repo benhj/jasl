@@ -1,11 +1,11 @@
 block func() {
-	prn "before";
-	async {
-		prn "hello";
-	}
+    prn "before";
+    async {
+        prn "hello";
+    }
 }
 
 start {
-	call func();
-	join_all;
+    call func();
+    join_all;
 }
