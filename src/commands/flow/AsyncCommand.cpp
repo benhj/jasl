@@ -52,7 +52,7 @@ namespace jasl {
 
     bool AsyncCommand::parseCommandsAsync() 
     {
-        ThreadManager::create([=] {
+        ThreadManager::create([m_commands{std::move(m_commands)}] {
             for(auto & c : m_commands) {
                 try {
                     if(c) {
