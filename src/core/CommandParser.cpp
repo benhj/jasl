@@ -280,6 +280,7 @@ namespace jasl
                      | ListManip::listSetToken
                      | ListManip::listAddToken
                      | ListManip::listTokenIndex
+                     | ListManip::listMatches
                      | execCommand
                      | releaseCommand
                      | randomCommand

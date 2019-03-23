@@ -16,6 +16,9 @@ qi::rule< jasl::ListManip::Iterator,
 qi::rule< jasl::ListManip::Iterator,
           jasl::Function(),
           ::boost::spirit::ascii::space_type> jasl::ListManip::listAddToken;
+qi::rule< jasl::ListManip::Iterator,
+          jasl::Function(),
+          ::boost::spirit::ascii::space_type> jasl::ListManip::listMatches;
 
 namespace jasl {
     void ListManip::init() 
@@ -63,6 +66,15 @@ namespace jasl {
                      >> (',')
                      >> (Strings::genericString | Strings::doubleQuotedString | Strings::bracketedWords)
                      >> (')')
+                     >> lit("->")
+                     >> Strings::genericString 
+                     >> ';';
+
+        // matches [hello world],[= world] -> result;
+        listMatches %= string("matches")
+                     >> (Strings::bracketedWords | Strings::genericString)
+                     >> (',')
+                     >> (Strings::bracketedWords | Strings::genericString)
                      >> lit("->")
                      >> Strings::genericString 
                      >> ';';
