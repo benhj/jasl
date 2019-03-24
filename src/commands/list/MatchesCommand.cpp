@@ -17,10 +17,12 @@ namespace jasl
     // To describe how list tokens match.
     enum class MatchType
     {
-        Exact,
-        SingleEq,
-        DoubleEq,
-        NoMatch
+        Exact,     // [hello], [hello]
+        QVar,      // [hello], [?var]
+        QQVar,     // [hello], [??var]
+        SingleEq,  // [hello], [=]
+        DoubleEq,  // [hello], [==]
+        NoMatch    // [hello], [goodbye]
     };
 
     MatchType matches(Value const & first,
@@ -37,7 +39,12 @@ namespace jasl
             return MatchType::SingleEq;
         } else if(strSecond == "==") {
             return MatchType::DoubleEq;
-        } 
+        } else if(strSecond.at(0) == '?') {
+            if(strSecond.size() > 1 && strSecond.at(1) == '?') {
+                return MatchType::QQVar;
+            }
+            return MatchType::QVar;
+        }  
         return MatchType::NoMatch;
     }
 
@@ -134,6 +141,8 @@ namespace jasl
                     }
                     return true;
                 }
+                case MatchType::QVar:
+                case MatchType::QQVar:
                 case MatchType::NoMatch:
                 {
                     return false;
