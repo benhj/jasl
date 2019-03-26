@@ -17,6 +17,8 @@ namespace jasl
         FileReadLinesCommand(Function &func_,
                              SharedCacheStack const &sharedCache = SharedCacheStack(),
                              OptionalOutputStream const &output = OptionalOutputStream());
+        
+        virtual ~FileReadLinesCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

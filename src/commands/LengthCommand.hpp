@@ -18,6 +18,7 @@ namespace jasl
         LengthCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~LengthCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

@@ -23,6 +23,8 @@ namespace jasl
     {
     }
 
+    WildcardEqCommand::~WildcardEqCommand() = default;
+
     std::vector<std::string> WildcardEqCommand::getCommandNames()
     {
         return {"wildcard_eq"};

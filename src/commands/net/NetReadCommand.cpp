@@ -60,6 +60,8 @@ namespace jasl
     {
     }
 
+    NetReadCommand::~NetReadCommand() = default;
+
     std::vector<std::string> NetReadCommand::getCommandNames()
     {
         return {"net_read"};

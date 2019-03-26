@@ -21,6 +21,7 @@ namespace jasl
         IfCommand(Function &func_, 
                   SharedCacheStack const &sharedCache,
                   OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~IfCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
 

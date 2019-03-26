@@ -22,6 +22,8 @@ namespace jasl
     {
     }
 
+    ConcatCommand::~ConcatCommand() = default;
+
     std::vector<std::string> ConcatCommand::getCommandNames()
     {
         return {"concat"};

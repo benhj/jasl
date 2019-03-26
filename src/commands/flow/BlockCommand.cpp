@@ -24,6 +24,8 @@ namespace jasl {
     {
     }
 
+    BlockCommand::~BlockCommand() = default;
+
     std::vector<std::string> BlockCommand::getCommandNames()
     {
         return {"block"};

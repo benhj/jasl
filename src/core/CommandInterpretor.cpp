@@ -92,13 +92,6 @@ namespace jasl {
         return commandBuilders;
     }
 
-    namespace {
-        bool searchString(Function &func, std::string const &name)
-        {
-            return func.name == name;
-        }
-    }
-
     CommandInterpretor::CommandInterpretor()
     {
         getCommandMap().emplace("exit", [](Function &,

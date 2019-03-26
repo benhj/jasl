@@ -19,6 +19,7 @@ namespace jasl
         ListTokenIndexCommand(Function &func_,
                               SharedCacheStack const &sharedCache = SharedCacheStack(),
                               OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~ListTokenIndexCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

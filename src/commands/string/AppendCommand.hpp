@@ -18,6 +18,7 @@ namespace jasl
         AppendCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~AppendCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

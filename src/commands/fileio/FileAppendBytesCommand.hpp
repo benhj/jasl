@@ -18,6 +18,8 @@ namespace jasl
                                SharedCacheStack const &sharedCache = SharedCacheStack(),
                                OptionalOutputStream const &output = OptionalOutputStream());
 
+        virtual ~FileAppendBytesCommand();
+
         bool execute() override;
 
         static std::vector<std::string> getCommandNames();

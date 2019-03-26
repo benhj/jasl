@@ -32,6 +32,8 @@ namespace jasl
         (void)m_func.getValueB<std::string>(m_varName, m_sharedCache);
     }
 
+    ArrayCommand::~ArrayCommand() = default;
+
     std::vector<std::string> ArrayCommand::getCommandNames()
     {
         return {"ints","reals","bytes","strings"};

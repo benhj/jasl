@@ -24,6 +24,8 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
     }
+    
+    FileWriteBytesCommand::~FileWriteBytesCommand() = default;
 
     std::vector<std::string> FileWriteBytesCommand::getCommandNames()
     {

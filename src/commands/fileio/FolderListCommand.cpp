@@ -22,8 +22,9 @@ namespace jasl
                                          OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+    
+    FolderListCommand::~FolderListCommand() = default;
 
     std::vector<std::string> FolderListCommand::getCommandNames()
     {

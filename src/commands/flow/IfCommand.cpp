@@ -29,6 +29,8 @@ namespace jasl
     {
     }
 
+    IfCommand::~IfCommand() = default;
+
     std::vector<std::string> IfCommand::getCommandNames()
     {
         return {"if","?"};

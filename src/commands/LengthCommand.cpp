@@ -25,6 +25,8 @@ namespace jasl
     {
     }
 
+    LengthCommand::~LengthCommand() = default;
+
     std::vector<std::string> LengthCommand::getCommandNames()
     {
         return {"length"};

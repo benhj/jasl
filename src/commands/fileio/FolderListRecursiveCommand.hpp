@@ -17,6 +17,8 @@ namespace jasl
         FolderListRecursiveCommand(Function &func_,
                                    SharedCacheStack const &sharedCache = SharedCacheStack(),
                                    OptionalOutputStream const &output = OptionalOutputStream());
+        
+        virtual ~FolderListRecursiveCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

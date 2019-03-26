@@ -37,6 +37,8 @@ namespace jasl {
         }
     }
 
+    AsyncCommand::~AsyncCommand() = default;
+
     std::vector<std::string> AsyncCommand::getCommandNames()
     {
         return {"async"};

@@ -22,8 +22,9 @@ namespace jasl
                                  OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+
+    AppendCommand::~AppendCommand() = default;
 
     std::vector<std::string> AppendCommand::getCommandNames()
     {

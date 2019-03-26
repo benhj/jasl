@@ -36,6 +36,8 @@ namespace jasl {
         }
     }
 
+    WhileCommand::~WhileCommand() = default;
+
     std::vector<std::string> WhileCommand::getCommandNames()
     {
         return {"while"};

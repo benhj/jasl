@@ -43,6 +43,8 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
     }
+    
+    TypeCommand::~TypeCommand() = default;
 
     std::vector<std::string> TypeCommand::getCommandNames()
     {

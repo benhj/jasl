@@ -18,6 +18,7 @@ namespace jasl {
         StartCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~StartCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
     private:

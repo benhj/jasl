@@ -18,7 +18,7 @@ namespace jasl
         EchoNLCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
-
+        virtual ~EchoNLCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
 

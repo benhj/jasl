@@ -24,6 +24,8 @@ namespace jasl
     {
     }
 
+    ReverseCommand::~ReverseCommand() = default;
+
     std::vector<std::string> ReverseCommand::getCommandNames()
     {
         return {"string_reverse"};

@@ -22,6 +22,8 @@ namespace jasl {
     {
     }
 
+    JoinAllCommand::~JoinAllCommand() = default;
+
     std::vector<std::string> JoinAllCommand::getCommandNames()
     {
         return {"join_all"};

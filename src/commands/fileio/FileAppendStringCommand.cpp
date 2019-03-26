@@ -25,7 +25,9 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
     }
-
+    
+    FileAppendStringCommand::~FileAppendStringCommand() = default;
+    
     std::vector<std::string> FileAppendStringCommand::getCommandNames()
     {
         return {"file_append_line"};

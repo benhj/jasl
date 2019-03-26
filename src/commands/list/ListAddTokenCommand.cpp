@@ -26,6 +26,8 @@ namespace jasl
     {
     }
 
+    ListAddTokenCommand::~ListAddTokenCommand() = default;
+
     std::vector<std::string> ListAddTokenCommand::getCommandNames()
     {
         return {"add_token"};

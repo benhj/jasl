@@ -21,6 +21,7 @@ namespace jasl
         TokenizeCommand(Function &func_,
                         SharedCacheStack const &sharedCache = SharedCacheStack(),
                         OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~TokenizeCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

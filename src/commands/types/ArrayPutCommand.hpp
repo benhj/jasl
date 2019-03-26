@@ -21,6 +21,9 @@ namespace jasl
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();
+
+        virtual ~ArrayPutCommand();
+
       private:
         bool getIndex(int64_t &index);
         std::string m_type;

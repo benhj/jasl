@@ -22,6 +22,8 @@ namespace jasl
         bool execute() override;
         static std::vector<std::string> getCommandNames();
 
+        virtual ~ArrayCommand();
+
       private:
         bool handleInt();
         bool handleReal();

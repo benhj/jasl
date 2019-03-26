@@ -22,6 +22,8 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
     }
+    
+    FileTypeCommand::~FileTypeCommand() = default;
 
     std::vector<std::string> FileTypeCommand::getCommandNames()
     {

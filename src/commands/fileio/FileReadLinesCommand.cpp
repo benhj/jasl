@@ -25,8 +25,9 @@ namespace jasl
                                                OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+    
+    FileReadLinesCommand::~FileReadLinesCommand() = default;
 
     std::vector<std::string> FileReadLinesCommand::getCommandNames()
     {

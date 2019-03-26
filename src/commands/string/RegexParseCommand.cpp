@@ -35,6 +35,8 @@ namespace jasl
     {
     }
 
+    RegexParseCommand::~RegexParseCommand() = default;
+
     std::vector<std::string> RegexParseCommand::getCommandNames()
     {
         return {"regex_parse"};

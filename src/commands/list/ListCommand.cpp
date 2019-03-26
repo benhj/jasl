@@ -21,8 +21,9 @@ namespace jasl
                              OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+
+    ListCommand::~ListCommand() = default;
 
     std::vector<std::string> ListCommand::getCommandNames()
     {

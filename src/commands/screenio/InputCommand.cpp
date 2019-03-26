@@ -23,6 +23,8 @@ namespace jasl
     {
     }
 
+    InputCommand::~InputCommand() = default;
+
     std::vector<std::string> InputCommand::getCommandNames()
     {
         return {"input"};

@@ -17,6 +17,8 @@ namespace jasl
         FileTypeCommand(Function &func_,
                         SharedCacheStack const &sharedCache = SharedCacheStack(),
                         OptionalOutputStream const &output = OptionalOutputStream());
+        
+        virtual ~FileTypeCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

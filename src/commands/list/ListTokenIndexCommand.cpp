@@ -27,6 +27,8 @@ namespace jasl
     {
     }
 
+    ListTokenIndexCommand::~ListTokenIndexCommand() = default;
+
     std::vector<std::string> ListTokenIndexCommand::getCommandNames()
     {
         return {"index_of"};

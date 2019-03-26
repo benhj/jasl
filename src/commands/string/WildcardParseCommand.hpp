@@ -17,6 +17,7 @@ namespace jasl
         WildcardParseCommand(Function &func_,
                        	     SharedCacheStack const &sharedCache = SharedCacheStack(),
                        	     OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~WildcardParseCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

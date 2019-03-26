@@ -18,6 +18,7 @@ namespace jasl
         ListSetTokenCommand(Function &func_,
                             SharedCacheStack const &sharedCache = SharedCacheStack(),
                             OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~ListSetTokenCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

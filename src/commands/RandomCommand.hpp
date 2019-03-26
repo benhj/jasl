@@ -18,6 +18,7 @@ namespace jasl {
         RandomCommand(Function &func_,
                       SharedCacheStack const &sharedCache = SharedCacheStack(),
                       OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~RandomCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

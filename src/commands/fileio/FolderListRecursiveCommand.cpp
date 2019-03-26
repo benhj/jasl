@@ -21,8 +21,9 @@ namespace jasl
                                                            OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+
+    FolderListRecursiveCommand::~FolderListRecursiveCommand() = default;
 
     std::vector<std::string> FolderListRecursiveCommand::getCommandNames()
     {

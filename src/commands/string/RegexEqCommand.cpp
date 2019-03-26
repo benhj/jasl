@@ -23,6 +23,8 @@ namespace jasl
     {
     }
 
+    RegexEqCommand::~RegexEqCommand() = default;
+
     std::vector<std::string> RegexEqCommand::getCommandNames()
     {
         return {"regex_eq"};

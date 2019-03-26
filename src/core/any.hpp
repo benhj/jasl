@@ -44,6 +44,7 @@ namespace simple_any {
             typed_holder(T const & t) : _data(t){}
             T _data;
             std::type_info const &type() const { return typeid(T); }
+            virtual ~typed_holder() = default;
         };
 
         // types for which there are no specializations

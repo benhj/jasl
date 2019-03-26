@@ -21,6 +21,8 @@ namespace jasl {
         bool execute() override;
         static std::vector<std::string> getCommandNames();
 
+        virtual ~NewPrimitiveSyntaxCommand();
+
       private:
         bool handleInt();
         bool handleReal();

@@ -38,6 +38,8 @@ namespace jasl
             m_primitive = true;
         }
     }
+    
+    PutCommand::~PutCommand() = default;
 
     std::vector<std::string> PutCommand::getCommandNames()
     {

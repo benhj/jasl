@@ -21,6 +21,9 @@ namespace jasl
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();
+
+        virtual ~PutPrimitiveCommand();
+
       private:
         std::string m_type;
         std::string m_varName;

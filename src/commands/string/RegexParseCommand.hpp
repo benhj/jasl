@@ -17,6 +17,7 @@ namespace jasl
         RegexParseCommand(Function &func_,
                        	  SharedCacheStack const &sharedCache = SharedCacheStack(),
                        	  OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~RegexParseCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

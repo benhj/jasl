@@ -21,6 +21,8 @@ namespace jasl
     : Command(func_, sharedCache, output)
     {
     }
+    
+    ReleaseCommand::~ReleaseCommand() = default;
 
     std::vector<std::string> ReleaseCommand::getCommandNames()
     {

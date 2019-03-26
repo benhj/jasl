@@ -19,6 +19,7 @@ namespace jasl
         MatchesCommand(Function &func_,
                        SharedCacheStack const &sharedCache = SharedCacheStack(),
                        OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~MatchesCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

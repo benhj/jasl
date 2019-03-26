@@ -36,6 +36,8 @@ namespace jasl {
         }
     }
 
+    RandomCommand::~RandomCommand() = default;
+
     std::vector<std::string> RandomCommand::getCommandNames()
     {
         return {"random"};

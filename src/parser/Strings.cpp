@@ -35,7 +35,7 @@ namespace jasl {
         quotedString        %= lexeme['\''>> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '\''];
         doubleQuotedString  %= lexeme['"' >> *( +( char_ - ( '"' | eol | '\\' ) ) | Escapes::escapes ) >> '"'];
         allChars            %= lexeme[+(char_ - '\n')];
-        word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')' - '^' - '?')];
+        word                %= lexeme[+(char_ - ' ' - ',' - '[' - ']' - '(' - ')')];
         words               %= *(word | bracketedWords); // zero or more words
         bracketedWords      %= '[' >> words >> ']';
     }

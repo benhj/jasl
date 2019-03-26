@@ -20,6 +20,7 @@ namespace jasl {
         AsyncCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~AsyncCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
     private:

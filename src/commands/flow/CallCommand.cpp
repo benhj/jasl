@@ -55,6 +55,8 @@ namespace jasl
         }
     }
 
+    CallCommand::~CallCommand() = default;
+
     std::vector<std::string> CallCommand::getCommandNames()
     {
         return {"call"};

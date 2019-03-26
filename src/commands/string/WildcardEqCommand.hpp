@@ -17,6 +17,7 @@ namespace jasl
         WildcardEqCommand(Function &func_,
 	                      SharedCacheStack const &sharedCache = SharedCacheStack(),
 	                      OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~WildcardEqCommand();
 
         bool execute() override;
         static std::vector<std::string> getCommandNames();

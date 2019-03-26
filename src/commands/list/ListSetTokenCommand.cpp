@@ -23,6 +23,8 @@ namespace jasl
     {
     }
 
+    ListSetTokenCommand::~ListSetTokenCommand() = default;
+
     std::vector<std::string> ListSetTokenCommand::getCommandNames()
     {
         return {"set_token"};

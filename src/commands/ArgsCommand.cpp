@@ -30,6 +30,8 @@ namespace jasl
     {
     }
 
+    ArgsCommand::~ArgsCommand() = default;
+
     std::vector<std::string> ArgsCommand::getCommandNames()
     {
         return {"args"};

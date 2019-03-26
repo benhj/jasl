@@ -24,6 +24,8 @@ namespace jasl
     {
     }
 
+    StringToPrimitiveCommand::~StringToPrimitiveCommand() = default;
+
     std::vector<std::string> StringToPrimitiveCommand::getCommandNames()
     {
         return {"string_to_"};

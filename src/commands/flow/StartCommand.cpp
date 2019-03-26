@@ -23,6 +23,8 @@ namespace jasl {
     {
     }
 
+    StartCommand::~StartCommand() = default;
+
     std::vector<std::string> StartCommand::getCommandNames()
     {
         return {"start"};

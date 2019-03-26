@@ -19,7 +19,7 @@ namespace jasl
         InputCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
-
+        virtual ~InputCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
 

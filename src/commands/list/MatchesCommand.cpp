@@ -48,7 +48,9 @@ namespace jasl
         return MatchType::NoMatch;
     }
 
-    bool matches(List const & first, List const & second)
+    bool matches(List const & first,
+                 List const & second,
+                 SharedCacheStack const & sharedCache)
     {
 
         // Edge-case 1. Two empty string always match.
@@ -130,7 +132,8 @@ namespace jasl
                     // find a match.
                     ++itFirst;
                     while(!matches(List{itFirst, std::end(first)},
-                                   List{itSecond, std::end(second)})) {
+                                   List{itSecond, std::end(second)},
+                                   sharedCache)) {
                         ++itFirst;
 
                         // If no more possible tokens to match in the first string,
@@ -142,6 +145,36 @@ namespace jasl
                     return true;
                 }
                 case MatchType::QVar:
+                {
+                    auto toStore = *itFirst;
+                    // Given the MatchType, *itSecond must be a string,
+                    // there is no way the cast to a string can fail.
+                    std::string qvar;
+                    (void)VarExtractor::tryAnyCast(qvar, *itSecond);
+                    ++itFirst;
+                    ++itSecond;
+                    // Boundary -- check if there are more tokens
+                    // in list 2 to be processed. If so, we have come
+                    // to the end of the first string and the overall match
+                    // has failed.
+                    if(itFirst != std::end(first) && itSecond == std::end(second)) {
+                        return false;
+                    }
+                    
+                    // Now pull out variable
+                    std::string var{std::begin(qvar) + 1, std::end(qvar)};
+                    
+                    // Pull out the data to be stored. Try string.
+                    {
+                        std::string toStoreString;
+                        if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
+                            sharedCache->setVar(var, toStoreString, Type::String);
+                            continue;
+                        }
+                    }
+                    continue;
+                    
+                }
                 case MatchType::QQVar:
                 case MatchType::NoMatch:
                 {
@@ -157,8 +190,9 @@ namespace jasl
                                    OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
     {
-
     }
+
+    MatchesCommand::~MatchesCommand() = default;
 
     std::vector<std::string> MatchesCommand::getCommandNames()
     {
@@ -203,7 +237,7 @@ namespace jasl
             return false;
         }
 
-        auto const matchesResult = matches(list, list2);
+        auto const matchesResult = matches(list, list2, m_sharedCache);
 
         m_sharedCache->setVar(resultName, matchesResult, Type::Bool);
         return true;

@@ -31,6 +31,8 @@ namespace jasl
     {
     }
 
+    TokenizeCommand::~TokenizeCommand() = default;
+
     std::vector<std::string> TokenizeCommand::getCommandNames()
     {
         return {"tokenize"};

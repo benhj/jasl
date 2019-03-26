@@ -22,6 +22,8 @@ namespace jasl
     {
     }
 
+    AnsiUPCommand::~AnsiUPCommand() = default;
+
     std::vector<std::string> AnsiUPCommand::getCommandNames()
     {
         return {"ansi_up"};

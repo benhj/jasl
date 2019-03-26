@@ -26,6 +26,8 @@ namespace jasl {
     {
         (void)m_func.getValueB<std::string>(m_varName, m_sharedCache);
     }
+    
+    NewPrimitiveSyntaxCommand::~NewPrimitiveSyntaxCommand() = default;
 
     std::vector<std::string> NewPrimitiveSyntaxCommand::getCommandNames()
     {

@@ -22,8 +22,8 @@ namespace jasl {
                                  OptionalOutputStream const &output)
         : Command(func_, withNewCache(sharedCache), output)
         , m_weHaveFuncs(false)
-        , m_commands()
         , m_loopCount(0)
+        , m_commands()
     {
         std::vector<Function> innerFuncs;
         if(VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB)) {
@@ -40,6 +40,8 @@ namespace jasl {
             }
         }
     }
+
+    RepeatCommand::~RepeatCommand() = default;
 
     std::vector<std::string>RepeatCommand::getCommandNames()
     {

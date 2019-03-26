@@ -24,6 +24,8 @@ namespace jasl
     {
     }
 
+    StringCommand::~StringCommand() = default;
+
     std::vector<std::string> StringCommand::getCommandNames()
     {
         return {"string"};

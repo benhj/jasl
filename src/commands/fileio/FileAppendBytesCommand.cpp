@@ -25,6 +25,8 @@ namespace jasl
     {
     }
 
+    FileAppendBytesCommand::~FileAppendBytesCommand() = default;
+    
     std::vector<std::string> FileAppendBytesCommand::getCommandNames()
     {
         return {"file_append_bytes"};

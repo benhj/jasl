@@ -21,6 +21,7 @@ namespace jasl {
         WhileCommand(Function &func_,
                      SharedCacheStack const &sharedCache = SharedCacheStack(),
                      OptionalOutputStream const &output = OptionalOutputStream());
+        virtual ~WhileCommand();
         bool execute() override;
         static std::vector<std::string> getCommandNames();
     private:

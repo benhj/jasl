@@ -21,6 +21,8 @@ namespace jasl
     {
     }
 
+    ListToStringCommand::~ListToStringCommand() = default;
+
     std::vector<std::string> ListToStringCommand::getCommandNames()
     {
         return {"list_to_string"};

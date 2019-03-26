@@ -27,6 +27,8 @@ namespace jasl
         (void)m_func.getValueA<std::string>(m_arrayName, m_sharedCache);
         (void)m_func.getValueC<std::string>(m_varName, m_sharedCache);
     }
+    
+    ArrayGetCommand::~ArrayGetCommand() = default;
 
     std::vector<std::string> ArrayGetCommand::getCommandNames()
     {
