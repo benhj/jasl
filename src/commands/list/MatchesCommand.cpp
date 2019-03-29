@@ -44,7 +44,7 @@ namespace jasl
                 return MatchType::QQVar;
             }
             return MatchType::QVar;
-        }  
+        }
         return MatchType::NoMatch;
     }
 
@@ -55,18 +55,21 @@ namespace jasl
 
         // Edge-case 1. Two empty string always match.
         if(first.empty() && second.empty()) {
+            std::cout<<"EC 1"<<std::endl;
             return true;
         }
 
         // Edge-case 2. If one string is empty, there
         // is no match.
         if(first.empty() || second.empty()) {
+            std::cout<<"EC 2"<<std::endl;
             return false;
         }
 
         // Edge-case 3. If the second string is longer, then
         // there is no match.
         if(second.size() > first.size()) {
+            std::cout<<"EC 3"<<std::endl;
             return false;
         }
 
@@ -176,6 +179,46 @@ namespace jasl
                     
                 }
                 case MatchType::QQVar:
+                {
+                    // Given the MatchType, *itSecond must be a string,
+                    // there is no way the cast to a string can fail.
+                    std::string qvar;
+                    (void)VarExtractor::tryAnyCast(qvar, *itSecond);
+                    std::string var{std::begin(qvar) + 2, std::end(qvar)};
+
+                    ++itSecond;
+
+                    // Need to create a list of elements
+                    List list;
+                    list.push_back(*itFirst);
+                    ++itFirst;
+
+                    // If we are at the end of the second string, as in
+                    // [end of string ??var] it means that even if there are
+                    // more tokens in the first string, we match them all
+                    // given '??var' so can simply store all tokens in the
+                    // list and return true.
+                    if(itSecond == std::end(second)) {
+                        while(itFirst != std::end(first)) {
+                            list.push_back(*itFirst);
+                            ++itFirst;
+                        }
+                        sharedCache->setVar(var, list, Type::List);
+                        return true;
+                    }
+
+                    // More token to process in first. We keep looping until we
+                    // find a match.
+                    while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
+                        list.push_back(*itFirst);
+                        ++itFirst;
+                        if(itFirst == std::end(first)) {
+                            return false;
+                        }
+                    }
+                    sharedCache->setVar(var, list, Type::List);
+                    continue;
+                }
                 case MatchType::NoMatch:
                 {
                     return false;
