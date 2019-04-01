@@ -48,6 +48,148 @@ namespace jasl
         return MatchType::NoMatch;
     }
 
+    bool handleExact(List const & first,
+                     List const & second,
+                     List::const_iterator & itFirst,
+                     List::const_iterator & itSecond)
+    {
+        ++itFirst;
+        ++itSecond;
+
+        if(itFirst != std::end(first) && itSecond == std::end(second)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool handleQVar(List const & first,
+                    List const & second,
+                    List::const_iterator & itFirst,
+                    List::const_iterator & itSecond,
+                    SharedCacheStack const & sharedCache)
+    {
+        auto toStore = *itFirst;
+        // Given the MatchType, *itSecond must be a string,
+        // there is no way the cast to a string can fail.
+        std::string qvar;
+        (void)VarExtractor::tryAnyCast(qvar, *itSecond);
+        ++itFirst;
+        ++itSecond;
+        // Boundary -- check if there are more tokens
+        // in list 2 to be processed. If so, we have come
+        // to the end of the first string and the overall match
+        // has failed.
+        if(itFirst != std::end(first) && itSecond == std::end(second)) {
+            return false;
+        }
+        
+        // Now pull out variable
+        std::string var{std::begin(qvar) + 1, std::end(qvar)};
+        
+        // Pull out the data to be stored. Try string.
+        {
+            std::string toStoreString;
+            if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
+                sharedCache->setVar(var, toStoreString, Type::String);
+            }
+        }
+        return true;
+    }
+
+    bool handleQQVar(List const & first,
+                     List const & second,
+                     List::const_iterator & itFirst,
+                     List::const_iterator & itSecond,
+                     SharedCacheStack const & sharedCache)
+    {
+        // Given the MatchType, *itSecond must be a string,
+        // there is no way the cast to a string can fail.
+        std::string qvar;
+        (void)VarExtractor::tryAnyCast(qvar, *itSecond);
+        std::string var{std::begin(qvar) + 2, std::end(qvar)};
+
+        ++itSecond;
+
+        // Need to create a list of elements
+        List list;
+        list.push_back(*itFirst);
+        ++itFirst;
+
+        // If we are at the end of the second string, as in
+        // [end of string ??var] it means that even if there are
+        // more tokens in the first string, we match them all
+        // given '??var' so can simply store all tokens in the
+        // list and return true.
+        if(itSecond == std::end(second)) {
+            while(itFirst != std::end(first)) {
+                list.push_back(*itFirst);
+                ++itFirst;
+            }
+            sharedCache->setVar(var, list, Type::List);
+            return true;
+        }
+
+        // More token to process in first. We keep looping until we
+        // find a match.
+        while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
+            list.push_back(*itFirst);
+            ++itFirst;
+            if(itFirst == std::end(first)) {
+                return false;
+            }
+        }
+        sharedCache->setVar(var, list, Type::List);
+        return true;
+    }
+
+    bool handleDoubleEq(List const & first,
+                        List const & second,
+                        List::const_iterator & itFirst,
+                        List::const_iterator & itSecond)
+    {
+
+        ++itSecond;
+        ++itFirst;
+
+        // If we are at the end of the second string, as in
+        // [end of string ==] it means that even if there are
+        // more tokens in the first string, we match them all
+        // given '=='.
+        if(itSecond == std::end(second)) {
+            return true;
+        }
+
+        // More token to process in first. We keep looping until we
+        // find a match.
+        while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
+            ++itFirst;
+            if(itFirst == std::end(first)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool handleEq(List const & first,
+                  List const & second,
+                  List::const_iterator & itFirst,
+                  List::const_iterator & itSecond)
+    {
+        ++itFirst;
+        ++itSecond;
+
+        // Boundary -- check if there are more tokens
+        // in list 2 to be processed. If so, we have come
+        // to the end of the first string and the overall match
+        // has failed.
+        if(itFirst != std::end(first) && itSecond == std::end(second)) {
+            return false;
+        }
+
+        return true;
+    }
+
     bool matches(List const & first,
                  List const & second,
                  SharedCacheStack const & sharedCache)
@@ -55,21 +197,18 @@ namespace jasl
 
         // Edge-case 1. Two empty string always match.
         if(first.empty() && second.empty()) {
-            std::cout<<"EC 1"<<std::endl;
             return true;
         }
 
         // Edge-case 2. If one string is empty, there
         // is no match.
         if(first.empty() || second.empty()) {
-            std::cout<<"EC 2"<<std::endl;
             return false;
         }
 
         // Edge-case 3. If the second string is longer, then
         // there is no match.
         if(second.size() > first.size()) {
-            std::cout<<"EC 3"<<std::endl;
             return false;
         }
 
@@ -84,8 +223,8 @@ namespace jasl
         }
 
         // Loop through tokens in first and see if tokens in second match.
-        auto itFirst = std::begin(first);
-        auto itSecond = std::begin(second);
+        auto itFirst = first.begin();
+        auto itSecond = second.begin();
 
         while(itFirst != std::end(first) && itSecond != std::end(second)) {
 
@@ -95,129 +234,39 @@ namespace jasl
             switch(match) {
                 case MatchType::Exact:
                 {
-                    ++itFirst;
-                    ++itSecond;
-
-                    if(itFirst != std::end(first) && itSecond == std::end(second)) {
-                        return false;
+                    if(handleExact(first, second, itFirst, itSecond)) {
+                        continue;
                     }
-
-                    continue;
+                    return false;
                 }
                 case MatchType::SingleEq:
                 {
-                    ++itFirst;
-                    ++itSecond;
-
-                    // Boundary -- check if there are more tokens
-                    // in list 2 to be processed. If so, we have come
-                    // to the end of the first string and the overall match
-                    // has failed.
-                    if(itFirst != std::end(first) && itSecond == std::end(second)) {
-                        return false;
+                    if(handleEq(first, second, itFirst, itSecond)) {
+                        continue;
                     }
-
-                    continue;
+                    return false;
                 }
                 case MatchType::DoubleEq:
                 {
-                    ++itSecond;
-
-                    // If we are at the end of the second string, as in
-                    // [end of string ==] it means that even if there are
-                    // more tokens in the first string, we match them all
-                    // given '==' so can simply return true.
-                    if(itSecond == std::end(second)) {
-                        return true;
+                    if(handleDoubleEq(first, second, itFirst, itSecond)) {
+                        continue;
                     }
-
-                    // More token to process in first. We keep looping until we
-                    // find a match.
-                    ++itFirst;
-                    while(!matches(List{itFirst, std::end(first)},
-                                   List{itSecond, std::end(second)},
-                                   sharedCache)) {
-                        ++itFirst;
-
-                        // If no more possible tokens to match in the first string,
-                        // we have come to the end and must return false.
-                        if(itFirst == std::end(first)) {
-                            return false;
-                        }
-                    }
-                    return true;
+                    return false;
                 }
                 case MatchType::QVar:
                 {
-                    auto toStore = *itFirst;
-                    // Given the MatchType, *itSecond must be a string,
-                    // there is no way the cast to a string can fail.
-                    std::string qvar;
-                    (void)VarExtractor::tryAnyCast(qvar, *itSecond);
-                    ++itFirst;
-                    ++itSecond;
-                    // Boundary -- check if there are more tokens
-                    // in list 2 to be processed. If so, we have come
-                    // to the end of the first string and the overall match
-                    // has failed.
-                    if(itFirst != std::end(first) && itSecond == std::end(second)) {
-                        return false;
+                    if(handleQVar(first, second, itFirst, itSecond, sharedCache)) {
+                        continue;
                     }
-                    
-                    // Now pull out variable
-                    std::string var{std::begin(qvar) + 1, std::end(qvar)};
-                    
-                    // Pull out the data to be stored. Try string.
-                    {
-                        std::string toStoreString;
-                        if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
-                            sharedCache->setVar(var, toStoreString, Type::String);
-                            continue;
-                        }
-                    }
-                    continue;
+                    return false;
                     
                 }
                 case MatchType::QQVar:
                 {
-                    // Given the MatchType, *itSecond must be a string,
-                    // there is no way the cast to a string can fail.
-                    std::string qvar;
-                    (void)VarExtractor::tryAnyCast(qvar, *itSecond);
-                    std::string var{std::begin(qvar) + 2, std::end(qvar)};
-
-                    ++itSecond;
-
-                    // Need to create a list of elements
-                    List list;
-                    list.push_back(*itFirst);
-                    ++itFirst;
-
-                    // If we are at the end of the second string, as in
-                    // [end of string ??var] it means that even if there are
-                    // more tokens in the first string, we match them all
-                    // given '??var' so can simply store all tokens in the
-                    // list and return true.
-                    if(itSecond == std::end(second)) {
-                        while(itFirst != std::end(first)) {
-                            list.push_back(*itFirst);
-                            ++itFirst;
-                        }
-                        sharedCache->setVar(var, list, Type::List);
-                        return true;
+                    if(handleQQVar(first, second, itFirst, itSecond, sharedCache)) {
+                        continue;
                     }
-
-                    // More token to process in first. We keep looping until we
-                    // find a match.
-                    while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
-                        list.push_back(*itFirst);
-                        ++itFirst;
-                        if(itFirst == std::end(first)) {
-                            return false;
-                        }
-                    }
-                    sharedCache->setVar(var, list, Type::List);
-                    continue;
+                    return false;
                 }
                 case MatchType::NoMatch:
                 {
