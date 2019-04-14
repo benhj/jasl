@@ -39,19 +39,6 @@ namespace jasl
                 return MatchType::Exact;
             } 
         } 
-        // Check for exact nesting match
-        /*
-        else if(!strSuccessFirst && !strSuccessSecond) {
-            List listFirst;
-            List listSecond;
-            auto const listSuccessFirst = VarExtractor::tryAnyCast(listFirst, first);
-            auto const listSuccessSecond = VarExtractor::tryAnyCast(listSecond, second);
-            if(listSuccessFirst && listSuccessSecond) {
-                if(listFirst == listSecond) {
-                    return MatchType::Exact;
-                }
-            }
-        }*/
 
         // Second string needed to have been successful
         if(strSuccessSecond) {
@@ -291,6 +278,18 @@ namespace jasl
                 }
                 case MatchType::NoMatch:
                 {
+                    // Edge case in which one must be a list rather than a string
+                    List listFirst;
+                    List listSecond;
+                    auto const listSuccessFirst = VarExtractor::tryAnyCast(listFirst, *itFirst);
+                    auto const listSuccessSecond = VarExtractor::tryAnyCast(listSecond, *itSecond);
+                    if(listSuccessFirst && listSuccessSecond) {
+                        if(matches(listFirst, listSecond, sharedCache)) {
+                            ++itFirst;
+                            ++itSecond;
+                            continue;
+                        }
+                    }
                     return false;
                 }
             }

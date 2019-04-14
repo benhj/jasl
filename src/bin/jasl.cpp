@@ -36,7 +36,7 @@ namespace {
                    .append("      ▀▀▀▀▀▀▀      ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ \n")
                    .append("\n")
                    .append("     Just Another Scripting Language")
-                   .append("     (c) 2018 Ben H.D. Jones.");
+                   .append("     (c) 2018 - present; Ben H.D. Jones.");
     }
 }
 
