@@ -470,6 +470,93 @@ void testListTokenIndex()
     ASSERT_EQUAL(4, *cache->getVar<int64_t>("q", ll::Type::Int), "index D");
 }
 
+void testMatches1()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[one two] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches1");
+}
+
+void testMatches2()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[= =] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches2");
+}
+
+void testMatches3()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[==] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches3");
+}
+
+void testMatches4()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[?first =] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches4 a");
+    ASSERT_EQUAL("one", *cache->getVar<std::string>("first", ll::Type::String), "testMatches4 b");
+    ci.parseAndInterpretSingleCommand("say first;", cache, ss);
+    ASSERT_EQUAL("one", ss.str(), "testMatches4 c");
+}
+
+void testMatches5()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[= ?second] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches5 a");
+    ASSERT_EQUAL("two", *cache->getVar<std::string>("second", ll::Type::String), "testMatches5 b");
+    ci.parseAndInterpretSingleCommand("say second;", cache, ss);
+    ASSERT_EQUAL("two", ss.str(), "testMatches5 c");
+}
+
+void testMatches6()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[?first ?second] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches5 a");
+    ASSERT_EQUAL("one", *cache->getVar<std::string>("first", ll::Type::String), "testMatches6 b");
+    ASSERT_EQUAL("two", *cache->getVar<std::string>("second", ll::Type::String), "testMatches6 b");
+}
+
+void testMatches7()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one two],[??ex] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches7 a");
+    ci.parseAndInterpretSingleCommand("say ex;", cache, ss);
+    ASSERT_EQUAL("[one two]", ss.str(), "testMatches7 b");
+}
+
+void testMatches8()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [a more complicated example to extract],[a = ??ex to ?b] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches8 a");
+    ci.parseAndInterpretSingleCommand("say ex;", cache, ss);
+    ASSERT_EQUAL("[complicated example]", ss.str(), "testMatches8 b");
+    ss.str("");
+    ci.parseAndInterpretSingleCommand("say b;", cache, ss);
+    ASSERT_EQUAL("extract", ss.str(), "testMatches8 c");
+}
+
 int main()
 {
     jasl::registerAll();
@@ -506,6 +593,14 @@ int main()
     testListSetTokenRaw();
     testListSetTokenSymbol();
     testListAddToken();
+    testMatches1();
+    testMatches2();
+    testMatches3();
+    testMatches4();
+    testMatches5();
+    testMatches6();
+    testMatches7();
+    testMatches8();
     showResults();
     return 0;
 }

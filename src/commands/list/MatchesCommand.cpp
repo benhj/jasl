@@ -28,22 +28,43 @@ namespace jasl
     MatchType matches(Value const & first,
                       Value const & second)
     {
-        // Note, no nesting permitted in this first implementation.
         std::string strFirst;
         std::string strSecond;
-        (void)VarExtractor::tryAnyCast(strFirst, first);
-        (void)VarExtractor::tryAnyCast(strSecond, second);
-        if(strFirst == strSecond) {
-            return MatchType::Exact;
-        } else if(strSecond == "=") {
-            return MatchType::SingleEq;
-        } else if(strSecond == "==") {
-            return MatchType::DoubleEq;
-        } else if(strSecond.at(0) == '?') {
-            if(strSecond.size() > 1 && strSecond.at(1) == '?') {
-                return MatchType::QQVar;
+
+        // Initially try string extraction
+        auto const strSuccessFirst = VarExtractor::tryAnyCast(strFirst, first);
+        auto const strSuccessSecond = VarExtractor::tryAnyCast(strSecond, second);
+        if(strSuccessFirst && strSuccessSecond) {
+            if(strFirst == strSecond) {
+                return MatchType::Exact;
+            } 
+        } 
+        // Check for exact nesting match
+        /*
+        else if(!strSuccessFirst && !strSuccessSecond) {
+            List listFirst;
+            List listSecond;
+            auto const listSuccessFirst = VarExtractor::tryAnyCast(listFirst, first);
+            auto const listSuccessSecond = VarExtractor::tryAnyCast(listSecond, second);
+            if(listSuccessFirst && listSuccessSecond) {
+                if(listFirst == listSecond) {
+                    return MatchType::Exact;
+                }
             }
-            return MatchType::QVar;
+        }*/
+
+        // Second string needed to have been successful
+        if(strSuccessSecond) {
+            if(strSecond == "=") {
+                return MatchType::SingleEq;
+            } else if(strSecond == "==") {
+                return MatchType::DoubleEq;
+            } else if(strSecond.at(0) == '?') {
+                if(strSecond.size() > 1 && strSecond.at(1) == '?') {
+                    return MatchType::QQVar;
+                }
+                return MatchType::QVar;
+            }
         }
         return MatchType::NoMatch;
     }
