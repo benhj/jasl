@@ -589,6 +589,24 @@ void testMatches11()
     ASSERT_EQUAL("two", ss.str(), "testMatches11 c");
 }
 
+void testMatches12()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one [nested bit] two],[==] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches12");
+}
+
+void testMatches13()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one [nested bit] two],[= = =] -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches13");
+}
+
 int main()
 {
     jasl::registerAll();
@@ -636,6 +654,8 @@ int main()
     testMatches9();
     testMatches10();
     testMatches11();
+    testMatches12();
+    testMatches13();
     showResults();
     return 0;
 }
