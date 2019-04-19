@@ -23,20 +23,20 @@
 namespace {
     std::string getWelcome()
     {
-        return std::string("      ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           \n")
-                   .append("     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          \n")
-                   .append("      ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌          \n")
-                   .append("           ▐░▌    ▐░▌       ▐░▌▐░▌          ▐░▌          \n")
-                   .append("           ▐░▌    ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌          \n")
-                   .append("           ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          \n")
-                   .append("           ▐░▌    ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀▀▀▀▀▀█░▌▐░▌          \n")
-                   .append("           ▐░▌    ▐░▌       ▐░▌          ▐░▌▐░▌          \n")
-                   .append("      ▄▄▄▄▄█░▌    ▐░▌       ▐░▌ ▄▄▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ \n")
-                   .append("     ▐░░░░░░░▌    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    v0.1\n")
-                   .append("      ▀▀▀▀▀▀▀      ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ \n")
-                   .append("\n")
-                   .append("     Just Another Scripting Language")
-                   .append("     (c) 2018 - present; Ben H.D. Jones.");
+        return std::string("\033[2;37m      ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           \n")
+                            .append("     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          \n")
+                            .append("      ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌          \n")
+                            .append("           ▐░▌    ▐░▌       ▐░▌▐░▌          ▐░▌          \n")
+                            .append("           ▐░▌    ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌          \n")
+                            .append("           ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          \n")
+                            .append("           ▐░▌    ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀▀▀▀▀▀█░▌▐░▌          \n")
+                            .append("           ▐░▌    ▐░▌       ▐░▌          ▐░▌▐░▌          \n")
+                            .append("      ▄▄▄▄▄█░▌    ▐░▌       ▐░▌ ▄▄▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ \n")
+                            .append("     ▐░░░░░░░▌    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    v0.1\n")
+                            .append("      ▀▀▀▀▀▀▀      ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ \033[0m\n")
+                            .append("\n")
+                            .append("\033[2;32m     Just Another Scripting Language")
+                            .append("     (c) 2018 - present; Ben H.D. Jones.\033[0m");
     }
 }
 
@@ -68,7 +68,7 @@ int main (int argc , char *argv[])
                 exit(0);
             }
             ci.parseAndInterpretSingleCommand(com, sharedCache, std::cout);
-        }, getWelcome(), "J> ");
+        }, getWelcome(), "\033[2;32mJ> \033[0m");
         sp.start();
 
         // Alternative prompt -- might be less buggy but doesn't support
