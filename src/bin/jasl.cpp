@@ -23,7 +23,7 @@
 namespace {
     std::string getWelcome()
     {
-        return std::string("\033[2;37m      ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           \n")
+        return std::string("\033[1;37m      ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           \n")
                             .append("     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          \n")
                             .append("      ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌          \n")
                             .append("           ▐░▌    ▐░▌       ▐░▌▐░▌          ▐░▌          \n")
@@ -35,7 +35,7 @@ namespace {
                             .append("     ▐░░░░░░░▌    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    v0.1\n")
                             .append("      ▀▀▀▀▀▀▀      ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ \033[0m\n")
                             .append("\n")
-                            .append("\033[2;32m     Just Another Scripting Language")
+                            .append("\033[1;32m     Just Another Scripting Language")
                             .append("     (c) 2018 - present; Ben H.D. Jones.\033[0m");
     }
 }
@@ -77,7 +77,7 @@ int main (int argc , char *argv[])
             }
             std::cout<<str;
             std::cout<<"\033[0m";
-        }, getWelcome(), "\033[2;32mJ> \033[0m");
+        }, getWelcome(), "\033[1;32mJ> \033[0m");
         sp.start();
 
         // Alternative prompt -- might be less buggy but doesn't support
