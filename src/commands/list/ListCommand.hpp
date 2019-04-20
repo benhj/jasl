@@ -24,6 +24,9 @@ namespace jasl
         static std::vector<std::string> getCommandNames();
       private:
         static bool m_registered;
+
+        List processList(List const & theList) const;
+
     };
 
 }
