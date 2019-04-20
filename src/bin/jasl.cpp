@@ -68,6 +68,15 @@ int main (int argc , char *argv[])
                 exit(0);
             }
             ci.parseAndInterpretSingleCommand(com, sharedCache, std::cout);
+        }, 
+        [&](std::string const & str) {
+            if(!ci.successfulParse(str)) {
+                std::cout<<"\033[1;31m";
+            } else {
+                std::cout<<"\033[1;37m";
+            }
+            std::cout<<str;
+            std::cout<<"\033[0m";
         }, getWelcome(), "\033[2;32mJ> \033[0m");
         sp.start();
 

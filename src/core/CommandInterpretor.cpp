@@ -143,9 +143,18 @@ namespace jasl {
         try {
             getCommandMap()[func.name](func, varCache, outputStream);
             errorMessage = GlobalCache::lastKnownError;
-            if(errorMessage.empty()) { return std::string("Couldn't interpret function"); }
+            if(!errorMessage.empty()) { return std::string("Couldn't interpret function"); }
         } catch (...) {}
         return errorMessage;
+    }
+
+    bool CommandInterpretor::successfulParse(std::string const & str) const
+    {
+        using boost::spirit::ascii::space;
+        auto iter = std::begin(str);
+        auto end = std::end(str);
+        Function func;
+        return boost::spirit::qi::phrase_parse(iter, end, functionGrammar, space, func);
     }
 
     std::string

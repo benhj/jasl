@@ -80,6 +80,8 @@ namespace jasl {
         funcToCommand(Function &func,
                       SharedCacheStack const &varCache = SharedCacheStack(),
                       OptionalOutputStream const &outputStream = OptionalOutputStream()) const;
+
+        bool successfulParse(std::string const & str) const;
         
     private:
         std::string
