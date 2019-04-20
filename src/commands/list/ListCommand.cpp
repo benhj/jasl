@@ -54,7 +54,6 @@ namespace jasl
             if(VarExtractor::tryAnyCast(element, el)) {
                 if(element.length() > 1 && element[0] == '^') {
                     std::string const varName(std::begin(element) + 1, std::end(element));
-
                     // Try and get a string from ^var
                     auto const val = m_sharedCache->getVar<std::string>(varName, Type::String);
                     if(val) {
