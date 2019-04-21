@@ -17,6 +17,7 @@ namespace jasl {
         static ::boost::spirit::qi::rule<Iterator, Function(), ::boost::spirit::ascii::space_type> listSetToken;
         static ::boost::spirit::qi::rule<Iterator, Function(), ::boost::spirit::ascii::space_type> listAddToken;
         static ::boost::spirit::qi::rule<Iterator, Function(), ::boost::spirit::ascii::space_type> listMatches;
+        static ::boost::spirit::qi::rule<Iterator, Function(), ::boost::spirit::ascii::space_type> listFind;
         static void init();
     };
 }

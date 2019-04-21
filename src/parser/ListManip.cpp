@@ -19,6 +19,9 @@ qi::rule< jasl::ListManip::Iterator,
 qi::rule< jasl::ListManip::Iterator,
           jasl::Function(),
           ::boost::spirit::ascii::space_type> jasl::ListManip::listMatches;
+qi::rule< jasl::ListManip::Iterator,
+          jasl::Function(),
+          ::boost::spirit::ascii::space_type> jasl::ListManip::listFind;
 
 namespace jasl {
     void ListManip::init() 
@@ -78,5 +81,13 @@ namespace jasl {
                      >> lit("->")
                      >> Strings::genericString 
                      >> ';';
+
+        listFind %= string("find")
+                  >> (Strings::bracketedWords | Strings::genericString)
+                  >> (',')
+                  >> (Strings::bracketedWords | Strings::genericString)
+                  >> lit("->")
+                  >> Strings::genericString 
+                  >> ';';
     }
 }

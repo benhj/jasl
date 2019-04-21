@@ -39,6 +39,7 @@
 #include "commands/list/ListAddTokenCommand.cpp"
 #include "commands/list/ListTokenIndexCommand.cpp"
 #include "commands/list/MatchesCommand.cpp"
+#include "commands/list/FindCommand.cpp"
 
 #include "commands/string/AppendCommand.cpp"
 #include "commands/string/ConcatCommand.cpp"

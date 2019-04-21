@@ -131,7 +131,7 @@ namespace jasl
             }
             ++count;
         }
-        output.append("] ");
+        output.append("]");
     }
 
     bool EchoNLCommand::tryNumericExtraction()
