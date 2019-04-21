@@ -100,6 +100,13 @@ namespace jasl
             std::string toStoreString;
             if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
                 sharedCache->setVar(var, toStoreString, Type::String);
+            } 
+            // Try with list
+            else {
+                List list;
+                if(VarExtractor::tryAnyCast(list, toStore)) {
+                    sharedCache->setVar(var, list, Type::List);
+                } 
             }
         }
         return true;

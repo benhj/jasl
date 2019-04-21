@@ -607,6 +607,18 @@ void testMatches13()
     ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches13");
 }
 
+void testMatches14()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("matches [one [two three] four five], [one ?ex four five] -> n;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("n", ll::Type::Bool), "testMatches14");
+    ss.str("");
+    ci.parseAndInterpretSingleCommand("say ex;", cache, ss);
+    ASSERT_EQUAL("[two three]", ss.str(), "testMatches14 b");
+}
+
 int main()
 {
     jasl::registerAll();
@@ -656,6 +668,7 @@ int main()
     testMatches11();
     testMatches12();
     testMatches13();
+    testMatches14();
     showResults();
     return 0;
 }
