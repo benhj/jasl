@@ -75,17 +75,21 @@ namespace jasl {
 
         // matches [hello world],[= world] -> result;
         listMatches %= string("matches")
+                     >> ('(')
                      >> (Strings::bracketedWords | Strings::genericString)
                      >> (',')
                      >> (Strings::bracketedWords | Strings::genericString)
+                     >> (')')
                      >> lit("->")
                      >> Strings::genericString 
                      >> ';';
 
         listFind %= string("find")
+                  >> ('(')
                   >> (Strings::bracketedWords | Strings::genericString)
                   >> (',')
                   >> (Strings::bracketedWords | Strings::genericString)
+                  >> (')')
                   >> lit("->")
                   >> Strings::genericString 
                   >> ';';
