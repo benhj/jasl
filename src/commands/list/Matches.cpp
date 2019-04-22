@@ -187,7 +187,7 @@ namespace jasl {
         if(val) {
             std::string strFirst;
             if(VarExtractor::tryAnyCast(strFirst, toStore)) {
-                return val == strFirst;
+                return *val == strFirst;
             }
         } 
         // Try and get a list from ^var

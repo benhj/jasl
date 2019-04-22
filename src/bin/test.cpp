@@ -619,6 +619,58 @@ void testMatches14()
     ASSERT_EQUAL("[two three]", ss.str(), "testMatches14 b");
 }
 
+void testMatches15()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string \"one\" -> val;", cache, ss);
+    ci.parseAndInterpretSingleCommand("matches([one two three], [^val two three]) -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches15");
+}
+
+void testMatches16()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string \"one\" -> val;", cache, ss);
+    ci.parseAndInterpretSingleCommand("matches([one two three], [^val = =]) -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches16");
+}
+
+void testMatches17()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string \"one\" -> val;", cache, ss);
+    ci.parseAndInterpretSingleCommand("matches([one two three], [^val ==]) -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches17");
+}
+
+void testMatches18()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string \"three\" -> val;", cache, ss);
+    ci.parseAndInterpretSingleCommand("matches([one two three], [one two ^val]) -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches18");
+}
+
+void testMatches19()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("string \"one\" -> vala;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string \"two\" -> valb;", cache, ss);
+    ci.parseAndInterpretSingleCommand("string \"three\" -> valc;", cache, ss);
+    ci.parseAndInterpretSingleCommand("matches([one two three], [^vala ^valb ^valc]) -> m;", cache, ss);
+    ASSERT_EQUAL(true, *cache->getVar<bool>("m", ll::Type::Bool), "testMatches19");
+}
+
 int main()
 {
     jasl::registerAll();
@@ -669,6 +721,11 @@ int main()
     testMatches12();
     testMatches13();
     testMatches14();
+    testMatches15();
+    testMatches16();
+    testMatches17();
+    testMatches18();
+    testMatches19();
     showResults();
     return 0;
 }
