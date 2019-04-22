@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Matches.hpp"
 #include "../Command.hpp"
 
 namespace jasl
@@ -24,6 +25,7 @@ namespace jasl
         bool execute() override;
         static std::vector<std::string> getCommandNames();
       private:
+        Matches m_matches;
         static bool m_registered;
     };
 

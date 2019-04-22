@@ -6,7 +6,6 @@
 //
 
 #include "FindCommand.hpp"
-#include "Matches.hpp"
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
 
@@ -19,6 +18,7 @@ namespace jasl
                              SharedCacheStack const &sharedCache,
                              OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
+    , m_matches(sharedCache)
     {
     }
 
@@ -76,7 +76,7 @@ namespace jasl
             if(strSuccess) {
                 List listWithString;
                 listWithString.push_back(str);
-                if (matches(listWithString, list2, m_sharedCache)) {
+                if (m_matches.matches(listWithString, list2)) {
                     result.push_back(element);
                 }
             }
@@ -85,7 +85,7 @@ namespace jasl
                 List listEx;
                 auto const listSuccess = VarExtractor::tryAnyCast(listEx, element);
                 if(listSuccess) {
-                    if (matches(listEx, list2, m_sharedCache)) {
+                    if (m_matches.matches(listEx, list2)) {
                         result.push_back(element);
                     }
                 }

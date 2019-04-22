@@ -5,21 +5,8 @@
 
 namespace jasl {
 
-    // To describe how list tokens match.
-    enum class MatchType
-    {
-        Exact,     // [hello], [hello]
-        QVar,      // [hello], [?var]
-        QQVar,     // [hello], [??var]
-        HVar,      // [hello], [^var]
-        HHVar,     // [hello], [^^var]
-        SingleEq,  // [hello], [=]
-        DoubleEq,  // [hello], [==]
-        NoMatch    // [hello], [goodbye]
-    };
-
-    MatchType matches(Value const & first,
-                      Value const & second)
+    MatchType Matches::matches(Value const & first,
+                               Value const & second) const
     {
         std::string strFirst;
         std::string strSecond;
@@ -54,10 +41,10 @@ namespace jasl {
         return MatchType::NoMatch;
     }
 
-    bool handleExact(List const & first,
-                     List const & second,
-                     List::const_iterator & itFirst,
-                     List::const_iterator & itSecond)
+    bool Matches::handleExact(List const & first,
+                              List const & second,
+                              List::const_iterator & itFirst,
+                              List::const_iterator & itSecond) const
     {
         ++itFirst;
         ++itSecond;
@@ -69,11 +56,10 @@ namespace jasl {
         return true;
     }
 
-    bool handleQVar(List const & first,
-                    List const & second,
-                    List::const_iterator & itFirst,
-                    List::const_iterator & itSecond,
-                    SharedCacheStack const & sharedCache)
+    bool Matches::handleQVar(List const & first,
+                             List const & second,
+                             List::const_iterator & itFirst,
+                             List::const_iterator & itSecond) const
     {
         auto toStore = *itFirst;
         // Given the MatchType, *itSecond must be a string,
@@ -97,24 +83,23 @@ namespace jasl {
         {
             std::string toStoreString;
             if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
-                sharedCache->setVar(var, toStoreString, Type::String);
+                m_sharedCache->setVar(var, toStoreString, Type::String);
             } 
             // Try with list
             else {
                 List list;
                 if(VarExtractor::tryAnyCast(list, toStore)) {
-                    sharedCache->setVar(var, list, Type::List);
+                    m_sharedCache->setVar(var, list, Type::List);
                 } 
             }
         }
         return true;
     }
 
-    bool handleQQVar(List const & first,
-                     List const & second,
-                     List::const_iterator & itFirst,
-                     List::const_iterator & itSecond,
-                     SharedCacheStack const & sharedCache)
+    bool Matches::handleQQVar(List const & first,
+                              List const & second,
+                              List::const_iterator & itFirst,
+                              List::const_iterator & itSecond) const
     {
         // Given the MatchType, *itSecond must be a string,
         // there is no way the cast to a string can fail.
@@ -139,7 +124,7 @@ namespace jasl {
                 list.push_back(*itFirst);
                 ++itFirst;
             }
-            sharedCache->setVar(var, list, Type::List);
+            m_sharedCache->setVar(var, list, Type::List);
             return true;
         }
 
@@ -152,15 +137,14 @@ namespace jasl {
                 return false;
             }
         }
-        sharedCache->setVar(var, list, Type::List);
+        m_sharedCache->setVar(var, list, Type::List);
         return true;
     }
 
-    bool handleHVar(List const & first,
-                    List const & second,
-                    List::const_iterator & itFirst,
-                    List::const_iterator & itSecond,
-                    SharedCacheStack const & sharedCache)
+    bool Matches::handleHVar(List const & first,
+                             List const & second,
+                             List::const_iterator & itFirst,
+                             List::const_iterator & itSecond) const
     {
         auto toStore = *itFirst;
         // Given the MatchType, *itSecond must be a string,
@@ -183,7 +167,7 @@ namespace jasl {
         std::string var{std::begin(hvar) + 1, std::end(hvar)};
 
         // Try and get a string from ^var
-        auto const val = sharedCache->getVar<std::string>(var, Type::String);
+        auto const val = m_sharedCache->getVar<std::string>(var, Type::String);
         if(val) {
             std::string strFirst;
             if(VarExtractor::tryAnyCast(strFirst, toStore)) {
@@ -194,19 +178,19 @@ namespace jasl {
         else {
             List listFirst;
             if(VarExtractor::tryAnyCast(listFirst, toStore)) {
-                auto const listVal = sharedCache->getVar<List>(var, Type::List);
+                auto const listVal = m_sharedCache->getVar<List>(var, Type::List);
                 if(listVal) {
-                    return matches(listFirst, *listVal, sharedCache);
+                    return matches(listFirst, *listVal);
                 }
             }
         }
         return false;
     }
 
-    bool handleDoubleEq(List const & first,
-                        List const & second,
-                        List::const_iterator & itFirst,
-                        List::const_iterator & itSecond)
+    bool Matches::handleDoubleEq(List const & first,
+                                 List const & second,
+                                 List::const_iterator & itFirst,
+                                 List::const_iterator & itSecond) const
     {
 
         ++itSecond;
@@ -231,10 +215,10 @@ namespace jasl {
         return true;
     }
 
-    bool handleEq(List const & first,
-                  List const & second,
-                  List::const_iterator & itFirst,
-                  List::const_iterator & itSecond)
+    bool Matches::handleEq(List const & first,
+                           List const & second,
+                           List::const_iterator & itFirst,
+                           List::const_iterator & itSecond) const
     {
         ++itFirst;
         ++itSecond;
@@ -250,11 +234,15 @@ namespace jasl {
         return true;
     }
 
-    bool matches(List const & first,
-                 List const & second,
-                 SharedCacheStack const & sharedCache)
+    Matches::Matches(SharedCacheStack sharedCache)
+      : m_sharedCache(std::move(sharedCache))
+      , m_callCounter(0)
+    {}
+
+    bool Matches::matches(List const & first,
+                          List const & second) const
     {
-                // Edge-case 1. Two empty string always match.
+        // Edge-case 1. Two empty string always match.
         if(first.empty() && second.empty()) {
             return true;
         }
@@ -314,7 +302,7 @@ namespace jasl {
                 }
                 case MatchType::QVar:
                 {
-                    if(handleQVar(first, second, itFirst, itSecond, sharedCache)) {
+                    if(handleQVar(first, second, itFirst, itSecond)) {
                         continue;
                     }
                     return false;
@@ -322,14 +310,14 @@ namespace jasl {
                 }
                 case MatchType::QQVar:
                 {
-                    if(handleQQVar(first, second, itFirst, itSecond, sharedCache)) {
+                    if(handleQQVar(first, second, itFirst, itSecond)) {
                         continue;
                     }
                     return false;
                 }
                 case MatchType::HVar:
                 {
-                    if(handleHVar(first, second, itFirst, itSecond, sharedCache)) {
+                    if(handleHVar(first, second, itFirst, itSecond)) {
                         continue;
                     }
                     return false;
@@ -343,7 +331,7 @@ namespace jasl {
                     auto const listSuccessFirst = VarExtractor::tryAnyCast(listFirst, *itFirst);
                     auto const listSuccessSecond = VarExtractor::tryAnyCast(listSecond, *itSecond);
                     if(listSuccessFirst && listSuccessSecond) {
-                        if(matches(listFirst, listSecond, sharedCache)) {
+                        if(matches(listFirst, listSecond)) {
                             ++itFirst;
                             ++itSecond;
                             continue;

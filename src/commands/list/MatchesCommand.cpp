@@ -6,7 +6,6 @@
 //
 
 #include "MatchesCommand.hpp"
-#include "Matches.hpp"
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
 
@@ -19,6 +18,7 @@ namespace jasl
                                    SharedCacheStack const &sharedCache,
                                    OptionalOutputStream const &output)
     : Command(func_, sharedCache, output)
+    , m_matches(sharedCache)
     {
     }
 
@@ -67,7 +67,7 @@ namespace jasl
             return false;
         }
 
-        auto const matchesResult = matches(list, list2, m_sharedCache);
+        auto const matchesResult = m_matches.matches(list, list2);
 
         m_sharedCache->setVar(resultName, matchesResult, Type::Bool);
         return true;
