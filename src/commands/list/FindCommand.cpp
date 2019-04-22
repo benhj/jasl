@@ -67,7 +67,7 @@ namespace jasl
             return false;
         }
 
-        auto result = false;
+        List result;
         for(auto const & element : list1) {
 
             // Try string
@@ -77,8 +77,7 @@ namespace jasl
                 List listWithString;
                 listWithString.push_back(str);
                 if (matches(listWithString, list2, m_sharedCache)) {
-                    result = true;
-                    break;
+                    result.push_back(element);
                 }
             }
             // Try list
@@ -87,15 +86,14 @@ namespace jasl
                 auto const listSuccess = VarExtractor::tryAnyCast(listEx, element);
                 if(listSuccess) {
                     if (matches(listEx, list2, m_sharedCache)) {
-                        result = true;
-                        break;
+                        result.push_back(element);
                     }
                 }
             }
 
         }
 
-        m_sharedCache->setVar(resultName, result, Type::Bool);
+        m_sharedCache->setVar(resultName, result, Type::List);
         return true;
     }
 }
