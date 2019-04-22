@@ -11,6 +11,8 @@ namespace jasl {
         Exact,     // [hello], [hello]
         QVar,      // [hello], [?var]
         QQVar,     // [hello], [??var]
+        HVar,      // [hello], [^var]
+        HHVar,     // [hello], [^^var]
         SingleEq,  // [hello], [=]
         DoubleEq,  // [hello], [==]
         NoMatch    // [hello], [goodbye]
@@ -42,6 +44,11 @@ namespace jasl {
                     return MatchType::QQVar;
                 }
                 return MatchType::QVar;
+            } else if(strSecond.at(0) == '^') {
+                if(strSecond.size() > 1 && strSecond.at(1) == '^') {
+                    return MatchType::HHVar;
+                }
+                return MatchType::HVar;
             }
         }
         return MatchType::NoMatch;
@@ -147,6 +154,53 @@ namespace jasl {
         }
         sharedCache->setVar(var, list, Type::List);
         return true;
+    }
+
+    bool handleHVar(List const & first,
+                    List const & second,
+                    List::const_iterator & itFirst,
+                    List::const_iterator & itSecond,
+                    SharedCacheStack const & sharedCache)
+    {
+        auto toStore = *itFirst;
+        // Given the MatchType, *itSecond must be a string,
+        // there is no way the cast to a string can fail.
+        std::string hvar;
+        (void)VarExtractor::tryAnyCast(hvar, *itSecond);
+
+        ++itFirst;
+        ++itSecond;
+
+        // Boundary -- check if there are more tokens
+        // in list 2 to be processed. If so, we have come
+        // to the end of the first string and the overall match
+        // has failed.
+        if(itFirst != std::end(first) && itSecond == std::end(second)) {
+            return false;
+        }
+
+        // Now pull out variable
+        std::string var{std::begin(hvar) + 1, std::end(hvar)};
+
+        // Try and get a string from ^var
+        auto const val = sharedCache->getVar<std::string>(var, Type::String);
+        if(val) {
+            std::string strFirst;
+            if(VarExtractor::tryAnyCast(strFirst, toStore)) {
+                return val == strFirst;
+            }
+        } 
+        // Try and get a list from ^var
+        else {
+            List listFirst;
+            if(VarExtractor::tryAnyCast(listFirst, toStore)) {
+                auto const listVal = sharedCache->getVar<List>(var, Type::List);
+                if(listVal) {
+                    return matches(listFirst, *listVal, sharedCache);
+                }
+            }
+        }
+        return false;
     }
 
     bool handleDoubleEq(List const & first,
@@ -273,6 +327,14 @@ namespace jasl {
                     }
                     return false;
                 }
+                case MatchType::HVar:
+                {
+                    if(handleHVar(first, second, itFirst, itSecond, sharedCache)) {
+                        continue;
+                    }
+                    return false;
+                }
+                case MatchType::HHVar:
                 case MatchType::NoMatch:
                 {
                     // Edge case in which one must be a list rather than a string
