@@ -36,6 +36,7 @@ namespace jasl
     bool EchoCommand::execute()
     {
         if(tryLiteralExtraction()) { return true; }
+        if(tryListExtraction()) { return true; }
         if(trySymbolExtraction()) { return true; }
         if(tryNumericExtraction()) { return true; }
         setLastErrorMessage("prn: couldn't parse");
@@ -47,6 +48,19 @@ namespace jasl
         LiteralString literalString;
         if(m_func.getValueA<LiteralString>(literalString, m_sharedCache)) {
             appendToOutput(literalString.literal);
+            return true;
+        }
+        return false;
+    }
+
+    bool EchoCommand::tryListExtraction()
+    {
+        List list;
+        if(m_func.getValueA<List>(list, m_sharedCache)) {
+            std::string output;
+            processListElement(list, output);
+            ::boost::algorithm::trim_right(output);
+            appendToOutput(output);
             return true;
         }
         return false;
