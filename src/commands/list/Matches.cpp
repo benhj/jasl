@@ -2,8 +2,20 @@
 
 #include "Matches.hpp"
 #include "caching/VarExtractor.hpp"
+#include "commands/types/ReleaseCommand.hpp"
+#include <boost/optional.hpp>
+#include <ostream>
 
 namespace jasl {
+
+    void releasePreviousExtract(std::string const & var,
+                                SharedCacheStack sharedCache)
+    {
+        Function f;
+        f.name = "release";
+        f.paramA = var;
+        (void)ReleaseCommand(f, sharedCache, ::boost::optional<std::ostream&>()).execute();
+    }
 
     MatchType Matches::doMatches(Value const & first,
                                  Value const & second) const
@@ -83,13 +95,45 @@ namespace jasl {
         {
             std::string toStoreString;
             if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
-                m_sharedCache->setVar(var, toStoreString, Type::String);
+                if(m_callCounter == 1) {
+                    m_sharedCache->setVar(var, toStoreString, Type::String);
+                } 
+                // We previously stored a string at ?var
+                // It needs to be removed (released) and a new list
+                // needs to be added in its place with the original
+                // string and the newly extracted one here.
+                else if(m_callCounter == 2) {
+                    auto const prev = m_sharedCache->getVar<std::string>(var, Type::String);
+                    releasePreviousExtract(var, m_sharedCache);
+                    List newList;
+                    newList.push_back(*prev);
+                    newList.push_back(toStoreString);
+                    m_sharedCache->setVar(var, newList, Type::List);
+                } 
+                // Push back to already-existing list
+                else {
+
+                }
             } 
             // Try with list
             else {
                 List list;
                 if(VarExtractor::tryAnyCast(list, toStore)) {
-                    m_sharedCache->setVar(var, list, Type::List);
+                    if(m_callCounter == 1) {
+                        m_sharedCache->setVar(var, list, Type::List);
+                    } 
+                    // See comment above in application to string extraction. Only difference
+                    // here is that a list of lists is created.
+                    else if(m_callCounter == 2) {
+                        auto const prev = m_sharedCache->getVar<List>(var, Type::List);
+                        releasePreviousExtract(var, m_sharedCache);
+                        List newList;
+                        newList.push_back(*prev);
+                        newList.push_back(list);
+                        m_sharedCache->setVar(var, newList, Type::List);
+                    } else {
+
+                    }
                 } 
             }
         }
