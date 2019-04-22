@@ -106,7 +106,10 @@ namespace jasl
         return false;
     }
 
-    void EchoNLCommand::processListElement(List const &valueArray, std::string &output)
+    void EchoNLCommand::processListElement(List const &valueArray,
+                                           std::string &output,
+                                           int const depth,
+                                           bool const lastToken)
     {
         output.append("[");
         // Print out tokens, one after another
@@ -126,12 +129,13 @@ namespace jasl
             {
                 List tok;
                 if(VarExtractor::tryAnyCast(tok, it)) {
-                    processListElement(tok, output);
+                    processListElement(tok, output, depth + 1, 
+                                       (count == valueArray.size() - 1));
                 }
             }
             ++count;
         }
-        if(count == valueArray.size() - 1) {
+        if(depth > 0 && lastToken) {
             output.append("]");
         } else {
             output.append("] ");
