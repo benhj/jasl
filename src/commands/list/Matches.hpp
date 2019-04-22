@@ -29,10 +29,13 @@ namespace jasl {
                      List const & second) const;
       private:
         SharedCacheStack m_sharedCache;
-        int m_callCounter;
+        int mutable m_callCounter;
 
-        MatchType matches(Value const & first,
-                          Value const & second) const;
+        bool doMatches(List const & first,
+                       List const & second) const;
+
+        MatchType doMatches(Value const & first,
+                            Value const & second) const;
 
         bool handleExact(List const & first,
                          List const & second,

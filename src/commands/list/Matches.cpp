@@ -5,8 +5,8 @@
 
 namespace jasl {
 
-    MatchType Matches::matches(Value const & first,
-                               Value const & second) const
+    MatchType Matches::doMatches(Value const & first,
+                                 Value const & second) const
     {
         std::string strFirst;
         std::string strSecond;
@@ -130,7 +130,7 @@ namespace jasl {
 
         // More token to process in first. We keep looping until we
         // find a match.
-        while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
+        while(doMatches(*itFirst, *itSecond) == MatchType::NoMatch) {
             list.push_back(*itFirst);
             ++itFirst;
             if(itFirst == std::end(first)) {
@@ -180,7 +180,7 @@ namespace jasl {
             if(VarExtractor::tryAnyCast(listFirst, toStore)) {
                 auto const listVal = m_sharedCache->getVar<List>(var, Type::List);
                 if(listVal) {
-                    return matches(listFirst, *listVal);
+                    return doMatches(listFirst, *listVal);
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace jasl {
 
         // More token to process in first. We keep looping until we
         // find a match.
-        while(matches(*itFirst, *itSecond) == MatchType::NoMatch) {
+        while(doMatches(*itFirst, *itSecond) == MatchType::NoMatch) {
             ++itFirst;
             if(itFirst == std::end(first)) {
                 return false;
@@ -242,6 +242,13 @@ namespace jasl {
     bool Matches::matches(List const & first,
                           List const & second) const
     {
+        ++m_callCounter;
+        return doMatches(first, second);
+    }
+
+    bool Matches::doMatches(List const & first,
+                            List const & second) const
+    {
         // Edge-case 1. Two empty string always match.
         if(first.empty() && second.empty()) {
             return true;
@@ -276,7 +283,7 @@ namespace jasl {
         while(itFirst != std::end(first) && itSecond != std::end(second)) {
 
             // Discover type of token match
-            auto match = matches(*itFirst, *itSecond);
+            auto match = doMatches(*itFirst, *itSecond);
 
             switch(match) {
                 case MatchType::Exact:
@@ -331,7 +338,7 @@ namespace jasl {
                     auto const listSuccessFirst = VarExtractor::tryAnyCast(listFirst, *itFirst);
                     auto const listSuccessSecond = VarExtractor::tryAnyCast(listSecond, *itSecond);
                     if(listSuccessFirst && listSuccessSecond) {
-                        if(matches(listFirst, listSecond)) {
+                        if(doMatches(listFirst, listSecond)) {
                             ++itFirst;
                             ++itSecond;
                             continue;
@@ -343,5 +350,4 @@ namespace jasl {
         }
         return true;
     }
-
 }
