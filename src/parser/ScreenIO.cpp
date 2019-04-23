@@ -18,11 +18,12 @@ namespace jasl {
         echo %= lexeme[string("prn") | string("pr") | string("say")]
              >> (Strings::doubleQuotedString |
                  Strings::genericString |
+                 Strings::bracketedWords |
                  BasicTypes::doubleRule |
                  BasicTypes::intRule |
                  BasicTypes::boolRule |
                  Expressions::mathExpression |
-                 Expressions::bracketedMathExpression | 
+                 Expressions::bracketedMathExpression |
                  Expressions::comparisonExpression |
                  Expressions::bracketedComparisonExpression)
              >> ';';
