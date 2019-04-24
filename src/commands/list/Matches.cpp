@@ -112,7 +112,7 @@ namespace jasl {
                 } 
                 // Push back to already-existing list
                 else {
-
+                    m_sharedCache->pushBackTokenInList(var, Value(toStoreString));
                 }
             } 
             // Try with list
@@ -132,7 +132,7 @@ namespace jasl {
                         newList.push_back(list);
                         m_sharedCache->setVar(var, newList, Type::List);
                     } else {
-
+                         m_sharedCache->pushBackTokenInList(var, Value(list));
                     }
                 } 
             }
