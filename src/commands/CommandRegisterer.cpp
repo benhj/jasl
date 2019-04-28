@@ -40,6 +40,7 @@
 #include "commands/list/ListTokenIndexCommand.cpp"
 #include "commands/list/MatchesCommand.cpp"
 #include "commands/list/FindCommand.cpp"
+#include "commands/list/TieCommand.cpp"
 
 #include "commands/string/AppendCommand.cpp"
 #include "commands/string/ConcatCommand.cpp"
