@@ -470,6 +470,31 @@ void testListTokenIndex()
     ASSERT_EQUAL(4, *cache->getVar<int64_t>("q", ll::Type::Int), "index D");
 }
 
+void testListCarrotInsert()
+{
+    auto cache = std::make_shared<ll::CacheStack>();
+    std::ostringstream ss;
+    ll::CommandInterpretor ci;
+    ci.parseAndInterpretSingleCommand("list [one two three] -> L;", cache);
+    ci.parseAndInterpretSingleCommand("list [four five six] -> P;", cache);
+    ci.parseAndInterpretSingleCommand("list [^L ^P] -> Q;", cache);
+    ci.parseAndInterpretSingleCommand("pr Q;", cache, ss);
+    ASSERT_EQUAL("[[one two three] [four five six]]", ss.str(), "testListCarrotInsert");
+    ci.parseAndInterpretSingleCommand("list [^^L ^P] -> Q;", cache);
+    ss.str("");
+    ci.parseAndInterpretSingleCommand("pr Q;", cache, ss);
+    ASSERT_EQUAL("[one two three [four five six]]", ss.str(), "testListCarrotInsert 2");
+    ci.parseAndInterpretSingleCommand("list [^^L ^^P] -> Q;", cache);
+    ss.str("");
+    ci.parseAndInterpretSingleCommand("pr Q;", cache, ss);
+    ASSERT_EQUAL("[one two three four five six]", ss.str(), "testListCarrotInsert 3");
+    ci.parseAndInterpretSingleCommand("list [^^L in the middle ^^P] -> Q;", cache);
+    ss.str("");
+    ci.parseAndInterpretSingleCommand("pr Q;", cache, ss);
+    ASSERT_EQUAL("[one two three in the middle four five six]", ss.str(), "testListCarrotInsert 4");
+
+}
+
 void testMatches1()
 {
     auto cache = std::make_shared<ll::CacheStack>();
@@ -707,6 +732,7 @@ int main()
     testListSetTokenRaw();
     testListSetTokenSymbol();
     testListAddToken();
+    testListCarrotInsert();
     testMatches1();
     testMatches2();
     testMatches3();

@@ -23,7 +23,7 @@ fn:list initialize (N) -> rep {
     ;;; board initialization with heuristic
     repeat N times {
         string i -> istring;
-        add_token(istring, rep);
+        list [^istring ^^rep] -> rep;
         put (i + 2) -> i;
         ? (i = N) {
             put 0 -> i;
@@ -36,7 +36,7 @@ block showBoard (N, representation) {
     ;;; create one of the rows of the board
     list [] -> row;
     repeat N times {
-        add_token ("-", row);
+        list [- ^^row] -> row;
     }
 
     ;;; create the board representation

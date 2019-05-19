@@ -68,7 +68,7 @@ start {
     int 0 -> i;
     repeat N times {
         string i -> strtok;
-        add_token(strtok, x);
+        list [^strtok ^^x] -> x;
         put (i + 1) -> i;    
     }
     say "\n\n";
