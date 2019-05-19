@@ -1,0 +1,44 @@
+fn:string passPrinter(result) -> str {
+    ;;; bug with the scoping here
+    string "empty" -> val;
+    if(result == TRUE) {
+        string "PASS" -> val;
+    } else {
+        string "FAIL" -> val;
+    }
+    string val -> str;
+}
+
+fn:string testFindA() -> pass
+{
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [animal ?all]) -> result;
+    matches(result, [[animal dog] [animal cat]]) -> test;
+    matches(all, [dog cat]) -> test_B;
+    bool (test && test_B) -> passb;
+    call passPrinter(passb) -> pass;
+}
+
+fn:string testFindB() -> pass
+{
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [animal ?all]) -> result;
+
+    ;;; now try again but with vehicle, should override the first set
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [vehicle ?all]) -> result;
+
+    matches(result, [[vehicle car] [vehicle train]]) -> test;
+    matches(all, [car train]) -> test_B;
+    bool (test && test_B) -> passb;
+    call passPrinter(passb) -> pass;
+}
+
+start {
+    list [] -> results;
+	call testFindA() -> passA;
+    list [^^results ^passA] -> results;
+    call testFindB() -> passB;
+    list [^^results ^passB] -> results;
+    prn results;
+}

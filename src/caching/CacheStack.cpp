@@ -38,6 +38,9 @@ namespace jasl {
     CacheStack::CacheStack() 
     : m_cacheStack(initCacheStack())
     {
+        // These are reserved constants
+        setVar("TRUE", true, Type::Bool);
+        setVar("FALSE", false, Type::Bool);
     }
 
     CacheStack::CacheStack(std::deque<SharedVarCache> const &cacheStack)
