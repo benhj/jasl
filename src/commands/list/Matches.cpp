@@ -96,6 +96,10 @@ namespace jasl {
             std::string toStoreString;
             if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
                 if(m_callCounter == 0) {
+                    if(m_sharedCache->getVar<List>(var, Type::List)) {
+                        releasePreviousExtract(var, m_sharedCache);
+                    }
+
                     m_sharedCache->setVar(var, toStoreString, Type::String);
                 } 
                 // We previously stored a string at ?var
@@ -120,6 +124,9 @@ namespace jasl {
                 List list;
                 if(VarExtractor::tryAnyCast(list, toStore)) {
                     if(m_callCounter == 0) {
+                        if(m_sharedCache->getVar<List>(var, Type::List)) {
+                            releasePreviousExtract(var, m_sharedCache);
+                        }
                         m_sharedCache->setVar(var, list, Type::List);
                     } 
                     // See comment above in application to string extraction. Only difference
