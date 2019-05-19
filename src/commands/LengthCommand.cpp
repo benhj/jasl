@@ -106,6 +106,15 @@ namespace jasl
                     return true;
                 }
             }
+
+            // try list
+            {
+                auto array = m_sharedCache->getVar<List>(symbol, Type::List);
+                if(array) {
+                    m_sharedCache->setVar(varName, (int64_t)array->size(), Type::Int);
+                    return true;
+                }
+            }
         }
         return false;
     }

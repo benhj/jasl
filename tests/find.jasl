@@ -9,7 +9,7 @@ fn:string passPrinter(result) -> str {
     string val -> str;
 }
 
-fn:string testFindA() -> pass
+fn:list testFindA(results) -> results
 {
     find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
           [animal ?all]) -> result;
@@ -17,9 +17,10 @@ fn:string testFindA() -> pass
     matches(all, [dog cat]) -> test_B;
     bool (test && test_B) -> passb;
     call passPrinter(passb) -> pass;
+    list [^^results ^pass] -> results;
 }
 
-fn:string testFindB() -> pass
+fn:list testFindB(results) -> results
 {
     find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
           [animal ?all]) -> result;
@@ -32,13 +33,21 @@ fn:string testFindB() -> pass
     matches(all, [car train]) -> test_B;
     bool (test && test_B) -> passb;
     call passPrinter(passb) -> pass;
+    list [^^results ^pass] -> results;
 }
 
 start {
     list [] -> results;
-	call testFindA() -> passA;
-    list [^^results ^passA] -> results;
-    call testFindB() -> passB;
-    list [^^results ^passB] -> results;
+    call testFindA(results) -> results;
+    call testFindB(results) -> results;
+
+    ;;; Generate test summary
     prn results;
+    find(results, [FAIL]) -> failures;
+    find(results, [PASS]) -> passes;
+    length failures -> fc;
+    length passes -> pc;
+    say fc; prn " failures.";
+    say pc; prn " passes.";
+
 }
