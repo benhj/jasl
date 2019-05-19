@@ -90,19 +90,19 @@ namespace jasl {
         
         // Now pull out variable
         std::string var{std::begin(qvar) + 1, std::end(qvar)};
-        
+
         // Pull out the data to be stored. Try string.
         {
             std::string toStoreString;
             if(VarExtractor::tryAnyCast(toStoreString, toStore)) {
-                if(m_callCounter == 1) {
+                if(m_callCounter == 0) {
                     m_sharedCache->setVar(var, toStoreString, Type::String);
                 } 
                 // We previously stored a string at ?var
                 // It needs to be removed (released) and a new list
                 // needs to be added in its place with the original
                 // string and the newly extracted one here.
-                else if(m_callCounter == 2) {
+                else if(m_callCounter == 1) {
                     auto const prev = m_sharedCache->getVar<std::string>(var, Type::String);
                     releasePreviousExtract(var, m_sharedCache);
                     List newList;
@@ -119,12 +119,12 @@ namespace jasl {
             else {
                 List list;
                 if(VarExtractor::tryAnyCast(list, toStore)) {
-                    if(m_callCounter == 1) {
+                    if(m_callCounter == 0) {
                         m_sharedCache->setVar(var, list, Type::List);
                     } 
                     // See comment above in application to string extraction. Only difference
                     // here is that a list of lists is created.
-                    else if(m_callCounter == 2) {
+                    else if(m_callCounter == 1) {
                         auto const prev = m_sharedCache->getVar<List>(var, Type::List);
                         releasePreviousExtract(var, m_sharedCache);
                         List newList;
@@ -286,8 +286,11 @@ namespace jasl {
     bool Matches::matches(List const & first,
                           List const & second) const
     {
-        ++m_callCounter;
-        return doMatches(first, second);
+        auto const ismatch = doMatches(first, second);
+        if(ismatch) {
+            ++m_callCounter;
+        }
+        return ismatch;
     }
 
     bool Matches::doMatches(List const & first,
