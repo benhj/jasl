@@ -43,7 +43,7 @@ block showBoard (N, representation) {
     int 0 -> i;
     repeat N times {
         ;;; make sure correct '-' is set with a 'Q'
-        get_token(i, representation) -> token;
+        get representation(i) -> token;
 
         ;;; token is a string to needs to be
         ;;; converted to an int
@@ -69,12 +69,12 @@ fn:int computeError (N, representation) -> theError {
     ;;; compute the number of queens attacking each queen
     int 0 -> i;
     repeat N times {
-        get_token(i, representation) -> token;
+        get representation(i) -> token;
         int token -> itoken;
         int 0 -> e;
         int 0 -> k;
         repeat N times {
-            get_token(k, representation) -> token;
+            get representation(k) -> token;
             int token -> ktoken;
             ? (itoken = ktoken) {
                 ? ( i /= k) {
@@ -124,7 +124,7 @@ start {
     while (currentError /= 0) {
         put 0 -> count;
         repeat N times {
-            get_token(count, representation) -> tok;
+            get representation(count) -> tok;
             int tok -> itok;
             list representation -> oldRep;
             ?((itok + moveBy) >= N) {

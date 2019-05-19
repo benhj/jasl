@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 30/06/15
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2016-present Ben Jones. All rights reserved.
 //
 
 #include "ArrayGetCommand.hpp"
@@ -72,8 +72,28 @@ namespace jasl
                 return true;
             }
         }
+        {
+            auto value = m_sharedCache->getArrayValue<List>(m_arrayName, index, Type::List);
+            if(value) {
+                // Value could be a string or a list
+                {
+                    std::string element;
+                    if(VarExtractor::tryAnyCast(element, *value)) {
+                        m_sharedCache->setVar(m_varName, element, Type::String);
+                        return true;
+                    }
+                }
+                {
+                    List element;
+                    if(VarExtractor::tryAnyCast(element, *value)) {
+                        m_sharedCache->setVar(m_varName, element, Type::List);
+                        return true;
+                    }
+                }
+            }
+        }
 
-        setLastErrorMessage("get: problem getting array value");
+        setLastErrorMessage("get: problem getting array or list value");
         return false;
     }
 

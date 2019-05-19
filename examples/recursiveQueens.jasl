@@ -5,7 +5,7 @@ fn:int canPlaceQueen(r, c, x) -> yes {
 
     while(i < r) {
         
-        get_token(i, x) -> tok;
+        get x(i) -> tok;
         int tok -> itok;     
         ? (((itok = c) || ((i - r) = (itok -c))) || ((i - r) = (c - itok))) {
             put 0 -> yes;
@@ -25,7 +25,7 @@ block printQueens(N, x) {
     while(i < N) {
         put 0 -> j;
         while(j < N) {
-            get_token(i, x) -> tok;
+            get x(i) -> tok;
             int tok -> itok;
             ? (itok = j) {
                 pr "Q ";

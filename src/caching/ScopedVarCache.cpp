@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "ScopedVarCache.hpp"
@@ -147,6 +147,7 @@ namespace jasl {
     SET_VALUE_IN_ARRAY(double, RealArray);
     SET_VALUE_IN_ARRAY(uint8_t, ByteArray);
     SET_VALUE_IN_ARRAY(std::string, StringArray);
+    SET_VALUE_IN_ARRAY(Value, List);
 
     template <typename V, typename T>
     bool ScopedVarCache::pushBackValueInArray(std::string const & key,
@@ -167,6 +168,7 @@ namespace jasl {
     PUSH_BACK_VALUE_IN_ARRAY(double, RealArray);
     PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
     PUSH_BACK_VALUE_IN_ARRAY(std::string, StringArray);
+    PUSH_BACK_VALUE_IN_ARRAY(Value, List);
 
     bool ScopedVarCache::eraseValue(std::string const &key)
     {
@@ -267,6 +269,7 @@ namespace jasl {
     GET_ARRAY_VALUE(RealArray);
     GET_ARRAY_VALUE(ByteArray);
     GET_ARRAY_VALUE(StringArray);
+    GET_ARRAY_VALUE(List);
 
     OptionalType ScopedVarCache::getType(std::string const &key)
     {

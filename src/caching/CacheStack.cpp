@@ -157,6 +157,7 @@ namespace jasl {
     SET_VALUE_IN_ARRAY(double, RealArray);
     SET_VALUE_IN_ARRAY(uint8_t, ByteArray);
     SET_VALUE_IN_ARRAY(std::string, StringArray);
+    SET_VALUE_IN_ARRAY(Value, List);
 
     template <typename V, typename T>
     void CacheStack::pushBackValueInArray(std::string const & key,
@@ -181,6 +182,7 @@ namespace jasl {
     PUSH_BACK_VALUE_IN_ARRAY(double, RealArray);
     PUSH_BACK_VALUE_IN_ARRAY(uint8_t, ByteArray);
     PUSH_BACK_VALUE_IN_ARRAY(std::string, StringArray);
+    PUSH_BACK_VALUE_IN_ARRAY(Value, List);
 
     void CacheStack::eraseValue(std::string const &key)
     {
@@ -308,6 +310,7 @@ namespace jasl {
     GET_ARRAY_VALUE(RealArray);
     GET_ARRAY_VALUE(ByteArray);
     GET_ARRAY_VALUE(StringArray);
+    GET_ARRAY_VALUE(List);
 
     OptionalType CacheStack::getType(std::string const &key)
     {
