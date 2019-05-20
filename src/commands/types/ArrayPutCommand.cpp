@@ -34,7 +34,9 @@ namespace jasl
             m_type = "byte";
         } else if(*type == Type::StringArray) {
             m_type = "string";
-        }  else {
+        } else if(*type == Type::List) {
+            m_type = "listElement";
+        } else {
             setLastErrorMessage("put: couldn't determine type");
         }
     }
@@ -88,13 +90,30 @@ namespace jasl
         } else if (m_type == "string") {
             std::string value;
             if (!VarExtractor::trySingleStringExtraction(m_func.paramA, value, m_sharedCache)) {
-                setLastErrorMessage("put: problem setting byte");
+                setLastErrorMessage("put: problem setting string");
                 return false;
             } 
-
             m_sharedCache->setValueInArray<std::string, StringArray>(m_varName, index, value);
+        } else if (m_type == "listElement") {
+            // First try string
+            {
+                std::string value;
+                if (VarExtractor::trySingleStringExtraction(m_func.paramA, value, m_sharedCache)) {
+                    m_sharedCache->setValueInArray<Value, List>(m_varName, index, value);
+                    return true;
+                }
+            }
+            // Then try list
+            {
+                List value;
+                if (VarExtractor::trySingleListExtraction(m_func.paramA, value, m_sharedCache)) {
+                    m_sharedCache->setValueInArray<Value, List>(m_varName, index, value);
+                    return true;
+                }
+            }
         }
-        return true;
+        setLastErrorMessage("put: error");
+        return false;
     }
 
     bool ArrayPutCommand::getIndex(int64_t &index) 

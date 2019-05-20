@@ -47,7 +47,7 @@ block placeNQueens(r, n, x) {
         call canPlaceQueen(r, c, x) -> yes;
         ? (yes = 1) {
             string c -> strtok;
-            set_token(r, x, strtok) -> x;
+            put strtok -> x(r);
             call printQueens(n,x); 
             ? (r = (n - 1)) {
                 exit;

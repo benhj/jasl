@@ -3,7 +3,7 @@
 //  jasl
 //
 //  Created by Ben Jones on 06/07/15
-//  Copyright (c) 2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "PutCommand.hpp"
@@ -31,10 +31,11 @@ namespace jasl
         auto type = sharedCache->getType(varName);
         if(!type) {
             setLastErrorMessage("put: couldn't determine type");
-        } else if(!((*type == Type::IntArray)  || 
-                    (*type == Type::RealArray) || 
-                    (*type == Type::ByteArray) ||
-                    (*type == Type::StringArray)))  {
+        } else if(!((*type == Type::IntArray)    || 
+                    (*type == Type::RealArray)   || 
+                    (*type == Type::ByteArray)   ||
+                    (*type == Type::StringArray) ||
+                    (*type == Type::List)))  {
             m_primitive = true;
         }
     }

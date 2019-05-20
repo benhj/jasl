@@ -182,7 +182,13 @@ namespace jasl
         // put 5 -> a;
         // put 10 -> b(1);       
         put  %= string("put")
-             >> (Strings::genericString | BasicTypes::doubleRule | BasicTypes::intRule | Expressions::mathExpression | Expressions::bracketedMathExpression)
+             >> (Strings::genericString |
+                 Strings::doubleQuotedString |
+                 Strings::quotedString | 
+                 BasicTypes::doubleRule |
+                 BasicTypes::intRule |
+                 Expressions::mathExpression |
+                 Expressions::bracketedMathExpression)
              >> lit("->")
              >> Strings::genericString 
              // optional indexing
