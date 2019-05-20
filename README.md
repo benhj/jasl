@@ -292,6 +292,7 @@ start {
 
 More on lists
 -------------
+
 Lists are containers of string elements that may contain nested lists:
 
 ```
@@ -300,6 +301,9 @@ list [just a plain list] -> A;
 list [Test a [nested list] list] -> L;
 list [a very [very [even more nested] nested] nested list] -> Q;
 ```
+
+List ^ and ^^ operators
+=======================
 
 List maniulation. Insert operator. Query operator. (TODO)
 
