@@ -291,7 +291,7 @@ start {
 ```
 
 More on lists
--------------
+=============
 
 Lists are containers of string elements that may contain nested lists:
 
@@ -303,9 +303,43 @@ list [a very [very [even more nested] nested] nested list] -> Q;
 ```
 
 List ^ and ^^ operators
-=======================
+-----------------------
 
-List maniulation. Insert operator. Query operator. (TODO)
+The `^` operator can be used to insert elements into lists. For example:
+
+```
+list [one two three] -> L;
+string "inserted" -> str;
+list [one two ^str three] -> L;
+;;; list L is now [one two inserted three]
+
+list [one two three] -> L;
+list [nested bit] -> P;
+list [one two three ^P] -> L;
+;;; list L is now [one two three [nested bit]]
+```
+
+The `^^` operator can be used to flatten lists when inserting, e.g.:
+
+```
+list [one two three] -> L;
+list [unnested bit] -> P;
+list [one two three ^^P] -> L;
+;;; list L is now [one two three unnested bit]
+```
+
+Can also be useful when one wants to append elements to the end of a list, e.g.:
+
+```
+list [one two three] -> L;
+string "four" -> str;
+list [five six] -> P;
+list [^^L ^str ^^P] -> L;
+;;; list L is now [one two three four five six]
+```
+
+List addition and removal of elements
+-------------------------------------
 
 A number of operators can be used to add elements to and extract elements from lists.
 
