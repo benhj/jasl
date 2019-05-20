@@ -184,7 +184,8 @@ namespace jasl
         put  %= string("put")
              >> (Strings::genericString |
                  Strings::doubleQuotedString |
-                 Strings::quotedString | 
+                 Strings::quotedString |
+                 Strings::bracketedWords |
                  BasicTypes::doubleRule |
                  BasicTypes::intRule |
                  Expressions::mathExpression |

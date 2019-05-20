@@ -35,12 +35,12 @@ start {
     prn innerToken;
 
     ;;; set token in list
-    set_token(1, A, "some") -> A;
+    put "some" -> A(1);
     pr "Setting token 1 of A list to some ";
     prn A;
 
     ;;; add a nested token
-    set_token(2, A, [nested part]) -> A;
+    put [nested part] -> A(2);
     pr "Adding a nested part to token 2 of A list: ";
     prn A;
 
