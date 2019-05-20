@@ -301,23 +301,25 @@ list [Test a [nested list] list] -> L;
 list [a very [very [even more nested] nested] nested list] -> Q;
 ```
 
+List maniulation. Insert operator. Query operator. (TODO)
+
 A number of operators can be used to add elements to and extract elements from lists.
 
-Setting tokens:
+Setting tokens -- use the `put` or `put_token` command:
 
 ```
 list [hello there] -> t;
-set_token (0, t, "goodbye") -> t;
+put "goodbye" -> t(0);
 ;;; list t is now [goodbye there]
 
-set_token (0, t, [nested bit]) -> t;
+put [nested bit] -> t(0);
 ;;; list t is now [[nested bit] there]
 
 set_token (1, [another list], "test") -> q;
 ;;; q is [another test]
 ```
 
-Getting tokens:
+Getting tokens -- use the `get` or `get_token` command:
 
 ```
 ;;; extract token 0, store in string t
@@ -327,7 +329,7 @@ get_token(0, [hello there]) -> t;
 list [what the flip] -> q;
 
 ;;; extract token 1 from q and store in string r
-get_token(1, q) -> r;
+get q(1) -> r;
 ```
 
 Adding tokens (similar to `set_token`):
