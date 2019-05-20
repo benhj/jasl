@@ -305,6 +305,8 @@ list [a very [very [even more nested] nested] nested list] -> Q;
 List ^ and ^^ operators
 -----------------------
 
+(Note: these operators are directly inspired by POP-11s operators of the same syntax)
+
 The `^` operator can be used to insert elements into lists. For example:
 
 ```
