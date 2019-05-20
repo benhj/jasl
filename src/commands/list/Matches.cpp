@@ -238,6 +238,32 @@ namespace jasl {
         return false;
     }
 
+    bool Matches::handleHHVar(List const & first,
+                              List const & second,
+                              List::const_iterator & itFirst,
+                              List::const_iterator & itSecond) const
+    {
+        // Given the MatchType, *itSecond must be a string,
+        // there is no way the cast to a string can fail.
+        std::string hvar;
+        (void)VarExtractor::tryAnyCast(hvar, *itSecond);
+        std::string var{std::begin(hvar) + 2, std::end(hvar)};
+        ++itSecond;
+
+        auto const val = m_sharedCache->getVar<List>(var, Type::List);
+        if(val) {
+            auto valIterator = std::begin(*val);
+            while(valIterator != std::end(*val)) {
+                if(doMatches(*itFirst, *valIterator) != MatchType::Exact) {
+                    return false;
+                }
+                ++valIterator;
+                ++itFirst;
+            }
+        } 
+        return true;
+    }
+
     bool Matches::handleDoubleEq(List const & first,
                                  List const & second,
                                  List::const_iterator & itFirst,
@@ -384,6 +410,12 @@ namespace jasl {
                     return false;
                 }
                 case MatchType::HHVar:
+                {
+                    if(handleHHVar(first, second, itFirst, itSecond)) {
+                        continue;
+                    }
+                    return false;
+                }
                 case MatchType::NoMatch:
                 {
                     // Edge case in which one must be a list rather than a string

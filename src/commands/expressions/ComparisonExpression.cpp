@@ -8,6 +8,7 @@
 
 #include "ComparisonExpression.hpp"
 #include "caching/VarExtractor.hpp"
+#include "commands/list/Matches.hpp"
 
 namespace jasl {
 
@@ -154,6 +155,15 @@ namespace jasl {
             if (VarExtractor::trySingleStringExtraction(m_left, str, m_sharedCache)) {
                 return doStage1(str, m_right, m_symbolOperator, m_sharedCache);
             }
+
+            // lists
+            List list;
+            List list2;
+            if (VarExtractor::trySingleListExtraction(m_left, list, m_sharedCache) &&
+                VarExtractor::trySingleListExtraction(m_right, list2, m_sharedCache)) {
+                return Matches(m_sharedCache).matches(list, list2);
+            }
+
         } catch (...) {
             
         }

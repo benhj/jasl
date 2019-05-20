@@ -57,6 +57,11 @@ namespace jasl {
                         List::const_iterator & itFirst,
                         List::const_iterator & itSecond) const;
 
+        bool handleHHVar(List const & first,
+                         List const & second,
+                         List::const_iterator & itFirst,
+                         List::const_iterator & itSecond) const;
+
         bool handleDoubleEq(List const & first,
                             List const & second,
                             List::const_iterator & itFirst,

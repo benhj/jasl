@@ -50,6 +50,7 @@ namespace jasl {
                                 | BasicTypes::boolRule
                                 | Strings::doubleQuotedString
                                 | Strings::quotedString
+                                | Strings::bracketedWords
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression)
                              >> Symbols::comparisonSymbols
@@ -59,6 +60,7 @@ namespace jasl {
                                 | BasicTypes::boolRule
                                 | Strings::doubleQuotedString
                                 | Strings::quotedString
+                                | Strings::bracketedWords
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression);
     }

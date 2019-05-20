@@ -92,6 +92,60 @@ fn:list testListInsertList_B(results) -> results
     list [^^results ^pass] -> results;
 }
 
+fn:list testListEquality(results) -> results
+{
+    list [one two three] -> A;
+    list [one two three] -> B;
+    bool (A = B) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityAnonymous(results) -> results
+{
+    list [one two three] -> A;
+    list [= = =] -> B;
+    bool (A = B) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityAnonymousB(results) -> results
+{
+    bool ([one two three] = [= = =]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityExtract(results) -> results
+{
+    bool ([one two three] = [?a ?b ?c]) -> ma;
+    bool (((a = "one") && (b = "two")) && (c = "three")) -> mb;
+    bool (ma && mb) -> mc;
+    call passPrinter(mc) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityInsert(results) -> results
+{
+    string "two" -> val;
+    bool ([one two three] = [?a ^val ?c]) -> ma;
+    bool ((a = "one") && (c = "three")) -> mb;
+    bool (ma && mb) -> mc;
+    call passPrinter(mc) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityInsertList(results) -> results
+{
+    list [two three] -> toks;
+    bool ([one two three] = [?a ^^toks]) -> ma;
+    bool (a = "one") -> mb;
+    bool (ma && mb) -> mc;
+    call passPrinter(mc) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 start {
     list [] -> results;
     call testFindA(results) -> results;
@@ -102,6 +156,12 @@ start {
     call testListInsertString(results) -> results;
     call testListInsertList(results) -> results;
     call testListInsertList_B(results) -> results;
+    call testListEquality(results) -> results;
+    call testListEqualityAnonymous(results) -> results;
+    call testListEqualityAnonymousB(results) -> results;
+    call testListEqualityExtract(results) -> results;
+    call testListEqualityInsert(results) -> results;
+    call testListEqualityInsertList(results) -> results;
 
     ;;; Generate test summary
     prn results;
