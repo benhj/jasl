@@ -46,6 +46,21 @@ namespace jasl {
             throw;
         }
 
+        bool doStage2(std::string const valA, 
+                      std::string const valB, 
+                      std::string const &symbolOperator)
+        {
+            switch (convert(symbolOperator)) {
+                case equal: return valA == valB;
+                case notEqual: return valA != valB;
+                case lessThan:  return valA < valB;
+                case lessThanEqual:  return valA <= valB;
+                case greaterThan:  return valA > valB;
+                case greaterThanEqual: return valA >= valB;
+                default: throw;
+            }
+        }
+
         template <typename T1, typename T2>
         bool doStage2(T1 const valA, 
                       T2 const valB, 
@@ -65,6 +80,24 @@ namespace jasl {
                 case logicAnd:  return valA && valB;
                 default: throw;
             }
+        }
+
+        bool doStage1(std::string const valA, 
+                      Value & right, 
+                      std::string const &symbolOperator,
+                      SharedCacheStack const &cache)
+        {
+
+            try {
+                // strings
+                std::string str;
+                if (VarExtractor::trySingleStringExtraction(right, str, cache)) {
+                    return doStage2(valA, str, symbolOperator);;
+                }
+            } catch (...) {
+                
+            }
+            return false;
         }
 
         template <typename T>
@@ -114,6 +147,12 @@ namespace jasl {
             bool b;
             if (VarExtractor::trySingleBoolExtraction(m_left, b, m_sharedCache)) {
                 return doStage1<bool>(b, m_right, m_symbolOperator, m_sharedCache);
+            }
+
+            // strings
+            std::string str;
+            if (VarExtractor::trySingleStringExtraction(m_left, str, m_sharedCache)) {
+                return doStage1(str, m_right, m_symbolOperator, m_sharedCache);
             }
         } catch (...) {
             

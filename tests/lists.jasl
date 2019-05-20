@@ -1,0 +1,114 @@
+fn:string passPrinter(result) -> str {
+    ;;; bug with the scoping here
+    string "empty" -> val;
+    if(result == TRUE) {
+        string "PASS" -> val;
+    } else {
+        string "FAIL" -> val;
+    }
+    string val -> str;
+}
+
+fn:list testFindA(results) -> results
+{
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [animal ?all]) -> result;
+    matches(result, [[animal dog] [animal cat]]) -> test;
+    matches(all, [dog cat]) -> test_B;
+    bool (test && test_B) -> passb;
+    call passPrinter(passb) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testFindB(results) -> results
+{
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [animal ?all]) -> result;
+
+    ;;; now try again but with vehicle, should override the first set
+    find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
+          [vehicle ?all]) -> result;
+
+    matches(result, [[vehicle car] [vehicle train]]) -> test;
+    matches(all, [car train]) -> test_B;
+    bool (test && test_B) -> passb;
+    call passPrinter(passb) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListBasic(results) -> results
+{
+    list [one two three] -> L;
+    matches(L, [one two three]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListPut(results) -> results
+{
+    list [one two three] -> L;
+    put "replaced" -> L(1);
+    matches(L, [one replaced three]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListGet(results) -> results
+{
+    list [one two three] -> L;
+    get L(2) -> res;
+    bool (res == "three") -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListInsertString(results) -> results
+{
+    list [one two three] -> L;
+    string "four" -> f;
+    list [^^L ^f] -> L;
+    matches(L, [one two three four]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListInsertList(results) -> results
+{
+    list [one two three] -> L;
+    list [four five] -> Q;
+    list [^^L ^Q] -> L;
+    matches(L, [one two three [four five]]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListInsertList_B(results) -> results
+{
+    list [one two three] -> L;
+    list [four five] -> Q;
+    list [^^L ^^Q] -> L;
+    matches(L, [one two three four five]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+start {
+    list [] -> results;
+    call testFindA(results) -> results;
+    call testFindB(results) -> results;
+    call testListBasic(results) -> results;
+    call testListPut(results) -> results;
+    call testListGet(results) -> results;
+    call testListInsertString(results) -> results;
+    call testListInsertList(results) -> results;
+    call testListInsertList_B(results) -> results;
+
+    ;;; Generate test summary
+    prn results;
+    find(results, [FAIL]) -> failures;
+    find(results, [PASS]) -> passes;
+    length failures -> fc;
+    length passes -> pc;
+    say fc; prn " failures.";
+    say pc; prn " passes.";
+}

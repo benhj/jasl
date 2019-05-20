@@ -48,6 +48,8 @@ namespace jasl {
                                 | BasicTypes::intRule
                                 | Strings::genericString
                                 | BasicTypes::boolRule
+                                | Strings::doubleQuotedString
+                                | Strings::quotedString
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression)
                              >> Symbols::comparisonSymbols
@@ -55,6 +57,8 @@ namespace jasl {
                                 | BasicTypes::intRule
                                 | Strings::genericString
                                 | BasicTypes::boolRule
+                                | Strings::doubleQuotedString
+                                | Strings::quotedString
                                 | bracketedMathExpression
                                 | bracketedComparisonExpression);
     }
