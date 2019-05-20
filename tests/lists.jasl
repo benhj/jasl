@@ -146,6 +146,25 @@ fn:list testListEqualityInsertList(results) -> results
     list [^^results ^pass] -> results;
 }
 
+fn:list testListEqualityInsertListB(results) -> results
+{
+    list [two three] -> toks;
+    list [four five] -> toksb;
+    bool ([one two three four five] = [one ^^toks ^^toksb]) -> ma;
+    call passPrinter(ma) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListEqualityInsertListC(results) -> results
+{
+    list [two three] -> toks;
+    string "four" -> middle;
+    list [five six] -> toksb;
+    bool ([one two three four five six] = [one ^^toks ^middle ^^toksb]) -> ma;
+    call passPrinter(ma) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 start {
     list [] -> results;
     call testFindA(results) -> results;
@@ -162,6 +181,8 @@ start {
     call testListEqualityExtract(results) -> results;
     call testListEqualityInsert(results) -> results;
     call testListEqualityInsertList(results) -> results;
+    call testListEqualityInsertListB(results) -> results;
+    call testListEqualityInsertListC(results) -> results;
 
     ;;; Generate test summary
     prn results;
