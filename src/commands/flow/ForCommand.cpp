@@ -10,7 +10,6 @@
 #include "caching/WithNewCache.hpp"
 #include "commands/list/ListGetTokenCommand.hpp"
 #include "commands/types/ArrayGetCommand.hpp"
-#include "commands/types/ReleaseCommand.hpp"
 #include "core/CommandInterpretor.hpp"
 #include "core/RegisterCommand.hpp"
 #include <string>
@@ -101,7 +100,7 @@ namespace jasl {
         }
 
         // some failure occured
-        setLastErrorMessage("for: problem processing elements");
+        setLastErrorMessage("for: error");
         return false;
     }
 
@@ -133,21 +132,16 @@ namespace jasl {
                     if (success) {
                         success = parseCommands(innerFuncs);
                     } else {
-                        setLastErrorMessage("repeat: Error interpreting for's body");
+                        setLastErrorMessage("for: error");
                         return false;
                     }
                 }
-
                 // make sure variable storing token is released before iterating
-                Function relFunc;
-                relFunc.name = "release";
-                relFunc.paramA = indexSymbol;
-                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
-                (void)rc.execute();
+                m_sharedCache->eraseValue(indexSymbol);
             }
 
         }
-        setLastErrorMessage("for: problem getting index symbol");
+        setLastErrorMessage("for: error");
         return false;
     }
 
@@ -182,11 +176,7 @@ namespace jasl {
                 // parse inner functions
                 if (success) {
                     (void)parseCommands(innerFuncs);
-                    Function relFunc;
-                    relFunc.name = "release";
-                    relFunc.paramA = indexSymbol;
-                    ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
-                    (void)rc.execute();
+                    m_sharedCache->eraseValue(indexSymbol);
                 } else {
                     setLastErrorMessage("for: error");
                     return false;
@@ -216,15 +206,11 @@ namespace jasl {
                 m_sharedCache->setVar(indexSymbol, (uint8_t)v, Type::Byte);
                 success = parseCommands(innerFuncs);
                 // make sure variable storing token is released before iterating
-                Function relFunc;
-                relFunc.name = "release";
-                relFunc.paramA = indexSymbol;
-                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
-                (void)rc.execute();
+                m_sharedCache->eraseValue(indexSymbol);
             }
 
         }
-        setLastErrorMessage("for: problem getting index symbol");
+        setLastErrorMessage("for: error");
         return false;
     }
 
