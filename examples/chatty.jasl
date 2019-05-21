@@ -1,0 +1,61 @@
+;;; Starting of a chatbot port from POP-11. Just
+;;; to see if its possible and how easy it would be.
+
+fn:list inference_engine(input) -> response {
+    ;;; takes in a list of words and responds by producing a list,
+    ;;; assigned to the output variable 'response'
+
+    list [] -> response;
+    if (input = [i hate ==]) {
+        prn "here";
+        list [perhaps you hate yourself] -> response;
+    }
+    elseif (input = [are you ??x]) {
+        list [do i seem ^^x] -> response;
+    }
+    elseif (input = [i ??x you]) {
+        list [perhaps in your fantasy we ^^x each other] -> response;
+    }
+    elseif (input = [??x is ??y]) {
+        list [what if ^^x were not ^^y ? ] -> response;
+    }
+    elseif (input = [bye]) {
+        list [I have enjoyed our meeting] -> response;
+    } else {
+        ;;; input not recognized -- this is the default response.
+        list [please go on] -> response;
+    }
+}
+
+block interface() {
+    ;;; This procedure does not take any input when it starts.
+    ;;; it repeatedly reads in something typed by the user,
+    ;;; gets a response from inference_engine, then prints out
+    ;;; the response.
+    ;;; It checks whether the user wants to stop, and if so prints
+    ;;; a final message and stops.
+    repeat 1000 times {
+        readlist "Please type something and end by pressing the RETURN key: " -> sentence;
+
+        say "This is what you typed in: ";
+        prn sentence;
+
+        ;;; get the reply from the inference engine
+        call inference_engine(sentence) -> reply;
+
+        ;;; and print it out
+        say "This is my reply: ";
+        prn reply;
+
+        ;;; we can test whether to stop now
+
+        if (sentence = "bye") { 
+            ;;; need to implement break
+        }
+    }
+}
+
+start {
+	call interface();
+	prn response;
+}

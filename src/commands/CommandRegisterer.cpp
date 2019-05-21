@@ -8,6 +8,7 @@
 #include "commands/screenio/EchoCommand.cpp"
 #include "commands/screenio/EchoNLCommand.cpp"
 #include "commands/screenio/InputCommand.cpp"
+#include "commands/screenio/ReadListCommand.cpp"
 
 #include "commands/types/ArrayCommand.cpp"
 #include "commands/types/ArrayPutCommand.cpp"

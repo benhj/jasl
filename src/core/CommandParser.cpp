@@ -149,6 +149,12 @@ namespace jasl
                    >> commandCollection
                    >> '}';
 
+        elseifRule %= *(string("elseif") 
+                   >> '(' 
+                   >>  Expressions::comparisonExpression
+                   >> ')'
+                   >> '{' >> commandCollection >> '}');
+
         // a simple if statement
         ifRule %= string("if")
                >> '(' 
@@ -158,6 +164,7 @@ namespace jasl
                >>  commandCollection
                >> '}'
                // optional 'else part'
+               >> elseifRule
                >> -(lit("else") >> '{' >> commandCollection >> '}');
 
         ifRule_B %= string("?")

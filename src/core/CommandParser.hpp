@@ -57,6 +57,7 @@ namespace jasl
         qi::rule<Iterator, Function(), ascii::space_type> returnable;
         qi::rule<Iterator, Function(), ascii::space_type> returnableArray;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule;
+        qi::rule<Iterator, std::vector<Function>(), ascii::space_type> elseifRule;
         qi::rule<Iterator, Function(), ascii::space_type> ifRule_B;
 
         qi::rule<Iterator, Function(), ascii::space_type> execCommand;

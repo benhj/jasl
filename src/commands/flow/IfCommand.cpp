@@ -43,8 +43,6 @@ namespace jasl
 
     bool IfCommand::interpretFunctionBody()
     {
-        bool success = true;
-
         // Extract the bool condition of the if-statement
         ComparisonExpression ce;
         if (!VarExtractor::tryExtraction<ComparisonExpression>(ce, m_func.paramA, m_sharedCache)) {
@@ -56,24 +54,47 @@ namespace jasl
         // within the if block
         if (ce.evaluate()) {
             std::vector<Function> innerFuncs;
-            success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
+            auto const success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramB);
             if (success) {
-                success = parseCommands(innerFuncs);
+                return parseCommands(innerFuncs);
             } else {
                 setLastErrorMessage("IfCommand: Error interpreting if statement");
                 return false;
             }
-        } else {
+        } else if(m_func.name != "elseif") {
+
+            // See if we have a bunch of elseif parts
             std::vector<Function> innerFuncs;
-            success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
-            if (success) {
-                success = parseCommands(innerFuncs);
-            } else {
+            auto success = VarExtractor::tryAnyCast<std::vector<Function>>(innerFuncs, m_func.paramC);
+            if (success && !innerFuncs.empty()) {
+                // If the name of the first function parsed out of
+                // paramC isn't 'elseif', we must be in the else branch
+                // and so can proceed with parsing 'else's' commands.
+                if(innerFuncs[0].name != "elseif") {
+                    return parseCommands(innerFuncs);
+                } else {
+                    // Else the parts are ifelse branches, so we can recurse into
+                    // these by constructing additional if commands and returning
+                    // true on the first one that is successful.
+                    for(auto & ei : innerFuncs) {
+                        if(IfCommand(ei, m_sharedCache, m_outputStream).execute()) {
+                            return true;
+                        }
+                    }
+                    // Dind't return true so see if we have a final 'else' bit
+                    std::vector<Function> elseFuncs;
+                    success = VarExtractor::tryAnyCast<std::vector<Function>>(elseFuncs, m_func.paramD);
+                    if(success) {
+                        return parseCommands(elseFuncs);
+                    }
+                }
+            }
+            else {
                 setLastErrorMessage("IfCommand: Error interpreting if statement");
                 return false;
             }
         }
-        return success;
+        return false;
     }
 
     bool IfCommand::parseCommands(std::vector<Function> &functions) 
