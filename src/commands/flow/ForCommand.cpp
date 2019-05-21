@@ -46,7 +46,7 @@ namespace jasl {
                 {
                     auto list = m_sharedCache->getVar<List>(listSymbol, Type::List);
                     if(list) {
-                        return processList(*list, listSymbol);
+                        return processList(*list);
                     }
                 }
 
@@ -93,12 +93,12 @@ namespace jasl {
             }
         }
         // try and pull out raw list
-        // {
-        //     List list;
-        //     if(VarExtractor::tryAnyCast(list, m_func.paramB)) {
-        //         return processList(list);
-        //     }
-        // }
+        {
+            List list;
+            if(VarExtractor::tryAnyCast(list, m_func.paramB)) {
+                return processList(list);
+            }
+        }
 
         // some failure occured
         setLastErrorMessage("for: problem processing elements");
@@ -151,8 +151,7 @@ namespace jasl {
         return false;
     }
 
-    bool ForCommand::processList(List const &va, 
-                                 std::string const & listSymbol)
+    bool ForCommand::processList(List const &va)
     {
         std::string indexSymbol;
         if(VarExtractor::tryAnyCast(indexSymbol, m_func.paramA)) {
@@ -166,35 +165,36 @@ namespace jasl {
             // Process tokens one by one using get_token command
             CommandInterpretor ci;
             for(int i = 0; i < va.size(); ++i) {
-                Function f;
-                f.name = "get_token";
-                f.paramA = (int64_t)i;
-                f.paramB = listSymbol;
-                f.paramC = indexSymbol;
-                ListGetTokenCommand tc(f, m_sharedCache, m_outputStream);                
-                if(tc.execute()) {
 
-                    // do other commands
-                    // parse inner functions
-                    if (success) {
-                        success = parseCommands(innerFuncs);
+                std::string toStoreString;
+                if(VarExtractor::tryAnyCast(toStoreString, va[i])) {
+                    m_sharedCache->setVar(indexSymbol, toStoreString, Type::String);
+                } else {
+                    List list;
+                    if(VarExtractor::tryAnyCast(list, va[i])) {
+                        m_sharedCache->setVar(indexSymbol, list, Type::List);
                     } else {
-                        setLastErrorMessage("repeat: Error interpreting for's body");
-                        return false;
+                        success = false;
                     }
-
                 }
 
-                // make sure variable storing token is released before iterating
-                Function relFunc;
-                relFunc.name = "release";
-                relFunc.paramA = indexSymbol;
-                ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
-                (void)rc.execute();
+                // do other commands
+                // parse inner functions
+                if (success) {
+                    (void)parseCommands(innerFuncs);
+                    Function relFunc;
+                    relFunc.name = "release";
+                    relFunc.paramA = indexSymbol;
+                    ReleaseCommand rc(relFunc, m_sharedCache, m_outputStream);
+                    (void)rc.execute();
+                } else {
+                    setLastErrorMessage("for: error");
+                    return false;
+                }
             }
-
+            return true;
         }
-        setLastErrorMessage("for: problem getting index symbol");
+        setLastErrorMessage("for: error.");
         return false;
     }
 

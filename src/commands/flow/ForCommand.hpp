@@ -25,7 +25,7 @@ namespace jasl {
         static std::vector<std::string> getCommandNames();
     private:
         bool parseCommands(std::vector<Function> &functions);
-        bool processList(List const &va, std::string const &listSymbol);
+        bool processList(List const &va);
 
         template<typename T>
         bool processArray(T const &array, std::string const & listSymbol);

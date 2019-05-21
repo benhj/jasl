@@ -1,0 +1,17 @@
+;;; POP-11 ported examples
+;;; Note jasl doesnt (yet) support parallel loops
+
+block one() {
+    ;;; Outer loop iterates over items in list of words
+    for itemA in [a b c d e] {
+        ;;; Inner loop iterates over items in list of words
+        for itemB in [1 2 3 4 5] {
+            list [^itemA ^itemB] -> L; 
+            prn L;
+        }
+     }
+}
+
+start {
+	call one();
+}
