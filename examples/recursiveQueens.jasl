@@ -22,10 +22,9 @@ block printQueens(N, x) {
     int 0 -> i;
     int 0 -> j;
 
-    while(i < N) {
+    for tok in x {
         put 0 -> j;
         while(j < N) {
-            get x(i) -> tok;
             int tok -> itok;
             ? (itok = j) {
                 pr "Q ";
@@ -35,7 +34,6 @@ block printQueens(N, x) {
             put (j + 1) -> j;
         }
         say "\n";
-        put (i + 1) -> i;
     }
 
  }
