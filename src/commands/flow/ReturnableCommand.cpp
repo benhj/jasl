@@ -21,41 +21,56 @@ namespace jasl
 
     namespace {
 
-        Type getForArrayTypes(std::string const & theType) {
+        Type getForArrayTypes(std::string const & theType,
+                              std::string const & returnSymbol,
+                              SharedCacheStack & sharedCache) {
             if(theType == "ints") {
+                // Fix scoping issue by setting a default value
+                (void)sharedCache->setVar(returnSymbol, IntArray(), Type::IntArray);
                 return Type::IntArray;
             } else if(theType == "reals") {
+                (void)sharedCache->setVar(returnSymbol, RealArray(), Type::RealArray);
                 return Type::RealArray;
             } else if(theType == "bytes") {
+                (void)sharedCache->setVar(returnSymbol, ByteArray(), Type::ByteArray);
                 return Type::ByteArray;
             } else if(theType == "strings") {
+                (void)sharedCache->setVar(returnSymbol, StringArray(), Type::StringArray);
                 return Type::StringArray;
             } else {
                 throw std::runtime_error("fn: can't derive sub type");
             }
         }
 
-        Type getReturnType(Function &func, 
-                           SharedCacheStack const &sharedCache)
+        Type getReturnType(Function &func,
+                           std::string const & returnSymbol,
+                           SharedCacheStack & sharedCache)
         {
             std::string type;
             (void)func.getValueA<std::string>(type, sharedCache);
             if(type == "int") {
+                // Fixing scoping issue by setting a default value here
+                (void)sharedCache->setVar(returnSymbol, (int64_t)0, Type::Int);
                 return Type::Int;
             } else if(type == "real") {
+                (void)sharedCache->setVar(returnSymbol, (double)0, Type::Real);
                 return Type::Real;
             } else if(type == "string") {
+                (void)sharedCache->setVar(returnSymbol, std::string(""), Type::String);
                 return Type::String;
             } else if(type == "bool") {
+                (void)sharedCache->setVar(returnSymbol, false, Type::Bool);
                 return Type::Bool;
             } else if(type == "list") {
+                (void)sharedCache->setVar(returnSymbol, List(), Type::List);
                 return Type::List;
             } else if(type == "nil") {
                 return Type::None;
             } else {
-                return getForArrayTypes(type);
+                return getForArrayTypes(type, returnSymbol, sharedCache);
             }
         }
+
     }
 
     ReturnableCommand::ReturnableCommand(Function &func_,
@@ -64,10 +79,13 @@ namespace jasl
         : Command(func_, std::make_shared<CacheStack>(), output)
         , m_functionName()
         , m_returnSymbol()
-        , m_returnType(getReturnType(func_, sharedCache))
+        , m_returnType(getReturnType(func_, m_returnSymbol, m_sharedCache))
     {
         if(m_returnType != Type::None) {
             (void)m_func.getValueD<std::string>(m_returnSymbol, m_sharedCache);
+
+
+
         }
         (void)m_func.getValueB<std::string>(m_functionName, m_sharedCache);    
     }
