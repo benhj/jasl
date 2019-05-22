@@ -4,8 +4,6 @@
 fn:list inference_engine(input) -> response {
     ;;; takes in a list of words and responds by producing a list,
     ;;; assigned to the output variable 'response'
-
-    list [] -> response;
     if (input = [i hate ==]) {
         prn "here";
         list [perhaps you hate yourself] -> response;
