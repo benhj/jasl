@@ -9,13 +9,29 @@
 #include "ListCommand.hpp"
 #include "caching/VarExtractor.hpp"
 #include "core/RegisterCommand.hpp"
+#include <algorithm>
+#include <string>
 
 bool jasl::ListCommand::m_registered = 
 registerCommand<jasl::ListCommand>();
 
+void format(std::string const & fname, std::string &in)
+{
+    if(fname == "upper") {
+        std::transform(std::begin(in),
+                       std::end(in),
+                       std::begin(in),
+                       ::toupper);
+    } else if(fname == "lower") {
+        std::transform(std::begin(in),
+                       std::end(in),
+                       std::begin(in),
+                       ::tolower);
+    }
+}
+
 namespace jasl
 {
-
     ListCommand::ListCommand(Function &func_,
                              SharedCacheStack const &sharedCache,
                              OptionalOutputStream const &output)
@@ -27,7 +43,7 @@ namespace jasl
 
     std::vector<std::string> ListCommand::getCommandNames()
     {
-        return {"list"};
+        return {"list", "lower", "upper"};
     }
 
     List ListCommand::processList(List const & list) const
@@ -50,7 +66,9 @@ namespace jasl
                     // Try and get a string from ^var
                     auto const val = m_sharedCache->getVar<std::string>(varName, Type::String);
                     if(val) {
-                        finalList.push_back(*val);
+                        auto finalVal = *val;
+                        format(m_func.name, finalVal);
+                        finalList.push_back(finalVal);
                     } 
                     // Try and get a list from ^var or ^^var
                     else {
@@ -65,10 +83,14 @@ namespace jasl
                         }
                     }
                 } else {
-                    finalList.push_back(el);
+                    auto finalVal = element;
+                    format(m_func.name, finalVal);
+                    finalList.push_back(finalVal);
                 }
             } else {
-                finalList.push_back(el);
+                auto finalVal = element;
+                format(m_func.name, finalVal);
+                finalList.push_back(finalVal);
             }
         }
         return finalList;
