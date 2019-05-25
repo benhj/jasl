@@ -100,7 +100,7 @@ block interface() {
     ;;; It checks whether the user wants to stop, and if so prints
     ;;; a final message and stops.
     list [] -> words;
-    repeat 1000 times {
+    while(TRUE = TRUE) {
         readlist "?: " -> sentence;
 
         ;;; get the reply from the inference engine
