@@ -88,9 +88,7 @@ namespace jasl
                     finalList.push_back(finalVal);
                 }
             } else {
-                auto finalVal = element;
-                format(m_func.name, finalVal);
-                finalList.push_back(finalVal);
+                finalList.push_back(el);
             }
         }
         return finalList;

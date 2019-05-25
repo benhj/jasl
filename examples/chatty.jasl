@@ -3,7 +3,7 @@
 
 ;;; returns true if the input appears to be a question
 fn:list is_question_get_word(input) -> word {
-    list [is how why are may can was were what who] -> words;
+    list [is how why are may can was were what who whats hows] -> words;
     get input(0) -> first;
 
     ;;; Is the first word of the input a member of words?
@@ -17,8 +17,12 @@ fn:bool is_about_me(input) -> isit {
 }
 
 fn:list random_question_response() -> response {
-    list [[What do you think I would know that][I do not know][I am not sure][Dunno look on google][Who knows][Good question]] -> L;
-    prn L;
+    list [[Why do you think I would know that]
+          [I don't know]
+          [not sure]
+          [Dunno look on google]
+          [Who knows]
+          [Good question]] -> L;
     oneof L -> response;    
 }
 
