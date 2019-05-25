@@ -23,7 +23,7 @@ cmake ..
 make
 ```
 
-Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build. The libicu development libraries an headers are also required by the parsing engine -- basically to allow the parsing of code points and escape characters. It's a pain in the arse to build but seems to work well. It is assumed by the build script that all boost and icu libs are under `/usr/local/lib` and headers under `/usr/local/include`. Finally, libcrypto and libssl as provider by OpenSSL are also required for a bunch of the secure networking API.
+Note, I have only tested this on a mac platform but it should work on linux and with a bit more work, on windows too. Since the main parsing engine uses boost::spirit, several boost headers are required and should be installed before attempting to build. The libicu development libraries an headers are also required by the parsing engine -- basically to allow the parsing of code points and escape characters. It's a pain in the arse to build but seems to work well. It is assumed by the build script that all boost and icu libs are under `/usr/local/lib` and headers under `/usr/local/include`. Finally, libcurl and associated developer haders are required for the networking API.
 
 The interpretor will let you run a jasl script. E.g.:
 
