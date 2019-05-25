@@ -1,12 +1,9 @@
 fn:string passPrinter(result) -> str {
-    ;;; bug with the scoping here
-    string "empty" -> val;
     if(result == TRUE) {
-        string "PASS" -> val;
+        string "PASS" -> str;
     } else {
-        string "FAIL" -> val;
+        string "FAIL" -> str;
     }
-    string val -> str;
 }
 
 fn:list testFindA(results) -> results
