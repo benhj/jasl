@@ -3,7 +3,7 @@
 
 ;;; returns true if the input appears to be a question
 fn:bool is_question(input) -> isit {
-    list [is how why are may can was were] -> words;
+    list [is how why are may can was were what] -> words;
     get input(0) -> first;
 
     ;;; Is the first word of the input a member of words?
@@ -17,38 +17,45 @@ fn:list inference_engine(input, words) -> response {
     ;;; make lowercase
     lower input -> input;
 
-    if (input = [i hate ==]) {
-        list [perhaps you hate yourself] -> response;
-    }
-    elseif (input = [what is your ??x]) {
-        list [my ^^x is something] -> response;
-    }
-    elseif (input = [your ??x is ??y]) {
-        list [my ^^x is ^^y] -> response;
-    }
-    elseif (input = [you have ??x]) {
-        list [i have ^^y] -> response;
-    }
-    elseif (input = [you are ??x]) {
-        list [i am ^^x] -> response;
-    }
-    elseif (input = [hello ==]) {
-        list [hi] -> response;
-    }
-    elseif (input = [are you ??x]) {
-        list [do i seem ^^x] -> response;
-    }
-    elseif (input = [i ??x you]) {
-        list [perhaps in your fantasy we ^^x each other] -> response;
-    }
-    elseif (input = [??x is ??y]) {
-        list [what if ^^x were not ^^y ? ] -> response;
-    }
-    elseif (input = [bye]) {
-        list [I have enjoyed our meeting] -> response;
-    } else {
-        ;;; input not recognized -- this is the default response.
-        list [please go on] -> response;
+    ;;; is the input a question? If so process accordingly.
+    call is_question(input) -> answer;
+    if (answer = TRUE) {
+        list [a question] -> response;
+    } elseif (answer = FALSE) {
+        ;;; bug in JASL interpretor. Why should this an elseif branch?
+        if (input = [i hate ==]) {
+            list [perhaps you hate yourself] -> response;
+        }
+        elseif (input = [what is your ??x]) {
+            list [my ^^x is something] -> response;
+        }
+        elseif (input = [your ??x is ??y]) {
+            list [my ^^x is ^^y] -> response;
+        }
+        elseif (input = [you have ??x]) {
+            list [i have ^^y] -> response;
+        }
+        elseif (input = [you are ??x]) {
+            list [i am ^^x] -> response;
+        }
+        elseif (input = [hello ==]) {
+            list [hi] -> response;
+        }
+        elseif (input = [are you ??x]) {
+            list [do i seem ^^x] -> response;
+        }
+        elseif (input = [i ??x you]) {
+            list [perhaps in your fantasy we ^^x each other] -> response;
+        }
+        elseif (input = [??x is ??y]) {
+            list [what if ^^x were not ^^y ? ] -> response;
+        }
+        elseif (input = [bye]) {
+            list [I have enjoyed our meeting] -> response;
+        } else {
+            ;;; input not recognized -- this is the default response.
+            list [please go on] -> response;
+        }
     }
 }
 
