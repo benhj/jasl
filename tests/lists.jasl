@@ -6,6 +6,23 @@ fn:string passPrinter(result) -> str {
     }
 }
 
+fn:list testMember(results) -> results
+{
+    ;;; one is a member of the list
+    member([one two three], [one]) -> L;
+    call passPrinter(L) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testMemberNegative(results) -> results
+{
+    ;;; four is not a member of the list
+    member([one two three], [four]) -> L;
+    bool (L = FALSE) -> eval;
+    call passPrinter(eval) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 fn:list testFindA(results) -> results
 {
     find ([[animal dog] [animal cat][vehicle car] [vehicle train]],
@@ -164,6 +181,8 @@ fn:list testListEqualityInsertListC(results) -> results
 
 start {
     list [] -> results;
+    call testMember(results) -> results;
+    call testMemberNegative(results) -> results;
     call testFindA(results) -> results;
     call testFindB(results) -> results;
     call testListBasic(results) -> results;

@@ -26,7 +26,7 @@ namespace jasl
 
     std::vector<std::string> FindCommand::getCommandNames()
     {
-        return {"find"};
+        return {"find", "member"};
     }
 
     bool FindCommand::execute() 
@@ -77,7 +77,12 @@ namespace jasl
                 List listWithString;
                 listWithString.push_back(str);
                 if (m_matches.matches(listWithString, list2)) {
-                    result.push_back(element);
+                    if(m_func.name == "find") {
+                        result.push_back(element);
+                    } else {
+                        m_sharedCache->setVar(resultName, true, Type::Bool);
+                        return true;
+                    }
                 }
             }
             // Try list
@@ -86,11 +91,21 @@ namespace jasl
                 auto const listSuccess = VarExtractor::tryAnyCast(listEx, element);
                 if(listSuccess) {
                     if (m_matches.matches(listEx, list2)) {
-                        result.push_back(element);
+                        if(m_func.name == "find") {
+                            result.push_back(element);
+                        } else {
+                            m_sharedCache->setVar(resultName, true, Type::Bool);
+                            return true;
+                        }
                     }
                 }
             }
 
+        }
+
+        if(m_func.name == "member") {
+            m_sharedCache->setVar(resultName, false, Type::Bool);
+            return true;
         }
 
         m_sharedCache->setVar(resultName, result, Type::List);
