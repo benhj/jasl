@@ -106,8 +106,8 @@ block interface() {
         ;;; get the reply from the inference engine
         call inference_engine(sentence, words) -> reply;
 
-        ;;; and print it out
-        prn reply;
+        ;;; and print it out. Note pprn instead of prn for 'pretty print'
+        pprn reply;
 
         ;;; we can test whether to stop now
         if (sentence = [bye]) {

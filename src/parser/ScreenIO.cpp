@@ -15,7 +15,8 @@ namespace jasl {
         using ascii::string;
 
         // for printing out a string to screen
-        echo %= lexeme[string("prn") | string("pr") | string("say")]
+        echo %= lexeme[string("prn") | string("pr") | string("say") |
+                       string("pprn") | string("ppr")]
              >> (Strings::doubleQuotedString |
                  Strings::genericString |
                  Strings::bracketedWords |

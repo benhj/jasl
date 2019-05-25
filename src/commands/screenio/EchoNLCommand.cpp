@@ -27,7 +27,7 @@ namespace jasl
 
     std::vector<std::string> EchoNLCommand::getCommandNames()
     {
-        return {"prn"};
+        return {"prn", "pprn"};
     }
 
     bool EchoNLCommand::execute()
@@ -125,7 +125,7 @@ namespace jasl
                                            int const depth,
                                            bool const lastToken)
     {
-        output.append("[");
+        if(m_func.name != "pprn") { output.append("["); }
         // Print out tokens, one after another
         size_t count = 0;
         for(auto const & it : valueArray) {
@@ -149,10 +149,12 @@ namespace jasl
             }
             ++count;
         }
-        if(depth > 0 && lastToken) {
-            output.append("]");
-        } else {
-            output.append("] ");
+        if(m_func.name != "pprn") {
+            if(depth > 0 && lastToken) {
+                output.append("]");
+            } else {
+                output.append("] ");
+            }
         }
     }
 
