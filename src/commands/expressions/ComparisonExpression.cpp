@@ -3,12 +3,13 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #include "ComparisonExpression.hpp"
 #include "caching/VarExtractor.hpp"
 #include "commands/list/Matches.hpp"
+#include "core/ExceptionDispatcher.hpp"
 
 namespace jasl {
 
@@ -96,7 +97,7 @@ namespace jasl {
                     return doStage2(valA, str, symbolOperator);;
                 }
             } catch (...) {
-                
+                handleException();
             }
             return false;
         }
@@ -124,7 +125,7 @@ namespace jasl {
                     return doStage2<T, bool>(valA, b, symbolOperator);
                 }
             } catch (...) {
-                
+                handleException();
             }
             return false;
         }
@@ -165,7 +166,7 @@ namespace jasl {
             }
 
         } catch (...) {
-            
+            handleException();
         }
         return false;
     }

@@ -249,6 +249,9 @@ namespace jasl
         // for exiting a program
         exitCommand %= string("exit") >> -(Strings::genericString) >> ';';
 
+        // for breaking out of a loop
+        breakCommand %= string("break") >> -(Strings::genericString) >> ';';
+
         // For joining on all threads
         joinAllCommand %= string("join_all") >> -(Strings::genericString) >> ';';
 
@@ -301,6 +304,7 @@ namespace jasl
                      | releaseCommand
                      | randomCommand
                      | exitCommand
+                     | breakCommand
                      | joinAllCommand
                      | get
                      | Patterns::pattern

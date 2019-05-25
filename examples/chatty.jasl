@@ -104,8 +104,8 @@ block interface() {
         prn reply;
 
         ;;; we can test whether to stop now
-        if (sentence = "bye") { 
-            ;;; need to implement break
+        if (sentence = [bye]) {
+            break;
         }
     }
 }

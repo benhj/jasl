@@ -6,6 +6,7 @@
 //  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
+#include "BreakControlFlowException.hpp"
 #include "CommandInterpretor.hpp"
 #include "CommandParser.hpp"
 #include "caching/GlobalCache.hpp"
@@ -107,6 +108,21 @@ namespace jasl {
                                                  exit(0);
                                                  return nullptr;
                                              });
+
+
+        getCommandMap().emplace("break", [](Function &,
+                                         SharedCacheStack const &,
+                                         OptionalOutputStream const &) {
+                                             throw BreakControlFlowException();
+                                             return false;
+                                         });
+        
+        getCommandBuilders().emplace("break", [](Function &,
+                                              SharedCacheStack const &,
+                                              OptionalOutputStream const &) {
+                                                  throw BreakControlFlowException();
+                                                  return nullptr;
+                                              });
     }
 
     void CommandInterpretor::registerCommand(std::string name, CommandBuilder builder)
@@ -144,7 +160,9 @@ namespace jasl {
             getCommandMap()[func.name](func, varCache, outputStream);
             errorMessage = GlobalCache::lastKnownError;
             if(!errorMessage.empty()) { return std::string("Couldn't interpret function"); }
-        } catch (...) {}
+        } catch (...) {
+            handleException();
+        }
         return errorMessage;
     }
 

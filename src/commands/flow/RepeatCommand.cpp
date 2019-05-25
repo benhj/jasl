@@ -10,6 +10,8 @@
 #include "caching/WithNewCache.hpp"
 #include "core/CommandInterpretor.hpp"
 #include "core/RegisterCommand.hpp"
+#include "core/ExceptionDispatcher.hpp"
+#include "core/BreakControlFlowException.hpp"
 #include <string>
 
 bool jasl::RepeatCommand::m_registered = 
@@ -58,14 +60,18 @@ namespace jasl {
 
     bool RepeatCommand::doLoop()
     {
-        for (int64_t loop = 0; loop < m_loopCount; ++loop) {
-            // parse commands here
-            if (!parseCommands()) {
-                setLastErrorMessage("repeat: Error interpreting repeat's body");
-                return false;
+        try {
+            for (int64_t loop = 0; loop < m_loopCount; ++loop) {
+                // parse commands here
+                if (!parseCommands()) {
+                    setLastErrorMessage("repeat: Error interpreting repeat's body");
+                    return false;
+                }
             }
+        } catch (BreakControlFlowException const &) {
+            // corresponds to a 'break' command
         }
-        return true;
+        return true;    
     }
 
     bool RepeatCommand::parseCommands() 
@@ -76,7 +82,7 @@ namespace jasl {
                     c->execute(); 
                 }
             } catch (...) {
-
+                handleException();
             }
         }
         return true;

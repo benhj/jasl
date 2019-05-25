@@ -9,6 +9,8 @@
 #include "WhileCommand.hpp"
 #include "caching/WithNewCache.hpp"
 #include "core/CommandInterpretor.hpp"
+#include "core/ExceptionDispatcher.hpp"
+#include "core/BreakControlFlowException.hpp"
 #include "core/RegisterCommand.hpp"
 #include <string>
 
@@ -49,11 +51,15 @@ namespace jasl {
             return false;
         }
         auto goodtogo(VarExtractor::trySingleBoolExtraction_V2(m_func.paramA, m_sharedCache));
-        while(goodtogo()) {
-            if (!parseCommands()) {
-                setLastErrorMessage("repeat: Error interpreting while's body");
-                return false;
+        try {
+            while(goodtogo()) {
+                if (!parseCommands()) {
+                    setLastErrorMessage("repeat: Error interpreting while's body");
+                    return false;
+                }
             }
+        } catch (BreakControlFlowException const &) {
+            // Corresponds to a 'break'
         }
         return true;
     }
@@ -66,7 +72,7 @@ namespace jasl {
                     c->execute(); 
                 }
             } catch (...) {
-
+                handleException();
             }
         }
         return true;

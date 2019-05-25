@@ -11,6 +11,7 @@
 #include "core/CommandInterpretor.hpp"
 #include "core/ThreadManager.hpp"
 #include "core/RegisterCommand.hpp"
+#include "core/ExceptionDispatcher.hpp"
 #include <string>
 
 bool jasl::AsyncCommand::m_registered = 
@@ -61,7 +62,7 @@ namespace jasl {
                         c->execute(); 
                     }
                 } catch (...) {
-
+                    handleException();
                 }
             }
         });

@@ -3,13 +3,14 @@
 //  jasl
 //
 //  Created by Ben Jones 
-//  Copyright (c) 2015-2016 Ben Jones. All rights reserved.
+//  Copyright (c) 2015-present Ben Jones. All rights reserved.
 //
 
 #pragma once
 
 #include "caching/Value.hpp"
 #include "caching/CacheStack.hpp"
+#include "core/ExceptionDispatcher.hpp"
 #include "core/LiteralString.hpp"
 #include "core/SymbolString.hpp"
 #include "commands/expressions/MathExpression.hpp"
@@ -38,6 +39,7 @@ namespace jasl {
                 t = simple_any::any_cast<T>(val);
                 return true;
             } catch (...) {
+                handleException();
             }
             return false;
         }
@@ -349,7 +351,7 @@ namespace jasl {
                     x = ce.evaluate();
                     return true;
                 } catch (...) {
-                    
+                    handleException();
                 }
             }
             return false;
@@ -369,7 +371,7 @@ namespace jasl {
                 try {
                     return [ce = std::move(ce)](){return ce.evaluate();};
                 } catch (...) {
-                    
+                    handleException();
                 }
             }
             return [](){return false;};

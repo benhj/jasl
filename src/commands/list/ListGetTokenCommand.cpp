@@ -41,7 +41,6 @@ namespace jasl
 
         if(tryWithRawList(varName)) { return true; }
         if(tryWithSymbolList(varName)) { return true; }
-        std::cout<<varName<<std::endl;
         setLastErrorMessage("get_token: no list found");
         return false;
     }
