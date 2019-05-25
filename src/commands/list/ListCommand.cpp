@@ -15,18 +15,37 @@
 bool jasl::ListCommand::m_registered = 
 registerCommand<jasl::ListCommand>();
 
-void format(std::string const & fname, std::string &in)
-{
-    if(fname == "upper") {
-        std::transform(std::begin(in),
-                       std::end(in),
-                       std::begin(in),
-                       ::toupper);
-    } else if(fname == "lower") {
-        std::transform(std::begin(in),
-                       std::end(in),
-                       std::begin(in),
-                       ::tolower);
+namespace {
+
+    bool hasPunc(std::string & in) {
+        auto const backChar = in.back();
+        return backChar == '.' ||
+               backChar == ',' ||
+               backChar == '?' ||
+               backChar == '!' ||
+               backChar == ';' ||
+               backChar == ':';
+    }
+
+    void format(std::string const & fname, std::string &in)
+    {
+        if(fname == "upper") {
+            std::transform(std::begin(in),
+                           std::end(in),
+                           std::begin(in),
+                           ::toupper);
+        } else if(fname == "lower") {
+            std::transform(std::begin(in),
+                           std::end(in),
+                           std::begin(in),
+                           ::tolower);
+        } 
+        // Remove any trailing punctuation
+        else if(fname == "rempunc") {
+            if(hasPunc(in)) {
+                in.pop_back();
+            }
+        }
     }
 }
 
@@ -43,7 +62,7 @@ namespace jasl
 
     std::vector<std::string> ListCommand::getCommandNames()
     {
-        return {"list", "lower", "upper"};
+        return {"list", "lower", "upper", "rempunc"};
     }
 
     List ListCommand::processList(List const & list) const

@@ -1,6 +1,12 @@
 ;;; Starting of a chatbot port from POP-11. Just
 ;;; to see if its possible and how easy it would be.
 
+;;; makes lowercase and removes any trailing punctuation
+fn:list normalize(in) -> result {
+    lower in -> result;
+    rempunc result -> result;
+}
+
 ;;; returns true if the input appears to be a question
 fn:list is_question_get_word(input) -> word {
     list [is how why are may can was were what who whats hows] -> words;
@@ -41,7 +47,7 @@ fn:list inference_engine(input, words) -> response {
     ;;; assigned to the output variable 'response'
 
     ;;; make lowercase
-    lower input -> input;
+    call normalize(input) -> input;
 
     ;;; is the input a question? If so process accordingly.
     call is_question_get_word(input) -> word;
