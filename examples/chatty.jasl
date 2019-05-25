@@ -1,6 +1,15 @@
 ;;; Starting of a chatbot port from POP-11. Just
 ;;; to see if its possible and how easy it would be.
 
+;;; returns true if the input appears to be a question
+fn:bool is_question(input) -> isit {
+    list [is how why are may can was were] -> words;
+    get input(0) -> first;
+
+    ;;; Is the first word of the input a member of words?
+    member(words, [^first]) -> isit;
+}
+
 fn:list inference_engine(input, words) -> response {
     ;;; takes in a list of words and responds by producing a list,
     ;;; assigned to the output variable 'response'
