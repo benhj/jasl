@@ -9,7 +9,7 @@ fn:list normalize(in) -> result {
 
 ;;; returns true if the input appears to be a question
 fn:list is_question_get_word(input) -> word {
-    list [is how why are may can was were what who whats hows] -> words;
+    list [is how why whys are may can was were what who whos whose whats hows] -> words;
     get input(0) -> first;
 
     ;;; Is the first word of the input a member of words?
@@ -32,6 +32,11 @@ fn:list random_question_response() -> response {
     oneof L -> response;    
 }
 
+fn:list random_mood_response() -> response {
+    list[[Good thanks][Fantastic thanks!][Feeling happy]] -> L;
+    oneof L -> response;
+}
+
 fn:list random_name_response() -> response {
     string "Bruce" -> name;
     list [[Name's ^name][^name][I'm ^name]
@@ -39,17 +44,47 @@ fn:list random_name_response() -> response {
     oneof L -> response;
 }
 
+fn:list random_are_your_response(x) -> response {
+    list [[I have no opinion on ^^x right now]
+          [I'm not sure what my opinion on my ^^x really is]
+          [I think my ^^x are doing good]] -> L;
+     oneof L -> response;
+}
+
+fn:list random_how_is_response(x) -> response {
+    list [[^x is doing great far as I know]
+          [Not really sure. I think ^x is probably good.]
+          [My ^x is doing great thanks]] -> L;
+     oneof L -> response;
+}
+
+
+fn:list random_what_is_response(x) -> response {
+    list [[What is my ^x hmm Still deciding.]
+          [I think my ^x is progressing as usual.]
+          [My ^x? Right]] -> L;
+     oneof L -> response;
+}
+
 fn:list process_question(input, word) -> response {
-    
     call is_about_me(input) -> isit;
     if(isit = TRUE) {
-
         if((word = [what]) || (word = [whats])) {
             if (input = [== name]) {
                 call random_name_response() -> response;
+            } elseif ((input = [== your ?x]) || (input = [== your ?x ==])) {
+                call random_what_is_response(x) -> response;
             }
         } elseif (input = [are you ??x]) {
             list [do i seem ^^x] -> response;
+        } elseif ((word = [how]) || (word = [hows])) { 
+            if ((input = [= are your ?x]) || (input = [= are your ?x ==])) {
+                call random_are_your_response(x) -> response;
+            } elseif((input = [= are you]) || (input = [= are you ==])) {
+                call random_mood_response() -> response;
+            } elseif ((input = [= is your ?x]) || (input = [= is your ?x ==])) {
+                call random_how_is_response(x) -> response;
+            }
         } else {
             list [a question about me I think] -> response;
         }
