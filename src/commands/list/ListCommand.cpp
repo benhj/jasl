@@ -94,7 +94,8 @@ namespace jasl
                         auto const listVal = m_sharedCache->getVar<List>(varName, Type::List);
                         if(listVal) {
                             if(start == 1) {
-                                finalList.push_back(*listVal);
+                                auto innerList = processList(*listVal);
+                                finalList.push_back(innerList);
                             } else {
                                 auto innerList = processList(*listVal);
                                 finalList.insert(std::end(finalList), std::begin(innerList), std::end(innerList));
@@ -107,7 +108,10 @@ namespace jasl
                     finalList.push_back(finalVal);
                 }
             } else {
-                finalList.push_back(el);
+                List element;
+                (void)VarExtractor::tryAnyCast(element, el);
+                auto innerList = processList(element);
+                finalList.push_back(innerList);
             }
         }
         return finalList;

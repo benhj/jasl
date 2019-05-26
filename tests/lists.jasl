@@ -86,12 +86,32 @@ fn:list testListInsertString(results) -> results
     list [^^results ^pass] -> results;
 }
 
+fn:list testListInsertNestedString(results) -> results
+{
+    list [one two three] -> L;
+    string "four" -> f;
+    list [^^L [^f]] -> L;
+    matches(L, [one two three [four]]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 fn:list testListInsertList(results) -> results
 {
     list [one two three] -> L;
     list [four five] -> Q;
     list [^^L ^Q] -> L;
     matches(L, [one two three [four five]]) -> m;
+    call passPrinter(m) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testListInsertNestedList(results) -> results
+{
+    list [one two three] -> L;
+    list [four five] -> Q;
+    list [[^^L] [^Q]] -> L;
+    matches(L, [[one two three] [[four five]]]) -> m;
     call passPrinter(m) -> pass;
     list [^^results ^pass] -> results;
 }
@@ -189,7 +209,9 @@ start {
     call testListPut(results) -> results;
     call testListGet(results) -> results;
     call testListInsertString(results) -> results;
+    call testListInsertNestedString(results) -> results;
     call testListInsertList(results) -> results;
+    call testListInsertNestedList(results) -> results;
     call testListInsertList_B(results) -> results;
     call testListEquality(results) -> results;
     call testListEqualityAnonymous(results) -> results;
