@@ -7,6 +7,18 @@ fn:list normalize(in) -> result {
     rempunc result -> result;
 }
 
+fn:bool is_greeting(input) -> maybe {
+    list [hi hello yo howdy alright g'day hey] -> L;
+    get input(0) -> word;
+    member(L, [^word]) -> maybe;
+}
+
+fn:list greeting_response() -> greeting {
+    list [Hi Hello Yo Howdy Alright G'day] -> L;
+    oneof L -> word;
+    list [^word] -> greeting;
+}
+
 ;;; returns true if the input appears to be a question
 fn:list is_question_get_word(input) -> word {
     list [is how why whys are may can was were what who whos whose whats hows] -> words;
@@ -62,7 +74,7 @@ fn:list random_how_is_response(x) -> response {
 fn:list random_what_is_response(x) -> response {
     list [[What is my ^x hmm Still deciding.]
           [I think my ^x is progressing as usual.]
-          [My ^x? Right]] -> L;
+          [My ^x Right]] -> L;
      oneof L -> response;
 }
 
@@ -93,9 +105,24 @@ fn:list process_question(input, word) -> response {
     }
 }
 
-fn:list inference_engine(input, words) -> response {
+fn:list build_response_and_fact_list(reply, newfact, facts) -> response_and_facts {
+    length newfact -> len;
+    if(len > 0) {
+        list [^reply [^^facts ^newfact]] -> response_and_facts;
+    } elseif (len = 0) {
+        list [^reply [^^facts]] -> response_and_facts;
+    }
+}
+
+fn:list inference_engine(input, facts) -> reply {
     ;;; takes in a list of words and responds by producing a list,
-    ;;; assigned to the output variable 'response'
+    ;;; assigned to the output variable 'response'. We also
+    ;;; return a list of built up facts to serve as a basic
+    ;;; memory. Facts will be acted upon in future responses.
+
+    ;;; No new fact to begin with
+    list [] -> fact;
+    list [] -> response;
 
     ;;; make lowercase
     call normalize(input) -> input;
@@ -106,35 +133,50 @@ fn:list inference_engine(input, words) -> response {
     if (len > 0) {
         call process_question(input, word) -> response;
     } elseif (len = 0) {
-        ;;; bug in JASL interpretor. Why should this an elseif branch?
-        if (input = [i hate ==]) {
-            list [perhaps you hate yourself] -> response;
-        }
-        elseif (input = [your ??x is ??y]) {
-            list [my ^^x is ^^y] -> response;
-        }
-        elseif (input = [you have ??x]) {
-            list [i have ^^y] -> response;
-        }
-        elseif (input = [you are ??x]) {
-            list [i am ^^x] -> response;
-        }
-        elseif (input = [hello ==]) {
-            list [hi] -> response;
-        }
-        elseif (input = [i ??x you]) {
-            list [perhaps in your fantasy we ^^x each other] -> response;
-        }
-        elseif (input = [??x is ??y]) {
-            list [what if ^^x were not ^^y ? ] -> response;
-        }
-        elseif (input = [bye]) {
-            list [I have enjoyed our meeting] -> response;
-        } else {
-            ;;; input not recognized -- this is the default response.
-            list [please go on] -> response;
+        call is_greeting(input) -> yes;
+        if (yes = TRUE) {
+            call greeting_response() -> response;
+        } elseif (yes = FALSE) {
+            ;;; bug in JASL interpretor. Why should this an elseif branch?
+            if (input = [i hate ==]) {
+                list [perhaps you hate yourself] -> response;
+            }
+            elseif (input = [your ??x is ??y]) {
+                list [my ^^x is ^^y] -> response;
+                list response -> fact;
+            }
+            elseif (input = [you have ??x]) {
+                list [i have ^^y] -> response;
+                list response -> fact;
+            }
+            elseif (input = [you are ??x]) {
+                list [i am ^^x] -> fact;
+                list fact -> response;
+            }
+            elseif (input = [hello ==]) {
+                list [hi] -> response;
+            }
+            elseif (input = [i ??x you]) {
+                list [perhaps in your fantasy we ^^x each other] -> response;
+            }
+            elseif (input = [??x is ??y]) {
+                list [what if ^^x were not ^^y ? ] -> response;
+            }
+            elseif (input = [??x are ??y]) {
+                list input -> fact;
+            }
+            elseif (input = [bye]) {
+                list [I have enjoyed our meeting] -> response;
+            } elseif (input = [facts]) {
+                prn facts;
+            }
+            else {
+                ;;; input not recognized -- this is the default response.
+                list [please go on] -> response;
+            }
         }
     }
+    call build_response_and_fact_list(response, fact, facts) -> reply;
 }
 
 block interface() {
@@ -144,15 +186,18 @@ block interface() {
     ;;; the response.
     ;;; It checks whether the user wants to stop, and if so prints
     ;;; a final message and stops.
-    list [] -> words;
+    list [] -> facts;
     while(TRUE = TRUE) {
         readlist "?: " -> sentence;
 
         ;;; get the reply from the inference engine
-        call inference_engine(sentence, words) -> reply;
+        call inference_engine(sentence, facts) -> reply;
 
         ;;; and print it out. Note pprn instead of prn for 'pretty print'
-        pprn reply;
+        get reply(0) -> response;
+        pprn response;
+
+        get reply(1) -> facts;
 
         ;;; we can test whether to stop now
         if (sentence = [bye]) {
