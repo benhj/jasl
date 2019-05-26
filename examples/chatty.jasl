@@ -1,5 +1,5 @@
-;;; Starting of a chatbot port from POP-11. Just
-;;; to see if its possible and how easy it would be.
+;;; Seeing how easy it is to implement a chatbot
+;;; inspired by some POP-11 tutorials.
 
 ;;; makes lowercase and removes any trailing punctuation
 fn:list normalize(in) -> result {
@@ -36,7 +36,14 @@ fn:list process_question(input) -> response {
     
     call is_about_me(input) -> isit;
     if(isit = TRUE) {
-        list [a question about me I think] -> response;
+        if (input = [what is your ??x]) {
+            list [my ^^x is something] -> response;
+        }
+        elseif (input = [are you ??x]) {
+            list [do i seem ^^x] -> response;
+        } else {
+            list [a question about me I think] -> response;
+        }
     } elseif (isit = FALSE) {
         call random_question_response() -> response;
     }
@@ -59,9 +66,6 @@ fn:list inference_engine(input, words) -> response {
         if (input = [i hate ==]) {
             list [perhaps you hate yourself] -> response;
         }
-        elseif (input = [what is your ??x]) {
-            list [my ^^x is something] -> response;
-        }
         elseif (input = [your ??x is ??y]) {
             list [my ^^x is ^^y] -> response;
         }
@@ -73,9 +77,6 @@ fn:list inference_engine(input, words) -> response {
         }
         elseif (input = [hello ==]) {
             list [hi] -> response;
-        }
-        elseif (input = [are you ??x]) {
-            list [do i seem ^^x] -> response;
         }
         elseif (input = [i ??x you]) {
             list [perhaps in your fantasy we ^^x each other] -> response;
