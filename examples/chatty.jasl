@@ -150,10 +150,11 @@ fn:list inference_engine(input, facts) -> reply {
                 list [perhaps you hate yourself] -> response;
                 list [you hate ^^x] -> fact;
             }
-            elseif (input = [i like ??x]) {
-                list [you like ^^x] -> fact;
+            elseif (input = [i ?y ??x]) {
+                call fact_checker_response(x, facts) -> response;
+                list [you ^y ^^x] -> fact;
             }
-            elseif (input = [i am ??x]) {
+            elseif (input = [i'm ??x]) {
                 call fact_checker_response(x, facts) -> response;
                 list [you are ^^x] -> fact;
             }
@@ -163,10 +164,12 @@ fn:list inference_engine(input, facts) -> reply {
             }
             elseif (input = [you have ??x]) {
                 list [i have ^^y] -> response;
+                call fact_checker_response(y, facts) -> response;
                 list response -> fact;
             }
             elseif (input = [you are ??x]) {
                 list [i am ^^x] -> fact;
+                call fact_checker_response(x, facts) -> response;
                 list fact -> response;
             }
             elseif (input = [hello ==]) {
@@ -180,12 +183,16 @@ fn:list inference_engine(input, facts) -> reply {
                 list [^^x is ^^y] -> fact;
             }
             elseif (input = [??x are ??y]) {
+                call fact_checker_response(x, facts) -> response;
                 list input -> fact;
             }
             elseif (input = [bye]) {
                 list [I have enjoyed our meeting] -> response;
             } elseif (input = [facts]) {
                 prn facts;
+            } elseif (input = [?x ?y ??z]) {
+                call fact_checker_response(z, facts) -> response;
+                list [^x ^y ^^z] -> fact;
             }
             else {
                 ;;; input not recognized -- this is the default response.
