@@ -289,6 +289,7 @@ namespace jasl {
                 return false;
             }
         }
+        ++itFirst;
         return true;
     }
 
@@ -329,6 +330,7 @@ namespace jasl {
     bool Matches::doMatches(List const & first,
                             List const & second) const
     {
+
         // Edge-case 1. Two empty string always match.
         if(first.empty() && second.empty()) {
             return true;

@@ -58,17 +58,19 @@ namespace jasl
         if(VarExtractor::trySingleListExtraction(m_func.paramA, list, m_sharedCache)) {
             std::string varName;
             if(m_func.getValueB<std::string>(varName, m_sharedCache)) {
-                auto const element = *select_randomly(std::begin(list), std::end(list));
-                // try string
-                std::string ex;
-                if(VarExtractor::tryAnyCast<std::string>(ex, element)) {
-                    m_sharedCache->setVar(varName, ex, Type::String);
-                    return true;
-                }
-                List listex;
-                if(VarExtractor::tryAnyCast<List>(listex, element)) {
-                    m_sharedCache->setVar(varName, listex, Type::List);
-                    return true;
+                if(!list.empty()) {
+                    auto const element = *select_randomly(std::begin(list), std::end(list));
+                    // try string
+                    std::string ex;
+                    if(VarExtractor::tryAnyCast<std::string>(ex, element)) {
+                        m_sharedCache->setVar(varName, ex, Type::String);
+                        return true;
+                    }
+                    List listex;
+                    if(VarExtractor::tryAnyCast<List>(listex, element)) {
+                        m_sharedCache->setVar(varName, listex, Type::List);
+                        return true;
+                    }
                 }
             }
         }

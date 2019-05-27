@@ -113,6 +113,16 @@ fn:list build_response_and_fact_list(reply, newfact, facts) -> response_and_fact
     }
 }
 
+;;; looks at the input and checks the facts to see
+;;; if there's anything that can be said about it
+fn:list fact_checker_response(key, facts) -> response {
+    find(facts, [^^key ==]) -> results;
+    if(results = []) {
+        find(facts, [== ^^key]) -> results;
+    }
+    oneof results -> response;
+}
+
 fn:list inference_engine(input, facts) -> reply {
     ;;; takes in a list of words and responds by producing a list,
     ;;; assigned to the output variable 'response'. We also
@@ -136,8 +146,16 @@ fn:list inference_engine(input, facts) -> reply {
             call greeting_response() -> response;
         } elseif (yes = FALSE) {
             ;;; bug in JASL interpretor. Why should this an elseif branch?
-            if (input = [i hate ==]) {
+            if (input = [i hate ??x]) {
                 list [perhaps you hate yourself] -> response;
+                list [you hate ^^x] -> fact;
+            }
+            elseif (input = [i like ??x]) {
+                list [you like ^^x] -> fact;
+            }
+            elseif (input = [i am ??x]) {
+                call fact_checker_response(x, facts) -> response;
+                list [you are ^^x] -> fact;
             }
             elseif (input = [your ??x is ??y]) {
                 list [my ^^x is ^^y] -> response;
@@ -159,6 +177,7 @@ fn:list inference_engine(input, facts) -> reply {
             }
             elseif (input = [??x is ??y]) {
                 list [what if ^^x were not ^^y ? ] -> response;
+                list [^^x is ^^y] -> fact;
             }
             elseif (input = [??x are ??y]) {
                 list input -> fact;
