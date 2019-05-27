@@ -59,6 +59,30 @@ fn:list testFindEqEqThenHH(results) -> results
     list [^^results ^pass] -> results;
 }
 
+fn:list testFindEqEqHHMiddle(results) -> results
+{
+    list [tall] -> L;
+    list [[trees are one two three tall five six]] -> facts;
+    find(facts, [== ^^L ==]) -> F;
+    matches(F, [[trees are one two three tall five six]]) -> test;
+    call passPrinter(test) -> pass;
+    list [^^results ^pass] -> results;
+}
+
+fn:list testFindEqEqHHMiddleWithExtract(results) -> results
+{
+    list [tall] -> L;
+    list [[trees are one two three tall five six]] -> facts;
+    find(facts, [??x ^^L ??y]) -> F;
+    matches(F, [[trees are one two three tall five six]]) -> test;
+    matches(x, [trees are one two three]) -> testb;
+    matches(y, [five six]) -> testc;
+    bool (test && testb) -> res;
+    bool (res && testc) -> res;
+    call passPrinter(res) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 fn:list testListBasic(results) -> results
 {
     list [one two three] -> L;
@@ -215,6 +239,8 @@ start {
     call testFindA(results) -> results;
     call testFindB(results) -> results;
     call testFindEqEqThenHH(results) -> results;
+    call testFindEqEqHHMiddle(results) -> results;
+    call testFindEqEqHHMiddleWithExtract(results) -> results;
     call testListBasic(results) -> results;
     call testListPut(results) -> results;
     call testListGet(results) -> results;

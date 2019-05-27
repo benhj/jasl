@@ -8,6 +8,53 @@
 
 namespace jasl {
 
+    List replaceAllHat(List const & orig, SharedCacheStack sharedCache)
+    {
+        List toReturn;
+        std::string str;
+        List list;
+        for(auto const & element : orig) {
+            auto strSuccess = VarExtractor::tryAnyCast(str, element);
+            if(strSuccess) {
+                int start = 0;
+                if(str.length() >= 2 && str[0] == '^') {
+                    start = 1;
+                    if(str.length() >= 3 && str[1] == '^') {
+                         ++start;
+                    }
+                }
+                // some kind of hat
+                if(start > 0) {
+                    std::string var{std::begin(str) + start, std::end(str)};
+                    {
+                        auto const extracted = sharedCache->getVar<std::string>(var, Type::String);
+                        if(extracted) {
+                            toReturn.push_back(*extracted);
+                        }
+                    }
+                    {
+                        auto const extracted = sharedCache->getVar<List>(var, Type::List);
+                        if(extracted) {
+                            auto inner = replaceAllHat(*extracted, sharedCache);
+                            if(start == 1) {
+                                toReturn.push_back(inner);
+                            } else {
+                                for(auto const & it : inner) {
+                                    toReturn.push_back(it);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    toReturn.push_back(element);
+                }
+            } else {
+                toReturn.push_back(element);
+            }
+        }
+        return toReturn;
+    }
+
     void releasePreviousExtract(std::string const & var,
                                 SharedCacheStack sharedCache)
     {
@@ -43,11 +90,6 @@ namespace jasl {
                     return MatchType::QQVar;
                 }
                 return MatchType::QVar;
-            } else if(strSecond.at(0) == '^') {
-                if(strSecond.size() > 1 && strSecond.at(1) == '^') {
-                    return MatchType::HHVar;
-                }
-                return MatchType::HVar;
             }
         }
         return MatchType::NoMatch;
@@ -152,6 +194,7 @@ namespace jasl {
                               List::const_iterator & itFirst,
                               List::const_iterator & itSecond) const
     {
+
         // Given the MatchType, *itSecond must be a string,
         // there is no way the cast to a string can fail.
         std::string qvar;
@@ -181,86 +224,19 @@ namespace jasl {
 
         // More token to process in first. We keep looping until we
         // find a match.
-        while(doMatches(*itFirst, *itSecond) == MatchType::NoMatch) {
+        auto matchType = doMatches(*itFirst, *itSecond);
+        while(matchType == MatchType::NoMatch) {
             list.push_back(*itFirst);
             ++itFirst;
             if(itFirst == std::end(first)) {
                 return false;
             }
+            matchType = doMatches(*itFirst, *itSecond);
         }
-        m_sharedCache->setVar(var, list, Type::List);
-        return true;
-    }
-
-    bool Matches::handleHVar(List const & first,
-                             List const & second,
-                             List::const_iterator & itFirst,
-                             List::const_iterator & itSecond) const
-    {
-        auto toStore = *itFirst;
-        // Given the MatchType, *itSecond must be a string,
-        // there is no way the cast to a string can fail.
-        std::string hvar;
-        (void)VarExtractor::tryAnyCast(hvar, *itSecond);
 
         ++itFirst;
         ++itSecond;
-
-        // Boundary -- check if there are more tokens
-        // in list 2 to be processed. If so, we have come
-        // to the end of the first string and the overall match
-        // has failed.
-        if(itFirst != std::end(first) && itSecond == std::end(second)) {
-            return false;
-        }
-
-        // Now pull out variable
-        std::string var{std::begin(hvar) + 1, std::end(hvar)};
-
-        // Try and get a string from ^var
-        auto const val = m_sharedCache->getVar<std::string>(var, Type::String);
-        if(val) {
-            std::string strFirst;
-            if(VarExtractor::tryAnyCast(strFirst, toStore)) {
-                return *val == strFirst;
-            }
-        } 
-        // Try and get a list from ^var
-        else {
-            List listFirst;
-            if(VarExtractor::tryAnyCast(listFirst, toStore)) {
-                auto const listVal = m_sharedCache->getVar<List>(var, Type::List);
-                if(listVal) {
-                    return doMatches(listFirst, *listVal);
-                }
-            }
-        }
-        return false;
-    }
-
-    bool Matches::handleHHVar(List const & first,
-                              List const & second,
-                              List::const_iterator & itFirst,
-                              List::const_iterator & itSecond) const
-    {
-        // Given the MatchType, *itSecond must be a string,
-        // there is no way the cast to a string can fail.
-        std::string hvar;
-        (void)VarExtractor::tryAnyCast(hvar, *itSecond);
-        std::string var{std::begin(hvar) + 2, std::end(hvar)};
-        ++itSecond;
-
-        auto const val = m_sharedCache->getVar<List>(var, Type::List);
-        if(val) {
-            auto valIterator = std::begin(*val);
-            while(valIterator != std::end(*val)) {
-                if(doMatches(*itFirst, *valIterator) != MatchType::Exact) {
-                    return false;
-                }
-                ++valIterator;
-                ++itFirst;
-            }
-        } 
+        m_sharedCache->setVar(var, list, Type::List);
         return true;
     }
 
@@ -290,6 +266,7 @@ namespace jasl {
             }
         }
         ++itFirst;
+        ++itSecond;
         return true;
     }
 
@@ -320,7 +297,8 @@ namespace jasl {
     bool Matches::matches(List const & first,
                           List const & second) const
     {
-        auto const ismatch = doMatches(first, second);
+        auto secondNoHats = replaceAllHat(second, m_sharedCache);
+        auto const ismatch = doMatches(first, secondNoHats);
         if(ismatch) {
             ++m_callCounter;
         }
@@ -400,20 +378,6 @@ namespace jasl {
                 case MatchType::QQVar:
                 {
                     if(handleQQVar(first, second, itFirst, itSecond)) {
-                        continue;
-                    }
-                    return false;
-                }
-                case MatchType::HVar:
-                {
-                    if(handleHVar(first, second, itFirst, itSecond)) {
-                        continue;
-                    }
-                    return false;
-                }
-                case MatchType::HHVar:
-                {
-                    if(handleHHVar(first, second, itFirst, itSecond)) {
                         continue;
                     }
                     return false;
