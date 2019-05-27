@@ -21,7 +21,7 @@ fn:list greeting_response() -> greeting {
 
 ;;; returns true if the input appears to be a question
 fn:list is_question_get_word(input) -> word {
-    list [is how why whys are may can was were what who whos whose whats hows] -> words;
+    list [is how why whys are may can was were what who whos whose whats hows do want] -> words;
     get input(0) -> first;
 
     ;;; Is the first word of the input a member of words?
@@ -78,30 +78,34 @@ fn:list random_what_is_response(x) -> response {
      oneof L -> response;
 }
 
-fn:list process_question(input, word) -> response {
-    call is_about_me(input) -> isit;
-    if(isit = TRUE) {
-        if((word = [what]) || (word = [whats])) {
-            if (input = [== name]) {
-                call random_name_response() -> response;
-            } elseif ((input = [== your ?x]) || (input = [== your ?x ==])) {
-                call random_what_is_response(x) -> response;
+fn:list process_question(input, word, facts) -> response {
+
+    call fact_checker_response(input, facts) -> response;
+    if(response = []) {
+        call is_about_me(input) -> isit;
+        if(isit = TRUE) {
+            if((word = [what]) || (word = [whats])) {
+                if (input = [== name]) {
+                    call random_name_response() -> response;
+                } elseif ((input = [== your ?x]) || (input = [== your ?x ==])) {
+                    call random_what_is_response(x) -> response;
+                }
+            } elseif (input = [are you ??x]) {
+                list [do i seem ^^x] -> response;
+            } elseif ((word = [how]) || (word = [hows])) { 
+                if ((input = [= are your ?x]) || (input = [= are your ?x ==])) {
+                    call random_are_your_response(x) -> response;
+                } elseif((input = [= are you]) || (input = [= are you ==])) {
+                    call random_mood_response() -> response;
+                } elseif ((input = [= is your ?x]) || (input = [= is your ?x ==])) {
+                    call random_how_is_response(x) -> response;
+                }
+            } else {
+                list [a question about me I think] -> response;
             }
-        } elseif (input = [are you ??x]) {
-            list [do i seem ^^x] -> response;
-        } elseif ((word = [how]) || (word = [hows])) { 
-            if ((input = [= are your ?x]) || (input = [= are your ?x ==])) {
-                call random_are_your_response(x) -> response;
-            } elseif((input = [= are you]) || (input = [= are you ==])) {
-                call random_mood_response() -> response;
-            } elseif ((input = [= is your ?x]) || (input = [= is your ?x ==])) {
-                call random_how_is_response(x) -> response;
-            }
-        } else {
-            list [a question about me I think] -> response;
+        } elseif (isit = FALSE) {
+            call random_question_response() -> response;
         }
-    } elseif (isit = FALSE) {
-        call random_question_response() -> response;
     }
 }
 
@@ -123,6 +127,37 @@ fn:list fact_checker_response(key, facts) -> response {
     oneof results -> response;
 }
 
+fn:list switch_subject(input) -> response {
+
+    list [] -> response;
+    for item in input {
+        ;;; for looping over a list in this way
+        ;;; the individual items are strings (when they're)
+        ;;; strings, which they are here.
+        list [^item] -> litem;
+        if(litem = [i]) {
+            list [^^response you] -> response;
+        } elseif (litem = [you]) {
+            list [^^response I] -> response;
+        } elseif (litem = [am]) {
+            list [^^response are] -> response;
+        } elseif (litem = [you're]) {
+            list [^^response I am] -> response;
+        } elseif (litem = [i'm]) {
+            list [^^response you are] -> response;
+        } 
+        else {
+            list [^^response ^item] -> response;
+        }
+    }
+}
+
+fn:list random_pleasantry() -> response
+{
+    list [[ok][cool][interesting][sounds good][nice]] -> phrases;
+    oneof phrases -> response;
+}
+
 fn:list inference_engine(input, facts) -> reply {
     ;;; takes in a list of words and responds by producing a list,
     ;;; assigned to the output variable 'response'. We also
@@ -139,64 +174,73 @@ fn:list inference_engine(input, facts) -> reply {
     ;;; is the input a question? If so process accordingly.
     call is_question_get_word(input) -> word;
     if (word /= []) {
-        call process_question(input, word) -> response;
+        call process_question(input, word, facts) -> response;
     } elseif (word = []) {
         call is_greeting(input) -> yes;
         if (yes = TRUE) {
             call greeting_response() -> response;
         } elseif (yes = FALSE) {
             ;;; bug in JASL interpretor. Why should this an elseif branch?
-            if (input = [i hate ??x]) {
-                list [perhaps you hate yourself] -> response;
-                list [you hate ^^x] -> fact;
-            }
-            elseif (input = [i ?y ??x]) {
+            if (input = [i ??x]) {
                 call fact_checker_response(x, facts) -> response;
-                list [you ^y ^^x] -> fact;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
             elseif (input = [i'm ??x]) {
                 call fact_checker_response(x, facts) -> response;
-                list [you are ^^x] -> fact;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
-            elseif (input = [your ??x is ??y]) {
-                list [my ^^x is ^^y] -> response;
-                list response -> fact;
-            }
-            elseif (input = [you have ??x]) {
-                list [i have ^^y] -> response;
-                call fact_checker_response(y, facts) -> response;
-                list response -> fact;
-            }
-            elseif (input = [you are ??x]) {
-                list [i am ^^x] -> fact;
+            elseif (input = [your ??x]) {
                 call fact_checker_response(x, facts) -> response;
-                list fact -> response;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
-            elseif (input = [hello ==]) {
-                list [hi] -> response;
+            elseif (input = [you're ??x]) {
+                call fact_checker_response(x, facts) -> response;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
-            elseif (input = [i ??x you]) {
-                list [perhaps in your fantasy we ^^x each other] -> response;
+            elseif (input = [you ??x]) {
+                call fact_checker_response(x, facts) -> response;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
             elseif (input = [??x is ??y]) {
-                list [what if ^^x were not ^^y ? ] -> response;
-                list [^^x is ^^y] -> fact;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
             elseif (input = [??x are ??y]) {
                 call fact_checker_response(x, facts) -> response;
-                list input -> fact;
+                if(response = []) {
+                    call random_pleasantry() -> response;
+                }
+                call switch_subject(input) -> fact;
             }
             elseif (input = [bye]) {
                 list [I have enjoyed our meeting] -> response;
-            } elseif (input = [facts]) {
+            } 
+            elseif (input = [facts]) {
                 prn facts;
-            } elseif (input = [?x ?y ??z]) {
-                call fact_checker_response(z, facts) -> response;
-                list [^x ^y ^^z] -> fact;
             }
             else {
                 ;;; input not recognized -- this is the default response.
-                list [please go on] -> response;
+                call fact_checker_response(input, facts) -> response;
+                if (response = []) {
+                    list [please go on] -> response;
+                }
             }
         }
     }
