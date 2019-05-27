@@ -162,7 +162,11 @@ namespace jasl {
             List list2;
             if (VarExtractor::trySingleListExtraction(m_left, list, m_sharedCache) &&
                 VarExtractor::trySingleListExtraction(m_right, list2, m_sharedCache)) {
-                return Matches(m_sharedCache).matches(list, list2);
+                if(m_symbolOperator == "=") {
+                    return Matches(m_sharedCache).matches(list, list2);
+                } else if(m_symbolOperator == "/=") {
+                    return !Matches(m_sharedCache).matches(list, list2);
+                }
             }
 
         } catch (...) {

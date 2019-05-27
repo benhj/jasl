@@ -31,7 +31,7 @@ namespace jasl
 
     std::vector<std::string> FileReadLinesCommand::getCommandNames()
     {
-        return {"file_read_line"};
+        return {"file_read_lines"};
     }
 
     bool FileReadLinesCommand::execute() 

@@ -106,10 +106,9 @@ fn:list process_question(input, word) -> response {
 }
 
 fn:list build_response_and_fact_list(reply, newfact, facts) -> response_and_facts {
-    length newfact -> len;
-    if(len > 0) {
+    if(newfact /= []) {
         list [^reply [^^facts ^newfact]] -> response_and_facts;
-    } elseif (len = 0) {
+    } elseif (newfact = []) {
         list [^reply [^^facts]] -> response_and_facts;
     }
 }
@@ -129,10 +128,9 @@ fn:list inference_engine(input, facts) -> reply {
 
     ;;; is the input a question? If so process accordingly.
     call is_question_get_word(input) -> word;
-    length word -> len;
-    if (len > 0) {
+    if (word /= []) {
         call process_question(input, word) -> response;
-    } elseif (len = 0) {
+    } elseif (word = []) {
         call is_greeting(input) -> yes;
         if (yes = TRUE) {
             call greeting_response() -> response;
