@@ -50,6 +50,15 @@ fn:list testFindB(results) -> results
     list [^^results ^pass] -> results;
 }
 
+fn:list testFindEqEqThenHH(results) -> results
+{
+    list [three] -> A;
+    find ([[one two three][four five six]], [== ^^A]) -> F;
+    matches(F, [[one two three]]) -> test;
+    call passPrinter(test) -> pass;
+    list [^^results ^pass] -> results;
+}
+
 fn:list testListBasic(results) -> results
 {
     list [one two three] -> L;
@@ -205,6 +214,7 @@ start {
     call testMemberNegative(results) -> results;
     call testFindA(results) -> results;
     call testFindB(results) -> results;
+    call testFindEqEqThenHH(results) -> results;
     call testListBasic(results) -> results;
     call testListPut(results) -> results;
     call testListGet(results) -> results;
