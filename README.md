@@ -1,6 +1,5 @@
 ### Abandoning 
-This project has been fun, but due to very bad implementation choices (not least of which is the reliance on Boost Spirit to handle parsing), it has been very difficult to maintain and extend. For this reason, I am abandoning JASL and re-implementing the interpretor from scratch. Updates on this to follow.
-
+This project has been fun, but due to very bad implementation choices (not least of which is the reliance on Boost Spirit to handle parsing), it has been very difficult to maintain and extend. For this reason, I am abandoning JASL and re-implementing the interpretor from scratch. See https://github.com/benhj/arrow
 ```
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄           
 ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          
